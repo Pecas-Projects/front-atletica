@@ -10,7 +10,7 @@ export default function Footer() {
         width: "100%",
       }}
     >
-      <p>skjldfhksjhfdkjsdfkjsgdjhfgjksgdfjkshgdfhj</p>
+      <p>Pecas brabas</p>
     </footer>
   );
 }
