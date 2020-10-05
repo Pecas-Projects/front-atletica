@@ -1,12 +1,12 @@
 import React from "react";
 
 import Navbar from "../../Components/NavbarInicio";
+import Footer from "../../Components/Footer";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
 import IconList from "./components/iconsList";
 import AvatarList from "./components/avatarList";
 
@@ -261,6 +261,7 @@ export default function PaginaInicial() {
           </Grid>
         </Box>
       </Container>
+      <Footer />
     </>
   );
 }
