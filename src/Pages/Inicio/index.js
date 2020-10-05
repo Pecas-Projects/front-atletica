@@ -6,6 +6,9 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
+import IconList from "./components/iconsList";
+import AvatarList from "./components/avatarList";
 
 import "./styles.css";
 
@@ -14,6 +17,13 @@ import Tecladinho from "../../assets/icons/transcript.svg";
 import Sacola from "../../assets/icons/shopping-bag.svg";
 import Trofeu from "../../assets/icons/trophy.svg";
 import Bell from "../../assets/icons/bell.svg";
+import Home from "../../assets/icons/home.svg";
+import Bloquinho from "../../assets/icons/today.svg";
+import Calendario from "../../assets/icons/calendar-today.svg";
+import Sacola2 from "../../assets/icons/shopping-bag2.svg";
+
+import Basquete from "../../assets/imagem/undraw_basketball_agx4 1.svg";
+import Controle from "../../assets/imagem/undraw_gaming_6oy3 1.svg";
 
 export default function PaginaInicial() {
   return (
@@ -79,7 +89,7 @@ export default function PaginaInicial() {
               </Typography>
               <Typography
                 paragraph
-                style={{ fontFamily: "Roboto", paddingTop: 80 }}
+                style={{ fontFamily: "Roboto", paddingTop: 60 }}
               >
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -99,61 +109,154 @@ export default function PaginaInicial() {
             >
               {/* COMPONENTIZAR ESSES ICONES E LEGENDAS */}
 
-              <Grid
-                container
-                direction="row"
-                style={{ paddingTop: 70 }}
-                spacing={1}
-              >
-                <Grid item>
-                  <img src={Tecladinho} style={{ width: "90%" }} />
-                </Grid>
-                <Grid item style={{ padding: 20 }}>
-                  <Typography>Divulgue sua Atlética</Typography>
-                </Grid>
-              </Grid>
+              <IconList
+                icon={Tecladinho}
+                leganda={"Divulgue sua Atlética"}
+                NumPadding={70}
+              />
 
-              <Grid
-                container
-                direction="row"
-                style={{ marginTop: 20 }}
-                spacing={4}
-              >
-                <Grid item>
-                  <img src={Sacola} style={{ width: "90%" }} />
-                </Grid>
-                <Grid item style={{ padding: 20 }}>
-                  <Typography>Exiba os Seus produtos</Typography>
-                </Grid>
-              </Grid>
+              <IconList
+                icon={Sacola}
+                leganda={"Exiba os Seus produtos"}
+                NumPadding={50}
+              />
 
-              <Grid
-                container
-                direction="row"
-                style={{ marginTop: 20 }}
-                spacing={3}
-              >
-                <Grid item>
-                  <img src={Trofeu} style={{ width: "90%" }} />
-                </Grid>
-                <Grid item style={{ padding: 20 }}>
-                  <Typography>Gerencie os seus jogos</Typography>
-                </Grid>
-              </Grid>
+              <IconList
+                icon={Trofeu}
+                leganda={"Gerencie os seus jogos"}
+                NumPadding={50}
+              />
 
-              <Grid
-                container
-                direction="row"
-                style={{ marginTop: 20 }}
-                spacing={3}
+              <IconList
+                icon={Bell}
+                leganda={"Anuncie seus eventos"}
+                NumPadding={50}
+              />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            spacing={3}
+            style={{
+              marginTop: 100,
+            }}
+          >
+            <Grid
+              item
+              md={7}
+              container
+              justify="flex-start"
+              style={{ color: "black", paddingLeft: 60, paddingTop: 70 }}
+            >
+              <Typography
+                variant="h4"
+                style={{ fontFamily: "Roboto Condensed" }}
               >
-                <Grid item>
-                  <img src={Bell} style={{ width: "90%" }} />
-                </Grid>
-                <Grid item style={{ padding: 20 }}>
-                  <Typography>Anuncie seus eventos</Typography>
-                </Grid>
-              </Grid>
+                Motive os seus atletas
+              </Typography>
+              <Typography
+                paragraph
+                style={{ fontFamily: "Roboto", paddingTop: 50 }}
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat
+              </Typography>
+            </Grid>
+
+            <Grid
+              item
+              md={5}
+              container
+              justify="flex-start"
+              style={{ color: "black", paddingLeft: 60, paddingTop: 70 }}
+            >
+              <img src={Basquete} alt="Imagem de um moço jogando basquete" />
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            direction="row"
+            spacing={3}
+            style={{
+              marginTop: 100,
+            }}
+          >
+            <AvatarList
+              imagem={Home}
+              legenda={
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
+              }
+            />
+            <AvatarList
+              imagem={Bloquinho}
+              legenda={
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
+              }
+            />
+            <AvatarList
+              imagem={Calendario}
+              legenda={
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
+              }
+            />
+            <AvatarList
+              imagem={Sacola2}
+              legenda={
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
+              }
+            />
+          </Grid>
+
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            spacing={3}
+            style={{
+              marginTop: 100,
+            }}
+          >
+            <Grid
+              item
+              md={5}
+              container
+              justify="flex-start"
+              style={{ color: "black", paddingLeft: 60, paddingTop: 70 }}
+            >
+              <img
+                src={Controle}
+                alt="Imagem de um moço segurando o controle"
+              />
+            </Grid>
+
+            <Grid
+              item
+              md={7}
+              container
+              justify="flex-end"
+              style={{ color: "black", paddingLeft: 60, paddingTop: 70 }}
+            >
+              <Typography
+                variant="h4"
+                style={{ fontFamily: "Roboto Condensed" }}
+              >
+                Administre os seus Jogos
+              </Typography>
+              <Typography
+                paragraph
+                style={{ fontFamily: "Roboto", paddingTop: 50 }}
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat
+              </Typography>
             </Grid>
           </Grid>
         </Box>
