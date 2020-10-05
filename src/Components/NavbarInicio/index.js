@@ -11,12 +11,13 @@ import InputBase from "@material-ui/core/InputBase";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
+
+import AvatarIcon from "../../assets/icons/user.svg";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -163,22 +164,6 @@ export default function ElevateAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           aria-label="account of current user"
@@ -186,7 +171,7 @@ export default function ElevateAppBar(props) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <img src={AvatarIcon} style={{ width: 30 }} />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -226,7 +211,7 @@ export default function ElevateAppBar(props) {
                   onClick={handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <AccountCircle />
+                  <img src={AvatarIcon} style={{ width: 30 }} />
                 </IconButton>
               </div>
               <div className={classes.sectionMobile}>
