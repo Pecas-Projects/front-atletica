@@ -23,7 +23,7 @@ import More from "../../assets/imagem/more-vertical-alt.svg"
 import LogOut from "../../assets/imagem/log-out.svg"
 import SearchIcon from "@material-ui/icons/Search";
 import "./NavBar.css";
-import { Fade, Grid } from "@material-ui/core";
+import { Fade, Grid, Grow } from "@material-ui/core";
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 
 const drawerWidth = 200;
@@ -34,6 +34,14 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     height: 70,
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarMobile: {
+    height: 60,
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
@@ -154,12 +162,12 @@ export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const [showLogo, setShowLogo] = useState(true)
+  const [showSearch, setShowSearch] = useState(true);
+
 
   const handleChange = () => {
-    setShowSearch(true)
-    setShowLogo(false)
+    setShowSearch(false)
+
   };
 
 
@@ -362,7 +370,7 @@ export default function MiniDrawer() {
 
           <AppBar
             position="fixed"
-            className={clsx(classes.appBar, {
+            className={clsx(classes.appBarMobile, {
               [classes.appBarShift]: open,
             })}
           >
@@ -379,40 +387,49 @@ export default function MiniDrawer() {
                 <MenuIcon />
               </IconButton>
 
-              {/* <Fade in={showLogo}> */}
+              {showSearch ? (
+                <>
 
-              <h3 className="logoMobile">OLYMPOS</h3>
+                  <div className="divLogoMobile">
 
-              <div className="userButtom">
+                    <h3 className="logoMobile">OLYMPOS</h3>
 
-                <IconButton onClick={handleChange}>
-                  <SearchIcon style={{ color: "white" }} />
-                </IconButton>
-
-              </div>
-
-              {/* </Fade> */}
-
-
-              {/* <Fade in={showSearch}>
-
-                <div className={classes.search}>
-
-                  <div className={classes.searchIcon}>
-                    <SearchIcon />
                   </div>
 
-                  <InputBase
-                    placeholder="Pesquise uma atletica"
-                    classes={{
-                      root: classes.inputRoot,
-                      input: classes.inputInput,
-                    }}
-                    inputProps={{ "aria-label": "search" }}
-                  />
-                </div>
 
-              </Fade> */}
+                  <div className="userButtom">
+
+                    <IconButton onClick={handleChange}>
+                      <SearchIcon style={{ color: "white" }} />
+                    </IconButton>
+
+
+                  </div>
+                </>
+
+              ) : (
+                  <>
+                    <div className={classes.search}>
+
+                      <div className={classes.searchIcon}>
+                        <SearchIcon />
+                      </div>
+
+                      <InputBase
+                        placeholder="Pesquise uma atletica"
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        inputProps={{ "aria-label": "search" }}
+                      />
+
+                    </div>
+
+
+                  </>
+                )}
+
 
             </Toolbar>
           </AppBar>
