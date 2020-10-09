@@ -8,4 +8,15 @@
 .subtitle {
   font-size: 18px;
   font-family: "Roboto Condensed";
+  margin-bottom: 20px;
+}
+
+.subtitle2 {
+  font-size: 14px;
+  font-family: "Roboto Condensed";
+}
+
+.image {
+  width: 300px;
+  height: 200px;
 }
