@@ -220,7 +220,7 @@ export default function MiniDrawer() {
                   <MenuIcon />
                 </IconButton>
 
-                <h1 className="logo">OLYMPOS</h1>
+                <h1 className="Mylogo">OLYMPOS</h1>
 
                 <div className={classes.search}>
 
@@ -392,7 +392,7 @@ export default function MiniDrawer() {
 
                   <div className="divLogoMobile">
 
-                    <h3 className="logoMobile">OLYMPOS</h3>
+                    <h3 className="MylogoMobile">OLYMPOS</h3>
 
                   </div>
 
