@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Grid, Paper, Button, Typography, Divider } from "@material-ui/core";
+import { Grid, Paper, Button, Divider } from "@material-ui/core";
 import Navbar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-import fotoCapa from "../../assets/imagem/fotoCapa.png"
+// import fotoCapa from "../../assets/imagem/fotoCapa.png"
 import CardMembro from "./Components/CardMembro"
 import contactImage from "../../assets/imagem/undraw_contact_u.svg"
 import "./styles.css"
@@ -65,8 +65,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Perfil() {
 
-  const [openForm, setOpenForm] = useState(true)
-  const [openProsel, setOpenProsel] = useState(false)
 
   const Membros = [
     {
