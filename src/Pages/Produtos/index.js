@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto"
 import productImage from "../../assets/imagem/productImage.svg"
+import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,23 +28,11 @@ const useStyles = makeStyles((theme) => ({
         padding: "2%",
         backgroundColor: "#BBB8CC"
     },
-    paperB: {
-        width: "85%",
-        marginTop: -10,
-        padding: "2%",
-        backgroundColor: "#807D8E"
-    },
     paperAMobile: {
         width: "100%",
         marginTop: -10,
         padding: "5%",
         backgroundColor: "#BBB8CC"
-    },
-    paperBMobile: {
-        width: "100%",
-        marginTop: -10,
-        padding: "5%",
-        backgroundColor: "#807D8E"
     },
     sectionDesktop: {
         display: "none",
@@ -138,6 +127,18 @@ export default function Produtos() {
                     </Grid>
 
                 </div>
+
+                {/* 
+                
+                
+                
+                
+                MOBILE
+                
+                
+                
+                
+                */}
 
                 <div className={classes.sectionMobile}>
 
