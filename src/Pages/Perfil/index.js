@@ -1,8 +1,12 @@
-import React from "react";
-import { Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { Grid, Paper, Button, Typography, Divider } from "@material-ui/core";
 import Navbar from "../../Components/NavBar";
-import { makeStyles, fade } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import fotoCapa from "../../assets/imagem/fotoCapa.png"
+import CardMembro from "./Components/CardMembro"
+import contactImage from "../../assets/imagem/undraw_contact_u.svg"
+import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,9 +24,90 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  paperA: {
+    width: "85%",
+    marginTop: -10,
+    padding: "2%",
+    backgroundColor: "#BBB8CC"
+  },
+  paperB: {
+    width: "85%",
+    marginTop: -10,
+    padding: "2%",
+    backgroundColor: "#807D8E"
+  },
+  paperAMobile: {
+    width: "100%",
+    marginTop: -10,
+    padding: "5%",
+    backgroundColor: "#BBB8CC"
+  },
+  paperBMobile: {
+    width: "100%",
+    marginTop: -10,
+    padding: "5%",
+    backgroundColor: "#807D8E"
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
+  },
+  sectionMobile: {
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
+  },
+
 }));
 
 export default function Perfil() {
+
+  const [openForm, setOpenForm] = useState(true)
+  const [openProsel, setOpenProsel] = useState(false)
+
+  const Membros = [
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+    {
+      nome: "Beatriz Calazans",
+      funcao: "Coordenadora de volei"
+    },
+  ]
+
+
   const classes = useStyles();
 
   return (
@@ -30,36 +115,350 @@ export default function Perfil() {
       <Navbar />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </main>
+
+        {/*
+        
+        
+        
+        DESKTOP
+        
+        
+        
+        */}
+
+        <div className={classes.sectionDesktop}>
+
+          {/* <Grid container xs={12} justify="center">
+
+          <img className="capa" src={fotoCapa} alt="foto capa" />
+
+        </Grid> */}
+
+          <Grid container  >
+
+            <Grid item xs={12} >
+
+              <Grid container justify='center'>
+
+                <Paper className={classes.paperA}>
+
+                  <h4 className="subtitle">NOSSOS MEMBROS</h4>
+
+                  <Grid container spacing={3}>
+
+                    {Membros.map((item) =>
+                      <CardMembro item={item} />
+                    )}
+
+
+                  </Grid>
+
+                </Paper>
+
+              </Grid>
+
+            </Grid>
+
+            <Grid item xs={12}  >
+
+              <Grid container justify='center'>
+
+                <Paper className={classes.paperB}>
+
+                  <h4 className="subtitle">FAÇA PARTE</h4>
+
+                  <Grid container spacing={3}>
+
+                    <Grid item xs={6}>
+
+                      <p className="subtitle2" >COMO ATLETA</p>
+
+
+                      <AvForm>
+
+                        <Grid container spacing={1}>
+
+                          <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
+
+                            <AvField name="nome" label="Nome" type="text" validate={{
+                              required: { value: true, errorMessage: "Campo obrigatório" },
+                              pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                              minLength: { value: 2, errorMessage: 'Nome inválido' },
+                              maxLength: { value: 45, errorMessage: 'Nome inválido' }
+                            }} />
+
+                          </Grid>
+
+                          <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
+
+                            <AvField name="sobrenome" label="Sobrenome" type="text" validate={{
+                              required: { value: true, errorMessage: "Campo obrigatório" },
+                              pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                              minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
+                              maxLength: { value: 45, errorMessage: 'Sobrenome inválido' }
+                            }} />
+
+
+                          </Grid>
+
+                          <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
+
+                            <AvField name="email" label="E-mail" type="text" validate={{
+                              required: { value: true, errorMessage: "Campo obrigatório" },
+                              minLength: { value: 10, errorMessage: 'E-mail inválido' },
+                              maxLength: { value: 254, errorMessage: 'E-mail inválido' }
+                            }} />
+
+
+                          </Grid>
+
+
+                          <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
+
+                            <AvField name="whatsapp" label="WhatsApp" type="text" validate={{
+                              required: { value: true, errorMessage: "Campo obrigatório" },
+                              pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
+                              minLength: { value: 10, errorMessage: 'Número inválido' },
+                              maxLength: { value: 17, errorMessage: 'Número inválido' }
+                            }} />
+
+
+                          </Grid>
+
+                          <Grid item xs={12}  >
+
+                            <Grid container justify="center">
+
+                              <Button style={{ backgroundColor: "#DB4922", width: 250 }} variant="contained">Enviar</Button>
+
+                            </Grid>
+
+                          </Grid>
+
+
+                        </Grid>
+
+
+                      </AvForm>
+
+                    </Grid>
+
+                    <Divider orientation="vertical" flexItem />
+
+                    <Grid item xs={5} >
+
+
+                      <p className="subtitle2">PROCESSO SELETIVO</p>
+
+                      <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
+
+                      <Button color="primary" style={{ width: 300, marginTop: 10 }} variant="outlined"> Participar</Button>
+
+
+                    </Grid>
+
+                  </Grid>
+
+                </Paper>
+              </Grid>
+
+            </Grid>
+
+            <Grid item xs={12}>
+
+              <Grid container justify="center">
+
+                <Paper className={classes.paperA}>
+
+                  <Grid container spacing={1}>
+
+                    <Grid item xs={8} style={{ marginTop: 20 }}>
+
+                      <h4 className="subtitle">ENTRE EM CONTATO</h4>
+
+                      <p className="subtitle2">EMAIL - atleticabraba@gmail.com</p>
+                      <p className="subtitle2">TELEFONE - 71 973673287</p>
+                      <p className="subtitle2">Av. Orlando Gomes, 1845 - Piatã, Salvador - BA, 41650-010</p>
+
+                    </Grid>
+
+                    <Grid item xs={4}>
+
+                      <img className="image" src={contactImage} alt="contactUs"></img>
+
+                    </Grid>
+
+                  </Grid>
+
+                </Paper>
+
+              </Grid>
+
+            </Grid>
+
+
+          </Grid>
+
+        </div>
+
+
+
+        {/*
+        
+        
+        
+        MOBILE
+        
+        
+        
+        */}
+
+        <div className={classes.sectionMobile}>
+
+          {/* <Grid container xs={12} justify="center">
+
+          <img className="capa" src={fotoCapa} alt="foto capa" />
+
+        </Grid> */}
+
+          <Grid container spacing={1}>
+
+
+            <Grid item xs={12}>
+
+              <Paper className={classes.paperAMobile}>
+
+                <h4 className="subtitle">NOSSOS MEMBROS</h4>
+
+                <Grid container spacing={3}>
+
+                  {Membros.map((item) =>
+                    <CardMembro item={item} />
+                  )}
+
+
+                </Grid>
+
+              </Paper>
+            </Grid>
+
+
+            <Grid item xs={12}>
+
+              <Paper className={classes.paperBMobile}>
+
+                <h4 className="subtitle">FAÇA PARTE</h4>
+
+                <p className="subtitle2">COMO ATLETA</p>
+
+
+                <AvForm>
+
+                  <Grid container spacing={1}>
+
+                    <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                      <AvField name="nome" label="Nome" type="text" validate={{
+                        required: { value: true, errorMessage: "Campo obrigatório" },
+                        pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                        minLength: { value: 2, errorMessage: 'Nome inválido' },
+                        maxLength: { value: 45, errorMessage: 'Nome inválido' }
+                      }} />
+
+                    </Grid>
+
+                    <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                      <AvField name="sobrenome" label="Sobrenome" type="text" validate={{
+                        required: { value: true, errorMessage: "Campo obrigatório" },
+                        pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                        minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
+                        maxLength: { value: 45, errorMessage: 'Sobrenome inválido' }
+                      }} />
+
+
+                    </Grid>
+
+                    <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                      <AvField name="email" label="E-mail" type="text" validate={{
+                        required: { value: true, errorMessage: "Campo obrigatório" },
+                        minLength: { value: 10, errorMessage: 'E-mail inválido' },
+                        maxLength: { value: 254, errorMessage: 'E-mail inválido' }
+                      }} />
+
+
+                    </Grid>
+
+
+                    <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                      <AvField name="whatsapp" label="WhatsApp" type="text" validate={{
+                        required: { value: true, errorMessage: "Campo obrigatório" },
+                        pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
+                        minLength: { value: 10, errorMessage: 'Número inválido' },
+                        maxLength: { value: 17, errorMessage: 'Número inválido' }
+                      }} />
+
+
+                    </Grid>
+
+                    <Grid item xs={12}  >
+
+
+                      <Button style={{ backgroundColor: "#DB4922", width: "100%", marginTop: 10 }} variant="contained">Enviar</Button>
+
+
+                    </Grid>
+
+                  </Grid>
+
+                </AvForm>
+
+
+                <Grid container xs={12} style={{ marginTop: 20 }}>
+
+                  <p className="subtitle2">PROCESSO SELETIVO</p>
+
+                  <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
+
+                  <Button color="primary" style={{ width: "100%", marginTop: 10 }} variant='outlined'> Participar</Button>
+
+                </Grid>
+
+
+              </Paper>
+
+            </Grid>
+
+            <Grid item xs={12}>
+
+              <Grid container justify="center">
+
+                <Paper className={classes.paperAMobile}>
+
+                  <Grid container xs={12} style={{ marginTop: 20 }}>
+
+                    <h4 className="subtitle">ENTRE EM CONTATO</h4>
+
+                    <p className="subtitle2">EMAIL - atleticabraba@gmail.com</p>
+                    <p className="subtitle2">TELEFONE - 71 973673287</p>
+                    <p className="subtitle2">Av. Orlando Gomes, 1845 - Piatã, Salvador - BA, 41650-010</p>
+
+                  </Grid>
+
+                </Paper>
+
+              </Grid>
+
+            </Grid>
+
+          </Grid>
+
+        </div >
+      </main >
     </div>
+
+
   );
 }

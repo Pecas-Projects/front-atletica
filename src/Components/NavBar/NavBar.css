@@ -1,6 +1,44 @@
-.logo {
+.Mylogo {
   font-family: "Nanum Gothic";
-  font-size: 24;
+  font-size: 36px;
   font-weight: 300;
   color: white;
+}
+
+.MylogoMobile {
+  font-family: "Nanum Gothic";
+  font-size: 16px;
+  font-weight: 300;
+  color: white;
+}
+
+.item {
+  font-family: "Roboto";
+  font-size: 18;
+  font-weight: 200;
+  color: white;
+}
+
+.parent {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+  bottom: 10px;
+}
+
+.absoluteMobile {
+  position: absolute;
+  bottom: 25px;
+}
+
+.userButtom {
+  position: absolute;
+  right: 40px;
+}
+
+.divLogoMobile {
+  position: absolute;
+  margin-left: 120px;
 }
