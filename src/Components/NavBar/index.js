@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme, fade } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -11,20 +12,20 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { ChevronLeft } from "@material-ui/icons";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InputBase from "@material-ui/core/InputBase";
-import Home from "../../assets/imagem/home.svg"
-import Feed from "../../assets/imagem/today (1).svg"
-import Calendario from "../../assets/imagem/calendar-today.svg"
-import Trofeu from "../../assets/imagem/trophy.svg"
-import Bag from "../../assets/imagem/shopping-bag.svg"
-import More from "../../assets/imagem/more-vertical-alt.svg"
-import LogOut from "../../assets/imagem/log-out.svg"
+import Home from "../../assets/imagem/home.svg";
+import Feed from "../../assets/imagem/today (1).svg";
+import Calendario from "../../assets/imagem/calendar-today.svg";
+import Trofeu from "../../assets/imagem/trophy.svg";
+import Bag from "../../assets/imagem/shopping-bag.svg";
+import More from "../../assets/imagem/more-vertical-alt.svg";
+import LogOut from "../../assets/imagem/log-out.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import "./NavBar.css";
 import { Fade, Grid, Grow } from "@material-ui/core";
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 
 const drawerWidth = 200;
 
@@ -154,8 +155,6 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-
-
 }));
 
 export default function MiniDrawer() {
@@ -164,12 +163,9 @@ export default function MiniDrawer() {
   const [open, setOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
 
-
   const handleChange = () => {
-    setShowSearch(false)
-
+    setShowSearch(false);
   };
-
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -179,11 +175,8 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-
   return (
-
     <>
-
       {/*
       
       
@@ -195,12 +188,10 @@ export default function MiniDrawer() {
       */}
 
       <div className={classes.sectionDesktop}>
-
         <div className={classes.root}>
           <CssBaseline />
 
           <div className="parent">
-
             <AppBar
               position="fixed"
               className={clsx(classes.appBar, {
@@ -223,7 +214,6 @@ export default function MiniDrawer() {
                 <h1 className="Mylogo">OLYMPOS</h1>
 
                 <div className={classes.search}>
-
                   <div className={classes.searchIcon}>
                     <SearchIcon />
                   </div>
@@ -239,23 +229,18 @@ export default function MiniDrawer() {
                 </div>
 
                 <div className="userButtom">
-
                   <IconButton>
-
-                    <PermIdentityIcon fontSize='large' style={{ color: "white" }} />
-
+                    <PermIdentityIcon
+                      fontSize="large"
+                      style={{ color: "white" }}
+                    />
                   </IconButton>
-
                 </div>
-
               </Toolbar>
-
             </AppBar>
-
           </div>
 
           <div className="parent">
-
             <Drawer
               containerStyle={{ background: "#020431" }}
               variant="permanent"
@@ -271,83 +256,78 @@ export default function MiniDrawer() {
               }}
             >
               <div className={classes.toolbar}>
-                <IconButton onClick={handleDrawerClose} style={{ color: "white" }}>
-                  {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
+                <IconButton
+                  onClick={handleDrawerClose}
+                  style={{ color: "white" }}
+                >
+                  {theme.direction === "rtl" ? (
+                    <ChevronRight />
+                  ) : (
+                    <ChevronLeft />
+                  )}
                 </IconButton>
               </div>
 
-
-
               <Grid style={{ marginTop: 80 }}>
-
-                <List >
-
-                  <ListItem button >
-                    <ListItemIcon >
+                <List>
+                  <ListItem button>
+                    <ListItemIcon>
                       <img src={Home} alt="home" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Home" />
                   </ListItem>
 
-                  <ListItem button >
+                  <ListItem button>
                     <ListItemIcon>
                       <img src={Feed} alt="feed" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Feed" />
                   </ListItem>
 
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Calendario} alt="calendario" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Calendário" />
-                  </ListItem>
+                  <Link to="/Calendario">
+                    <ListItem button>
+                      <ListItemIcon>
+                        <img src={Calendario} alt="calendario" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Calendário" />
+                    </ListItem>
+                  </Link>
 
-                  <ListItem button >
+                  <ListItem button>
                     <ListItemIcon>
                       <img src={Trofeu} alt="times" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Times" />
                   </ListItem>
 
-                  <ListItem button >
+                  <ListItem button>
                     <ListItemIcon>
                       <img src={Bag} alt="produtos" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Produtos" />
                   </ListItem>
                 </List>
-
               </Grid>
 
-
               <div className="absolute">
-
                 <List>
-
-                  <ListItem button >
+                  <ListItem button>
                     <ListItemIcon>
                       <img src={More} alt="configurações" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Configurações" />
                   </ListItem>
 
-                  <ListItem button >
+                  <ListItem button>
                     <ListItemIcon>
                       <img src={LogOut} alt="logout" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Logout" />
                   </ListItem>
                 </List>
-
-
               </div>
-
-
             </Drawer>
-
           </div>
-
         </div>
       </div>
 
@@ -361,13 +341,10 @@ export default function MiniDrawer() {
       
       */}
 
-
       <div className={classes.sectionMobile}>
-
         <CssBaseline />
 
         <div className="parent">
-
           <AppBar
             position="fixed"
             className={clsx(classes.appBarMobile, {
@@ -389,55 +366,39 @@ export default function MiniDrawer() {
 
               {showSearch ? (
                 <>
-
                   <div className="divLogoMobile">
-
                     <h3 className="MylogoMobile">OLYMPOS</h3>
-
                   </div>
 
-
                   <div className="userButtom">
-
                     <IconButton onClick={handleChange}>
                       <SearchIcon style={{ color: "white" }} />
                     </IconButton>
-
-
                   </div>
                 </>
-
               ) : (
-                  <>
-                    <div className={classes.search}>
-
-                      <div className={classes.searchIcon}>
-                        <SearchIcon />
-                      </div>
-
-                      <InputBase
-                        placeholder="Pesquise uma atletica"
-                        classes={{
-                          root: classes.inputRoot,
-                          input: classes.inputInput,
-                        }}
-                        inputProps={{ "aria-label": "search" }}
-                      />
-
+                <>
+                  <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                      <SearchIcon />
                     </div>
 
-
-                  </>
-                )}
-
-
+                    <InputBase
+                      placeholder="Pesquise uma atletica"
+                      classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                      }}
+                      inputProps={{ "aria-label": "search" }}
+                    />
+                  </div>
+                </>
+              )}
             </Toolbar>
           </AppBar>
-
         </div>
 
         <div className="parent">
-
           <Drawer
             containerStyle={{ background: "#020431" }}
             variant="persistent"
@@ -448,60 +409,55 @@ export default function MiniDrawer() {
             }}
           >
             <div className={classes.toolbar}>
-              <IconButton onClick={handleDrawerClose} style={{ color: "white" }}>
+              <IconButton
+                onClick={handleDrawerClose}
+                style={{ color: "white" }}
+              >
                 {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
               </IconButton>
             </div>
 
-
-
             <Grid style={{ marginTop: 30 }}>
-
-              <List >
-
+              <List>
                 <ListItem button className="listItem">
-                  <ListItemIcon  >
+                  <ListItemIcon>
                     <img src={Home} alt="home" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Home" />
                 </ListItem>
 
-
-                <ListItem button >
+                <ListItem button>
                   <ListItemIcon>
                     <img src={Feed} alt="feed" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Feed" />
                 </ListItem>
 
-                <ListItem button >
+                <ListItem button>
                   <ListItemIcon>
                     <img src={Calendario} alt="calendario" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Calendário" />
                 </ListItem>
 
-                <ListItem button >
+                <ListItem button>
                   <ListItemIcon>
                     <img src={Trofeu} alt="times" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Times" />
                 </ListItem>
 
-                <ListItem button >
+                <ListItem button>
                   <ListItemIcon>
                     <img src={Bag} alt="produtos" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Produtos" />
                 </ListItem>
               </List>
-
             </Grid>
 
             <div className="absoluteMobile">
-
-
-              <ListItem button >
+              <ListItem button>
                 <ListItemIcon>
                   <PermIdentityIcon style={{ color: "white" }} />
                 </ListItemIcon>
@@ -509,29 +465,24 @@ export default function MiniDrawer() {
               </ListItem>
 
               <List>
-                <ListItem button >
+                <ListItem button>
                   <ListItemIcon>
                     <img src={More} alt="configurações" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Configurações" />
                 </ListItem>
 
-                <ListItem button >
+                <ListItem button>
                   <ListItemIcon>
                     <img src={LogOut} alt="logout" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Logout" />
                 </ListItem>
               </List>
-
             </div>
-
-
           </Drawer>
         </div>
-
       </div>
-
     </>
   );
 }
