@@ -1,8 +1,8 @@
 import React from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
+import FullCalendar, { formatDate } from "@fullcalendar/react";
 import { Grid, Paper } from "@material-ui/core";
-import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -70,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Calendario() {
   const classes = useStyles();
-  const calendarComponentRef = React.createRef();
 
   return (
     <div className={classes.root}>
@@ -84,22 +83,20 @@ export default function Calendario() {
                 <FullCalendar
                   locale={ptbrLocale}
                   plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                  defaultView="dayGridMonth"
-                  header={{
+                  headerToolbar={{
                     left: "prev,next today",
                     center: "title",
-                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay",
                   }}
-                  //initialView="dayGridMonth"
+                  initialView="dayGridMonth"
                   editable={true}
                   selectable={true}
                   selectMirror={true}
                   dayMaxEvents={true}
                   events={[
-                    { title: "event 1", date: "2020-10-19", color: "#FF00FF" },
+                    { title: "event 1", date: "2020-10-19" },
                     { title: "Nomezinho", date: "2020-10-20" },
                   ]}
-                  ref={calendarComponentRef}
                   dateClick={(e) => console.log(e)}
                   eventClick={(e) => alert(e.event.title)}
                 />
