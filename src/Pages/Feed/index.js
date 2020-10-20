@@ -64,6 +64,8 @@ export default function Feed() {
 
                     <Grid container  >
 
+                        <Grid item xs={2} />
+
                         <Grid item xs={8} >
 
                             <Grid container justify='center'>
@@ -71,6 +73,8 @@ export default function Feed() {
                                 <Post />
 
                             </Grid>
+
+                            <Grid item xs={2} />
 
                         </Grid>
                     </Grid>
