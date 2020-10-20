@@ -5,6 +5,12 @@ import { Button, Grid, Paper } from "@material-ui/core";
 import { AvField, AvForm } from "availity-reactstrap-validation"
 import "./styles.css"
 import ImageLogin from "../../assets/imagem/undraw_Login.svg"
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 
 
@@ -83,7 +89,7 @@ export default function Login() {
                             <Grid container justify="center">
 
                                 <Paper className={classes.paperA}>
-                                    <h1 className="MyTitle">Login</h1>
+                                    <h1 className="MyTitle">LOGIN</h1>
 
                                     <Grid container spacing={1}>
 
@@ -102,10 +108,23 @@ export default function Login() {
                                                 }} />
                                             </AvForm>
 
+                                            <Grid item xs={12} style={{ marginTop: 20 }}>
+
+                                                <FormControl component="fieldset">
+                                                    <FormLabel component="legend">Entrar como:</FormLabel>
+                                                    <RadioGroup row aria-label="gender" name="gender1">
+                                                        <FormControlLabel value="Atletica" control={<Radio />} label="Atlética" />
+                                                        <FormControlLabel value="Membro" control={<Radio />} label="Membro" />
+
+                                                    </RadioGroup>
+                                                </FormControl>
+
+                                            </Grid>
+
                                             <Grid item xs={8}>
 
-                                                <Grid container justify="flex-end" style={{ marginTop: 50 }}>
-                                                    <Button style={{ width: 300 }} variant='contained' color='secondary' >entrar</Button>
+                                                <Grid container justify="flex-end" style={{ marginTop: 20 }}>
+                                                    <Button style={{ width: 300 }} variant='contained' color='secondary' >entrar </Button>
                                                 </Grid>
 
                                             </Grid>
@@ -162,13 +181,27 @@ export default function Login() {
                                         required: { value: true },
 
                                     }} />
+
+
+
+                                    <Grid item xs={12} style={{ marginTop: 20 }}>
+
+                                        <FormControl component="fieldset">
+                                            <FormLabel component="legend">Entrar como:</FormLabel>
+                                            <RadioGroup row aria-label="gender" name="gender1">
+                                                <FormControlLabel value="Atletica" control={<Radio />} label="Atlética" />
+                                                <FormControlLabel value="Membro" control={<Radio />} label="Membro" />
+
+                                            </RadioGroup>
+                                        </FormControl>
+
+                                    </Grid>
+
+                                    <Grid container style={{ marginTop: 10 }}>
+                                        <Button style={{ width: "100%" }} variant='contained' color='secondary' >entrar</Button>
+                                    </Grid>
+
                                 </AvForm>
-
-
-
-                                <Grid container style={{ marginTop: 50 }}>
-                                    <Button style={{ width: "100%" }} variant='contained' color='secondary' >entrar</Button>
-                                </Grid>
 
 
                             </Paper>
