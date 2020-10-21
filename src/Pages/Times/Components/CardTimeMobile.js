@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CardTime(props) {
   const { time } = props;
   const classes = useStyles();
-  const cordenador = "Coordenador: " + time.cordenador
+  const cordenador = "Coordenador: " + time.coordenador
 
   return (
     <>

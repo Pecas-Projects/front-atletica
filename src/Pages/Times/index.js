@@ -64,7 +64,7 @@ const times = [
   {
     imagem: imagemTime,
     nome: "Futbol Masculino",
-    cordenador: "Zeca da Silva",
+    coordenador: "Zeca da Silva",
     treinos: [
       {
         dia: "Segunda-Feira",
@@ -79,7 +79,7 @@ const times = [
   {
     imagem: imagemTime,
     nome: "Futbol Masculino",
-    cordenador: "Zeca da Silva",
+    coordenador: "Zeca da Silva",
     treinos: [
       {
         dia: "Segunda-Feira",
@@ -94,7 +94,7 @@ const times = [
   {
     imagem: imagemTime,
     nome: "Futbol Masculino",
-    cordenador: "Zeca da Silva",
+    coordenador: "Zeca da Silva",
     treinos: [
       {
         dia: "Segunda-Feira",
