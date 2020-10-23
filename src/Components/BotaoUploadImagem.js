@@ -54,7 +54,7 @@ export default function UploadButtons(props) {
           <img
             src={props.path}
             alt="adicionar imagem"
-            style={{ width: 200, height: 150 }}
+            style={{ width: 250, height: 250 }}
           />
         </Grid>
       </>

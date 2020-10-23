@@ -26,15 +26,15 @@ export default function FormularioProduto() {
               Adicione um produto a aba produtos da sua atlética
             </Typography>
             <AvForm>
-              <Grid container spacing={5} style={{ paddingTop: 20 }}>
+              <Grid container spacing={5} style={{ paddingTop: 30 }}>
                 <Grid item xs={4}>
                   {showAdicionarImagem()}
-                  <Paper style={{ backgroundColor: "#636363" }}>
+                  <Paper style={{ backgroundColor: "#636363",width:250 }}>
                     <Grid
                       container
                       justify="center"
                       alignContent="center"
-                      style={{ height: 140, marginTop: -7 }}s
+                      style={{ height: 250, marginTop: -7 }}s
                     >
                       <BotaoUploadImagem setPath={setPath} setImagem={setImagem} imagem={imagem} path={path}/>
                     </Grid>
