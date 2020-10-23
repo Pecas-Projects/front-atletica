@@ -2,7 +2,8 @@ import React from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
-import FormularioProduto from "./components/FormularioProduto"
+import FormularioProduto from "./components/FormularioProduto";
+import FormularioProdutoMobile from "./components/FormularioProdutoMobile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function AdicionarProduto() {
   const classes = useStyles();
 
@@ -80,19 +80,19 @@ export default function AdicionarProduto() {
         */}
 
         <div className={classes.sectionDesktop}>
-              <Grid container justify="center">
-                  <Grid container spacing={1} style={{ marginTop: 20 }}>
-                    <FormularioProduto/>
-                  </Grid>
-              </Grid>
+          <Grid container justify="center">
+            <Grid container spacing={1} style={{ marginTop: 20 }}>
+              <FormularioProduto />
+            </Grid>
+          </Grid>
         </div>
 
         <div className={classes.sectionMobile}>
-              <Grid container justify="center">
-                  <Grid container spacing={1} style={{ marginTop: 20 }}>
-                    
-                  </Grid>
-              </Grid>
+          <Grid container justify="center">
+            <Grid container spacing={1} style={{ marginTop: 20 }}>
+              <FormularioProdutoMobile />
+            </Grid>
+          </Grid>
         </div>
       </main>
     </div>

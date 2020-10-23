@@ -57,7 +57,7 @@ export default function FormularioProduto() {
                     style={{ color: "E2E2E2" }}
                   />
                   <AvField
-                    name="nome"
+                    name="descrição"
                     label="Descrição"
                     type="textarea"
                     validate={{
@@ -72,10 +72,10 @@ export default function FormularioProduto() {
                 </Grid>
                 <Grid container spacing={9} style={{ paddingLeft: 20 }}>
                   <Grid item xs={3}>
-                    <AvField name="nome" label="Preço" type="number" />
+                    <AvField name="preço" label="Preço" type="number" />
                   </Grid>
                   <Grid item xs={3}>
-                    <AvField name="nome" label="Categoria" type="select">
+                    <AvField name="categoria" label="Categoria" type="select">
                       <option>Volei</option>
                     </AvField>
                   </Grid>
