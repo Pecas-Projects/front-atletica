@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Paper } from "@material-ui/core";
@@ -62,6 +62,24 @@ export default function Login() {
 
     const classes = useStyles();
 
+    const [login, setLogin] = useState({
+        Email: " ",
+        Senha: " ",
+        Type: " "
+    })
+
+    const handleEmail = (e) => {
+        setLogin({ ...login, Email: e.target.value })
+    }
+
+    const handleSenha = (e) => {
+        setLogin({ ...login, Senha: e.target.value })
+    }
+
+    const handleType = (e) => {
+        setLogin({ ...login, Type: e.target.value })
+    }
+
     return (
 
         <div className={classes.root}>
@@ -97,22 +115,23 @@ export default function Login() {
 
                                             <AvForm>
 
-                                                <AvField style={{ width: "80%", marginBottom: 30 }} name="email" label="E-mail" type="text" errorMessage="Campo obrigatório" validate={{
-                                                    required: { value: true },
+                                                <AvField onChange={handleEmail} style={{ width: "80%", marginBottom: 30 }} name="email" label="E-mail" type="text"
+                                                    errorMessage="Campo obrigatório" validate={{
+                                                        required: { value: true }
+                                                    }} />
 
-                                                }} />
+                                                <AvField onChange={handleSenha} style={{ width: "80%" }} name="senha" label="Senha" type="password"
+                                                    errorMessage="Campo obrigatório" validate={{
+                                                        required: { value: true },
+                                                    }} />
 
-                                                <AvField style={{ width: "80%" }} name="senha" label="Senha" type="password" errorMessage="Campo obrigatório" validate={{
-                                                    required: { value: true },
-
-                                                }} />
                                             </AvForm>
 
                                             <Grid item xs={12} style={{ marginTop: 20 }}>
 
                                                 <FormControl component="fieldset">
                                                     <FormLabel component="legend">Entrar como:</FormLabel>
-                                                    <RadioGroup row aria-label="gender" name="gender1">
+                                                    <RadioGroup row aria-label="gender" name="gender1" value={login.Type} onChange={handleType} >
                                                         <FormControlLabel value="Atletica" control={<Radio />} label="Atlética" />
                                                         <FormControlLabel value="Membro" control={<Radio />} label="Membro" />
 
@@ -172,15 +191,16 @@ export default function Login() {
 
                                 <AvForm>
 
-                                    <AvField style={{ marginBottom: 30 }} name="email" label="E-mail" type="text" errorMessage="Campo obrigatório" validate={{
-                                        required: { value: true },
+                                    <AvField style={{ marginBottom: 30 }} onChange={handleEmail} name="email"
+                                        label="E-mail" type="text" errorMessage="Campo obrigatório" validate={{
+                                            required: { value: true }
+                                        }} />
 
-                                    }} />
+                                    <AvField onChange={handleSenha} name="senha" label="Senha" type="password"
+                                        errorMessage="Campo obrigatório" validate={{
+                                            required: { value: true },
 
-                                    <AvField name="senha" label="Senha" type="password" errorMessage="Campo obrigatório" validate={{
-                                        required: { value: true },
-
-                                    }} />
+                                        }} />
 
 
 
@@ -188,7 +208,7 @@ export default function Login() {
 
                                         <FormControl component="fieldset">
                                             <FormLabel component="legend">Entrar como:</FormLabel>
-                                            <RadioGroup row aria-label="gender" name="gender1">
+                                            <RadioGroup row aria-label="type" name="type1" value={login.Type} onChange={handleType} >
                                                 <FormControlLabel value="Atletica" control={<Radio />} label="Atlética" />
                                                 <FormControlLabel value="Membro" control={<Radio />} label="Membro" />
 
