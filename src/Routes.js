@@ -5,6 +5,7 @@ import PaginaInicio from "./Pages/Inicio";
 import Produtos from "./Pages/Produtos"
 import Times from "./Pages/Times"
 import AdicionarProduto from "./Pages/AdicionarProduto"
+import AdicionarPost from "./Pages/AdicionarPost"
 
 const Routes = () => (
   <Switch>
@@ -14,6 +15,7 @@ const Routes = () => (
       <Route exact path="/Produtos" component={Produtos} />
       <Route exact path="/Times" component={Times} />
       <Route exact path="/AdicionarProduto" component={AdicionarProduto} />
+      <Route exact path="/AdicionarPost" component={AdicionarPost} />
     </Route>
   </Switch>
 );

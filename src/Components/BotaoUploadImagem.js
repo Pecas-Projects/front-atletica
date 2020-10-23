@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
+import { Grid, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../src/assets/imagem/file-add.svg";
 import RemoveFile from "../../src/assets/imagem/close-o.svg";
 
