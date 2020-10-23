@@ -6,6 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 // import fotoCapa from "../../assets/imagem/fotoCapa.png"
 import CardMembro from "./Components/CardMembro"
 import contactImage from "../../assets/imagem/undraw_contact_u.svg"
+import InputMask from 'react-input-mask';
+import { Input } from 'reactstrap';
 import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -108,6 +110,30 @@ export default function Perfil() {
 
   const classes = useStyles();
 
+  const [atleta, setAtleta] = useState({
+    Nome: " ",
+    Sobrenome: " ",
+    Email: " ",
+    Telefone: " "
+  })
+
+  const handleEmail = (e) => {
+    setAtleta({ ...atleta, Email: e.target.value })
+  }
+
+  const handleNome = (e) => {
+    setAtleta({ ...atleta, Nome: e.target.value })
+  }
+
+  const handleSobrenome = (e) => {
+    setAtleta({ ...atleta, Sobrenome: e.target.value })
+  }
+
+  const handleTelefone = (e) => {
+    setAtleta({ ...atleta, Telefone: e.target.value })
+  }
+
+
   return (
     <div className={classes.root}>
       <Navbar />
@@ -178,7 +204,7 @@ export default function Perfil() {
 
                           <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
 
-                            <AvField name="nome" label="Nome" type="text" validate={{
+                            <AvField name="nome" label="Nome" type="text" onChange={handleNome} validate={{
                               required: { value: true, errorMessage: "Campo obrigatório" },
                               pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
                               minLength: { value: 2, errorMessage: 'Nome inválido' },
@@ -189,7 +215,7 @@ export default function Perfil() {
 
                           <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
 
-                            <AvField name="sobrenome" label="Sobrenome" type="text" validate={{
+                            <AvField name="sobrenome" label="Sobrenome" onChange={handleSobrenome} type="text" validate={{
                               required: { value: true, errorMessage: "Campo obrigatório" },
                               pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
                               minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
@@ -201,7 +227,7 @@ export default function Perfil() {
 
                           <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
 
-                            <AvField name="email" label="E-mail" type="text" validate={{
+                            <AvField name="email" label="E-mail" type="text" onChange={handleEmail} validate={{
                               required: { value: true, errorMessage: "Campo obrigatório" },
                               minLength: { value: 10, errorMessage: 'E-mail inválido' },
                               maxLength: { value: 254, errorMessage: 'E-mail inválido' }
@@ -213,12 +239,13 @@ export default function Perfil() {
 
                           <Grid item xs={12} style={{ width: "100%", marginTop: 10, marginLeft: 10 }}>
 
-                            <AvField name="whatsapp" label="WhatsApp" type="text" validate={{
-                              required: { value: true, errorMessage: "Campo obrigatório" },
-                              pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
-                              minLength: { value: 10, errorMessage: 'Número inválido' },
-                              maxLength: { value: 17, errorMessage: 'Número inválido' }
-                            }} />
+                            <AvField name="whatsapp" label="WhatsApp" type="text" tag={[Input, InputMask]}
+                              onChange={handleTelefone} mask="(99) 99999-9999" validate={{
+                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
+                                minLength: { value: 10, errorMessage: 'Número inválido' },
+                                maxLength: { value: 17, errorMessage: 'Número inválido' }
+                              }} />
 
 
                           </Grid>
@@ -356,7 +383,7 @@ export default function Perfil() {
 
                     <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
 
-                      <AvField name="nome" label="Nome" type="text" validate={{
+                      <AvField name="nome" label="Nome" type="text" onChange={handleNome} validate={{
                         required: { value: true, errorMessage: "Campo obrigatório" },
                         pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
                         minLength: { value: 2, errorMessage: 'Nome inválido' },
@@ -367,7 +394,7 @@ export default function Perfil() {
 
                     <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
 
-                      <AvField name="sobrenome" label="Sobrenome" type="text" validate={{
+                      <AvField name="sobrenome" label="Sobrenome" type="text" onChange={handleSobrenome} validate={{
                         required: { value: true, errorMessage: "Campo obrigatório" },
                         pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
                         minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
@@ -379,7 +406,7 @@ export default function Perfil() {
 
                     <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
 
-                      <AvField name="email" label="E-mail" type="text" validate={{
+                      <AvField name="email" label="E-mail" type="text" onChange={handleEmail} validate={{
                         required: { value: true, errorMessage: "Campo obrigatório" },
                         minLength: { value: 10, errorMessage: 'E-mail inválido' },
                         maxLength: { value: 254, errorMessage: 'E-mail inválido' }
@@ -391,12 +418,13 @@ export default function Perfil() {
 
                     <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
 
-                      <AvField name="whatsapp" label="WhatsApp" type="text" validate={{
-                        required: { value: true, errorMessage: "Campo obrigatório" },
-                        pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
-                        minLength: { value: 10, errorMessage: 'Número inválido' },
-                        maxLength: { value: 17, errorMessage: 'Número inválido' }
-                      }} />
+                      <AvField name="whatsapp" label="WhatsApp" type="text" onChange={handleTelefone}
+                        tag={[Input, InputMask]} mask="(99) 99999-9999" validate={{
+                          required: { value: true, errorMessage: "Campo obrigatório" },
+                          pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
+                          minLength: { value: 10, errorMessage: 'Número inválido' },
+                          maxLength: { value: 17, errorMessage: 'Número inválido' }
+                        }} />
 
 
                     </Grid>

@@ -2,8 +2,9 @@ import React from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
-import CardProduto from "./Components/CardProduto";
-import productImage from "../../assets/imagem/productImage.svg";
+import CardProduto from "./Components/CardProduto"
+import productImage from "../../assets/imagem/productImage.svg"
+import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +85,9 @@ export default function Produtos() {
       titulo: "Camisa da Atlética",
       descricao: "Tamanhos disponíveis: P-M-G",
       preco: "24,00",
+
     },
+
     {
       imagem: productImage,
       titulo: "Camisa da Atlética",
