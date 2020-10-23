@@ -3,45 +3,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
+import BotaoUploadImagem from "../../../Components/BotaoUploadImagem"
 
-const useStyles = makeStyles((theme) => ({
-  input: {
-    display: "none",
-  },
-}));
-
-function UploadButtons(props) {
-  const classes = useStyles();
-//   if (props.imagem !== null) {
-//     return <img src={props.imagem} alt="adicionar imagem" />;
-//   } else {
-    return (
-      <div>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          multiple
-          type="file"
-          accept="image/png, image/jpeg"
-          onClick={props.setImagem(accept)}
-        />
-        <label htmlFor="contained-button-file">
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="span"
-          >
-            <img src={AddFile} alt="adicionar imagem" />
-          </IconButton>
-        </label>
-      </div>
-    );
-//   }
-}
 
 export default function FormularioProduto() {
-  const [imagem, setImagem] = useState();
+  const [imagem, setImagem] = useState(null);
+  const [path, setPath] = useState();
+
+  function showAdicionarImagem(){
+    if(imagem === null){
+      return <p>Adicione uma Imagem</p>
+    }else return <div><br/><br/></div>;
+  }
 
   return (
     <>
@@ -55,15 +28,15 @@ export default function FormularioProduto() {
             <AvForm>
               <Grid container spacing={5} style={{ paddingTop: 20 }}>
                 <Grid item xs={4}>
-                  <p>Adicione uma Imagem</p>
+                  {showAdicionarImagem()}
                   <Paper style={{ backgroundColor: "#636363" }}>
                     <Grid
                       container
                       justify="center"
                       alignContent="center"
-                      style={{ height: 140, marginTop: -7 }}
+                      style={{ height: 140, marginTop: -7 }}s
                     >
-                      <UploadButtons />
+                      <BotaoUploadImagem setPath={setPath} setImagem={setImagem} imagem={imagem} path={path}/>
                     </Grid>
                   </Paper>
                 </Grid>
