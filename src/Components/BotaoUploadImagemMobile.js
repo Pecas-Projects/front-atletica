@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function BotaoUploadImagem(props) {
+export default function BotaoUploadImagemMobile(props) {
   const classes = useStyles();
 
   function handleRemoveFile() {
@@ -37,15 +37,15 @@ export default function BotaoUploadImagem(props) {
   if (props.imagem !== null) {
     return (
       <>
-        <Grid container justify="flex-start" style={{ marginTop: -50 }}>
-          <Grid item xs={4} style={{ marginLeft: -20, marginBottom: -10 }}>
+        <Grid container style={{marginTop: -50}}>
+          <Grid item xs={4}>
             <Button onClick={handleRemoveFile}>
-              <IconButton aria-label="remove imagem" component="span">
+              <IconButton aria-label="remove imagem" component="span" style={{marginBottom:-10}}>
                 <img src={RemoveFile} alt="remover imagem" />
               </IconButton>
             </Button>
           </Grid>
-          <Grid item xs={8}  style={{ marginLeft: -5, marginBottom: -30 }}>
+          <Grid item xs={8} style={{marginBottom:-10}}>
             <br />
             <p>Remover Imagem</p>
           </Grid>
@@ -61,25 +61,23 @@ export default function BotaoUploadImagem(props) {
   } else {
     return (
       <div>
-        <div>
-          <input
-            accept="image/*"
-            className={classes.input}
-            id="contained-button-file"
-            multiple
-            type="file"
-            onChange={handleFileChange}
-          />
-          <label htmlFor="contained-button-file">
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-            >
-              <img src={AddFile} alt="adicionar imagem" />
-            </IconButton>
-          </label>
-        </div>
+        <input
+          accept="image/*"
+          className={classes.input}
+          id="contained-button-file"
+          multiple
+          type="file"
+          onChange={handleFileChange}
+        />
+        <label htmlFor="contained-button-file">
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="span"
+          >
+            <img src={AddFile} alt="adicionar imagem" />
+          </IconButton>
+        </label>
       </div>
     );
   }
