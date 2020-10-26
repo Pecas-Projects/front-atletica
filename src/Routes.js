@@ -7,6 +7,8 @@ import Times from "./Pages/Times"
 import Feed from "./Pages/Feed"
 import Login from "./Pages/Login"
 import Cadastro from "./Pages/Cadastro"
+import AdicionarProduto from "./Pages/AdicionarProduto"
+import AdicionarPost from "./Pages/AdicionarPost"
 
 const Routes = () => (
   <Switch>
@@ -18,6 +20,8 @@ const Routes = () => (
       <Route exact path="/Feed" component={Feed} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/Cadastro" component={Cadastro} />
+      <Route exact path="/AdicionarProduto" component={AdicionarProduto} />
+      <Route exact path="/AdicionarPost" component={AdicionarPost} />
     </Route>
   </Switch>
 );
