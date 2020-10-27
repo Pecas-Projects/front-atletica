@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(3),
     },
     large: {
-        width: theme.spacing(7),
-        height: theme.spacing(7),
+        width: theme.spacing(10),
+        height: theme.spacing(10),
     },
 }));
 
@@ -41,7 +41,7 @@ function PaperNotificacao(props) {
                             <Avatar alt="Remy Sharp" src={fotoPerfil} className={classes.large} />
                         </Grid>
 
-                        <Grid item xs={6}>
+                        <Grid item xs={6} style={{ paddingTop: 10 }}>
                             <Typography gutterBottom style={{ fontSize: 18 }}>
                                 Fulana quer participar como atleta!
                         </Typography>
@@ -55,7 +55,7 @@ function PaperNotificacao(props) {
                                 style={{
                                     background: "#F3BF3A",
                                     width: 114,
-                                    marginTop: 10,
+                                    marginTop: 20,
                                 }}
                             >
                                 Postar
@@ -68,7 +68,7 @@ function PaperNotificacao(props) {
                                     borderColor: '#F3BF3A',
                                     boxSizing: 'border-box',
                                     width: 114,
-                                    marginTop: 10,
+                                    marginTop: 20,
                                 }}
                             >
                                 Recusar
