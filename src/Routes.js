@@ -10,6 +10,7 @@ import Cadastro from "./Pages/Cadastro"
 import AdicionarProduto from "./Pages/AdicionarProduto"
 import AdicionarPost from "./Pages/AdicionarPost"
 import AdicionarEvento from "./Pages/AdicionarEvento"
+import Notificacoes from "./Pages/Notificacoes"
 
 const Routes = () => (
   <Switch>
@@ -24,6 +25,7 @@ const Routes = () => (
       <Route exact path="/AdicionarProduto" component={AdicionarProduto} />
       <Route exact path="/AdicionarPost" component={AdicionarPost} />
       <Route exact path="/AdicionarEvento" component={AdicionarEvento} />
+      <Route exact path="/Notificacoes" component={Notificacoes} />
     </Route>
   </Switch>
 );
