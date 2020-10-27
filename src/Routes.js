@@ -9,6 +9,7 @@ import Login from "./Pages/Login"
 import Cadastro from "./Pages/Cadastro"
 import AdicionarProduto from "./Pages/AdicionarProduto"
 import AdicionarPost from "./Pages/AdicionarPost"
+import AdicionarEvento from "./Pages/AdicionarEvento"
 
 const Routes = () => (
   <Switch>
@@ -22,6 +23,7 @@ const Routes = () => (
       <Route exact path="/Cadastro" component={Cadastro} />
       <Route exact path="/AdicionarProduto" component={AdicionarProduto} />
       <Route exact path="/AdicionarPost" component={AdicionarPost} />
+      <Route exact path="/AdicionarEvento" component={AdicionarEvento} />
     </Route>
   </Switch>
 );
