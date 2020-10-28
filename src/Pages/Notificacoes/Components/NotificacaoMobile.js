@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Avatar,
     Button,
@@ -11,7 +11,6 @@ import "../styles.css";
 
 import atleta_icon from "../../../assets/imagem/atleta_icon.svg"
 import jogo_icon from "../../../assets/imagem/jogo_icon.svg"
-import { yellow } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function PaperNotificacao(props) {
+
+function NotificacaoMobile(props) {
+
     const classes = useStyles();
     const { item } = props
 
@@ -43,28 +44,28 @@ function PaperNotificacao(props) {
         if (item.tipo === 'atletas') {
             return (
                 <>
-                    <Typography gutterBottom style={{ fontSize: 18 }}>
+                    <Typography gutterBottom >
                         {item.nome} quer participar como atleta!
-                                        </Typography>
-                    <Typography variant="body2" component="p">
+                    </Typography>
+                    <Typography variant="body2" component="p" style={{ paddingTop: 10 }}>
                         Modalidades de interesse: {item.modalidades}
-                                        </Typography>
+                    </Typography>
                 </>
             );
         }
-        else{
+        else {
             return (
                 <>
-                    <Typography gutterBottom style={{ fontSize: 18 }}>
+                    <Typography gutterBottom >
                         A Atlética {item.nome} está te convidando para um jogo!
                     </Typography>
                     <Typography variant="body2" component="p">
                         Modalidade: {item.modalidades}
                     </Typography>
-                    <Typography variant="body2" component="p">
+                    <Typography variant="body2" component="p" style={{ paddingTop: 5 }}>
                         Data e Horário: 22 de outubro de 2022
                     </Typography>
-                    <Typography variant="body2" component="p">
+                    <Typography variant="body2" component="p" style={{ paddingTop: 5 }}>
                         Local: Ufba
                     </Typography>
                 </>
@@ -75,38 +76,36 @@ function PaperNotificacao(props) {
 
     return (
         <>
-            <Grid item style={{ marginBottom: 20}} xs={12} >
-                <Paper className={classes.paper} >
-                    <Grid container>
-                        <Grid item xs={2}>
+            <Grid item style={{ marginBottom: 20 }} xs={12} >
+                <Paper className={classes.paper}>
+                    <Grid container xs={12} spacing={2} style={{ paddingLeft: 10, paddingTop: 10 }}>
+                        <Grid item xs={4} >
                             <Avatar alt="Remy Sharp" src={item.tipo === 'atletas' ? atleta_icon : jogo_icon} className={classes.large} />
                         </Grid>
 
-                        <Grid item xs={6} style={{ paddingTop: 10 }}>
+                        <Grid item xs={8}  >
                             {corpo()}
                         </Grid>
 
-                        <Grid item xs={2} justify="flex-end" style={{ paddingRight: 20 }}>
+                        <Grid item xs={6} justify="flex-start" style={{ marginBottom: 10}}>
                             <Button
                                 style={{
                                     background: "#F3BF3A",
-                                    width: 114,
-                                    marginTop: 20,
                                     color: "black"
                                 }}
+                                fullWidth={true}
                             >
                                 Aceitar
                             </Button>
                         </Grid>
-                        <Grid item xs={2} justify="flex-end" >
+                        <Grid item xs={6} justify="flex-end" style={{ marginBottom: 10}}>
                             <Button
                                 style={{
                                     color: "black",
                                     border: '2px solid #F3BF3A',
                                     height: 35,
-                                    width: 114,
-                                    marginTop: 20,
                                 }}
+                                fullWidth={true}
                             >
                                 Recusar
                             </Button>
@@ -118,4 +117,4 @@ function PaperNotificacao(props) {
     );
 }
 
-export default PaperNotificacao;
+export default NotificacaoMobile;
