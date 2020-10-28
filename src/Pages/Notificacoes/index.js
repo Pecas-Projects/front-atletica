@@ -60,8 +60,43 @@ const useStyles = makeStyles((theme) => ({
 
 function Notificacoes() {
     const classes = useStyles();
-
     const [tipo, setTipo] = useState('atletas');
+
+    const notificacaoAtletas = [
+        {
+            tipo: 'atletas',
+            nome: 'Fulana',
+            modalidades: 'Volei, Futsal'
+        },
+        {
+            tipo: 'atletas',
+            nome: 'Fernandinha',
+            modalidades: 'Futsal'
+        },
+        {
+            tipo: 'atletas',
+            nome: 'Ana Paula',
+            modalidades: 'Volei, Natação, Futsal'
+        },
+    ];
+
+    const notificacaoJogos = [
+        {
+            tipo: 'jogos',
+            nome: 'Manada',
+            modalidades: 'Vôlei'
+        },
+        {
+            tipo: 'jogos',
+            nome: 'Serpente',
+            modalidades: 'Judô'
+        },
+        {
+            tipo: 'jogos',
+            nome: 'Aduc',
+            modalidades: 'Jogo eletrônico'
+        },
+    ];
 
     const handleChange = (event) => {
         setTipo(event.target.value);
@@ -96,8 +131,16 @@ function Notificacoes() {
                                             <FormControlLabel value="jogos" control={<Radio />} label="Jogos" />
                                         </RadioGroup>
                                     </Grid>
-                                    <Grid item xs>
-                                        <PaperNotificacao />
+                                    <Grid item xs >
+                                            {tipo === 'atletas' ?
+                                                notificacaoAtletas.map((item) => (
+                                                    <PaperNotificacao item={item} />
+                                                ))
+                                                :
+                                                notificacaoJogos.map((item) => (
+                                                    <PaperNotificacao item={item} />
+                                                ))
+                                            }
                                     </Grid>
                                 </Grid>
                             </Paper>
