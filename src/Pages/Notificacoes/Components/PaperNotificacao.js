@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import "../styles.css";
 
-import fotoPerfil from "../../../assets/imagem/fotoPerfil.png"
+import avatar_icon from "../../../assets/imagem/avatar_icon.svg"
 import { yellow } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(10),
         height: theme.spacing(10),
     },
+    paper: {
+        width: "100%", 
+        padding: "2%", 
+        backgroundColor: "#C4C4C4",
+    }
 }));
 
 function PaperNotificacao(props) {
@@ -35,10 +40,10 @@ function PaperNotificacao(props) {
     return (
         <>
             <Grid container xs={12} >
-                <Paper style={{ width: "100%", padding: "2%", backgroundColor: "#C4C4C4" }}>
+                <Paper className={classes.paper} >
                     <Grid container  >
                         <Grid item xs={2}>
-                            <Avatar alt="Remy Sharp" src={fotoPerfil} className={classes.large} />
+                            <Avatar alt="Remy Sharp" src={avatar_icon} className={classes.large} />
                         </Grid>
 
                         <Grid item xs={6} style={{ paddingTop: 10 }}>
@@ -56,20 +61,21 @@ function PaperNotificacao(props) {
                                     background: "#F3BF3A",
                                     width: 114,
                                     marginTop: 20,
+                                    color: "black"
                                 }}
                             >
-                                Postar
+                                Aceitar
                             </Button>
                         </Grid>
                         <Grid item xs={2} justify="flex-end" >
-                            <Button
+                            <Button 
                                 style={{
+                                    color: "black",
                                     border: '2px solid #F3BF3A',
-                                    borderColor: '#F3BF3A',
-                                    boxSizing: 'border-box',
+                                    height: 35,
                                     width: 114,
                                     marginTop: 20,
-                                }}
+                                }}                                
                             >
                                 Recusar
                             </Button>
