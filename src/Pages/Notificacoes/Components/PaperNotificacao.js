@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Avatar,
     Button,
@@ -9,7 +9,8 @@ import {
 } from "@material-ui/core";
 import "../styles.css";
 
-import avatar_icon from "../../../assets/imagem/avatar_icon.svg"
+import atleta_icon from "../../../assets/imagem/atleta_icon.svg"
+import jogo_icon from "../../../assets/imagem/jogo_icon.svg"
 import { yellow } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,31 +29,61 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(10),
     },
     paper: {
-        width: "100%", 
-        padding: "2%", 
+        width: "100%",
+        padding: "2%",
         backgroundColor: "#C4C4C4",
     }
 }));
 
 function PaperNotificacao(props) {
     const classes = useStyles();
+    const { item } = props
+
+    function corpo() {
+        if (item.tipo === 'atletas') {
+            return (
+                <>
+                    <Typography gutterBottom style={{ fontSize: 18 }}>
+                        {item.nome} quer participar como atleta!
+                                        </Typography>
+                    <Typography variant="body2" component="p">
+                        Modalidades de interesse: {item.modalidades}
+                                        </Typography>
+                </>
+            );
+        }
+        else{
+            return (
+                <>
+                    <Typography gutterBottom style={{ fontSize: 18 }}>
+                        A Atlética {item.nome} está te convidando para um jogo!
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        Modalidade: {item.modalidades}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        Data e Horário: 22 de outubro de 2022
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                        Local: Ufba
+                    </Typography>
+                </>
+            );
+        }
+
+    }
 
     return (
         <>
-            <Grid container xs={12} >
+            <Grid item style={{ marginBottom: 20}} xs={12} >
                 <Paper className={classes.paper} >
                     <Grid container  >
                         <Grid item xs={2}>
-                            <Avatar alt="Remy Sharp" src={avatar_icon} className={classes.large} />
+                            <Avatar alt="Remy Sharp" src={item.tipo === 'atletas' ? atleta_icon : jogo_icon} className={classes.large} />
                         </Grid>
 
                         <Grid item xs={6} style={{ paddingTop: 10 }}>
-                            <Typography gutterBottom style={{ fontSize: 18 }}>
-                                Fulana quer participar como atleta!
-                        </Typography>
-                            <Typography variant="body2" component="p">
-                                Modalidades de interesse: Volei, Natação
-                        </Typography>
+                            {corpo()}
                         </Grid>
 
                         <Grid item xs={2} justify="flex-end" style={{ paddingRight: 20 }}>
@@ -68,14 +99,14 @@ function PaperNotificacao(props) {
                             </Button>
                         </Grid>
                         <Grid item xs={2} justify="flex-end" >
-                            <Button 
+                            <Button
                                 style={{
                                     color: "black",
                                     border: '2px solid #F3BF3A',
                                     height: 35,
                                     width: 114,
                                     marginTop: 20,
-                                }}                                
+                                }}
                             >
                                 Recusar
                             </Button>
