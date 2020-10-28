@@ -3,6 +3,7 @@ import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, Radio, RadioGroup, FormControlLabel } from "@material-ui/core";
 import PaperNotificacao from "./Components/PaperNotificacao"
+import NotificacaoMobile from "./Components/NotificacaoMobile"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -132,24 +133,47 @@ function Notificacoes() {
                                         </RadioGroup>
                                     </Grid>
                                     <Grid item xs >
-                                            {tipo === 'atletas' ?
-                                                notificacaoAtletas.map((item) => (
-                                                    <PaperNotificacao item={item} />
-                                                ))
-                                                :
-                                                notificacaoJogos.map((item) => (
-                                                    <PaperNotificacao item={item} />
-                                                ))
-                                            }
+                                        {tipo === 'atletas' ?
+                                            notificacaoAtletas.map((item) => (
+                                                <PaperNotificacao item={item} />
+                                            ))
+                                            :
+                                            notificacaoJogos.map((item) => (
+                                                <PaperNotificacao item={item} />
+                                            ))
+                                        }
                                     </Grid>
                                 </Grid>
                             </Paper>
                         </Grid>
                     </div>
 
-                    {/* <div className={classes.sectionMobile}>
-                        <FormularioEventoMobile />
-                    </div> */}
+                    <div className={classes.sectionMobile}>
+                        <Grid container justify="center" spacing={2} xs={12} >
+                            <Grid item >
+                                <h4 className="MyTitle">Suas Notificações</h4>
+                            </Grid>
+                            <Grid item >
+                                <RadioGroup row aria-label="tipo" name="notificacoes" value={tipo} onChange={handleChange}>
+                                    <FormControlLabel value="atletas" control={<Radio />} label="Atletas" />
+                                    <FormControlLabel value="jogos" control={<Radio />} label="Jogos" />
+                                </RadioGroup>
+                            </Grid>
+
+                            <Grid item >
+                                {tipo === 'atletas' ?
+                                    notificacaoAtletas.map((item) => (
+                                        <NotificacaoMobile item={item} />
+                                    ))
+                                    :
+                                    notificacaoJogos.map((item) => (
+                                        <NotificacaoMobile item={item} />
+                                    ))
+                                }
+                            </Grid>
+
+                        </Grid>
+                    </div>
 
                 </main>
             </div>
