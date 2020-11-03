@@ -1,14 +1,5 @@
 import React, { forwardRef } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
-} from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
@@ -57,7 +48,6 @@ export default function TabelaJogadores(props) {
                 }}
                 icons={tableIcons}
                 data={jogadores}
-                title="Demo Title"
             />
         </div>
     );
