@@ -17,13 +17,6 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Clear from '@material-ui/icons/Clear';
 
-const useStyles = makeStyles(() => ({
-    table: {
-        minWidth: 650,
-        backgroundColor: "#BBB8CC"
-    }
-}));
-
 const tableIcons = {
     FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
     LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
@@ -36,7 +29,6 @@ const tableIcons = {
 
 export default function TabelaJogadores(props) {
     const { jogadores } = props;
-    const classes = useStyles();
 
     return (
         <div style={{ maxWidth: '100%' }}>
@@ -44,7 +36,6 @@ export default function TabelaJogadores(props) {
                 components={{
                     Container: props => <Paper {...props} elevation={0} />
                 }}
-                title="Lista de Todos os Medicamentos"
                 style={{ backgroundColor: "#BBB8CC" }}
                 columns={[
                     { title: 'Jogadores', field: 'Nome',  },
