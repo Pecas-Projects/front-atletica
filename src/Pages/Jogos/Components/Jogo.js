@@ -1,17 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import {
-    Grid,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
-} from '@material-ui/core';
-
+import { Grid, Paper} from '@material-ui/core';
+import TabelaJogadores from './TabelaJogadores'
 
 const useStyles = makeStyles((theme) => ({
     timePaper: {
@@ -25,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Post(props) {
+export default function Jogo(props) {
     const { jogo } = props;
     const classes = useStyles();
 
@@ -64,28 +55,7 @@ export default function Post(props) {
                     </Grid>
                 </Grid>
             </Grid>
-            <TableContainer component={Paper} style={{ backgroundColor: "#BBB8CC", maxHeight: 200 }} elevation={0}>
-                <Table className={classes.table} aria-label="caption table" >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Jogadores</TableCell>
-                            <TableCell align="center">Pontos</TableCell>
-                            <TableCell align="center">Infrações</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {jogo.Jogadores.map((row) => (
-                            <TableRow key={row.Id}>
-                                <TableCell component="th" scope="row">
-                                    {row.Nome}
-                                </TableCell>
-                                <TableCell align="center">{row.Pontos}</TableCell>
-                                <TableCell align="center">{row.Infracoes}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <TabelaJogadores jogadores={jogo.Jogadores} />
         </Paper>
     );
 }

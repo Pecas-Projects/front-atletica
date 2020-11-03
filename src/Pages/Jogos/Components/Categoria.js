@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Post(props) {
+export default function Categoria(props) {
     const { categoria } = props;
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
