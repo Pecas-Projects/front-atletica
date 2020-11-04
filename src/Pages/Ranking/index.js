@@ -3,6 +3,7 @@ import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import CardAtletica from "./Components/CardAtletica";
 import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
     paperA: {
-        width: "85%",
+        width: "75%",
         marginTop: 20,
         padding: "2%",
         backgroundColor: "#D2CFE5",
@@ -100,16 +101,23 @@ function Ranking() {
                     <Grid container justify="center">
                         <Paper className={classes.paperA}>
                             <h4 className="MyTitle">Ranking das Atléticas</h4>
-                            <Grid container spacing={1} style={{ marginTop: 20 }}>
-                                <AvForm>
-                                    <AvField type="select" name="Modalidades" label="Modalidade">
-                                       {
-                                            modalidades.map((item) => (
-                                            <option>{item.nome}</option>
-                                            ))
-                                       }
-                                    </AvField>
-                                </AvForm>
+                            <Grid container spacing={4} style={{ marginTop: 20 }}>
+                                <Grid item xs={2}>
+                                    <AvForm>
+                                        <AvField type="select" name="Modalidades" label="Modalidade">
+                                            {
+                                                modalidades.map((item) => (
+                                                    <option>{item.nome}</option>
+                                                ))
+                                            }
+                                        </AvField>
+                                    </AvForm>
+                                </Grid>
+                                <Grid item xs={8}>
+                                    <Grid container justify="center">
+                                        <CardAtletica />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Paper>
                     </Grid>
