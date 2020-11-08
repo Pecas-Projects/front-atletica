@@ -185,6 +185,7 @@ export default function Categoria(props) {
                 <CardActions disableSpacing>
                     <Typography className={classes.nomeCategoria}>{categoria.nome}</Typography>
                     <IconButton
+                        style={{ outline: 'none' }}
                         className={clsx(classes.expand, {
                             [classes.expandOpen]: expanded,
                         })}

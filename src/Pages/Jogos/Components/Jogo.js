@@ -1,8 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, IconButton } from '@material-ui/core';
+import { Add } from '@material-ui/icons'
 import TabelaJogadores from './TabelaJogadores'
+import { FormGroup, Label, Input } from 'reactstrap';
 
 const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
@@ -50,6 +52,7 @@ export default function Jogo(props) {
                     direction="row"
                     justify="center"
                     alignItems="center"
+                    spacing={2}
                 >
                     <Grid item xs={4}>
                         <Typography >
@@ -72,19 +75,46 @@ export default function Jogo(props) {
                             </Typography>
                         </Grid>
                     </Grid>
+                    <Grid item xs={7}>
+                        <FormGroup>
+                            <Label for="exampleSelect">Jogador</Label>
+                            <Input type="select" name="select" id="exampleSelect">
+                                <option>Juninho</option>
+                                <option>Atari</option>
+                            </Input>
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <FormGroup>
+                            <Label for="pontos">Pontos</Label>
+                            <Input type="number" id="pontos" />
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <FormGroup>
+                            <Label for="infracoes">Infrações</Label>
+                            <Input type="number" id="infracoes">
+                            </Input>
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <IconButton style={{ backgroundColor: "#F68D2E", outline: 'none' }} color="primary" aria-label="add">
+                            <Add />
+                        </IconButton>
+                    </Grid>
                 </Grid>
             </div>
             {/* CELULAR */}
             <div className={classes.sectionMobile}>
                 <Grid
                     container
-                    direction="column"
+                    direction="row"
                     justify="center"
                     alignItems="center"
                     spacing={1}
                 >
                     <Grid item xs={12}>
-                        <Typography >
+                        <Typography style={{ textAlign: 'center' }} >
                             {jogo.TimeAtletica + " X " + jogo.TimeAdversario}
                         </Typography>
                     </Grid>
@@ -99,11 +129,38 @@ export default function Jogo(props) {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid container justify="flex-end">
+                        <Grid container justify="center">
                             <Typography>
                                 {jogo.Data}
                             </Typography>
                         </Grid>
+                    </Grid>
+                    <Grid item xs={12} style={{ width: '100%' }}>
+                        <FormGroup>
+                            <Label for="exampleSelect">Jogador</Label>
+                            <Input type="select" name="select" id="exampleSelect">
+                                <option>Juninho</option>
+                                <option>Atari</option>
+                            </Input>
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={5} style={{ width: '100%' }}>
+                        <FormGroup>
+                            <Label for="pontos">Pontos</Label>
+                            <Input type="number" id="pontos" />
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={5} style={{ width: '100%' }}>
+                        <FormGroup>
+                            <Label for="infracoes">Infrações</Label>
+                            <Input type="number" id="infracoes">
+                            </Input>
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <IconButton style={{ backgroundColor: "#F68D2E", outline: 'none' }} color="primary" aria-label="add">
+                            <Add />
+                        </IconButton>
                     </Grid>
                 </Grid>
             </div>
