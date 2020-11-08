@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import Categoria from './Components/Categoria'
+import Button from '@material-ui/core/Button';
+import AddJogo from './Components/AddJogo'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Jogos() {
 
+    const [pageNumber, setPageNumber] = useState(1);
+
     const categorias = [
         {
             id: 1,
@@ -65,45 +69,81 @@ export default function Jogos() {
                 <NavBar />
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    {/*
-        
-        
-        
-                    DESKTOP
-        
-        
-        
-                    */}
+                    {/* DESKTOP */}
                     <div className={classes.sectionDesktop}>
                         <Grid container  >
                             <Grid item xs={2} />
                             <Grid item xs={8} >
-                                <Grid container justify='center'>
-                                    {categorias.map((item) => (
-                                        <Categoria categoria={item} />
-                                    ))}
+                                <Grid container alignItems="center">
+                                    <Button
+                                        size="large"
+                                        className={classes.margin}
+                                        style={{ textTransform: 'none', outline: 'none' }}
+                                        onClick={() => setPageNumber(1)}
+                                    >
+                                        Ver jogos
+                                    </Button>
+                                    <Typography>ou</Typography>
+                                    <Button
+                                        size="large"
+                                        className={classes.margin}
+                                        style={{ textTransform: 'none', outline: 'none' }}
+                                        onClick={() => setPageNumber(2)}
+                                    >
+                                        Adicionar jogo
+                                    </Button>
                                 </Grid>
+                            </Grid>
+                            <Grid item xs={2} />
+                            <Grid item xs={2} />
+                            <Grid item xs={8} >
+                                {
+                                    pageNumber == 1 ?
+                                        <Grid container justify='center'>
+                                            {categorias.map((item) => (
+                                                <Categoria categoria={item} />
+                                            ))}
+                                        </Grid>
+                                        :
+                                        <AddJogo />
+                                }
                                 <Grid item xs={2} />
                             </Grid>
                         </Grid>
                     </div>
-                    {/* 
-
-
-
-
-            MOBILE
-
-
-
-
-                */}
+                    {/* MOBILE */}
                     <div className={classes.sectionMobile}>
                         <Grid container  >
                             <Grid item xs={12} >
-                                {categorias.map((item) => (
-                                    <Categoria categoria={item} />
-                                ))}
+                                <Grid container alignItems="center">
+                                    <Button
+                                        size="large"
+                                        className={classes.margin}
+                                        style={{ textTransform: 'none', outline: 'none' }}
+                                        onClick={() => setPageNumber(1)}
+                                    >
+                                        Ver jogos
+                                    </Button>
+                                    <Typography>ou</Typography>
+                                    <Button
+                                        size="large"
+                                        className={classes.margin}
+                                        style={{ textTransform: 'none', outline: 'none' }}
+                                        onClick={() => setPageNumber(2)}
+                                    >
+                                        Adicionar jogo
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12} >
+                                {
+                                    pageNumber == 1 ?
+                                        categorias.map((item) => (
+                                            <Categoria categoria={item} />
+                                        ))
+                                        :
+                                        <AddJogo />
+                                }
                             </Grid>
                         </Grid>
                     </div>
