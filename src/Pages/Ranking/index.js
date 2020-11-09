@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper } from "@material-ui/core";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { Grid, Paper, FormControl, InputLabel, Select } from "@material-ui/core";
 import CardAtletica from "./Components/CardAtletica";
 import "./styles.css"
 
@@ -58,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
 }));
 
 function Ranking() {
@@ -88,28 +91,76 @@ function Ranking() {
 
     const volei = [
         {
-            atletica: "Coruja",
+            atletica: "Atletica de Bia, Fernandinha e Mariazinha",
             faculdade: "SENAI Cimatec",
             jogos: "20",
             posicao: "1"
         },
         {
+            atletica: "Cimatlética",
+            faculdade: "SENAI Cimatec",
+            jogos: "20",
+            posicao: "2"
+        },
+        {
             atletica: "Manada",
             faculdade: "Comunicação UNEB",
             jogos: "18",
-            posicao: "2"
+            posicao: "3"
         },
         {
             atletica: "Aduc",
             faculdade: "Direito UCSAL",
             jogos: "17",
+            posicao: "4"
+        },
+    ];
+
+    const natacao = [
+        {
+            atletica: "Atlética Bahiana de Medicina",
+            faculdade: "Bahiana de Medicina",
+            jogos: "30",
+            posicao: "1"
+        },
+        {
+            atletica: "Cimatlética",
+            faculdade: "SENAI Cimatec",
+            jogos: "24",
+            posicao: "2"
+        },
+        {
+            atletica: "Atlética Baiana de Direito",
+            faculdade: "Baiana de Direito",
+            jogos: "23",
+            posicao: "3"
+        },
+    ];
+
+    const handbal = [
+        {
+            atletica: "Atlética Bahiana de Medicina",
+            faculdade: "Bahiana de Medicina",
+            jogos: "20",
+            posicao: "1"
+        },
+        {
+            atletica: "Cimatlética",
+            faculdade: "SENAI Cimatec",
+            jogos: "10",
+            posicao: "2"
+        },
+        {
+            atletica: "Atlética AEUFBA",
+            faculdade: "Administração da UFBA",
+            jogos: "8",
             posicao: "3"
         },
     ];
 
     const futsal = [
         {
-            atletica: "Coruja",
+            atletica: "Cimatlética",
             faculdade: "SENAI Cimatec",
             jogos: "30",
             posicao: "1"
@@ -127,6 +178,31 @@ function Ranking() {
             posicao: "3"
         },
     ];
+
+    const futebol = [
+        {
+            atletica: "Atlética Bahiana de Medicina",
+            faculdade: "Bahiana de Medicina",
+            jogos: "25",
+            posicao: "1"
+        },
+        {
+            atletica: "Pato Loko",
+            faculdade: "Medicina Unifacs",
+            jogos: "23",
+            posicao: "2"
+        },
+        {
+            atletica: "Atlética Baiana de Direito",
+            faculdade: "Baiana de Direito",
+            jogos: "18",
+            posicao: "3"
+        },
+    ];
+
+    const modalidadeSelecionada = (event) => {
+        setModalidade(event.target.value)
+    }
 
 
     return (
@@ -152,17 +228,25 @@ function Ranking() {
                             <h4 className="MyTitle">Ranking das Atléticas</h4>
                             <Grid container spacing={3} xs={12} style={{ marginTop: 20 }}>
                                 <Grid item xs={3}>
-                                    <AvForm >
-                                        <AvField value={modalidade} type="select" name="Modalidades" label="Modalidade">
+                                    <FormControl variant="filled" className={classes.formControl}>
+                                        <InputLabel htmlFor="filled-age-native-simple">Modalidade</InputLabel>
+                                        <Select
+                                            native
+                                            value={modalidade}
+                                            onChange={modalidadeSelecionada}
+                                            inputProps={{
+                                                name: 'modalidade'
+                                            }}
+                                        >
                                             {
                                                 modalidades.map((item) => (
                                                     <option value={item.value}>{item.nome}</option>
                                                 ))
                                             }
-                                        </AvField>
-                                    </AvForm>
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
-                                <Grid item xs={1} />
+                                {/* <Grid item xs={1} /> */}
 
                                 <Grid item xs={8} >
                                     <Grid container justify="center">
@@ -172,12 +256,22 @@ function Ranking() {
                                                     <CardAtletica item={item} />
                                                 ))
                                                 :
-                                            modalidade == "futsal" ?
-                                                futsal.map((item) => (
-                                                    <CardAtletica item={item} />
-                                                ))
-                                                :
-                                            null
+                                                modalidade == "futsal" ?
+                                                    futsal.map((item) => (
+                                                        <CardAtletica item={item} />
+                                                    ))
+                                                    :
+                                                    modalidade == "natacao" ?
+                                                        natacao.map((item) => (
+                                                            <CardAtletica item={item} />
+                                                        ))
+                                                        :
+                                                        modalidade == "handbal" ?
+                                                            handbal.map((item) => (
+                                                                <CardAtletica item={item} />
+                                                            ))
+                                                            :
+                                                        null
                                         }
 
                                     </Grid>

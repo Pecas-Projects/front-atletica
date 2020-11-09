@@ -27,8 +27,9 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         flex: '1 0 auto',
-        padding: "5%",
-        marginTop: 20,
+        padding: "2%",
+        marginTop: "5%",
+        marginLeft: "20%"
     },
     cover: {
         width: 151,
@@ -50,32 +51,37 @@ function CardAtletica(props) {
         <>
             <Grid item style={{ marginBottom: 20 }} xs={12} >
                 <Card className={classes.card}>
-                    <Grid container xs={12} >
-                        <CardContent style={{ padding: "4%" }}>
-                            <Avatar alt="Remy Sharp" src={fotoPerfil} className={classes.large} />
-                        </CardContent>
+                    <Grid container xs={12} spacing={0}>
+                        <Grid item xs={2}>
+                            <CardContent style={{ padding: "10%" }}>
+                                <Avatar alt="Remy Sharp" src={fotoPerfil} className={classes.large} />
+                            </CardContent>
+                        </Grid>
 
-                        <CardContent className={classes.content}>
-                            <Typography gutterBottom style={{ fontSize: 18 }}>
-                               {item.atletica}
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                {item.faculdade}
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                {item.jogos}
-                            </Typography>
-                        </CardContent>
+                        <Grid item xs={7}>
+                            <CardContent className={classes.content}>
+                                <Typography variant="body2" gutterBottom style={{ fontSize: 18 }}>
+                                    {item.atletica}
+                                </Typography>
+                                <Typography variant="body2" component="p">
+                                    {item.faculdade}
+                                </Typography>
+                                <Typography variant="body2" component="p">
+                                    {item.jogos}
+                                </Typography>
+                            </CardContent>
 
+                        </Grid>
 
-                        <CardContent style={{ backgroundColor: "#F68D2E", maxWidth: "100%", }}>
-                            <Grid container direction="column" alignItems="center" justify="center">
-                                <Typography className={classes.position} variant="body2" component="p">
-                                    #{item.posicao}
-                            </Typography>
-                            </Grid>
-                        </CardContent>
-
+                        <Grid item xs={3}>
+                            <CardContent style={{ backgroundColor: "#F68D2E", maxWidth: "100%" }}>
+                                <Grid container direction="column" alignItems="center" justify="center">
+                                    <Typography className={classes.position} variant="body2" component="p">
+                                        #{item.posicao}
+                                    </Typography>
+                                </Grid>
+                            </CardContent>
+                        </Grid>
                     </Grid>
                 </Card>
 
