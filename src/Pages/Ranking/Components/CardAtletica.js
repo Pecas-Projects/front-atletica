@@ -67,7 +67,7 @@ function CardAtletica(props) {
                                     {item.faculdade}
                                 </Typography>
                                 <Typography variant="body2" component="p">
-                                    {item.jogos}
+                                    Número de jogos: {item.jogos}
                                 </Typography>
                             </CardContent>
 

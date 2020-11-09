@@ -271,6 +271,11 @@ function Ranking() {
                                                                 <CardAtletica item={item} />
                                                             ))
                                                             :
+                                                        modalidade == "futebol" ?
+                                                            futebol.map((item) => (
+                                                                <CardAtletica item={item} />
+                                                            ))
+                                                        :
                                                         null
                                         }
 
