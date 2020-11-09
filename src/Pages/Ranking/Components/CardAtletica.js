@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Avatar, Typography, Paper, Button, IconButton } from "@material-ui/core";
+import { Grid, Card, CardContent, Avatar, Typography } from "@material-ui/core";
 import fotoPerfil from "../../../assets/imagem/fotoPerfil.png";
+import Rectangle_Yellow_Ranking from "../../../assets/imagem/Rectangle_Yellow_Ranking.svg";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,18 +17,29 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(3),
     },
     large: {
-        width: theme.spacing(12),
-        height: theme.spacing(12),
+        width: theme.spacing(14),
+        height: theme.spacing(14),
     },
-    paper: {
-        width: "100%",
-        padding: "2%",
+    card: {
         backgroundColor: "#C4C4C4",
+        maxWidth: "100%",
+        borderRadius: "16"
+    },
+    content: {
+        flex: '1 0 auto',
+        padding: "5%",
+        marginTop: 20,
+    },
+    cover: {
+        width: 151,
+
     },
     position: {
-        backgroundColor: "#F3BF3A",
-        width: "100%",
-    }
+        justifyItems: "center",
+        color: "white",
+        fontSize: 64,
+        margin: 10,
+    },
 }));
 
 function CardAtletica(props) {
@@ -37,13 +49,13 @@ function CardAtletica(props) {
     return (
         <>
             <Grid item style={{ marginBottom: 20 }} xs={12} >
-                <Paper className={classes.paper} >
-                    <Grid container spacing={5} >
-                        <Grid item xs={2}>
+                <Card className={classes.card}>
+                    <Grid container xs={12} >
+                        <CardContent style={{ padding: "4%" }}>
                             <Avatar alt="Remy Sharp" src={fotoPerfil} className={classes.large} />
-                        </Grid>
+                        </CardContent>
 
-                        <Grid item xs={8} style={{ marginLeft: 30, marginTop: 5 }}>
+                        <CardContent className={classes.content}>
                             <Typography gutterBottom style={{ fontSize: 18 }}>
                                 Cimatlética
                             </Typography>
@@ -53,19 +65,24 @@ function CardAtletica(props) {
                             <Typography variant="body2" component="p">
                                 Número de jogos: 20
                             </Typography>
-                        </Grid>
+                        </CardContent>
 
-                        <Grid item xs={2}>
-                            {/* <Paper className={classes.position} >
-                                <Grid container justify="center">
-                                    <Typography gutterBottom style={{ fontSize: 18, color: "white" }}>
-                                        #2
-                                    </Typography>
-                                </Grid>
-                            </Paper> */}
-                        </Grid>
+
+                        <CardContent style={{ backgroundColor: "#F68D2E", maxWidth: "100%", }}>
+                            <Grid container direction="column" alignItems="center" justify="center">
+                                <Typography className={classes.position} variant="body2" component="p">
+                                    #2
+                            </Typography>
+                            </Grid>
+                        </CardContent>
+                        {/* <CardMedia
+                            className={classes.cover}
+                            image={Rectangle_Yellow_Ranking}
+                            title=""
+                        /> */}
+
                     </Grid>
-                </Paper>
+                </Card>
 
             </Grid>
 
