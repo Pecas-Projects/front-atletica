@@ -48,7 +48,13 @@ export default function AddJogo() {
             {/* DESKTOP */}
             <div className={classes.sectionDesktop}>
                 <Card className={classes.root}>
-                    <CardHeader title="NOVO JOGO" subheader="Convide outra atlética para um jogo" />
+                    <CardHeader
+                        titleTypographyProps={{
+                            variant: 'h4',
+                            style: { fontFamily: "Roboto Condensed" }
+                        }}
+                        title="NOVO JOGO"
+                        subheader="Convide outra atlética para um jogo" />
                     <CardContent>
                         <AvForm>
                             <Grid container spacing={2}>
@@ -117,7 +123,13 @@ export default function AddJogo() {
             {/* CELULAR */}
             <div className={classes.sectionMobile}>
                 <Card className={classes.root}>
-                    <CardHeader title="NOVO JOGO" subheader="Convide outra atlética para um jogo" />
+                    <CardHeader
+                        titleTypographyProps={{
+                            variant: 'h4',
+                            style: { fontFamily: "Roboto Condensed" }
+                        }}
+                        title="NOVO JOGO"
+                        subheader="Convide outra atlética para um jogo" />
                     <CardContent>
                         <AvForm>
                             <Grid container>
