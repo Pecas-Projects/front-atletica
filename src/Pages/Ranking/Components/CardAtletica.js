@@ -57,13 +57,13 @@ function CardAtletica(props) {
 
                         <CardContent className={classes.content}>
                             <Typography gutterBottom style={{ fontSize: 18 }}>
-                                Cimatlética
+                               {item.atletica}
                             </Typography>
                             <Typography variant="body2" component="p">
-                                SENAI Cimatec
+                                {item.faculdade}
                             </Typography>
                             <Typography variant="body2" component="p">
-                                Número de jogos: 20
+                                {item.jogos}
                             </Typography>
                         </CardContent>
 
@@ -71,15 +71,10 @@ function CardAtletica(props) {
                         <CardContent style={{ backgroundColor: "#F68D2E", maxWidth: "100%", }}>
                             <Grid container direction="column" alignItems="center" justify="center">
                                 <Typography className={classes.position} variant="body2" component="p">
-                                    #2
+                                    #{item.posicao}
                             </Typography>
                             </Grid>
                         </CardContent>
-                        {/* <CardMedia
-                            className={classes.cover}
-                            image={Rectangle_Yellow_Ranking}
-                            title=""
-                        /> */}
 
                     </Grid>
                 </Card>
