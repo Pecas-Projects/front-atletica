@@ -5,6 +5,11 @@ import { Grid, Typography } from "@material-ui/core";
 import Categoria from './Components/Categoria'
 import Button from '@material-ui/core/Button';
 import AddJogo from './Components/AddJogo'
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Jogos() {
 
-    const [pageNumber, setPageNumber] = useState(1);
+    const [opcao, setOpcao] = useState('Ver')
 
     const categorias = [
         {
@@ -63,6 +68,10 @@ export default function Jogos() {
 
     const classes = useStyles();
 
+    const handleFormChange = (e) => {
+        setOpcao(e.target.value)
+    }
+
     return (
         <>
             <div className={classes.root}>
@@ -74,31 +83,18 @@ export default function Jogos() {
                         <Grid container  >
                             <Grid item xs={2} />
                             <Grid item xs={8} >
-                                <Grid container alignItems="center">
-                                    <Button
-                                        size="large"
-                                        className={classes.margin}
-                                        style={{ textTransform: 'none', outline: 'none' }}
-                                        onClick={() => setPageNumber(1)}
-                                    >
-                                        Ver jogos
-                                    </Button>
-                                    <Typography>ou</Typography>
-                                    <Button
-                                        size="large"
-                                        className={classes.margin}
-                                        style={{ textTransform: 'none', outline: 'none' }}
-                                        onClick={() => setPageNumber(2)}
-                                    >
-                                        Adicionar jogo
-                                    </Button>
-                                </Grid>
+                                <FormControl component="fieldset">
+                                    <RadioGroup row aria-label="gender" name="gender1" value={opcao} onChange={handleFormChange} >
+                                        <FormControlLabel value="Ver" control={<Radio />} label="Ver jogos" />
+                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar jogo" />
+                                    </RadioGroup>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={2} />
                             <Grid item xs={2} />
                             <Grid item xs={8} >
                                 {
-                                    pageNumber == 1 ?
+                                    opcao == "Ver" ?
                                         <Grid container justify='center'>
                                             {categorias.map((item) => (
                                                 <Categoria categoria={item} />
@@ -116,28 +112,17 @@ export default function Jogos() {
                         <Grid container  >
                             <Grid item xs={12} >
                                 <Grid container alignItems="center">
-                                    <Button
-                                        size="large"
-                                        className={classes.margin}
-                                        style={{ textTransform: 'none', outline: 'none' }}
-                                        onClick={() => setPageNumber(1)}
-                                    >
-                                        Ver jogos
-                                    </Button>
-                                    <Typography>ou</Typography>
-                                    <Button
-                                        size="large"
-                                        className={classes.margin}
-                                        style={{ textTransform: 'none', outline: 'none' }}
-                                        onClick={() => setPageNumber(2)}
-                                    >
-                                        Adicionar jogo
-                                    </Button>
+                                <FormControl component="fieldset">
+                                    <RadioGroup row aria-label="gender" name="gender1" value={opcao} onChange={handleFormChange} >
+                                        <FormControlLabel value="Ver" control={<Radio />} label="Ver jogos" />
+                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar jogo" />
+                                    </RadioGroup>
+                                </FormControl>
                                 </Grid>
                             </Grid>
                             <Grid item xs={12} >
                                 {
-                                    pageNumber == 1 ?
+                                    opcao == "Ver" ?
                                         categorias.map((item) => (
                                             <Categoria categoria={item} />
                                         ))
