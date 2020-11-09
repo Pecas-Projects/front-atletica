@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
@@ -62,23 +62,72 @@ const useStyles = makeStyles((theme) => ({
 
 function Ranking() {
     const classes = useStyles();
+    const [modalidade, setModalidade] = useState("volei");
     const modalidades = [
         {
+            value: "volei",
             nome: "Vôlei"
         },
         {
+            value: "handbal",
             nome: "Handbal"
         },
         {
+            value: "futsal",
             nome: "Futsal"
         },
         {
+            value: "futebol",
             nome: "Futebol"
         },
         {
+            value: "natacao",
             nome: "Natação"
         },
     ];
+
+    const volei = [
+        {
+            atletica: "Coruja",
+            faculdade: "SENAI Cimatec",
+            jogos: "20",
+            posicao: "1"
+        },
+        {
+            atletica: "Manada",
+            faculdade: "Comunicação UNEB",
+            jogos: "18",
+            posicao: "2"
+        },
+        {
+            atletica: "Aduc",
+            faculdade: "Direito UCSAL",
+            jogos: "17",
+            posicao: "3"
+        },
+    ];
+
+    const futsal = [
+        {
+            atletica: "Coruja",
+            faculdade: "SENAI Cimatec",
+            jogos: "30",
+            posicao: "1"
+        },
+        {
+            atletica: "Aduc",
+            faculdade: "Direito UCSAL",
+            jogos: "23",
+            posicao: "2"
+        },
+        {
+            atletica: "Manada",
+            faculdade: "Comunicação UNEB",
+            jogos: "18",
+            posicao: "3"
+        },
+    ];
+
 
     return (
         <div className={classes.root}>
@@ -103,11 +152,11 @@ function Ranking() {
                             <h4 className="MyTitle">Ranking das Atléticas</h4>
                             <Grid container spacing={3} xs={12} style={{ marginTop: 20 }}>
                                 <Grid item xs={3}>
-                                    <AvForm>
-                                        <AvField type="select" name="Modalidades" label="Modalidade">
+                                    <AvForm >
+                                        <AvField value={modalidade} type="select" name="Modalidades" label="Modalidade">
                                             {
                                                 modalidades.map((item) => (
-                                                    <option>{item.nome}</option>
+                                                    <option value={item.value}>{item.nome}</option>
                                                 ))
                                             }
                                         </AvField>
@@ -117,7 +166,20 @@ function Ranking() {
 
                                 <Grid item xs={8} >
                                     <Grid container justify="center">
-                                        <CardAtletica />
+                                        {
+                                            modalidade == "volei" ?
+                                                volei.map((item) => (
+                                                    <CardAtletica item={item} />
+                                                ))
+                                                :
+                                            modalidade == "futsal" ?
+                                                futsal.map((item) => (
+                                                    <CardAtletica item={item} />
+                                                ))
+                                                :
+                                            null
+                                        }
+
                                     </Grid>
                                 </Grid>
                             </Grid>
