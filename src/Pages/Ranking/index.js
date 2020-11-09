@@ -101,8 +101,8 @@ function Ranking() {
                     <Grid container justify="center">
                         <Paper className={classes.paperA}>
                             <h4 className="MyTitle">Ranking das Atléticas</h4>
-                            <Grid container spacing={4} style={{ marginTop: 20 }}>
-                                <Grid item xs={2}>
+                            <Grid container spacing={3} xs={12} style={{ marginTop: 20 }}>
+                                <Grid item xs={3}>
                                     <AvForm>
                                         <AvField type="select" name="Modalidades" label="Modalidade">
                                             {
@@ -113,7 +113,9 @@ function Ranking() {
                                         </AvField>
                                     </AvForm>
                                 </Grid>
-                                <Grid item xs={8}>
+                                <Grid item xs={1} />
+
+                                <Grid item xs={8} >
                                     <Grid container justify="center">
                                         <CardAtletica />
                                     </Grid>
