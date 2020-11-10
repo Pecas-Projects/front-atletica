@@ -317,10 +317,36 @@ function Ranking() {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        {/* <h4 className="MyTitle">Nossos Produtos</h4>
-                        {products.map((item) => (
-                            <CardProduto item={item} />
-                        ))}  */}
+                        <Grid item>
+                            {
+                                modalidade === "volei" ?
+                                    volei.map((item) => (
+                                        <AtleticaMobile item={item} />
+                                    ))
+                                :
+                                modalidade === "natacao" ?
+                                    natacao.map((item) => (
+                                        <AtleticaMobile item={item} />
+                                    ))
+                                :
+                                modalidade === "futsal" ?
+                                    futsal.map((item) => (
+                                        <AtleticaMobile item={item} />
+                                    ))
+                                :
+                                modalidade === "futebol" ?
+                                        futebol.map((item) => (
+                                            <AtleticaMobile item={item} />
+                                        ))
+                                :
+                                modalidade === "handbal" ?
+                                        handbal.map((item) => (
+                                            <AtleticaMobile item={item} />
+                                        ))
+                                :
+                                null
+                            }
+                        </Grid>
                     </Grid>
                     <Grid item xs={1}></Grid>
                 </div>
