@@ -3,6 +3,7 @@ import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, FormControl, InputLabel, Select } from "@material-ui/core";
 import CardAtletica from "./Components/CardAtletica";
+import AtleticaMobile from "./Components/AtleticaMobile"
 import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -60,6 +61,10 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
+    },
+    formControlMobile: {
+        margin: theme.spacing(1),
+        width: "194px",
     },
 }));
 
@@ -246,7 +251,7 @@ function Ranking() {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                {/* <Grid item xs={1} /> */}
+                                <Grid item xs={1} />
 
                                 <Grid item xs={8} >
                                     <Grid container justify="center">
@@ -271,12 +276,12 @@ function Ranking() {
                                                                 <CardAtletica item={item} />
                                                             ))
                                                             :
-                                                        modalidade == "futebol" ?
-                                                            futebol.map((item) => (
-                                                                <CardAtletica item={item} />
-                                                            ))
-                                                        :
-                                                        null
+                                                            modalidade == "futebol" ?
+                                                                futebol.map((item) => (
+                                                                    <CardAtletica item={item} />
+                                                                ))
+                                                                :
+                                                                null
                                         }
 
                                     </Grid>
@@ -288,11 +293,34 @@ function Ranking() {
 
                 <div className={classes.sectionMobile}>
                     <Grid item xs={1}></Grid>
-                    <Grid container spacing={1} style={{ marginTop: 20 }}>
+                    <Grid container justify="center" xs={12} spacing={1} style={{ marginTop: 20 }}>
+                        <Grid item>
+                            <h4 className="MyTitle">Ranking das Atléticas</h4>
+                        </Grid>
+
+                        <Grid item >
+                            <FormControl variant="filled" className={classes.formControlMobile}>
+                                <InputLabel htmlFor="filled-age-native-simple">Modalidade</InputLabel>
+                                <Select
+                                    native
+                                    value={modalidade}
+                                    onChange={modalidadeSelecionada}
+                                    inputProps={{
+                                        name: 'modalidade'
+                                    }}
+                                >
+                                    {
+                                        modalidades.map((item) => (
+                                            <option value={item.value}>{item.nome}</option>
+                                        ))
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
                         {/* <h4 className="MyTitle">Nossos Produtos</h4>
                         {products.map((item) => (
                             <CardProduto item={item} />
-                        ))} */}
+                        ))}  */}
                     </Grid>
                     <Grid item xs={1}></Grid>
                 </div>

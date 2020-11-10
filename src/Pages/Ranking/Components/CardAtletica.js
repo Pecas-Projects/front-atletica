@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from "@material-ui/core/styles";
-import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Card, CardContent, Avatar, Typography } from "@material-ui/core";
 import fotoPerfil from "../../../assets/imagem/fotoPerfil.png";
-import Rectangle_Yellow_Ranking from "../../../assets/imagem/Rectangle_Yellow_Ranking.svg";
 
 const useStyles = makeStyles((theme) => ({
     root: {
