@@ -12,6 +12,7 @@ import AdicionarPost from "./Pages/AdicionarPost"
 import AdicionarEvento from "./Pages/AdicionarEvento"
 import Notificacoes from "./Pages/Notificacoes"
 import Ranking from "./Pages/Ranking"
+import Jogos from "./Pages/Jogos"
 
 const Routes = () => (
   <Switch>
@@ -28,6 +29,7 @@ const Routes = () => (
       <Route exact path="/AdicionarEvento" component={AdicionarEvento} />
       <Route exact path="/Notificacoes" component={Notificacoes} />
       <Route exact path="/Ranking" component={Ranking} />
+      <Route exact path="/Jogos" component={Jogos} />
     </Route>
   </Switch>
 );
