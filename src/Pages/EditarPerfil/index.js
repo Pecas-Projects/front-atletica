@@ -75,6 +75,8 @@ export default function EditarPerfil() {
     const [number, setNumber] = useState('');
     const [complemento, setComplemento] = useState('');
 
+    const [descricao, setDescricao] = useState('')
+
     const [imagemPerfil, setImagemPerfil] = useState(null);
     const [pathPerfil, setPathPerfil] = useState();
 
@@ -104,6 +106,11 @@ export default function EditarPerfil() {
     const handleChangeNumber = (e) => {
         e.preventDefault();
         setNumber(e.target.value);
+    };
+
+    const handleChangeDescricao = (e) => {
+        e.preventDefault();
+        setDescricao(e.target.value);
     };
 
 
@@ -151,7 +158,7 @@ export default function EditarPerfil() {
 
                                 <AvForm>
                                     <AvField
-                                        name="descricao" type="textarea" errorMessage="Descrição muito grande" validate={{
+                                        name="descricao" type="textarea" errorMessage="Descrição muito grande" onChange={handleChangeDescricao} validate={{
                                             maxLength: { value: 300 }
                                         }} />
 
@@ -327,7 +334,7 @@ export default function EditarPerfil() {
 
                                         <AvForm>
                                             <AvField
-                                                name="descricao" type="textarea" errorMessage="Descrição muito grande" validate={{
+                                                name="descricao" type="textarea" errorMessage="Descrição muito grande" onChange={handleChangeDescricao} validate={{
                                                     maxLength: { value: 300 }
                                                 }} />
 
