@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     },
     formControlMobile: {
         margin: theme.spacing(1),
-        width: "194px",
+        width: 300
     },
 }));
 
@@ -292,63 +292,63 @@ function Ranking() {
                 </div>
 
                 <div className={classes.sectionMobile}>
-                    <Grid item xs={1}></Grid>
-                    <Grid container justify="center" xs={12} spacing={1} style={{ marginTop: 20 }}>
-                        <Grid item>
-                            <h4 className="MyTitle">Ranking das Atléticas</h4>
-                        </Grid>
 
-                        <Grid item >
-                            <FormControl variant="filled" className={classes.formControlMobile}>
-                                <InputLabel htmlFor="filled-age-native-simple">Modalidade</InputLabel>
-                                <Select
-                                    native
-                                    value={modalidade}
-                                    onChange={modalidadeSelecionada}
-                                    inputProps={{
-                                        name: 'modalidade'
-                                    }}
-                                >
-                                    {
-                                        modalidades.map((item) => (
-                                            <option value={item.value}>{item.nome}</option>
-                                        ))
-                                    }
-                                </Select>
-                            </FormControl>
+                    <Grid container justify="center" spacing={1} style={{ marginTop: 20 }}>
+
+                        <h4 className="MyTitle">Ranking das Atléticas</h4>
+
+                        <Grid item xs={12}>
+                            <Grid container justify="center">
+                                <FormControl variant="filled" className={classes.formControlMobile}>
+                                    <InputLabel htmlFor="filled-age-native-simple">Modalidade</InputLabel>
+                                    <Select
+                                        native
+                                        value={modalidade}
+                                        onChange={modalidadeSelecionada}
+                                        inputProps={{
+                                            name: 'modalidade'
+                                        }}
+                                    >
+                                        {
+                                            modalidades.map((item) => (
+                                                <option value={item.value}>{item.nome}</option>
+                                            ))
+                                        }
+                                    </Select>
+                                </FormControl>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            {
-                                modalidade === "volei" ?
-                                    volei.map((item) => (
-                                        <AtleticaMobile item={item} />
-                                    ))
+                        {/* <Grid item> */}
+                        {
+                            modalidade === "volei" ?
+                                volei.map((item) => (
+                                    <AtleticaMobile item={item} />
+                                ))
                                 :
                                 modalidade === "natacao" ?
                                     natacao.map((item) => (
                                         <AtleticaMobile item={item} />
                                     ))
-                                :
-                                modalidade === "futsal" ?
-                                    futsal.map((item) => (
-                                        <AtleticaMobile item={item} />
-                                    ))
-                                :
-                                modalidade === "futebol" ?
-                                        futebol.map((item) => (
+                                    :
+                                    modalidade === "futsal" ?
+                                        futsal.map((item) => (
                                             <AtleticaMobile item={item} />
                                         ))
-                                :
-                                modalidade === "handbal" ?
-                                        handbal.map((item) => (
-                                            <AtleticaMobile item={item} />
-                                        ))
-                                :
-                                null
-                            }
-                        </Grid>
+                                        :
+                                        modalidade === "futebol" ?
+                                            futebol.map((item) => (
+                                                <AtleticaMobile item={item} />
+                                            ))
+                                            :
+                                            modalidade === "handbal" ?
+                                                handbal.map((item) => (
+                                                    <AtleticaMobile item={item} />
+                                                ))
+                                                :
+                                                null
+                        }
+                        {/* </Grid> */}
                     </Grid>
-                    <Grid item xs={1}></Grid>
                 </div>
             </main>
         </div>
