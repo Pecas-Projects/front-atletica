@@ -31,6 +31,7 @@ export default function BotaoUploadImagem(props) {
         props.setPath([reader.result]);
       };
       props.setImagem(files[0]);
+      console.log(files)
     }
   }
 
@@ -45,14 +46,14 @@ export default function BotaoUploadImagem(props) {
               </IconButton>
             </Button>
           </Grid>
-          <Grid item xs={8}  style={{ marginLeft: -5, marginBottom: -30 }}>
+          <Grid item xs={8} style={{ marginLeft: -5, marginBottom: -30 }}>
             <br />
             <p>Remover Imagem</p>
           </Grid>
 
           <img
             src={props.path}
-            alt="adicionar imagem"
+            alt="imagem"
             style={{ width: 250, height: 250 }}
           />
         </Grid>
@@ -66,7 +67,6 @@ export default function BotaoUploadImagem(props) {
             accept="image/*"
             className={classes.input}
             id="contained-button-file"
-            multiple
             type="file"
             onChange={handleFileChange}
           />
