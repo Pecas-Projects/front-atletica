@@ -1,0 +1,16 @@
+.MyTitle {
+  font-size: 24px;
+  font-family: "Roboto Condensed";
+}
+
+.MySubtitle {
+  font-size: 18px;
+  font-family: "Roboto Condensed";
+}
+
+.MySubtitle2 {
+  font-size: 14px;
+  font-family: "Roboto";
+  color: dimgray;
+  margin-top: -15px;
+}
