@@ -5,7 +5,6 @@ import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import cep from 'cep-promise'
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem"
-import BotaoUploadImagemMobile from "../../Components/BotaoUploadImagemMobile"
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar"
 import "./styles.css"
 
