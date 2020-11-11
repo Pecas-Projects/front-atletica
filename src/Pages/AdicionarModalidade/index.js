@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AdicionarModalidade() {
 
-    const modalidades = [
+    const [modalidades, setModalidades] = useState([
         {
             nome: "Futebol Feminino",
             coordenador: "Maria Antônia",
@@ -90,7 +90,7 @@ export default function AdicionarModalidade() {
                 "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa",
                 "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa"]
         },
-    ]
+    ])
 
     const classes = useStyles();
 
@@ -98,6 +98,15 @@ export default function AdicionarModalidade() {
 
     const handleChange = (event) => {
         setValue(event.target.value);
+    };
+
+    const DeleteModalidade = (index) => {
+
+        let newArray = [...modalidades];
+        newArray.splice(index, 1);
+        setModalidades(newArray);
+
+
     };
 
     return (
@@ -135,18 +144,28 @@ export default function AdicionarModalidade() {
                             </Grid>
                         </Grid>
 
+                        {value === 'Mostrar' ? (
 
+                            <Grid item xs={12}>
 
-                        <Grid item xs={12}>
+                                <Grid container justify="center">
 
-                            <Grid container justify="center">
+                                    {modalidades.map((item, index) =>
+                                        <CardModalidade
+                                            item={item}
+                                            index={index}
+                                            DeleteModalidade={DeleteModalidade} />
+                                    )}
 
-                                {modalidades.map((item) =>
-                                    <CardModalidade item={item} />
-                                )}
-
+                                </Grid>
                             </Grid>
-                        </Grid>
+
+
+                        ) : (
+                                <>
+                                </>
+                            )}
+
 
                     </Grid>
 
