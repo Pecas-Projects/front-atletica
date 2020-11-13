@@ -28,3 +28,8 @@
   position: absolute;
   right: 70px;
 }
+
+.scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
