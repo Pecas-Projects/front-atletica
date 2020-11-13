@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Paper, Button, TextField, MenuItem, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
+import { Grid, Paper, Button, TextField, MenuItem, Dialog, DialogActions, DialogTitle, Snackbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
@@ -8,10 +8,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import CardAtleta from "./CardAtleta"
 import CardAtletaDelete from "./CardAtletaDelete"
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem"
+import MuiAlert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import "../styles.css"
 import CardAtletaAdd from "./CardAtletaAdd";
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
 
@@ -65,6 +69,7 @@ export default function CardModalidade(props) {
     const [coordenador, setCorrdenador] = useState('')
     const [openSalvo, setOpenSalvo] = useState(false)
     const [openExcluir, setOpenExcluir] = useState(false)
+    const [openExcluido, setOpenExcluido] = useState(false)
     const [array, setArray] = useState(item.atletas)
 
     function showAdicionarImagem() {
@@ -97,12 +102,13 @@ export default function CardModalidade(props) {
         DeleteModalidade(index);
 
         if (expanded === true) setExpanded(false);
-        if (expandedAtletaAdd === true) setExpanded(false);
+        if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
         if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
         if (expandedModalidade === true) setExpandedModalidade(false);
         if (expendedEditar === true) setexpandedEdtitar(false);
 
         setOpenExcluir(false)
+        setOpenExcluido(true)
     };
 
     const handleCloseSalvo = (event, reason) => {
@@ -111,6 +117,14 @@ export default function CardModalidade(props) {
         }
 
         setOpenSalvo(false);
+    };
+
+    const handleCloseExcluido = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenExcluido(false);
     };
 
     const handleExcluir = () => {
@@ -122,25 +136,43 @@ export default function CardModalidade(props) {
     };
 
 
-
     const handleExpandClick = () => {
         setExpanded(!expanded);
+        if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
+        if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
+        if (expandedModalidade === true) setExpandedModalidade(false);
+        if (expendedEditar === true) setexpandedEdtitar(false);
     };
 
     const handleExpandEditarClick = () => {
         setexpandedEdtitar(!expendedEditar)
+        if (expanded === true) setExpanded(false);
+        if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
+        if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
+        if (expandedModalidade === true) setExpandedModalidade(false);
+
     };
 
     const handleExpandAtletaDeleteClick = () => {
         setexpandedAtletaDelete(!expandedAtletaDelete)
+        if (expanded === true) setExpanded(false);
+        if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
+        if (expandedModalidade === true) setExpandedModalidade(false);
+
     };
 
     const handleExpandAtletaAddClick = () => {
         setexpandedAtletaAdd(!expandedAtletaAdd)
+        if (expanded === true) setExpanded(false);
+        if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
+        if (expandedModalidade === true) setExpandedModalidade(false);
     };
 
     const handleExpandedModalidadeClick = () => {
         setExpandedModalidade(!expandedModalidade)
+        if (expanded === true) setExpanded(false);
+        if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
+        if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
     }
 
     const handleMembroChange = (e) => {
@@ -150,6 +182,18 @@ export default function CardModalidade(props) {
     return (
 
         <>
+
+            <Snackbar open={openSalvo} autoHideDuration={4000} onClose={handleCloseSalvo}>
+                <Alert onClose={handleCloseSalvo} severity="success">
+                    Alterações salvas com sucesso!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={openExcluido} autoHideDuration={4000} onClose={handleCloseExcluido}>
+                <Alert onClose={handleCloseExcluido} severity="success">
+                    Modalidade excluida com sucesso!
+                </Alert>
+            </Snackbar>
 
             <Paper className={classes.paperA} >
 
@@ -201,13 +245,16 @@ export default function CardModalidade(props) {
 
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
 
-                    <Grid container spacing={3}>
+                    <div className='scroll'>
 
-                        {item.atletas.map((atleta) =>
-                            <CardAtleta atleta={atleta} />
-                        )}
+                        <Grid container spacing={2} style={{ maxHeight: 200 }}>
 
-                    </Grid>
+                            {item.atletas.map((atleta) =>
+                                <CardAtleta atleta={atleta} />
+                            )}
+
+                        </Grid>
+                    </div>
 
                 </Collapse>
 
@@ -233,27 +280,31 @@ export default function CardModalidade(props) {
                 </Collapse>
 
                 <Collapse in={expandedAtletaDelete} timeout="auto" unmountOnExit>
-                    <Grid container spacing={3} style={{ marginTop: 20 }}>
+                    <div className="scroll">
+                        <Grid container spacing={2} style={{ marginTop: 20, maxHeight: 200 }}>
 
-                        {item.atletas.map((atleta, index) =>
-                            <CardAtletaDelete
-                                atleta={atleta}
-                                index={index}
-                                DeleteAtleta={DeleteAtleta} />
-                        )}
+                            {item.atletas.map((atleta, index) =>
+                                <CardAtletaDelete
+                                    atleta={atleta}
+                                    index={index}
+                                    DeleteAtleta={DeleteAtleta} />
+                            )}
 
-                    </Grid>
+                        </Grid>
+                    </div>
 
                 </Collapse>
 
                 <Collapse in={expandedAtletaAdd} timeout="auto" unmountOnExit>
-                    <Grid container spacing={3} style={{ marginTop: 20 }}>
+                    <div className='scroll'>
+                        <Grid container spacing={2} style={{ marginTop: 20, maxHeight: 200 }}>
 
-                        {item.atletas.map((atleta) =>
-                            <CardAtletaAdd atleta={atleta} />
-                        )}
+                            {item.atletas.map((atleta) =>
+                                <CardAtletaAdd atleta={atleta} />
+                            )}
 
-                    </Grid>
+                        </Grid>
+                    </div>
 
                 </Collapse>
 
@@ -303,7 +354,7 @@ export default function CardModalidade(props) {
 
                                 <Grid item xs={12}>
 
-                                    <Button style={{ width: "45%", marginTop: 50 }} variant='contained' color='secondary'>Salvar Alterações</Button>
+                                    <Button onClick={() => setOpenSalvo(true)} style={{ width: "45%", marginTop: 50 }} variant='contained' color='secondary'>Salvar Alterações</Button>
 
                                 </Grid>
 
