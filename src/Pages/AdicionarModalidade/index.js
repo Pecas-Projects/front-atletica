@@ -7,8 +7,10 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import BotaoUploadImagem from "../../Components/BotaoUploadImagem"
 import CardModalidade from "./Components/CardModalidade"
+import CardModalidadeMobile from './Components/CardModalidadeMobile'
+import CardAddModalidade from "./Components/CardAddModalidade"
+import CardAddModalidadeMobile from "./Components/CardAddModalidadeMobile"
 
 import "./styles.css"
 
@@ -163,6 +165,13 @@ export default function AdicionarModalidade() {
 
                         ) : (
                                 <>
+
+                                    <Grid container justify='center'>
+
+                                        <CardAddModalidade />
+
+                                    </Grid>
+
                                 </>
                             )}
 
@@ -171,7 +180,69 @@ export default function AdicionarModalidade() {
 
                 </div>
 
+                {/* 
+                
+                
+                
+                
+                MOBILE
+                
+                
+                
+                
+                
+                */}
+
                 <div className={classes.sectionMobile}>
+
+                    <Grid container  >
+
+                        <Grid item xs={12} style={{ marginBottom: 30 }} >
+
+                            <Grid container justify='flex-start' >
+                                <FormControl component="fieldset" >
+                                    <RadioGroup row aria-label="modalidade" name="modalidade" value={value} onChange={handleChange}>
+                                        <FormControlLabel value="Mostrar" control={<Radio />} label="Ver Modalidades" />
+                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar Modalidade" />
+                                    </RadioGroup>
+                                </FormControl>
+
+
+                            </Grid>
+                        </Grid>
+
+                        {value === 'Mostrar' ? (
+
+                            <Grid item xs={12}>
+
+                                <Grid container justify="center">
+
+                                    {modalidades.map((item, index) =>
+                                        <CardModalidadeMobile
+                                            item={item}
+                                            index={index}
+                                            DeleteModalidade={DeleteModalidade} />
+                                    )}
+
+                                </Grid>
+                            </Grid>
+
+
+                        ) : (
+                                <>
+
+                                    <Grid container justify='center'>
+
+                                        <CardAddModalidadeMobile />
+
+                                    </Grid>
+
+                                </>
+                            )}
+
+
+                    </Grid>
+
 
                 </div>
             </main>
