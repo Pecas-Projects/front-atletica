@@ -19,24 +19,24 @@ import Page404 from "./Pages/404"
 
 const Routes = () => (
   <Switch>
-    <Route>
-      <Route exact path="/" component={Perfil} />
-      <Route exact path="/Inicio" component={PaginaInicio} />
-      <Route exact path="/Produtos" component={Produtos} />
-      <Route exact path="/Times" component={Times} />
-      <Route exact path="/Feed" component={Feed} />
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/Cadastro" component={Cadastro} />
-      <Route exact path="/AdicionarProduto" component={AdicionarProduto} />
-      <Route exact path="/AdicionarPost" component={AdicionarPost} />
-      <Route exact path="/AdicionarEvento" component={AdicionarEvento} />
-      <Route exact path="/Notificacoes" component={Notificacoes} />
-      <Route exact path="/EditarPerfil" component={EditarPerfil} />
-      <Route exact path="/Ranking" component={Ranking} />
-      <Route exact path="/Jogos" component={Jogos} />
-      <Route exact path="/Modalidades" component={Modalidades} />
-      <Route component={Page404} />
-    </Route>
+
+    <Route exact path="/" component={Perfil} />
+    <Route exact path="/Inicio" component={PaginaInicio} />
+    <Route exact path="/Produtos" component={Produtos} />
+    <Route exact path="/Times" component={Times} />
+    <Route exact path="/Feed" component={Feed} />
+    <Route exact path="/login" component={Login} />
+    <Route exact path="/Cadastro" component={Cadastro} />
+    <Route exact path="/AdicionarProduto" component={AdicionarProduto} />
+    <Route exact path="/AdicionarPost" component={AdicionarPost} />
+    <Route exact path="/AdicionarEvento" component={AdicionarEvento} />
+    <Route exact path="/Notificacoes" component={Notificacoes} />
+    <Route exact path="/EditarPerfil" component={EditarPerfil} />
+    <Route exact path="/Ranking" component={Ranking} />
+    <Route exact path="/Jogos" component={Jogos} />
+    <Route exact path="/Modalidades" component={Modalidades} />
+    <Route component={Page404} />
+
   </Switch>
 );
 
