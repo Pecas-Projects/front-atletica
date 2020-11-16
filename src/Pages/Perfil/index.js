@@ -71,39 +71,48 @@ export default function Perfil() {
   const Membros = [
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
     {
       nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei"
+      funcao: "Coordenadora de volei",
+      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
     },
   ]
 

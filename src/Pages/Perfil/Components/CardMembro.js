@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography, Avatar, CardHeader } from "@material-ui/core";
 
 
 export default function CardMembro(props) {
@@ -10,15 +10,16 @@ export default function CardMembro(props) {
         <>
             <Grid item xs={12} sm={3}>
 
-                <Paper style={{ padding: "4%", backgroundColor: "#D2CFE5" }}>
+                <Paper style={{ backgroundColor: "#D2CFE5" }}>
 
-                    <Typography style={{ fontSize: 14 }}>
-                        {item.nome}
-                    </Typography>
+                    <CardHeader
+                        avatar={
+                            <Avatar alt={item.nome} src={item.imagem} ></Avatar>
+                        }
 
-                    <Typography style={{ fontSize: 13, color: "#DB4922" }}>
-                        {item.funcao}
-                    </Typography>
+                        title={item.nome} subheader={item.funcao}
+                    />
+
 
                 </Paper>
 
