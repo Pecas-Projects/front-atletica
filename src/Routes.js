@@ -14,6 +14,7 @@ import Notificacoes from "./Pages/Notificacoes"
 import EditarPerfil from "./Pages/EditarPerfil"
 import Ranking from "./Pages/Ranking"
 import Jogos from "./Pages/Jogos"
+import Modalidades from "./Pages/AdicionarModalidade"
 
 const Routes = () => (
   <Switch>
@@ -32,6 +33,7 @@ const Routes = () => (
       <Route exact path="/EditarPerfil" component={EditarPerfil} />
       <Route exact path="/Ranking" component={Ranking} />
       <Route exact path="/Jogos" component={Jogos} />
+      <Route exact path="/Modalidades" component={Modalidades} />
     </Route>
   </Switch>
 );
