@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Paper, Fade } from "@material-ui/core";
 import { AvField, AvForm } from "availity-reactstrap-validation"
 import "./styles.css"
+import cep from 'cep-promise'
 import ImageCadastro from "../../assets/imagem/undraw_digital_nomad.svg"
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -14,7 +15,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputMask from 'react-input-mask';
+import BotaoUploadImagem from "../../Components/BotaoUploadImagem"
 import { Input } from 'reactstrap';
+import ProfileUndraw from '../../assets/imagem/undraw_profile.svg'
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 
 
@@ -61,8 +64,7 @@ const useStyles = makeStyles((theme) => ({
     },
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 150,
-        maxWidth: 200
+        width: 200
     },
     formControlMobile: {
         margin: theme.spacing(1),
@@ -81,6 +83,17 @@ export default function Cadastro() {
     const [showMembro, setShowMembro] = useState(true)
     const [showAtletica, setShowAtletica] = useState(false)
     const [opcao, setOpcao] = useState('Membro')
+
+    const [imagemPerfil, setImagemPerfil] = useState(null);
+    const [pathPerfil, setPathPerfil] = useState();
+
+    const [cepcp, setCepcp] = useState('');
+    const [street, setStreet] = useState('');
+    const [neighbourhood, setNeighbourhood] = useState('');
+    const [state, setState] = useState('');
+    const [city, setCity] = useState('');
+    const [number, setNumber] = useState('');
+    const [complemento, setComplemento] = useState('');
 
     const [atletica, setAtletica] = useState({
         Nome: "",
@@ -145,6 +158,39 @@ export default function Cadastro() {
         setShowAtletica((prev) => !prev)
         console.log(showAtletica)
     }
+
+    const handleCepChange = (e) => {
+        e.preventDefault();
+        let value = e.target.value;
+        setCepcp(value);
+        if (value.length === 8) {
+            cep(value)
+                .then(function (endereco) {
+                    setCity(endereco.city);
+                    setStreet(endereco.street);
+                    setNeighbourhood(endereco.neighborhood);
+                    setState(endereco.state);
+                });
+        }
+    };
+
+    const handleComplementoChange = (e) => {
+        e.preventDefault();
+        setComplemento(e.target.value);
+    };
+
+    const handleChangeNumber = (e) => {
+        e.preventDefault();
+        setNumber(e.target.value);
+    };
+
+    function showAdicionarImagemPerfil() {
+        if (imagemPerfil === null) {
+            return <p>Adicione sua foto de perfil</p>
+        } else return <div><br /><br /></div>;
+    }
+
+
 
 
 
@@ -257,8 +303,36 @@ export default function Cadastro() {
 
 
 
-                                                        <Grid container spacing={1}>
 
+
+                                                        <Grid container spacing={1}>
+                                                            <Grid item xs={6}>
+                                                                {showAdicionarImagemPerfil()}
+                                                                <Paper style={{ backgroundColor: "#636363", width: 250 }}>
+                                                                    <Grid
+                                                                        container
+                                                                        justify="center"
+                                                                        alignContent="center"
+                                                                        style={{ height: 250, marginTop: -7 }}
+                                                                    >
+                                                                        <BotaoUploadImagem setPath={setPathPerfil} setImagem={setImagemPerfil} imagem={imagemPerfil} path={pathPerfil} />
+
+                                                                    </Grid>
+                                                                </Paper>
+                                                            </Grid>
+
+                                                            <Grid item xs={6}>
+
+                                                                <img style={{ width: 200, marginTop: 50, marginLeft: 20 }} alt='undraw_profile' src={ProfileUndraw} />
+
+                                                            </Grid>
+
+                                                        </Grid>
+
+
+                                                        <br />
+
+                                                        <Grid container spacing={1}>
                                                             <Grid item xs={6}>
 
                                                                 <FormControl className={classes.formControl}>
@@ -276,13 +350,13 @@ export default function Cadastro() {
                                                                         <MenuItem value={"Atlética PoliUFBA"}>Atlética PoliUFBA</MenuItem>
                                                                     </Select>
                                                                 </FormControl>
-
                                                             </Grid>
+
 
                                                             <Grid item xs={6}>
-
                                                                 <Button type='submit' style={{ width: 230, marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
                                                             </Grid>
+
                                                         </Grid>
                                                     </AvForm>
 
@@ -308,6 +382,72 @@ export default function Cadastro() {
                                                                 maxLength: { value: 20, errorMessage: "Nome muito grande" }
 
                                                             }} />
+
+                                                            <p className="MySubtitle">Endereço</p>
+                                                            <p className="MySubtitle2">O campus que sua atlética está sediada</p>
+
+                                                            <Grid container spacing={1}>
+
+                                                                <Grid item xs={6} >
+
+                                                                    <AvField data-cy='cep-input' value={cepcp} onChange={handleCepChange} name="cep" label="CEP" type="text"
+                                                                        placeholder="00000000" validate={{
+                                                                            required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                            pattern: { value: '[0-9]', errorMessage: "Use apenas números" },
+                                                                            minLength: { value: 8, errorMessage: "CEP inválido" },
+                                                                            maxLength: { value: 8, errorMessage: "CEP inválido" }
+
+                                                                        }} />
+
+                                                                </Grid>
+
+                                                                <Grid item xs={6}>
+
+                                                                    <AvField value={number} onChange={handleChangeNumber} name="num" label="Número"
+                                                                        validate={{
+                                                                            required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                            pattern: { value: '[0-9]', errorMessage: "Senha inválida" },
+                                                                        }}
+                                                                    />
+
+                                                                </Grid>
+
+                                                                <Grid item xs={6} >
+
+                                                                    <AvField value={state} name="estado" label="Estado" type="text" />
+
+                                                                </Grid>
+
+                                                                <Grid item xs={6}>
+
+                                                                    <AvField value={city} name="cidade" label="Cidade" type="text" />
+
+                                                                </Grid>
+
+                                                                <Grid item xs={6}>
+
+                                                                    <AvField value={neighbourhood} name="bairro" label="Bairro" type="text" />
+
+                                                                </Grid>
+
+                                                                <Grid item xs={6}>
+
+                                                                    <AvField value={street} name="rua" label="Rua" type="text" />
+
+                                                                </Grid>
+
+                                                                <Grid item xs={12} style={{ marginBottom: 20 }}>
+
+                                                                    <AvField value={complemento} label="Complemento" name="complemento" type="text" onChange={handleComplementoChange}
+                                                                        validate={{
+                                                                            maxLength: { value: 255, errorMessage: "Muito grande" }
+
+                                                                        }} />
+
+                                                                </Grid>
+
+                                                            </Grid>
+
                                                             <AvField name="senha" label="Senha" type="password" validate={{
                                                                 required: { value: true, errorMessage: "Campo obrigatório" },
                                                                 minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
