@@ -5,7 +5,6 @@ import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import cep from 'cep-promise'
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem"
-import BotaoUploadImagemMobile from "../../Components/BotaoUploadImagemMobile"
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar"
 import "./styles.css"
 
@@ -76,6 +75,7 @@ export default function EditarPerfil() {
     const [complemento, setComplemento] = useState('');
 
     const [descricao, setDescricao] = useState('')
+    const [link, setLink] = useState('')
 
     const [imagemPerfil, setImagemPerfil] = useState(null);
     const [pathPerfil, setPathPerfil] = useState();
@@ -111,6 +111,11 @@ export default function EditarPerfil() {
     const handleChangeDescricao = (e) => {
         e.preventDefault();
         setDescricao(e.target.value);
+    };
+
+    const handleChangeLink = (e) => {
+        e.preventDefault();
+        setLink(e.target.value);
     };
 
 
@@ -162,6 +167,13 @@ export default function EditarPerfil() {
                                             maxLength: { value: 300 }
                                         }} />
 
+
+                                    <br />
+
+                                    <p className="MySubtitle">Link do processo seletivo</p>
+                                    <p className="MySubtitle2">Disponibilize no perfil o link para o processo seletivo da sua atlética</p>
+
+                                    <AvField name="link" type="text" onChange={handleChangeLink} />
 
                                     <br />
 
