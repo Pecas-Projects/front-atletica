@@ -70,6 +70,8 @@ export default function CardAddModalidade() {
     const [modalidade, setModalidade] = useState('')
     const [openCriado, setOpenCriado] = useState(false)
     const [openErro, setOpenErro] = useState(false)
+    const [horaTreino, setHoraTreino] = useState(false)
+    const [diaTreino, setDiaTreino] = useState(false)
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -118,6 +120,14 @@ export default function CardAddModalidade() {
 
         setOpenErro(false);
     };
+
+    const handleHorarioChange = (e) => {
+        setHoraTreino(e.target.value)
+    }
+
+    const handleDiaChange = (e) => {
+        setDiaTreino(e.target.value)
+    }
 
 
     return (
@@ -181,6 +191,23 @@ export default function CardAddModalidade() {
                                     <>
                                     </>
                                 )}
+                        </Grid>
+
+                        <Grid item xs={12} style={{ marginTop: 10 }}>
+
+
+                            <AvField style={{ width: "100%" }} onChange={handleDiaChange} name="name" type="date" label="Dia do treino" validate={{
+                            }} />
+
+
+                        </Grid>
+
+                        <Grid item xs={12} style={{ marginTop: 10 }}>
+
+
+                            <AvField style={{ width: "100%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
+
+
                         </Grid>
 
                         <Grid item xs={12} style={{ marginTop: 10 }}>

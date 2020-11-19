@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Grid, Paper, Button, TextField, MenuItem, Dialog, DialogActions, DialogTitle, Snackbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { AvForm, AvField } from 'availity-reactstrap-validation';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
@@ -70,6 +71,8 @@ export default function CardModalidade(props) {
     const [openSalvo, setOpenSalvo] = useState(false)
     const [openExcluir, setOpenExcluir] = useState(false)
     const [openExcluido, setOpenExcluido] = useState(false)
+    const [horaTreino, setHoraTreino] = useState(false)
+    const [diaTreino, setDiaTreino] = useState(false)
     const [array, setArray] = useState(item.atletas)
 
     function showAdicionarImagem() {
@@ -178,6 +181,15 @@ export default function CardModalidade(props) {
     const handleMembroChange = (e) => {
         setCorrdenador(e.target.value)
     }
+
+    const handleHorarioChange = (e) => {
+        setHoraTreino(e.target.value)
+    }
+
+    const handleDiaChange = (e) => {
+        setDiaTreino(e.target.value)
+    }
+
 
     return (
 
@@ -310,7 +322,7 @@ export default function CardModalidade(props) {
 
                 <Collapse in={expandedModalidade} timeout="auto" unmountOnExit>
 
-                    <form>
+                    <AvForm>
                         <Grid container style={{ marginTop: 30 }}>
 
                             <Grid item xs={4}>
@@ -335,6 +347,23 @@ export default function CardModalidade(props) {
 
                             <Grid item xs={8}>
 
+                                <Grid item xs={12} style={{ marginTop: 10 }}>
+
+
+                                    <AvField style={{ width: "70%" }} onChange={handleDiaChange} name="name" type="date" label="Dia do treino" validate={{
+                                    }} />
+
+
+                                </Grid>
+
+                                <Grid item xs={12} style={{ marginTop: 10 }}>
+
+
+                                    <AvField style={{ width: "70%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
+
+
+                                </Grid>
+
                                 <Grid item xs={12}>
                                     <TextField
                                         id="standard-select-coordenador"
@@ -343,6 +372,7 @@ export default function CardModalidade(props) {
                                         value={coordenador}
                                         onChange={handleMembroChange}
                                         helperText="Selecione o membro que coordena essa modalidade"
+                                        style={{ width: "70%" }}
                                     >
                                         {membros.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -352,22 +382,30 @@ export default function CardModalidade(props) {
                                     </TextField>
                                 </Grid>
 
-                                <Grid item xs={12}>
+                            </Grid>
 
-                                    <Button onClick={() => setOpenSalvo(true)} style={{ width: "45%", marginTop: 50 }} variant='contained' color='secondary'>Salvar Alterações</Button>
+                            <Grid container >
+
+                                <Grid item xs={6}>
+
+                                    <Button onClick={handleExcluir} style={{ width: "85%", marginTop: 50 }} variant='outlined' color='primary'>Excluir Modalidade</Button>
 
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item xs={6}>
 
-                                    <Button onClick={handleExcluir} style={{ width: "45%", marginTop: 50 }} variant='outlined' color='primary'>Excluir Modalidade</Button>
+                                    <Grid container justify='flex-end'>
+
+                                        <Button onClick={() => setOpenSalvo(true)} style={{ width: "85%", marginTop: 50 }} variant='contained' color='secondary'>Salvar Alterações</Button>
+
+                                    </Grid>
 
                                 </Grid>
 
                             </Grid>
 
                         </Grid>
-                    </form>
+                    </AvForm>
 
                 </Collapse>
 

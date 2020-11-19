@@ -73,6 +73,8 @@ export default function CardAddModalidade() {
     const [genero, setGenero] = useState('')
     const [openCriado, setOpenCriado] = useState(false)
     const [openErro, setOpenErro] = useState(false)
+    const [horaTreino, setHoraTreino] = useState(false)
+    const [diaTreino, setDiaTreino] = useState(false)
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -96,6 +98,14 @@ export default function CardAddModalidade() {
 
     const handleModalidadeChange = (e) => {
         setModalidade(e.target.value)
+    }
+
+    const handleHorarioChange = (e) => {
+        setHoraTreino(e.target.value)
+    }
+
+    const handleDiaChange = (e) => {
+        setDiaTreino(e.target.value)
     }
 
     const handleClickCriado = () => {
@@ -203,7 +213,25 @@ export default function CardAddModalidade() {
 
                         </Grid>
 
-                        <Grid item xs={4} style={{ marginTop: 20, marginLeft: 50 }}>
+                        <Grid item xs={4} style={{ marginLeft: 50 }}>
+
+                            <Grid item xs={12} style={{ marginTop: 10 }}>
+
+
+                                <AvField style={{ width: "100%" }} onChange={handleDiaChange} name="name" type="date" label="Dia do treino" validate={{
+                                }} />
+
+
+                            </Grid>
+
+                            <Grid item xs={12} style={{ marginTop: 10 }}>
+
+
+                                <AvField style={{ width: "100%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
+
+
+                            </Grid>
+
 
                             <Grid item xs={12}>
                                 <Grid container justify='flex-end'>
@@ -226,8 +254,7 @@ export default function CardAddModalidade() {
                             </Grid>
 
 
-
-                            <Grid item xs={12} style={{ marginTop: 40 }}>
+                            <Grid item xs={12} >
 
                                 <TextField
                                     id="standard-select-genero"
@@ -246,6 +273,7 @@ export default function CardAddModalidade() {
                                 </TextField>
 
                             </Grid>
+
 
                             <Grid item xs={12} style={{ marginTop: 40 }}>
 
