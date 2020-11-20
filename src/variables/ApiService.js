@@ -1,4 +1,8 @@
 import api from "../services/api";
+let userId;
+export function SetUserId(id) {
+  userId = id;
+}
 
 const ApiService = {
   LoginAtletica: (crecencial) => {
