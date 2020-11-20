@@ -232,17 +232,17 @@ export default function Cadastro() {
             nome: atletica.Nome,
             email: atletica.Email,
             senha: atletica.Senha,
-
-            nome: complemento,
-            cidade: city,
-            bairro: neighbourhood,
-            rua: street,
-            estado: state,
-            cep: cepcp,
-
-
-            nome: atletica.faculdade,
-
+            campus: {
+                nome: complemento,
+                cidade: city,
+                bairro: neighbourhood,
+                rua: street,
+                estado: state,
+                cep: cepcp,
+            },
+            faculdade: {
+                nome: atletica.faculdade
+            },
             cursosIds: []
 
         }
@@ -743,6 +743,104 @@ export default function Cadastro() {
                                                         maxLength: { value: 20, errorMessage: "Nome muito grande" }
 
                                                     }} />
+
+                                                    <TextField
+                                                        fullWidth
+                                                        id="standard-select-coordenador"
+                                                        select
+                                                        label="Faculdade"
+                                                        style={{ marginBottom: 20 }}
+                                                        // value={coordenador}
+                                                        onChange={handleAtleticaFaculdade}
+                                                    >
+                                                        {/* {membros.map((option) => (
+                                                                    <MenuItem key={option.value} value={option.value}>
+                                                                        {option.value}
+                                                                    </MenuItem>
+                                                                ))} */}
+                                                    </TextField>
+
+                                                    <p className='subtitle2'>Cursos presentes na sua atlética</p>
+
+
+                                                    <div className='scroll'>
+
+                                                        <FormControl component="fieldset" className={classes.formControl}>
+
+                                                            <FormGroup>
+                                                                {cursos.map((option) => (
+                                                                    <FormControlLabel
+                                                                        control={<Checkbox onChange={handleAtleticaCursos} name={option} />}
+                                                                        label={option}
+                                                                    />
+
+                                                                ))}
+
+                                                            </FormGroup>
+                                                        </FormControl>
+
+
+                                                    </div>
+
+                                                    <Grid item xs={12} >
+
+                                                        <AvField data-cy='cep-input' value={cepcp} onChange={handleCepChange} name="cep" label="CEP" type="text"
+                                                            placeholder="00000000" validate={{
+                                                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                pattern: { value: '[0-9]', errorMessage: "Use apenas números" },
+                                                                minLength: { value: 8, errorMessage: "CEP inválido" },
+                                                                maxLength: { value: 8, errorMessage: "CEP inválido" }
+
+                                                            }} />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+
+                                                        <AvField value={number} onChange={handleChangeNumber} name="num" label="Número"
+                                                            validate={{
+                                                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                pattern: { value: '[0-9]', errorMessage: "Senha inválida" },
+                                                            }}
+                                                        />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12} >
+
+                                                        <AvField value={state} name="estado" label="Estado" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+
+                                                        <AvField value={city} name="cidade" label="Cidade" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+
+                                                        <AvField value={neighbourhood} name="bairro" label="Bairro" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+
+                                                        <AvField value={street} name="rua" label="Rua" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12} style={{ marginBottom: 20 }}>
+
+                                                        <AvField value={complemento} label="Complemento" name="complemento" type="text" onChange={handleComplementoChange}
+                                                            validate={{
+                                                                maxLength: { value: 255, errorMessage: "Muito grande" }
+
+                                                            }} />
+
+                                                    </Grid>
+
+
                                                     <AvField name="senha" label="Senha" type="password" validate={{
                                                         required: { value: true, errorMessage: "Campo obrigatório" },
                                                         minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
