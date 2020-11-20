@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, Paper, Fade } from "@material-ui/core";
+import { Button, Grid, Paper, Fade, TextField, Checkbox, FormGroup } from "@material-ui/core";
 import { AvField, AvForm } from "availity-reactstrap-validation"
 import "./styles.css"
 import cep from 'cep-promise'
@@ -18,6 +18,8 @@ import InputMask from 'react-input-mask';
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem"
 import { Input } from 'reactstrap';
 import ProfileUndraw from '../../assets/imagem/undraw_profile.svg'
+import ApiService from "../../variables/ApiService"
+
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 
 
@@ -73,10 +75,15 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    chip: {
+        margin: theme.spacing(0.5),
+    },
 
 }));
 
 export default function Cadastro() {
+
+    const cursos = ["curso1", "curso2", "curso3", "curso4", "engenharia", "medicina", "Biologia", "matemática"];
 
     const classes = useStyles();
 
@@ -94,11 +101,15 @@ export default function Cadastro() {
     const [city, setCity] = useState('');
     const [number, setNumber] = useState('');
     const [complemento, setComplemento] = useState('');
+    const [senhaAtletica, setSenhaAtletica] = useState('')
+
 
     const [atletica, setAtletica] = useState({
         Nome: "",
         Email: "",
-        Senha: ""
+        Senha: "",
+        faculdade: "Faculdade Braba",
+        cursos: []
     });
 
     const [membro, setMembro] = useState({
@@ -122,7 +133,29 @@ export default function Cadastro() {
 
     const handleAtleticaSenha = (event) => {
         setAtletica({ ...atletica, Senha: event.target.value });
+        console.log(event.taget.value)
     };
+
+    const handleAtleticaFaculdade = (event) => {
+        setAtletica({ ...atletica, faculdade: event.target.value });
+    };
+
+    const handleAtleticaCursos = (e) => {
+
+        if (atletica.cursos.indexOf(e.target.name) === -1) {
+
+            atletica.cursos.push(e.target.name)
+        }
+        else {
+
+            var aux = atletica.cursos.filter(function (nome) { return nome !== e.target.name })
+
+            atletica.cursos = aux;
+        }
+
+        console.log(atletica.cursos)
+    };
+
 
     const handleMembroNome = (event) => {
         setMembro({ ...membro, Nome: event.target.value });
@@ -191,7 +224,38 @@ export default function Cadastro() {
     }
 
 
+    const onFormSubmit = async (e) => {
+        e.preventDefault();
 
+        let Atletica = {
+
+            nome: atletica.Nome,
+            email: atletica.Email,
+            senha: atletica.Senha,
+
+            nome: complemento,
+            cidade: city,
+            bairro: neighbourhood,
+            rua: street,
+            estado: state,
+            cep: cepcp,
+
+
+            nome: atletica.faculdade,
+
+            cursosIds: []
+
+        }
+
+        await ApiService.CadastroAtletica(Atletica)
+            .then(res => {
+                console.log(res)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }
 
 
     return (
@@ -367,10 +431,9 @@ export default function Cadastro() {
                                                     <Fade in={showAtletica}>
 
 
-                                                        <AvForm>
+                                                        <AvForm onValidSubmit={onFormSubmit}>
                                                             <AvField onChange={handleAtleticaEmail} name="email" label="E-mail" type="text" validate={{
                                                                 required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "E-mail inválido" },
                                                                 minLength: { value: 10, errorMessage: "E-mail muito pequeno" },
 
                                                             }} />
@@ -382,6 +445,44 @@ export default function Cadastro() {
                                                                 maxLength: { value: 20, errorMessage: "Nome muito grande" }
 
                                                             }} />
+
+                                                            <TextField
+                                                                fullWidth
+                                                                id="standard-select-coordenador"
+                                                                select
+                                                                label="Faculdade"
+                                                                style={{ marginBottom: 20 }}
+                                                                // value={coordenador}
+                                                                onChange={handleAtleticaFaculdade}
+                                                            >
+                                                                {/* {membros.map((option) => (
+                                                                    <MenuItem key={option.value} value={option.value}>
+                                                                        {option.value}
+                                                                    </MenuItem>
+                                                                ))} */}
+                                                            </TextField>
+
+                                                            <p className='subtitle2'>Cursos presentes na sua atlética</p>
+
+
+                                                            <div className='scroll'>
+
+                                                                <FormControl component="fieldset" className={classes.formControl}>
+
+                                                                    <FormGroup>
+                                                                        {cursos.map((option) => (
+                                                                            <FormControlLabel
+                                                                                control={<Checkbox onChange={handleAtleticaCursos} name={option} />}
+                                                                                label={option}
+                                                                            />
+
+                                                                        ))}
+
+                                                                    </FormGroup>
+                                                                </FormControl>
+
+
+                                                            </div>
 
                                                             <p className="MySubtitle">Endereço</p>
                                                             <p className="MySubtitle2">O campus que sua atlética está sediada</p>
@@ -448,17 +549,26 @@ export default function Cadastro() {
 
                                                             </Grid>
 
-                                                            <AvField name="senha" label="Senha" type="password" validate={{
-                                                                required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
+                                                            <Grid item xs={12}>
 
-                                                            }} />
-                                                            <AvField onChange={handleAtleticaSenha} name="ConfirmarSenha" label="Confirme sua senha" type="password" validate={{
-                                                                required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                match: { value: "senha", errorMessage: "Senhas diferentes" }
+                                                                <AvField name="SENHA" label="Senha" type="password" validate={{
+                                                                    required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                    pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "Senha inválida" },
+                                                                    minLength: { value: 6, errorMessage: "Senha fraca" },
 
-                                                            }} />
+                                                                }} />
 
+                                                            </Grid>
+
+                                                            <Grid item xs={12}>
+
+                                                                <AvField name="Confirmada" label="Confirme sua senha" type="password" validate={{
+                                                                    required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                    pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "Senha inválida" },
+                                                                    match: { value: 'SENHA', errorMessage: "Senhas diferentes" }
+                                                                }} />
+
+                                                            </Grid>
                                                             <Grid item xs={12}>
 
                                                                 <Button type='submit' style={{ width: "100%", marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
