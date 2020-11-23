@@ -31,6 +31,16 @@ const ApiService = {
       .catch((error) => {
         return Promise.reject(error);
       });
+  },
+  CriarSolicitacaoAtleta: (atleticaId, atleta) => {
+    return api
+      .post("/api/SolicitacaoAtleta/" + atleticaId, atleta)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
   }
 };
 
