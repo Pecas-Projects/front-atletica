@@ -379,9 +379,7 @@ export default function Perfil() {
                           <AvField style={{ width: "90%" }} name="whatsapp" label="WhatsApp" type="text" tag={[Input, InputMask]}
                             onChange={handleWhatsApp} mask="(99) 99999-9999" validate={{
                               required: { value: true, errorMessage: "Campo obrigatório" },
-                              pattern: { value: "[0-9]", errorMessage: "Utilize apenas números" },
-                              minLength: { value: 10, errorMessage: 'Número inválido' },
-                              maxLength: { value: 17, errorMessage: 'Número inválido' }
+                              pattern: { value: "[0-9]", errorMessage: "Utilize apenas números" }
                             }} />
 
 
@@ -646,9 +644,7 @@ export default function Perfil() {
                         <AvField name="whatsapp" label="WhatsApp" type="text" onChange={handleWhatsApp}
                           tag={[Input, InputMask]} mask="(99) 99999-9999" validate={{
                             required: { value: true, errorMessage: "Campo obrigatório" },
-                            pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
-                            minLength: { value: 10, errorMessage: 'Número inválido' },
-                            maxLength: { value: 17, errorMessage: 'Número inválido' }
+                            pattern: { value: "\d*", errorMessage: "Utilize apenas números" }
                           }} />
 
 
