@@ -12,4 +12,17 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+  BuscarTodosCursos: () => {
+    return api
+      .get("/api/Cursos")
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  }
 };
+
+export default ApiService;
