@@ -100,14 +100,13 @@ export default function Cadastro() {
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [number, setNumber] = useState('');
-    const [complemento, setComplemento] = useState('');
+    const [nomeCampus, setNomeCampus] = useState('');
     const [senhaAtletica, setSenhaAtletica] = useState('')
 
 
     const [atletica, setAtletica] = useState({
         Nome: "",
         Email: "",
-        Senha: "",
         faculdade: "Faculdade Braba",
         cursos: []
     });
@@ -132,8 +131,7 @@ export default function Cadastro() {
     };
 
     const handleAtleticaSenha = (event) => {
-        setAtletica({ ...atletica, Senha: event.target.value });
-        console.log(event.taget.value)
+        setSenhaAtletica(event.target.value)
     };
 
     const handleAtleticaFaculdade = (event) => {
@@ -207,9 +205,9 @@ export default function Cadastro() {
         }
     };
 
-    const handleComplementoChange = (e) => {
+    const handleNomeCampusChange = (e) => {
         e.preventDefault();
-        setComplemento(e.target.value);
+        setNomeCampus(e.target.value);
     };
 
     const handleChangeNumber = (e) => {
@@ -228,30 +226,37 @@ export default function Cadastro() {
         e.preventDefault();
 
         let Atletica = {
+            Nome: atletica.Nome,
+            Email: atletica.Email,
+            senha: senhaAtletica,
+            Descricao: " ",
+            CursosIds: [1],
+            Campus: {
+                Cidade: city,
+                Bairro: neighbourhood,
+                Rua: street,
+                Estado: state,
+                CEP: cepcp,
+                Nome: "Cimatreco",
+                Faculdade: {
+                    Nome: "Seiani Cimatec"
+                }
 
-            nome: atletica.Nome,
-            email: atletica.Email,
-            senha: atletica.Senha,
-            campus: {
-                nome: complemento,
-                cidade: city,
-                bairro: neighbourhood,
-                rua: street,
-                estado: state,
-                cep: cepcp,
-            },
-            faculdade: {
-                nome: atletica.faculdade
-            },
-            cursosIds: []
-
+            }
         }
 
-        await ApiService.CadastroAtletica(Atletica)
+        console.log(Atletica)
+        console.log(typeof (Atletica))
+
+
+        ApiService.CadastroAtletica(Atletica)
+
             .then(res => {
+                console.log("01")
                 console.log(res)
             })
             .catch(error => {
+                console.log("02")
                 console.log(error)
             })
 
@@ -406,7 +411,7 @@ export default function Cadastro() {
                                                                         id="demo-simple-select-outlined"
                                                                         value={membro.Atletica}
                                                                         onChange={handleMembroAtletica}
-                                                                        label="Age"
+                                                                        label="Atleticas"
                                                                     >
 
                                                                         <MenuItem value={"Cimatlética"}>Cimatlética</MenuItem>
@@ -489,7 +494,7 @@ export default function Cadastro() {
 
                                                             <Grid container spacing={1}>
 
-                                                                <Grid item xs={6} >
+                                                                <Grid item xs={12} >
 
                                                                     <AvField data-cy='cep-input' value={cepcp} onChange={handleCepChange} name="cep" label="CEP" type="text"
                                                                         placeholder="00000000" validate={{
@@ -502,16 +507,6 @@ export default function Cadastro() {
 
                                                                 </Grid>
 
-                                                                <Grid item xs={6}>
-
-                                                                    <AvField value={number} onChange={handleChangeNumber} name="num" label="Número"
-                                                                        validate={{
-                                                                            required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                            pattern: { value: '[0-9]', errorMessage: "Senha inválida" },
-                                                                        }}
-                                                                    />
-
-                                                                </Grid>
 
                                                                 <Grid item xs={6} >
 
@@ -539,10 +534,9 @@ export default function Cadastro() {
 
                                                                 <Grid item xs={12} style={{ marginBottom: 20 }}>
 
-                                                                    <AvField value={complemento} label="Complemento" name="complemento" type="text" onChange={handleComplementoChange}
+                                                                    <AvField value={nomeCampus} label="Nome do Campus" name="complemento" type="text" onChange={handleNomeCampusChange}
                                                                         validate={{
                                                                             maxLength: { value: 255, errorMessage: "Muito grande" }
-
                                                                         }} />
 
                                                                 </Grid>
@@ -562,7 +556,7 @@ export default function Cadastro() {
 
                                                             <Grid item xs={12}>
 
-                                                                <AvField name="Confirmada" label="Confirme sua senha" type="password" validate={{
+                                                                <AvField name="Confirmada" value={atletica.Senha} onChange={handleAtleticaSenha} label="Confirme sua senha" type="password" validate={{
                                                                     required: { value: true, errorMessage: "Campo obrigatório" },
                                                                     pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "Senha inválida" },
                                                                     match: { value: 'SENHA', errorMessage: "Senhas diferentes" }
@@ -795,16 +789,6 @@ export default function Cadastro() {
 
                                                     </Grid>
 
-                                                    <Grid item xs={12}>
-
-                                                        <AvField value={number} onChange={handleChangeNumber} name="num" label="Número"
-                                                            validate={{
-                                                                required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                pattern: { value: '[0-9]', errorMessage: "Senha inválida" },
-                                                            }}
-                                                        />
-
-                                                    </Grid>
 
                                                     <Grid item xs={12} >
 
@@ -832,7 +816,7 @@ export default function Cadastro() {
 
                                                     <Grid item xs={12} style={{ marginBottom: 20 }}>
 
-                                                        <AvField value={complemento} label="Complemento" name="complemento" type="text" onChange={handleComplementoChange}
+                                                        <AvField value={nomeCampus} label="Nome do campus" name="nomeCampus" type="text" onChange={handleNomeCampusChange}
                                                             validate={{
                                                                 maxLength: { value: 255, errorMessage: "Muito grande" }
 
