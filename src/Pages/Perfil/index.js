@@ -14,6 +14,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import ApiService from '../../variables/ApiService'
 import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -125,8 +126,6 @@ export default function Perfil() {
     },
   ]
 
-  const cursos = ["Engenharia da computação", "Análise de sistemas", "Engenharia de software", "Tecnologia da informação"]
-
   const modalidades = [
     "Futebol", "Vôlei", "Basquete", "Atletismo", "Futsal", "Vôlei de Praia", "Natação",
   ]
@@ -149,6 +148,21 @@ export default function Perfil() {
   })
 
   const [opcao, setOpcao] = useState('Atleta')
+  const [cursos, setCursos] = useState([])
+
+  useEffect(() => {
+    buscarCursos();
+  }, []);
+
+  const buscarCursos = async () => {
+    await ApiService.BuscarTodosCursos()
+      .then(res =>
+        setCursos(res.data)
+      )
+      .catch(err =>
+        console.log(err)
+      )
+  }
 
   const handleEmail = (e) => {
     setAtleta({ ...atleta, Email: e.target.value })
@@ -338,8 +352,8 @@ export default function Perfil() {
 
                           >
                             {cursos.map((option) => (
-                              <MenuItem key={option} value={option}>
-                                {option}
+                              <MenuItem key={option.cursoId} value={option.cursoId}>
+                                {option.nome}
                               </MenuItem>
                             ))}
                           </TextField>
@@ -591,8 +605,8 @@ export default function Perfil() {
 
                         >
                           {cursos.map((option) => (
-                            <MenuItem key={option} value={option}>
-                              {option}
+                            <MenuItem key={option.cursoId} value={option.cursoId}>
+                              {option.nome}
                             </MenuItem>
                           ))}
                         </TextField>
