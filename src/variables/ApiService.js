@@ -19,7 +19,16 @@ const ApiService = {
         return Promise.resolve(res);
       })
       .catch((error) => {
-        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+  BuscarAtleticaModalidades: (atleticaId) => {
+    return api
+      .get("/api/AtleticaModalidade/" + atleticaId)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
         return Promise.reject(error);
       });
   }
