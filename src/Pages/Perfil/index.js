@@ -126,10 +126,6 @@ export default function Perfil() {
     },
   ]
 
-  const modalidades = [
-    "Futebol", "Vôlei", "Basquete", "Atletismo", "Futsal", "Vôlei de Praia", "Natação",
-  ]
-
   const generos = [
     "Feminino", "Masculino", "Misto"
   ]
@@ -149,15 +145,27 @@ export default function Perfil() {
 
   const [opcao, setOpcao] = useState('Atleta')
   const [cursos, setCursos] = useState([])
+  const [modalidades, setModalidades] = useState([])
 
   useEffect(() => {
     buscarCursos();
+    buscarModalidades();
   }, []);
 
   const buscarCursos = async () => {
     await ApiService.BuscarTodosCursos()
       .then(res =>
         setCursos(res.data)
+      )
+      .catch(err =>
+        console.log(err)
+      )
+  }
+
+  const buscarModalidades = async () => {
+    await ApiService.BuscarAtleticaModalidades(1)
+      .then(res =>
+        setModalidades(res.data)
       )
       .catch(err =>
         console.log(err)
@@ -377,31 +385,34 @@ export default function Perfil() {
 
 
                         </Grid>
+                        {
+                          modalidades.length == 0 ? null :
+                            <Grid item xs={4}>
 
-                        <Grid item xs={4}>
-
-                          <div className='scroll'>
-
-
-
-                            <FormControl component="fieldset" className={classes.formControl}>
-                              <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
-                              <FormGroup>
-                                {modalidades.map((option) => (
-                                  <FormControlLabel
-                                    control={<Checkbox onChange={handleModalidades} name={option} />}
-                                    label={option}
-                                  />
-
-                                ))}
-
-                              </FormGroup>
-                            </FormControl>
+                              <div className='scroll'>
 
 
-                          </div>
 
-                        </Grid>
+                                <FormControl component="fieldset" className={classes.formControl}>
+                                  <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
+                                  <FormGroup>
+                                    {modalidades.map((option) => (
+                                      <FormControlLabel
+                                        control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
+                                        label={option.modalidade}
+                                      />
+
+                                    ))}
+
+                                  </FormGroup>
+                                </FormControl>
+
+
+                              </div>
+
+                            </Grid>
+                        }
+
 
                         <Grid item xs={12}  >
 
@@ -633,25 +644,28 @@ export default function Perfil() {
                         </TextField>
 
                       </Grid>
+                      {
+                        modalidades.length == 0 ? null :
+                          <Grid container justify='center'>
 
-                      <Grid container justify='center'>
 
+                            <FormControl component="fieldset" className={classes.formControl}>
+                              <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
+                              <FormGroup>
+                                {modalidades.map((option) => (
+                                  <FormControlLabel
+                                    control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
+                                    label={option.modalidade}
+                                  />
 
-                        <FormControl component="fieldset" className={classes.formControl}>
-                          <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
-                          <FormGroup>
-                            {modalidades.map((option) => (
-                              <FormControlLabel
-                                control={<Checkbox onChange={handleModalidades} name={option} />}
-                                label={option}
-                              />
+                                ))}
 
-                            ))}
+                              </FormGroup>
+                            </FormControl>
 
-                          </FormGroup>
-                        </FormControl>
+                          </Grid>
+                      }
 
-                      </Grid>
 
                       <Grid item xs={12}  >
 
