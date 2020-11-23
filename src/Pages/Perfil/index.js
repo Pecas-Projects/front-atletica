@@ -718,7 +718,12 @@ export default function Perfil() {
                       <Grid item xs={12}  >
 
 
-                        <Button style={{ backgroundColor: "#DB4922", width: "100%", marginTop: 10 }} variant="contained">Enviar</Button>
+                        <Button
+                          style={{ backgroundColor: "#DB4922", width: "100%", marginTop: 10 }}
+                          variant="contained"
+                          onClick={enviarSolicitacao}>
+                          Enviar
+                        </Button>
 
 
                       </Grid>
