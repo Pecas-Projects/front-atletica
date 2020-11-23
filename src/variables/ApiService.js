@@ -14,9 +14,9 @@ const ApiService = {
       });
   },
 
-  CadastroAtletica: () => {
+  CadastroAtletica: (Atletica) => {
     return api
-      .post("/api/Registro/Atletica")
+      .post("/api/Registro/Atletica", Atletica)
       .then((res) => {
         return Promise.resolve(res);
       })
