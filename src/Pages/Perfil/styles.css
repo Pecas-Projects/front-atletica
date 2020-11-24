@@ -5,10 +5,29 @@
   height: 400px;
 }
 
+.MyTitle {
+  font-size: 24px;
+  font-family: "Roboto Condensed";
+  color: white;
+}
+
 .subtitle {
   font-size: 18px;
   font-family: "Roboto Condensed";
   margin-bottom: 20px;
+}
+
+.subtitleW {
+  font-size: 18px;
+  font-family: "Roboto Condensed";
+  margin-bottom: 20px;
+  color: white;
+}
+
+.subtitle2W {
+  font-size: 14px;
+  font-family: "Roboto Condensed";
+  color: white;
 }
 
 .subtitle2 {
@@ -25,4 +44,32 @@
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 300px;
+}
+
+.relativeCard {
+  position: relative;
+}
+
+.absoluteCard {
+  position: absolute;
+  left: 190px;
+  top: 150px;
+}
+
+.absoluteTitle {
+  position: absolute;
+  top: 290px;
+  left: 470px;
+}
+
+.absoluteDescricao {
+  position: absolute;
+  top: 420px;
+  left: 130px;
+  width: 1000px;
+}
+
+.absoluteBackgroud {
+  position: absolute;
+  top: 100px;
 }

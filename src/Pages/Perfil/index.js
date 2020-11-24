@@ -3,7 +3,7 @@ import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Grid, Paper, Button, Checkbox, FormGroup, FormLabel } from "@material-ui/core";
 import Navbar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-// import fotoCapa from "../../assets/imagem/fotoCapa.png"
+import fotoCapa from "../../assets/imagem/fotoCapa.png"
 import CardMembro from "./Components/CardMembro"
 import contactImage from "../../assets/imagem/undraw_contact_u.svg"
 import InputMask from 'react-input-mask';
@@ -14,6 +14,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import PerfilBackground from '../../assets/imagem/fundo_pagina.png'
+import FotoPerfil from "../../assets/imagem/fotoPerfil.png"
 import "./styles.css"
 
 const useStyles = makeStyles((theme) => ({
@@ -232,6 +234,47 @@ export default function Perfil() {
             <Grid item xs={12} >
 
               <Grid container justify='center'>
+
+                <div className='relativeCard'>
+
+                  <Grid container justify='center'>
+
+                    <div className='absoluteCard'>
+
+                      <img style={{ width: 200, height: 200, borderRadius: 180 }} src={FotoPerfil} alt="fotoPerfil" />
+
+                    </div>
+
+                    <img style={{ width: "85%", borderRadius: 6 }} src={fotoCapa} alt='fotoCapa' />
+
+                    <div className='absoluteBackgroud'>
+
+                      <img style={{ width: "85%" }} src={PerfilBackground} alt='PerfilBackgroud' />
+
+                    </div>
+
+                  </Grid>
+
+                  <div className="absoluteTitle">
+
+                    <h3 className="MyTitle">Cimatlética - Atlética do SENAI CIMATEC</h3>
+
+                  </div>
+
+                  <div className='absoluteDescricao'>
+
+                    <p className='subtitleW' >SOBRE NÒS</p>
+
+                    <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                       non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+                  </div>
+
+                </div>
 
                 <Paper className={classes.paperA}>
 
