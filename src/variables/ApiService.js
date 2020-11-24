@@ -24,6 +24,19 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
+  },
+
+  CadastroMembro: (Membro, PIN) => {
+    return api
+      // .post(`/api​/Registro​/Membro​/${PIN}`, Membro)
+      .post(`/api/Registro/Membro/${PIN}`, Membro)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
   }
 
 };
