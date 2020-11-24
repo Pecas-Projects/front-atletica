@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { useState } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Paper } from "@material-ui/core";
@@ -10,11 +10,8 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import ApiService from "../../variables/ApiService";
+import ApiService, { SetUserIdAndType } from "../../variables/ApiService";
 import api from "../../services/api";
-const AuthContext = createContext({ signed: null, user: {} });
-
-// import fotoPublicacao from "../../assets/imagem/image 6.svg"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,30 +59,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
 
-  useEffect(() => {
-    // setLoading(true);
-    function loadStoragedData() {
-      const storagedToken = localStorage.getItem("@Olympos:token");
-
-      if (storagedToken) {
-        api.defaults.headers["Authorization"] = `Bearer ${storagedToken}`;
-
-        ApiService.GetUserData()
-          .then((response) => {
-            console.log(response.data);
-            //SetUserId(response.data.company.id);
-            //setUser(response.data);
-            //setLoading(false);
-          })
-          .catch((error) => {
-            console.log(error);
-            //setLoading(false);
-          });
-      }
-    }
-    loadStoragedData();
-  }, []);
-
   const [login, setLogin] = useState({
     Email: " ",
     Senha: " ",
@@ -112,16 +85,25 @@ export default function Login() {
       senha: login.Senha,
     };
 
-    console.log(loginData);
-    ApiService.LoginAtletica(loginData)
-      .then((res) => {
-        console.log(res.data);
-
-        api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
-
-        localStorage.setItem("@Olympos:token", res.data.token);
-      })
-      .catch((res) => console.log(res));
+    if (login.Type == "Atletica") {
+      ApiService.LoginAtletica(loginData)
+        .then((res) => {
+          api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
+          localStorage.setItem("@Olympos:token", res.data.token);
+          SetUserIdAndType(res.data.atletica.atleticaId, "A");
+          window.location.href = "/";
+        })
+        .catch((res) => console.log(res));
+    } else {
+      ApiService.LoginMembro(loginData)
+        .then((res) => {
+          api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
+          localStorage.setItem("@Olympos:token", res.data.token);
+          SetUserIdAndType(res.data.atletica.atleticaId, "M");
+          window.location.href = "/";
+        })
+        .catch((res) => console.log(res));
+    }
   };
 
   return (
