@@ -84,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Cadastro() {
 
     const cursos = ["curso1", "curso2", "curso3", "curso4", "engenharia", "medicina", "Biologia", "matemática"];
+    const generos = [
+        "Feminino", "Masculino", "Outro"
+    ]
 
     const classes = useStyles();
 
@@ -118,7 +121,8 @@ export default function Cadastro() {
         Telefone: "",
         Senha: "",
         Pin: "",
-        Atletica: ""
+        Curso: "",
+        Genero: ""
     })
 
 
@@ -179,8 +183,15 @@ export default function Cadastro() {
         setMembro({ ...membro, Senha: event.target.value });
     };
 
-    const handleMembroAtletica = (event) => {
-        setMembro({ ...membro, Atletica: event.target.value });
+    const handleMembroCurso = (event) => {
+        setMembro({ ...membro, Curso: event.target.value });
+    };
+
+    const handleMembroGenero = (event) => {
+        if (event.target.value === "Masculino") setMembro({ ...membro, Genero: 'M' });
+        if (event.target.value === "Feminino") setMembro({ ...membro, Genero: 'F' });
+        if (event.target.value === "Outro") setMembro({ ...membro, Genero: 'I' });
+
     };
 
     const handleFormChange = (e) => {
@@ -262,6 +273,35 @@ export default function Cadastro() {
 
     }
 
+    const onFormSubmitMembro = async (e) => {
+        e.preventDefault();
+        console.log("entar1")
+
+        let Membro = {
+            senha: membro.Senha,
+            pessoa: {
+                nome: membro.Nome,
+                sobrenome: membro.Sobrenome,
+                email: membro.Email,
+                whatsapp: membro.Telefone,
+                tipo: "M",
+                genero: membro.Genero,
+                cursoId: 1
+            }
+        }
+
+        console.log(Membro)
+
+        ApiService.CadastroMembro(Membro, membro.Pin)
+            .then(res => {
+                console.log("01")
+                console.log(res)
+            })
+            .catch(error => {
+                console.log("02")
+                console.log(error)
+            })
+    }
 
     return (
 
@@ -324,12 +364,11 @@ export default function Cadastro() {
 
                                                 <Fade in={showMembro}>
 
-                                                    <AvForm>
+                                                    <AvForm onValidSubmit={onFormSubmitMembro}>
 
                                                         <AvField onChange={handleMembroEmail} name="email" label="E-mail" type="text" validate={{
                                                             required: { value: true, errorMessage: "Campo obrigatório" },
-                                                            pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "E-mail inválido" },
-                                                            minLength: { value: 10, errorMessage: "E-mail muito pequeno" },
+                                                            minLength: { value: 6, errorMessage: "E-mail muito pequeno" },
 
                                                         }} />
 
@@ -353,16 +392,6 @@ export default function Cadastro() {
                                                                 required: { value: true, errorMessage: "Campo obrigatório" }
                                                             }} />
 
-                                                        <AvField name="senha" label="Senha" type="password" validate={{
-                                                            required: { value: true, errorMessage: "Campo obrigatório" },
-                                                            minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
-
-                                                        }} />
-                                                        <AvField onChange={handleMembroSenha} name="ConfirmarSenha" label="Confirme sua senha" type="password" validate={{
-                                                            required: { value: true, errorMessage: "Campo obrigatório" },
-                                                            match: { value: "senha", errorMessage: "Senhas diferentes" }
-
-                                                        }} />
 
                                                         <AvField onChange={handleMembroPIN} name="pin" label="PIN da sua Atlética" type="password" validate={{
                                                             required: { value: true, errorMessage: "Campo obrigatório" },
@@ -370,9 +399,38 @@ export default function Cadastro() {
 
                                                         }} />
 
+                                                        <TextField
+                                                            id="standard-select-currency"
+                                                            select
+                                                            fullWidth
+                                                            label="Curso"
+                                                            value={membro.Curso}
+                                                            onChange={handleMembroCurso}
 
+                                                        >
+                                                            {cursos.map((option) => (
+                                                                <MenuItem key={option} value={option}>
+                                                                    {option}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
 
+                                                        <TextField
+                                                            id="standard-select-genero"
+                                                            select
+                                                            fullWidth
+                                                            label="Gênero"
+                                                            value={membro.genero}
+                                                            onChange={handleMembroGenero}
+                                                            style={{ marginTop: 15, marginBottom: 20 }}
 
+                                                        >
+                                                            {generos.map((option) => (
+                                                                <MenuItem key={option} value={option}>
+                                                                    {option}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
 
                                                         <Grid container spacing={1}>
                                                             <Grid item xs={6}>
@@ -398,10 +456,23 @@ export default function Cadastro() {
 
                                                         </Grid>
 
-
                                                         <br />
 
-                                                        <Grid container spacing={1}>
+                                                        <AvField name="senha" label="Senha" type="password" validate={{
+                                                            required: { value: true, errorMessage: "Campo obrigatório" },
+                                                            minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
+
+                                                        }} />
+                                                        <AvField onChange={handleMembroSenha} name="ConfirmarSenha" label="Confirme sua senha" type="password" validate={{
+                                                            required: { value: true, errorMessage: "Campo obrigatório" },
+                                                            match: { value: "senha", errorMessage: "Senhas diferentes" }
+
+                                                        }} />
+
+
+
+
+                                                        {/* <Grid container spacing={1}>
                                                             <Grid item xs={6}>
 
                                                                 <FormControl className={classes.formControl}>
@@ -419,14 +490,14 @@ export default function Cadastro() {
                                                                         <MenuItem value={"Atlética PoliUFBA"}>Atlética PoliUFBA</MenuItem>
                                                                     </Select>
                                                                 </FormControl>
-                                                            </Grid>
+                                                            </Grid> */}
 
 
-                                                            <Grid item xs={6}>
-                                                                <Button type='submit' style={{ width: 230, marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
-                                                            </Grid>
-
+                                                        <Grid item xs={12}>
+                                                            <Button type='submit' fullWidth style={{ marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
                                                         </Grid>
+
+                                                        {/* </Grid> */}
                                                     </AvForm>
 
                                                 </Fade>
@@ -667,6 +738,42 @@ export default function Cadastro() {
                                                         required: { value: true, errorMessage: "Campo obrigatório" }
                                                     }} />
 
+                                                <TextField
+                                                    id="standard-select-currency"
+                                                    select
+                                                    fullWidth
+                                                    label="Curso"
+                                                    value={membro.Curso}
+                                                    onChange={handleMembroCurso}
+                                                // style={{ width: "90%", marginTop: 15 }}
+
+
+                                                >
+                                                    {cursos.map((option) => (
+                                                        <MenuItem key={option} value={option}>
+                                                            {option}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+
+                                                <TextField
+                                                    id="standard-select-genero"
+                                                    select
+                                                    fullWidth
+                                                    label="Gênero"
+                                                    value={membro.genero}
+                                                    onChange={handleMembroGenero}
+                                                    style={{ marginTop: 15, marginBottom: 20 }}
+
+                                                >
+                                                    {generos.map((option) => (
+                                                        <MenuItem key={option} value={option}>
+                                                            {option}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+
+
                                                 <AvField name="senha" label="Senha" type="password" validate={{
                                                     required: { value: true, errorMessage: "Campo obrigatório" },
                                                     minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
@@ -678,17 +785,11 @@ export default function Cadastro() {
 
                                                 }} />
 
-                                                <AvField onChange={handleMembroPIN} name="pin" label="PIN da sua Atlética" type="password" validate={{
-                                                    required: { value: true, errorMessage: "Campo obrigatório" },
-
-
-                                                }} />
-
 
 
                                                 <Grid container spacing={1}>
 
-                                                    <Grid item xs={12}>
+                                                    {/* <Grid item xs={12}>
 
                                                         <FormControl className={classes.formControlMobile}>
                                                             <InputLabel id="demo-simple-select-outlined-label">Atlética</InputLabel>
@@ -706,7 +807,7 @@ export default function Cadastro() {
                                                             </Select>
                                                         </FormControl>
 
-                                                    </Grid>
+                                                    </Grid> */}
 
                                                     <Grid item xs={12}>
 
@@ -722,7 +823,7 @@ export default function Cadastro() {
                                             <Fade in={showAtletica}>
 
 
-                                                <AvForm>
+                                                <AvForm onValidSubmit={onFormSubmit}>
                                                     <AvField onChange={handleAtleticaEmail} name="email" label="E-mail" type="text" validate={{
                                                         required: { value: true, errorMessage: "Campo obrigatório" },
                                                         pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "E-mail inválido" },
