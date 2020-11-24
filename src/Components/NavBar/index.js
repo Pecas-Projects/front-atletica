@@ -26,6 +26,7 @@ import "./NavBar.css";
 import { Grid, TextField, InputAdornment } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab"
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import ApiService from '../../variables/ApiService'
 
 const drawerWidth = 200;
 
@@ -167,13 +168,11 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
-
+  const [atleticas, setAtleticas] = useState([])
 
   const handleChange = () => {
     setShowSearch(false)
-
   };
-
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -182,6 +181,19 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const pesquisaAtleticas = async (text) => {
+    if (text)
+      await ApiService.PesquisaAtleticas(text)
+        .then(res =>
+          setAtleticas(res.data)
+        )
+        .catch(err =>
+          console.log(err)
+        )
+    else
+      setAtleticas([])
+  }
 
   // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
   const top100Films = [
@@ -331,7 +343,7 @@ export default function MiniDrawer() {
                 <div className={classes.divSearch}>
                   <Autocomplete
                     freeSolo
-                    options={top100Films.map((option) => option.title)}
+                    options={atleticas.map((option) => option.nome)}
                     classes={{
                       root: classes.inputRoot,
                       input: classes.inputInput,
@@ -343,6 +355,9 @@ export default function MiniDrawer() {
                         margin="dense"
                         variant="outlined"
                         className={classes.search}
+                        onChange={(e) =>
+                          pesquisaAtleticas(e.target.value)
+                        }
                         InputProps={{
                           ...params.InputProps,
                           startAdornment: (
@@ -530,7 +545,7 @@ export default function MiniDrawer() {
                     <div className={classes.divSearch}>
                       <Autocomplete
                         freeSolo
-                        options={top100Films.map((option) => option.title)}
+                        options={atleticas.map((option) => option.nome)}
                         classes={{
                           root: classes.inputRoot,
                           input: classes.inputInput,
@@ -542,6 +557,9 @@ export default function MiniDrawer() {
                             margin="dense"
                             variant="outlined"
                             className={classes.search}
+                            onChange={(e) =>
+                              pesquisaAtleticas(e.target.value)
+                            }
                             InputProps={{
                               ...params.InputProps,
                               startAdornment: (
