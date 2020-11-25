@@ -3,11 +3,15 @@ const url = process.env.REACT_APP_BASE_URL;
 
 const api = axios.create({
   baseURL: url,
-  config: {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    }
+  withCredentials: true,
+});
+
+api.interceptors.request.use(async (config) => {
+  const token = localStorage.getItem("@Olympos:token");
+  if (token) {
+    config.headers.Authorization = `${token}`;
   }
+  return config;
 });
 
 export default api;

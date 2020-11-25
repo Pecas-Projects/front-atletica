@@ -88,7 +88,7 @@ export default function Login() {
     if (login.Type == "Atletica") {
       ApiService.LoginAtletica(loginData)
         .then((res) => {
-          api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
+          //  api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
           localStorage.setItem("@Olympos:token", res.data.token);
           SetUserIdAndType(res.data.atletica.atleticaId, "A");
           window.location.href = "/";
@@ -97,7 +97,7 @@ export default function Login() {
     } else {
       ApiService.LoginMembro(loginData)
         .then((res) => {
-          api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
+          // api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
           localStorage.setItem("@Olympos:token", res.data.token);
           SetUserIdAndType(res.data.atletica.atleticaId, "M");
           window.location.href = "/";
