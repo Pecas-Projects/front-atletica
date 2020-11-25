@@ -5,9 +5,23 @@ import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem";
 
+//import api from "../../services/api";
+
 export default function FormularioPost() {
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
+  const [titulo, setTitulo] = useState();
+  const [descricao, setDescricao] = useState();
+
+  const handleTitleChange = (event) => {
+    event.preventDefault();
+    setTitulo(event.target.value);
+  };
+
+  const handleTextoChange = (event) => {
+    event.preventDefault();
+    setDescricao(event.target.value);
+  };
 
   function showAdicionarImagem() {
     if (imagem === null) {
@@ -20,6 +34,8 @@ export default function FormularioPost() {
         </div>
       );
   }
+
+  
 
   return (
     <>
@@ -66,6 +82,7 @@ export default function FormularioPost() {
                       maxLength: { value: 45, errorMessage: "Título inválido" },
                     }}
                     style={{ color: "E2E2E2" }}
+                    onChange={handleTitleChange}
                   />
                   <AvField
                     name="Texto:"
@@ -78,6 +95,7 @@ export default function FormularioPost() {
                       },
                       minLength: { value: 2, errorMessage: "Texto inválido" },
                     }}
+                    onChange={handleTextoChange}
                   />
                 </Grid>
                 <Grid container style={{ paddingRight: 20 }} justify="flex-end">
