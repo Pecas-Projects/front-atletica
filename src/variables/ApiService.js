@@ -1,22 +1,5 @@
 import api from "../services/api";
 
-let userId;
-let userType;
-
-export function SetUserIdAndType(id, type) {
-  userId = id;
-  userType = type;
-}
-
-export const GetUserInfo = () => {
-  let info = {
-    userId,
-    userType,
-  };
-
-  return info;
-};
-
 export const isLogin = () => {
   if (localStorage.getItem("@Olympos:token")) {
     return true;

@@ -10,7 +10,7 @@ import Login from "./Pages/Login";
 import Cadastro from "./Pages/Cadastro";
 import AdicionarProduto from "./Pages/AdicionarProduto";
 import AdicionarPost from "./Pages/AdicionarPost";
-import AdicionarEvento from "./Pages/AdicionarEvento";
+// import AdicionarEvento from "./Pages/AdicionarEvento";
 import Notificacoes from "./Pages/Notificacoes";
 import EditarPerfil from "./Pages/EditarPerfil";
 import Ranking from "./Pages/Ranking";
@@ -20,8 +20,6 @@ import Page404 from "./Pages/404";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
-    // Show the component only when the user is logged in
-    // Otherwise, redirect the user to /login page
     <Route
       {...rest}
       render={(props) =>
@@ -37,8 +35,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
 const Routes = () => (
   <Switch>
-    <Route exact path="/" component={Perfil} />
-    <Route exact path="/Perfil" component={PaginaInicio} />
+    <Route exact path="/Perfil" component={Perfil} />
+    <Route exact path="/" component={PaginaInicio} />
     <Route exact path="/Produtos" component={Produtos} />
     <Route exact path="/Times" component={Times} />
     <Route exact path="/Feed" component={Feed} />
@@ -49,13 +47,10 @@ const Routes = () => (
       path="/AdicionarProduto"
       component={AdicionarProduto}
     />{" "}
-    {/* Atlteica*/}
     <PrivateRoute exact path="/AdicionarPost" component={AdicionarPost} />
-    {/* Atlteica*/}
     {/* <PrivateRoute exact path="/AdicionarEvento" component={AdicionarEvento} /> */}
     <PrivateRoute exact path="/Notificacoes" component={Notificacoes} />
     <PrivateRoute exact path="/EditarPerfil" component={EditarPerfil} />
-    {/* Atlteica*/}
     <PrivateRoute exact path="/Ranking" component={Ranking} />
     <PrivateRoute exact path="/Jogos" component={Jogos} />
     <PrivateRoute exact path="/Modalidades" component={Modalidades} />
