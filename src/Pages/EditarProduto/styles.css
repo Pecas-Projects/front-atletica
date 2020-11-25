@@ -1,0 +1,11 @@
+.MyTitle {
+  font-size: 24px;
+  font-family: "Roboto Condensed";
+}
+
+.cardPrice {
+  font-size: 18px;
+  font-family: "Roboto";
+  font-weight: 300;
+  margin-top: 5px;
+}
