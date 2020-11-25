@@ -54,12 +54,53 @@ export default function FormularioPost() {
 
     await api.post(`/api/Imagem/Upload`, data, config)
       .then(response => {
-          console.log("deu bom")
+          console.log(response)
         })
       .catch(error => {
-          console.log("deu ruim")
+          console.log(error)
       })
   }  
+
+  function submit(){
+
+    let imagemId = 1;
+
+    let file = new FormData();
+    file.append('teste', imagem);
+
+    const token = localStorage.getItem("@Olympos:token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+
+    // ApiService.UploadImagem(file, config)
+    //   .then((res) => {
+    //     imagemId = res.imagemId
+    //     console.log("uiuiui")
+    //   })
+    //   .catch((err) => {
+    //     console.log("tristeza")
+    //   })
+
+    let data = {
+      titulo: titulo,
+      descricao: descricao,
+      atleticaId: GetUserInfo,
+      imagemId:  imagemId
+    }
+
+    ApiService.EnviarPost(data, config)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) =>
+        console.log(err)
+      )
+
+  }
 
   return (
     <>
@@ -129,6 +170,7 @@ export default function FormularioPost() {
                         width: 200,
                         marginTop: 24,
                       }}
+                      onClick={submit}
                     >
                       Postar
                     </Button>
