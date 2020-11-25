@@ -52,6 +52,19 @@ const ApiService = {
   Logout: () => {
     localStorage.removeItem("@Olympos:token");
   },
+
+  UploadImagem: (data, config) => {
+    return api
+      .post(`/api/Imagem/Upload`, data, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
+  },
+
 };
 
 export default ApiService;
