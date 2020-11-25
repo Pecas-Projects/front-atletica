@@ -1,14 +1,26 @@
-.capa {
-  border: 2px;
-  border-radius: 6px;
-  width: 85%;
-  height: 400px;
-}
-
 .MyTitle {
   font-size: 24px;
   font-family: "Roboto Condensed";
   color: white;
+  margin-left: 290px;
+  margin-top: 10px;
+}
+
+.MyTitleMobile {
+  font-size: 24px;
+  font-family: "Roboto Condensed";
+  color: white;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.circle {
+  height: 300px;
+  width: 300px;
+  top: 140px;
+  background-color: #020431;
+  border-radius: 50%;
+  position: absolute;
 }
 
 .subtitle {
@@ -18,6 +30,14 @@
 }
 
 .subtitleW {
+  font-size: 18px;
+  font-family: "Roboto Condensed";
+  margin-bottom: 20px;
+  color: white;
+  margin-top: 70px;
+}
+
+.subtitleWMobile {
   font-size: 18px;
   font-family: "Roboto Condensed";
   margin-bottom: 20px;
@@ -40,6 +60,26 @@
   height: 200px;
 }
 
+.imagePerfil {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.imagePerfilMobile {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.imageCapa {
+  width: 100%;
+  border-radius: 6px;
+  /* height: 300px; */
+}
+
 .scroll {
   overflow-y: auto;
   overflow-x: hidden;
@@ -48,28 +88,57 @@
 
 .relativeCard {
   position: relative;
+  width: 85%;
+  margin: auto;
+  /* background-image: url("../../assets/imagem/fotoCapa.png");
+  background-color: #cccccc;
+  height: 300px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
+  border-radius: 6px;
 }
 
-.absoluteCard {
+.absolutePerfil {
   position: absolute;
-  left: 190px;
-  top: 150px;
+  align-items: flex-end;
+  display: flex;
+  /* left: 0px;
+  top: 10px; */
 }
 
 .absoluteTitle {
   position: absolute;
-  top: 290px;
-  left: 470px;
+  top: 310px;
+  left: 400px;
 }
 
 .absoluteDescricao {
   position: absolute;
-  top: 420px;
-  left: 130px;
+  top: 400px;
+  left: 40px;
   width: 1000px;
 }
 
 .absoluteBackgroud {
+  background-image: url("../../assets/imagem/fundo_pagina.png");
+  height: 550px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: auto;
   position: absolute;
   top: 100px;
+  width: 100%;
+}
+
+.absoluteCapa {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 500px;
+}
+
+.containerCapa {
+  height: 300px;
 }

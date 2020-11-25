@@ -40,6 +40,20 @@ const useStyles = makeStyles((theme) => ({
     padding: "2%",
     backgroundColor: "#BBB8CC"
   },
+  paperBackgroud: {
+    width: "100%",
+    marginTop: -30,
+    padding: "2%",
+    backgroundColor: "#020431",
+    // borderRadius: 30
+  },
+  paperBackgroudMobile: {
+    width: "100%",
+
+    padding: "2%",
+    backgroundColor: "#020431",
+    // borderRadius: 30
+  },
   paperB: {
     width: "85%",
     marginTop: -10,
@@ -231,69 +245,75 @@ export default function Perfil() {
 
           <Grid container  >
 
-            <Grid item xs={12} >
 
-              <Grid container justify='center'>
+            <Grid container justify='center'>
+
+              <Grid item xs={12} >
 
                 <div className='relativeCard'>
 
+                  <div className="containerCapa">
+
+                    <img className="imageCapa" src={fotoCapa} alt="fotoCapa" />
+
+                  </div>
+
+                  <div className="circle">
+
+                    <Grid style={{ marginTop: 10 }} container justify='center'>
+
+                      <img className='imagePerfil' src={FotoPerfil} alt="fotoPerfil" />
+
+                    </Grid>
+
+                  </div>
+
+
                   <Grid container justify='center'>
 
-                    <div className='absoluteCard'>
+                    <Paper className={classes.paperBackgroud}>
 
-                      <img style={{ width: 200, height: 200, borderRadius: 180 }} src={FotoPerfil} alt="fotoPerfil" />
+                      <h3 className="MyTitle">Cimatlética - Atlética do SENAI CIMATEC</h3>
 
-                    </div>
+                      <br />
 
-                    <img style={{ width: "85%", borderRadius: 6 }} src={fotoCapa} alt='fotoCapa' />
 
-                    <div className='absoluteBackgroud'>
+                      <p className='subtitleW' >SOBRE NÒS</p>
 
-                      <img style={{ width: "85%" }} src={PerfilBackground} alt='PerfilBackgroud' />
+                      <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                  non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
-                    </div>
+
+                    </Paper>
 
                   </Grid>
-
-                  <div className="absoluteTitle">
-
-                    <h3 className="MyTitle">Cimatlética - Atlética do SENAI CIMATEC</h3>
-
-                  </div>
-
-                  <div className='absoluteDescricao'>
-
-                    <p className='subtitleW' >SOBRE NÒS</p>
-
-                    <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                       non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-
-                  </div>
 
                 </div>
-
-                <Paper className={classes.paperA}>
-
-                  <h4 className="subtitle">NOSSOS MEMBROS</h4>
-
-                  <Grid container spacing={3}>
-
-                    {Membros.map((item) =>
-                      <CardMembro item={item} />
-                    )}
-
-
-                  </Grid>
-
-                </Paper>
-
               </Grid>
 
+
+
+              <Paper className={classes.paperA}>
+
+                <h4 className="subtitle">NOSSOS MEMBROS</h4>
+
+                <Grid container spacing={3}>
+
+                  {Membros.map((item) =>
+                    <CardMembro item={item} />
+                  )}
+
+
+                </Grid>
+
+              </Paper>
+
             </Grid>
+
+
 
             <Grid item xs={12}  >
 
@@ -530,6 +550,38 @@ export default function Perfil() {
         </Grid> */}
 
           <Grid container spacing={1}>
+
+            <Grid item xs={12}>
+
+              <Paper className={classes.paperBackgroudMobile}>
+
+                <Grid style={{ marginTop: 10, }} container justify='center'>
+
+                  <img className='imagePerfilMobile' src={FotoPerfil} alt="fotoPerfil" />
+
+                  <h3 className="MyTitleMobile">Cimatlética - Atlética do SENAI CIMATEC</h3>
+
+                </Grid>
+
+              </Paper>
+
+              <Paper className={classes.paperBMobile}>
+
+                <Grid container justify="flex-start">
+
+                  <p className='subtitleWMobile' >SOBRE NÒS</p>
+
+                  <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+                </Grid>
+              </Paper>
+
+            </Grid>
 
 
             <Grid item xs={12}>
