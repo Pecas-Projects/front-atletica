@@ -85,13 +85,13 @@ export default function Login() {
       senha: login.Senha,
     };
 
-    if (login.Type == "Atletica") {
+    if (login.Type === "Atletica") {
       ApiService.LoginAtletica(loginData)
         .then((res) => {
           api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
           localStorage.setItem("@Olympos:token", res.data.token);
           SetUserIdAndType(res.data.atletica.atleticaId, "A");
-          window.location.href = "/";
+          window.location.href = "/Perfil";
         })
         .catch((res) => console.log(res));
     } else {
@@ -100,7 +100,7 @@ export default function Login() {
           api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
           localStorage.setItem("@Olympos:token", res.data.token);
           SetUserIdAndType(res.data.atletica.atleticaId, "M");
-          window.location.href = "/";
+          window.location.href = "/Perfil";
         })
         .catch((res) => console.log(res));
     }
