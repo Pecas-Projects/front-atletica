@@ -4,8 +4,9 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem";
+import ApiService, { GetUserInfo } from "../../../variables/ApiService";
 
-//import api from "../../services/api";
+import api from "../../../services/api";
 
 export default function FormularioPost() {
   const [imagem, setImagem] = useState(null);
@@ -27,6 +28,9 @@ export default function FormularioPost() {
     if (imagem === null) {
       return <p>Adicione uma Imagem</p>;
     } else
+    storePicture();
+    console.log(imagem)
+    console.log(path)
       return (
         <div>
           <br />
@@ -35,7 +39,27 @@ export default function FormularioPost() {
       );
   }
 
-  
+  async function storePicture(){
+
+    let data = new FormData();
+    data.append('teste', imagem);
+
+    const token = localStorage.getItem("@Olympos:token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+
+    await api.post(`/api/Imagem/Upload`, data, config)
+      .then(response => {
+          console.log("deu bom")
+        })
+      .catch(error => {
+          console.log("deu ruim")
+      })
+  }  
 
   return (
     <>
