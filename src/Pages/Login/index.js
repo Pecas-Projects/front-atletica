@@ -80,12 +80,12 @@ export default function Login() {
   const OnFormSubmit = async (e) => {
     e.preventDefault();
 
-    let loginData = {
-      credencial: login.Email,
-      senha: login.Senha,
-    };
-
     if (login.Type === "Atletica") {
+      let loginData = {
+        credencial: login.Email,
+        senha: login.Senha,
+      };
+
       ApiService.LoginAtletica(loginData)
         .then((res) => {
           api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
@@ -95,11 +95,17 @@ export default function Login() {
         })
         .catch((res) => console.log(res));
     } else {
-      ApiService.LoginMembro(loginData)
+      let loginM = {
+        senha: login.Senha,
+        email: {
+          email: login.Email,
+        },
+      };
+      ApiService.LoginMembro(loginM)
         .then((res) => {
           api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
           localStorage.setItem("@Olympos:token", res.data.token);
-          SetUserIdAndType(res.data.atletica.atleticaId, "M");
+          SetUserIdAndType(res.data.atletica.membroId, "M");
           window.location.href = "/Perfil";
         })
         .catch((res) => console.log(res));

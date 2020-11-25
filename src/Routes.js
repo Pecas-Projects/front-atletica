@@ -44,11 +44,18 @@ const Routes = () => (
     <Route exact path="/Feed" component={Feed} />
     <Route exact path="/login" component={Login} />
     <Route exact path="/Cadastro" component={Cadastro} />
-    <PrivateRoute exact path="/AdicionarProduto" component={AdicionarProduto} />
+    <PrivateRoute
+      exact
+      path="/AdicionarProduto"
+      component={AdicionarProduto}
+    />{" "}
+    {/* Atlteica*/}
     <PrivateRoute exact path="/AdicionarPost" component={AdicionarPost} />
-    <PrivateRoute exact path="/AdicionarEvento" component={AdicionarEvento} />
+    {/* Atlteica*/}
+    {/* <PrivateRoute exact path="/AdicionarEvento" component={AdicionarEvento} /> */}
     <PrivateRoute exact path="/Notificacoes" component={Notificacoes} />
     <PrivateRoute exact path="/EditarPerfil" component={EditarPerfil} />
+    {/* Atlteica*/}
     <PrivateRoute exact path="/Ranking" component={Ranking} />
     <PrivateRoute exact path="/Jogos" component={Jogos} />
     <PrivateRoute exact path="/Modalidades" component={Modalidades} />
