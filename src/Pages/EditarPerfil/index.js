@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Grid, Paper, Button } from "@material-ui/core";
+import { Grid, Paper, Button, Typography, Popover } from "@material-ui/core";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import cep from 'cep-promise'
@@ -66,6 +66,9 @@ export default function EditarPerfil() {
 
     const classes = useStyles();
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
     const [cepcp, setCepcp] = useState('');
     const [street, setStreet] = useState('');
     const [neighbourhood, setNeighbourhood] = useState('');
@@ -118,6 +121,14 @@ export default function EditarPerfil() {
         setLink(e.target.value);
     };
 
+    const handleClickPIN = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClosePIN = () => {
+        setAnchorEl(null);
+    };
+
 
     function showAdicionarImagemPerfil() {
         if (imagemPerfil === null) {
@@ -154,7 +165,42 @@ export default function EditarPerfil() {
                         <Grid container justify="center">
                             <Paper className={classes.paperA}>
 
-                                <h4 className="MyTitle">Editar Perfil</h4>
+                                <Grid container>
+
+                                    <Grid item xs={6}>
+
+                                        <h4 className="MyTitlePerfil">Editar Perfil</h4>
+
+                                    </Grid>
+
+                                    <Grid item xs={6}>
+
+                                        <Grid container justify='flex-end'>
+
+                                            <Button onClick={handleClickPIN} color='secondary' variant="outlined">PIN</Button>
+
+                                            <Popover
+
+                                                open={open}
+                                                anchorEl={anchorEl}
+                                                onClose={handleClosePIN}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <Typography style={{ padding: 10 }} >O PIN para cadastrar um membro na sua atlética é: 44134</Typography>
+                                            </Popover>
+
+                                        </Grid>
+
+                                    </Grid>
+
+                                </Grid>
 
                                 <br />
 
