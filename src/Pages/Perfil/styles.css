@@ -99,14 +99,6 @@
   border-radius: 6px;
 }
 
-.absolutePerfil {
-  position: absolute;
-  align-items: flex-end;
-  display: flex;
-  /* left: 0px;
-  top: 10px; */
-}
-
 .absoluteTitle {
   position: absolute;
   top: 310px;

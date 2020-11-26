@@ -209,21 +209,21 @@ export default function CardModalidade(props) {
 
             <Paper className={classes.paperA} >
 
-                <div className="relativeCard">
+                <div className="relativeCardM">
 
                     <Grid container>
 
                         <Grid item xs={8}>
 
-                            <h4 className="MySubtitle">{item.nome}</h4>
+                            <h4 className="MySubtitleM">{item.nome}</h4>
                             <br />
-                            <p className="MySubtitle2">Coordenador: {item.coordenador}</p>
+                            <p className="MySubtitle2M">Coordenador: {item.coordenador}</p>
 
                         </Grid>
 
                         <Grid item xs={2}>
 
-                            <div className="absoluteCard2">
+                            <div className="absoluteCardM">
 
                                 <IconButton style={{ marginTop: -10 }} onClick={handleExpandEditarClick}>
                                     <EditIcon />
@@ -235,7 +235,7 @@ export default function CardModalidade(props) {
 
                         <Grid item xs={2}>
 
-                            <div className="absoluteCard">
+                            <div className="absoluteCard2M">
 
                                 <IconButton
                                     style={{ marginTop: -10 }}

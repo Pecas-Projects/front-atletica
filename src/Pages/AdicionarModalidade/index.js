@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Grid, Paper, Button } from "@material-ui/core";
 import NavBar from "../../Components/NavBar";
@@ -11,8 +11,10 @@ import CardModalidade from "./Components/CardModalidade"
 import CardModalidadeMobile from './Components/CardModalidadeMobile'
 import CardAddModalidade from "./Components/CardAddModalidade"
 import CardAddModalidadeMobile from "./Components/CardAddModalidadeMobile"
+import ApiService from "../../variables/ApiService"
+import AuthContext from "../../context/auth"
 
-import "./styles.css"
+// import "./stylesModalidade.css"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -69,6 +71,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AdicionarModalidade() {
+
+    const { userInfo, userType } = useContext(AuthContext);
+
+
+    useEffect(() => {
+
+        console.log(userInfo)
+
+        async function getInfo(id) {
+
+            await ApiService.ModalidadesAtletica(id)
+                .then((res) => {
+                    console.log(res)
+                });
+        }
+
+        if (userInfo !== undefined) {
+            console.log(userInfo)
+            getInfo(userInfo.atleticaId);
+        }
+
+
+
+    }, [userInfo])
 
     const [modalidades, setModalidades] = useState([
         {

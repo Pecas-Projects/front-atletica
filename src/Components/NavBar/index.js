@@ -321,7 +321,7 @@ export default function MiniDrawer() {
               </Grid>
 
 
-              <div className="absolute">
+              <div className="absoluteNavBar">
 
                 <List>
 

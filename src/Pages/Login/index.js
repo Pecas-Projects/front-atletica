@@ -88,6 +88,7 @@ export default function Login() {
 
       try {
         LoginAtletica(loginData);
+        console.log("logado")
       } catch (err) {
         console.log(err);
       }
@@ -103,6 +104,7 @@ export default function Login() {
 
       try {
         LoginMembro(loginM);
+        console.log("logado")
       } catch (err) {
         console.log(err);
       }
@@ -131,7 +133,7 @@ export default function Login() {
             <Grid item xs={12}>
               <Grid container justify="center">
                 <Paper className={classes.paperA}>
-                  <h1 className="MyTitle">LOGIN</h1>
+                  <h1 className="MyTitleLogin">LOGIN</h1>
 
                   <Grid container spacing={1}>
                     <Grid item xs={6} style={{ marginTop: 40 }}>
@@ -235,9 +237,9 @@ export default function Login() {
           <Grid container>
             <Grid item xs={12}>
               <Paper className={classes.paperAMobile}>
-                <h1 className="MyTitle">Login</h1>
+                <h1 className="MyTitleLogin">Login</h1>
 
-                <AvForm>
+                <AvForm onValidSubmit={OnFormSubmit}>
                   <AvField
                     style={{ marginBottom: 30 }}
                     onChange={handleEmail}
@@ -287,6 +289,7 @@ export default function Login() {
 
                   <Grid container style={{ marginTop: 10 }}>
                     <Button
+                      type='submit'
                       style={{ width: "100%" }}
                       variant="contained"
                       color="secondary"
