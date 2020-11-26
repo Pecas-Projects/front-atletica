@@ -15,6 +15,18 @@ const ApiService = {
       });
   },
 
+  PesquisaAtleticas: (nomeAtletica) => {
+    return api
+      .get("/api/AtleticaNome/" + nomeAtletica)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+
   LoginMembro: (credencial) => {
     return api
       .post("/api/Login/Membro", credencial)
@@ -27,6 +39,11 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
+  Logout: () => {
+    localStorage.removeItem("@Olympos:token");
+  },
+
 };
 
 export default ApiService;
