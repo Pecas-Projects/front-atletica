@@ -35,6 +35,19 @@ const ApiService = {
   Logout: () => {
     localStorage.removeItem("@Olympos:token");
   },
+
+  ModalidadesAtletica: (atleticaId) => {
+    return api
+      .get(`/api/AtleticaModalidade/${atleticaId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
+  }
 };
 
 export default ApiService;
