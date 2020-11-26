@@ -1,35 +1,13 @@
 import api from "../services/api";
-
-let userId;
-let userType;
-
-export function SetUserIdAndType(id, type) {
-  userId = id;
-  userType = type;
-}
-
-export const GetUserInfo = () => {
-  let info = {
-    userId,
-    userType,
-  };
-
-  return info;
-};
-
-export const isLogin = () => {
-  if (localStorage.getItem("@Olympos:token")) {
-    return true;
-  }
-  return false;
-};
+import { login } from "../utils/storage";
 
 const ApiService = {
   LoginAtletica: (crecencial) => {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        return res;
+        login(res.data.token, 'A', res.data.atletica.atleticaId)
+        return res
       })
       .catch((error) => {
         console.error(error);
@@ -53,6 +31,7 @@ const ApiService = {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
+        login(res.data.token, 'A', res.data.atletica.membroId)
         return res;
       })
       .catch((error) => {
