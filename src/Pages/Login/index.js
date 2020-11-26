@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AuthContext from "../../context/auth";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Paper } from "@material-ui/core";
@@ -10,8 +11,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import ApiService, { SetUserIdAndType } from "../../variables/ApiService";
-import api from "../../services/api";
+//import ApiService, { SetUserIdAndType } from "../../variables/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-
+  const { LoginAtletica, LoginMembro } = useContext(AuthContext);
   const [login, setLogin] = useState({
     Email: " ",
     Senha: " ",
@@ -80,29 +80,32 @@ export default function Login() {
   const OnFormSubmit = async (e) => {
     e.preventDefault();
 
-    let loginData = {
-      credencial: login.Email,
-      senha: login.Senha,
-    };
+    if (login.Type === "Atletica") {
+      let loginData = {
+        credencial: login.Email,
+        senha: login.Senha,
+      };
 
-    if (login.Type == "Atletica") {
-      ApiService.LoginAtletica(loginData)
-        .then((res) => {
-          api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
-          localStorage.setItem("@Olympos:token", res.data.token);
-          SetUserIdAndType(res.data.atletica.atleticaId, "A");
-          window.location.href = "/";
-        })
-        .catch((res) => console.log(res));
+      try {
+        LoginAtletica(loginData);
+      } catch (err) {
+        console.log(err);
+      }
+
+      window.location.href = "/Perfil";
     } else {
-      ApiService.LoginMembro(loginData)
-        .then((res) => {
-          api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
-          localStorage.setItem("@Olympos:token", res.data.token);
-          SetUserIdAndType(res.data.atletica.atleticaId, "M");
-          window.location.href = "/";
-        })
-        .catch((res) => console.log(res));
+      let loginM = {
+        senha: login.Senha,
+        email: {
+          email: login.Email,
+        },
+      };
+
+      try {
+        LoginMembro(loginM);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
