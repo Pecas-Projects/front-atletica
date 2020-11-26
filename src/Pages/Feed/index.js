@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import "./styles.css"
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 import Post from "./Components/Post"
+import ApiService, { GetUserInfo } from "../../variables/ApiService";
+import AuthContext from "../../context/auth";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
 export default function Feed() {
 
     const classes = useStyles();
+    const { userInfo, userType } = useContext(AuthContext);
+
+ 
 
     return (
 
