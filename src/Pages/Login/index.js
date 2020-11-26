@@ -87,12 +87,12 @@ export default function Login() {
       };
 
       try {
-        LoginAtletica(loginData);
+        await LoginAtletica(loginData);
+        window.location.href = "/Perfil";
       } catch (err) {
         console.log(err);
       }
 
-      window.location.href = "/Perfil";
     } else {
       let loginM = {
         senha: login.Senha,
@@ -102,7 +102,7 @@ export default function Login() {
       };
 
       try {
-        LoginMembro(loginM);
+        await LoginMembro(loginM);
       } catch (err) {
         console.log(err);
       }
