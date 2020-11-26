@@ -8,27 +8,45 @@ const AuthContext = createContext({
 });
 
 export function AuthProvider({ children }) {
+
   const [userInfo, setUserInfo] = useState();
   const [userType, setUserType] = useState("");
-  function LoginAtletica(loginData) {
-    ApiService.LoginAtletica(loginData)
-      .then((res) => {
+
+  async function LoginAtletica(loginData) {
+    await ApiService.LoginAtletica(loginData)
+      .then(async (res) => {
         setUserInfo(res.data.atletica);
         setUserType("A");
         // api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
         localStorage.setItem("@Olympos:token", res.data.token);
+
+
+        // ===================================
+        // RETIRE ISSO CASO O CONTEXT FUNCIONE
+        localStorage.setItem("@Olympos:userInfo", res.data.atletica)
+        localStorage.setItem("@Olympos:userType", 'A')
+        // ===================================
+
+
       })
       .catch((res) => console.log(res));
   }
 
-  function LoginMembro(loginData) {
-    ApiService.LoginMembro(loginData)
+  async function LoginMembro(loginData) {
+    await ApiService.LoginMembro(loginData)
       .then((res) => {
-        console.log(res.data.atletica);
         setUserInfo(res.data.atletica);
         setUserType("M");
         // api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
         localStorage.setItem("@Olympos:token", res.data.token);
+
+        // ===================================
+        // RETIRE ISSO CASO O CONTEXT FUNCIONE
+        localStorage.setItem("@Olympos:userInfo", res.data.atletica)
+        localStorage.setItem("@Olympos:userType", 'M')
+        // ===================================
+
+
       })
       .catch((res) => console.log(res));
   }
