@@ -77,24 +77,18 @@ export default function AdicionarModalidade() {
 
     useEffect(() => {
 
-        console.log(userInfo)
 
-        async function getInfo(id) {
+        console.log(JSON.parse(localStorage.getItem("@Olympos:userInfo/AtleticaId")))
 
-            await ApiService.ModalidadesAtletica(id)
-                .then((res) => {
-                    console.log(res)
-                });
-        }
-
-        if (userInfo !== undefined) {
-            console.log(userInfo)
-            getInfo(userInfo.atleticaId);
-        }
+        ApiService.ModalidadesAtletica(JSON.parse(localStorage.getItem("@Olympos:userInfo/AtleticaId")))
+            .then((res) => {
+                console.log(res)
+            });
 
 
 
-    }, [userInfo])
+
+    }, [])
 
     const [modalidades, setModalidades] = useState([
         {
