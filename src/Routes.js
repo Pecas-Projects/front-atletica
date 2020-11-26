@@ -1,5 +1,5 @@
 import React from "react";
-import { isLogin } from "./variables/ApiService";
+import { isLogin } from "./utils/storage";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Perfil from "./Pages/Perfil";
 import PaginaInicio from "./Pages/Inicio";

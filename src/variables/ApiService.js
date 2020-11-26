@@ -1,18 +1,13 @@
 import api from "../services/api";
-
-export const isLogin = () => {
-  if (localStorage.getItem("@Olympos:token")) {
-    return true;
-  }
-  return false;
-};
+import { login } from "../utils/storage";
 
 const ApiService = {
   LoginAtletica: (crecencial) => {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        return res;
+        login(res.data.token, 'A', res.data.atletica.atleticaId)
+        return res
       })
       .catch((error) => {
         console.error(error);
@@ -24,16 +19,13 @@ const ApiService = {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
+        login(res.data.token, 'A', res.data.atletica.membroId)
         return res;
       })
       .catch((error) => {
         console.error(error);
         return Promise.reject(error);
       });
-  },
-
-  Logout: () => {
-    localStorage.removeItem("@Olympos:token");
   },
 };
 
