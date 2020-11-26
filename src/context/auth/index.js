@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
 
         // ===================================
         // RETIRE ISSO CASO O CONTEXT FUNCIONE
-        localStorage.setItem("@Olympos:userInfo", res.data.atletica)
+        localStorage.setItem("@Olympos:userInfo/AtleticaId", JSON.stringify(res.data.atletica.atleticaId))
         localStorage.setItem("@Olympos:userType", 'A')
         // ===================================
 
@@ -42,7 +42,8 @@ export function AuthProvider({ children }) {
 
         // ===================================
         // RETIRE ISSO CASO O CONTEXT FUNCIONE
-        localStorage.setItem("@Olympos:userInfo", res.data.atletica)
+        localStorage.setItem("@Olympos:userInfo/AtleticaId", JSON.stringify(res.data.atletica.pessoa.atleticaId))
+        localStorage.setItem("@Olympos:userInfo/PessoaId", JSON.stringify(res.data.atletica.pessoa.pessoaId))
         localStorage.setItem("@Olympos:userType", 'M')
         // ===================================
 
