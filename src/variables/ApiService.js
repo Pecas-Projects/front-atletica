@@ -35,6 +35,22 @@ const ApiService = {
   Logout: () => {
     localStorage.removeItem("@Olympos:token");
   },
+
+  BuscarTodosPosts: (id) => {
+    return api
+      .get("api/PublicacaoAtletica/" + id)
+      .then((res) => {
+        console.log(id)
+        console.log(res)
+        return res;
+      })
+      .catch((err) => {
+        console.log(id)
+        console.log(err)
+        return err;
+      });
+  },
+
 };
 
 export default ApiService;
