@@ -3,7 +3,7 @@ import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Grid, Paper, Button, Checkbox, FormGroup, FormLabel, Snackbar } from "@material-ui/core";
 import Navbar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-// import fotoCapa from "../../assets/imagem/fotoCapa.png"
+import fotoCapa from "../../assets/imagem/fotoCapa.png"
 import CardMembro from "./Components/CardMembro"
 import contactImage from "../../assets/imagem/undraw_contact_u.svg"
 import InputMask from 'react-input-mask';
@@ -15,6 +15,8 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import ApiService from '../../variables/ApiService'
+import PerfilBackground from '../../assets/imagem/fundo_pagina.png'
+import FotoPerfil from "../../assets/imagem/fotoPerfil.png"
 import "./styles.css"
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -43,6 +45,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: -10,
     padding: "2%",
     backgroundColor: "#BBB8CC"
+  },
+  paperBackgroud: {
+    width: "100%",
+    marginTop: -30,
+    padding: "2%",
+    backgroundColor: "#020431",
+    // borderRadius: 30
+  },
+  paperBackgroudMobile: {
+    width: "100%",
+
+    padding: "2%",
+    backgroundColor: "#020431",
+    // borderRadius: 30
   },
   paperB: {
     width: "85%",
@@ -297,28 +313,75 @@ export default function Perfil() {
 
           <Grid container  >
 
-            <Grid item xs={12} >
 
-              <Grid container justify='center'>
+            <Grid container justify='center'>
 
-                <Paper className={classes.paperA}>
+              <Grid item xs={12} >
 
-                  <h4 className="subtitle">NOSSOS MEMBROS</h4>
+                <div className='relativeCard'>
 
-                  <Grid container spacing={3}>
+                  <div className="containerCapa">
 
-                    {Membros.map((item) =>
-                      <CardMembro item={item} />
-                    )}
+                    <img className="imageCapa" src={fotoCapa} alt="fotoCapa" />
 
+                  </div>
+
+                  <div className="circle">
+
+                    <Grid style={{ marginTop: 10 }} container justify='center'>
+
+                      <img className='imagePerfil' src={FotoPerfil} alt="fotoPerfil" />
+
+                    </Grid>
+
+                  </div>
+
+
+                  <Grid container justify='center'>
+
+                    <Paper className={classes.paperBackgroud}>
+
+                      <h3 className="MyTitle">Cimatlética - Atlética do SENAI CIMATEC</h3>
+
+                      <br />
+
+
+                      <p className='subtitleW' >SOBRE NÒS</p>
+
+                      <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                  non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+                    </Paper>
 
                   </Grid>
 
-                </Paper>
-
+                </div>
               </Grid>
 
+
+
+              <Paper className={classes.paperA}>
+
+                <h4 className="subtitle">NOSSOS MEMBROS</h4>
+
+                <Grid container spacing={3}>
+
+                  {Membros.map((item) =>
+                    <CardMembro item={item} />
+                  )}
+
+
+                </Grid>
+
+              </Paper>
+
             </Grid>
+
+
 
             <Grid item xs={12}  >
 
@@ -562,6 +625,38 @@ export default function Perfil() {
         </Grid> */}
 
           <Grid container spacing={1}>
+
+            <Grid item xs={12}>
+
+              <Paper className={classes.paperBackgroudMobile}>
+
+                <Grid style={{ marginTop: 10, }} container justify='center'>
+
+                  <img className='imagePerfilMobile' src={FotoPerfil} alt="fotoPerfil" />
+
+                  <h3 className="MyTitleMobile">Cimatlética - Atlética do SENAI CIMATEC</h3>
+
+                </Grid>
+
+              </Paper>
+
+              <Paper className={classes.paperBMobile}>
+
+                <Grid container justify="flex-start">
+
+                  <p className='subtitleWMobile' >SOBRE NÒS</p>
+
+                  <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+                </Grid>
+              </Paper>
+
+            </Grid>
 
 
             <Grid item xs={12}>

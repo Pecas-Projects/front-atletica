@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import FormularioProduto from "./components/FormularioProduto";
 import FormularioProdutoMobile from "./components/FormularioProdutoMobile";
-import FormularioEditarProduto from "./components/FormularioEditarProduto"
+
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -66,11 +66,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AdicionarProduto() {
   const classes = useStyles();
-  const [opcao, setOpcao] = useState('Adicionar');
-
-  const handleChange = (e) => {
-    setOpcao(e.target.value)
-  }
 
   return (
     <div className={classes.root}>
@@ -93,28 +88,8 @@ export default function AdicionarProduto() {
 
           <Grid container justify="center">
             <Grid item xs={12} >
-
-              <Grid container justify='flex-start' >
-                <FormControl component="fieldset" style={{ marginLeft: 90 }}>
-                  <RadioGroup row aria-label="modalidade" name="modalidade" value={opcao} onChange={handleChange}>
-                    <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar Produto" />
-                    <FormControlLabel value="Editar" control={<Radio />} label="Editar Produto" />
-                  </RadioGroup>
-                </FormControl>
-              </Grid>
-            </Grid>
-
-            {opcao === "Adicionar" ? (
-
               <FormularioProduto />
-
-            ) : (
-
-                <FormularioEditarProduto />
-
-              )}
-
-
+            </Grid>
           </Grid>
         </div>
 
