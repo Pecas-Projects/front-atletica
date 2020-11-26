@@ -40,10 +40,6 @@ const ApiService = {
       });
   },
 
-  Logout: () => {
-    localStorage.removeItem("@Olympos:token");
-  },
-
 };
 
 export default ApiService;
