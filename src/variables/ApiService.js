@@ -53,6 +53,16 @@ const ApiService = {
       });
   },
 
+  BuscarTodosPosts: (atleticaId) => {
+    return api
+      .get("api/PublicacaoAtletica/" + atleticaId)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
   CadastroMembro: (Membro, PIN) => {
     return api
       // .post(`/api​/Registro​/Membro​/${PIN}`, Membro)
