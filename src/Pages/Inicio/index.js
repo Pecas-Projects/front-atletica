@@ -261,7 +261,6 @@ export default function PaginaInicial() {
           </Grid>
         </Box>
       </Container>
-      <Footer />
     </>
   );
 }

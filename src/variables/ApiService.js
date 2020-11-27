@@ -1,46 +1,68 @@
 import api from "../services/api";
-
-let userId;
-let userType;
-
-export function SetUserIdAndType(id, type) {
-  userId = id;
-  userType = type;
-}
-
-export const GetUserInfo = () => {
-  let info = {
-    userId,
-    userType,
-  };
-
-  return info;
-};
-
-export const isLogin = () => {
-  if (localStorage.getItem("@Olympos:token")) {
-    return true;
-  }
-  return false;
-};
+import { login } from "../utils/storage";
 
 const ApiService = {
+
   LoginAtletica: (crecencial) => {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        return res;
+        login(res.data.token, 'A', res.data.atletica.atleticaId)
+        return res
       })
       .catch((error) => {
         console.error(error);
         return Promise.reject(error);
       });
   },
+  BuscarTodosCursos: () => {
+    return api
+      .get("/api/Cursos")
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  BuscarAtleticaModalidades: (atleticaId) => {
+    return api
+      .get("/api/AtleticaModalidade/" + atleticaId)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  CriarSolicitacaoAtleta: (atleticaId, atleta) => {
+    return api
+      .post("/api/SolicitacaoAtleta/" + atleticaId, atleta)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  PesquisaAtleticas: (nomeAtletica) => {
+    return api
+      .get("/api/AtleticaNome/" + nomeAtletica)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
 
   LoginMembro: (credencial) => {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
+        login(res.data.token, 'A', res.data.atletica.membroId)
         return res;
       })
       .catch((error) => {
@@ -49,34 +71,52 @@ const ApiService = {
       });
   },
 
-  Logout: () => {
-    localStorage.removeItem("@Olympos:token");
-  },
-
-  UploadImagem: (data, config) => {
+  CadastroAtletica: (Atletica) => {
     return api
-      .post(`/api/Imagem/Upload`, data, config)
-      .then((response) => {
-        return response;
+      .post("/api/Registro/Atletica", Atletica)
+      .then((res) => {
+        return Promise.resolve(res);
       })
       .catch((error) => {
-        console.log(error)
-        return error;
-      })
+        console.error(error);
+        return Promise.reject(error);
+      });
   },
 
-  EnviarPost: (dados, config) => {
+  BuscarTodosPosts: (atleticaId) => {
     return api
-      .post("/api/Publicacao", dados, config)
-      .then((response) => {
-        return response;
+      .get("api/PublicacaoAtletica/" + atleticaId)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+  CadastroMembro: (Membro, PIN) => {
+    return api
+      .post(`/api/Registro/Membro/${PIN}`, Membro)
+      .then((res) => {
+        return Promise.resolve(res);
       })
       .catch((error) => {
-        console.log(error)
-        return error;
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+
+  PesquisaAtleticaPorUsername: (username) => {
+    return api
+      .get("/api/Atletica/BuscaPorUsername/" + username)
+      .then((res) => {
+        return Promise.resolve(res);
       })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
   },
 
 };
 
 export default ApiService;
+

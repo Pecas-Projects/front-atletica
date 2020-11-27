@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import "./styles.css"
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 import Post from "./Components/Post"
+import ApiService from "../../variables/ApiService";
+import { getUserId } from "../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,6 +43,40 @@ const useStyles = makeStyles((theme) => ({
 export default function Feed() {
 
     const classes = useStyles();
+    const [posts, setPosts] = useState([])
+    const userId = getUserId();
+
+
+    useEffect(() => {
+        if (userId !== undefined && userId !== null)
+            getAllPosts();
+    }, []);
+
+    async function getAllPosts() {
+
+        await ApiService.BuscarTodosPosts(userId)
+            .then((res) => {
+                setPosts(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    function apresentaPosts() {
+        if (posts !== undefined && posts !== null) 
+            return (
+                posts.map((item) => (
+                    <Post post={item} />
+                ))
+
+            );
+        
+        else 
+            return (
+                <div></div>
+            );    
+    }
 
     return (
 
@@ -60,6 +96,7 @@ export default function Feed() {
     
                 */}
 
+
                 <div className={classes.sectionDesktop}>
 
                     <Grid container  >
@@ -70,7 +107,8 @@ export default function Feed() {
 
                             <Grid container justify='center'>
 
-                                <Post />
+
+                                {apresentaPosts()}
 
                             </Grid>
 
@@ -99,9 +137,7 @@ export default function Feed() {
                     <Grid container  >
 
                         <Grid item xs={12} >
-
-                            <Post />
-
+                            {apresentaPosts()}
                         </Grid>
                     </Grid>
 
