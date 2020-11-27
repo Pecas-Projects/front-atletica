@@ -44,13 +44,20 @@ export default function Post(props) {
         setExpanded(!expanded);
     };
 
+    function formataDataHora(){
+
+        let date = post.dataHora.substring(8, 10)
+        date += "/" + post.dataHora.substring(5, 7)
+        date += "/" +  post.dataHora.substring(0, 4)        
+        return date;
+    }
 
     return (
         <Grid container justify='center'>
             <Card className={classes.root}>
                 <CardHeader
                     title={post.titulo}
-                    subheader={post.dataHora}
+                    subheader={formataDataHora()}
                 />
                 <CardMedia
                     className={classes.media}
