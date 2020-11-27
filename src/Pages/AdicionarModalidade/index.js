@@ -13,6 +13,9 @@ import CardAddModalidade from "./Components/CardAddModalidade"
 import CardAddModalidadeMobile from "./Components/CardAddModalidadeMobile"
 import ApiService from "../../variables/ApiService"
 import AuthContext from "../../context/auth"
+import MuiAlert from '@material-ui/lab/Alert';
+
+
 
 // import "./stylesModalidade.css"
 
@@ -72,47 +75,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AdicionarModalidade() {
 
-    const { userInfo, userType } = useContext(AuthContext);
+    const [modalidades, setModalidades] = useState([])
 
 
     useEffect(() => {
 
-
+        console.log(localStorage.getItem("@Olympos:token"))
         console.log(JSON.parse(localStorage.getItem("@Olympos:userInfo/AtleticaId")))
 
         ApiService.ModalidadesAtletica(JSON.parse(localStorage.getItem("@Olympos:userInfo/AtleticaId")))
             .then((res) => {
                 console.log(res)
-            });
-
-
-
+                setModalidades(res.data)
+            })
 
     }, [])
 
-    const [modalidades, setModalidades] = useState([
-        {
-            nome: "Futebol Feminino",
-            coordenador: "Maria Antônia",
-            atletas: ["Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa",
-                "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa",
-                "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa"]
-        },
-        {
-            nome: "Vôlei Feminino",
-            coordenador: "Ana Paula",
-            atletas: ["Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa",
-                "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa",
-                "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa"]
-        },
-        {
-            nome: "Futebol Masculina",
-            coordenador: "Davi Costa",
-            atletas: ["Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa",
-                "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa",
-                "Beatriz Calazans", "Maria Antônia", "Ana Paula", "Fernanda Lisboa"]
-        },
-    ])
+
 
     const classes = useStyles();
 

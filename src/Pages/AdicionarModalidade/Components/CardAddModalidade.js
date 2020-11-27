@@ -142,7 +142,7 @@ export default function CardAddModalidade() {
             </Snackbar>
 
             <Snackbar open={openErro} autoHideDuration={4000} onClose={handleCloseErro}>
-                <Alert onClose={handleCloseCriado} severity="error">
+                <Alert onClose={handleCloseErro} severity="error">
                     Ocorreu um erro na criação da modalidade, revise os dados e tente novamente
                 </Alert>
             </Snackbar>
