@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
       .then(async (res) => {
         setUserInfo(res.data.atletica);
         setUserType("A");
-        // api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
+        api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
         localStorage.setItem("@Olympos:token", res.data.token);
 
 
@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
       .then((res) => {
         setUserInfo(res.data.atletica);
         setUserType("M");
-        // api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
+        api.defaults.headers["Authorization"] = `Bearer ${res.data.token}`;
         localStorage.setItem("@Olympos:token", res.data.token);
 
         // ===================================
