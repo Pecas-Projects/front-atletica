@@ -4,7 +4,6 @@ import Routes from "./Routes";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import Footer from "./Components/Footer";
-import { AuthProvider } from "./context/auth";
 import "./stylesApp.css";
 
 const theme = createMuiTheme({
@@ -24,9 +23,7 @@ function App() {
       <BrowserRouter>
         <div className="page-container">
           <div className="content-wrap">
-            <AuthProvider>
-              <Routes />
-            </AuthProvider>
+            <Routes />
           </div>
           <Footer />
         </div>

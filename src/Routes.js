@@ -1,5 +1,5 @@
 import React from "react";
-import { isLogin } from "./variables/ApiService";
+import { isLogin } from "./utils/storage";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Perfil from "./Pages/Perfil";
 import PaginaInicio from "./Pages/Inicio";
@@ -33,7 +33,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   );
 };
 
-
 const Routes = () => (
   <Switch>
     <Route exact path="/Perfil" component={Perfil} />
@@ -43,7 +42,6 @@ const Routes = () => (
     <Route exact path="/Feed" component={Feed} />
     <Route exact path="/login" component={Login} />
     <Route exact path="/Cadastro" component={Cadastro} />
-
     <PrivateRoute
       exact
       path="/AdicionarProduto"

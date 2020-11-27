@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import AuthContext from "../../context/auth";
+import React, { useState } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Paper } from "@material-ui/core";
@@ -11,7 +10,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-//import ApiService, { SetUserIdAndType } from "../../variables/ApiService";
+import ApiService from "../../variables/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  const { LoginAtletica, LoginMembro } = useContext(AuthContext);
   const [login, setLogin] = useState({
     Email: " ",
     Senha: " ",
@@ -86,13 +84,13 @@ export default function Login() {
         senha: login.Senha,
       };
 
-      try {
-        LoginAtletica(loginData);
-      } catch (err) {
-        console.log(err);
-      }
+      ApiService.LoginAtletica(loginData)
+        .then(() =>
+          window.location.href = "/Perfil"
+        ).catch((err) =>
+          console.log(err)
+        );
 
-      window.location.href = "/Perfil";
     } else {
       let loginM = {
         senha: login.Senha,
@@ -101,11 +99,12 @@ export default function Login() {
         },
       };
 
-      try {
-        LoginMembro(loginM);
-      } catch (err) {
-        console.log(err);
-      }
+      ApiService.LoginMembro(loginM)
+        .then()
+        .catch((err) =>
+          console.log(err)
+        );
+
     }
   };
 
