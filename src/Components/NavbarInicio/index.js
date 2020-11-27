@@ -173,7 +173,9 @@ export default function ElevateAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
+      <Link style={{ textDecoration: "none", color: "black" }} to="/Perfil">
+        <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
+      </Link>
       <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
     </Menu>
   );
@@ -189,8 +191,10 @@ export default function ElevateAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Sair</MenuItem>
+      <Link style={{ textDecoration: "none", color: "black" }} to="/Perfil">
+        <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
+      </Link>
+      <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
     </Menu>
   );
 
