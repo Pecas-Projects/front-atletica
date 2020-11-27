@@ -91,7 +91,6 @@ export default function Login() {
         ).catch((err) =>
           console.log(err)
         );
-
     } else {
       let loginM = {
         senha: login.Senha,
@@ -102,10 +101,7 @@ export default function Login() {
 
       await ApiService.LoginMembro(loginM)
         .then()
-        .catch((err) =>
-          console.log(err)
-        );
-
+        .catch((err) => console.log(err));
     }
   };
 
@@ -237,7 +233,7 @@ export default function Login() {
               <Paper className={classes.paperAMobile}>
                 <h1 className="MyTitle">Login</h1>
 
-                <AvForm>
+                <AvForm onSubmit={(e) => OnFormSubmit(e)}>
                   <AvField
                     style={{ marginBottom: 30 }}
                     onChange={handleEmail}
@@ -287,11 +283,12 @@ export default function Login() {
 
                   <Grid container style={{ marginTop: 10 }}>
                     <Button
+                      type="submit"
                       style={{ width: "100%" }}
                       variant="contained"
                       color="secondary"
                     >
-                      entrar
+                      Entrar
                     </Button>
                   </Grid>
                 </AvForm>

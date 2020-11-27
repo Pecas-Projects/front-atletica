@@ -16,15 +16,20 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 import Home from "../../assets/imagem/home.svg";
 import Feed from "../../assets/imagem/today (1).svg";
+import Bell from "../../assets/icons/bellIcon.svg";
+import Ranking from "../../assets/icons/ranking.svg";
+import { isLogin, getUserType } from "../../utils/storage";
 import Trofeu from "../../assets/imagem/trophy.svg";
 import Bag from "../../assets/imagem/shopping-bag.svg";
-import More from "../../assets/imagem/more-vertical-alt.svg";
+import Jogo from "../../assets/icons/jogoIcon.svg";
+import Modalidade from "../../assets/icons/modalidadeIcon.svg";
 import LogOut from "../../assets/imagem/log-out.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import "./NavBar.css";
 import { Grid, TextField, InputAdornment } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
+import LogoutModel from "../../Components/ModalLogout";
 import ApiService from "../../variables/ApiService";
 import { atleticaUsername } from '../../utils/storage'
 
@@ -167,6 +172,15 @@ export default function MiniDrawer() {
   const [open, setOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
   const [atleticas, setAtleticas] = useState([]);
+  const [openLogout, setOpenLogout] = useState(false);
+
+  const handleClickOpenLogout = () => {
+    setOpenLogout(true);
+  };
+
+  const handleCloseLogout = () => {
+    setOpenLogout(false);
+  };
 
   const handleChange = () => {
     setShowSearch(false);
@@ -322,13 +336,6 @@ export default function MiniDrawer() {
                       <ListItemText className="item" primary="Feed" />
                     </ListItem>
                   </Link>
-
-                  {/* <ListItem button>
-                    <ListItemIcon>
-                      <img src={Calendario} alt="calendario" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Calendário" />
-                  </ListItem> */}
                   <Link to="/Times">
                     <ListItem button>
                       <ListItemIcon>
@@ -346,26 +353,60 @@ export default function MiniDrawer() {
                       <ListItemText className="item" primary="Produtos" />
                     </ListItem>
                   </Link>
+                  {isLogin() && (
+                    <>
+                      <Link to="/Notificacoes">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Bell} alt="Notificação" />
+                          </ListItemIcon>
+                          <ListItemText
+                            className="item"
+                            primary="Notificações"
+                          />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Ranking">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Ranking} alt="Ranking" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Ranking" />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Jogo">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Jogo} alt="Jogo" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Jogos" />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Modalidades">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Modalidade} alt="Modalidade" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Modalidade" />
+                        </ListItem>
+                      </Link>
+                    </>
+                  )}
                 </List>
               </Grid>
 
-              <div className="absolute">
-                <List>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <img src={More} alt="configurações" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Configurações" />
-                  </ListItem>
-
-                  <ListItem button>
-                    <ListItemIcon>
-                      <img src={LogOut} alt="logout" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Logout" />
-                  </ListItem>
-                </List>
-              </div>
+              {getUserType() === "A" && (
+                <div className="absolute">
+                  <List>
+                    <ListItem button onClick={handleClickOpenLogout}>
+                      <ListItemIcon>
+                        <img src={LogOut} alt="logout" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Logout" />
+                    </ListItem>
+                  </List>
+                </div>
+              )}
             </Drawer>
           </div>
         </div>
@@ -496,13 +537,6 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
 
-                {/* <ListItem button>
-                  <ListItemIcon>
-                    <img src={Calendario} alt="calendario" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Calendário" />
-                </ListItem> */}
-
                 <Link to="/Times">
                   <ListItem button>
                     <ListItemIcon>
@@ -520,26 +554,59 @@ export default function MiniDrawer() {
                     <ListItemText className="item" primary="Produtos" />
                   </ListItem>
                 </Link>
+                {isLogin() && (
+                  <>
+                    <Link to="/Notificacoes">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Bell} alt="Notificação" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Notificações" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Ranking">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Ranking} alt="Ranking" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Ranking" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Jogo">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Jogo} alt="Jogo" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Jogos" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Modalidades">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Modalidade} alt="Modalidade" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Modalidade" />
+                      </ListItem>
+                    </Link>
+                  </>
+                )}
               </List>
             </Grid>
 
             <div className="absoluteMobile">
-              <ListItem button>
-                <ListItemIcon>
-                  <PermIdentityIcon style={{ color: "white" }} />
-                </ListItemIcon>
-                <ListItemText className="item" primary="Meu Perfil" />
-              </ListItem>
+              {getUserType() === "A" && (
+                <Link to="/EditarPerfil">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PermIdentityIcon style={{ color: "white" }} />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Meu Perfil" />
+                  </ListItem>
+                </Link>
+              )}
 
               <List>
-                <ListItem button>
-                  <ListItemIcon>
-                    <img src={More} alt="configurações" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Configurações" />
-                </ListItem>
-
-                <ListItem button>
+                <ListItem button onClick={handleClickOpenLogout}>
                   <ListItemIcon>
                     <img src={LogOut} alt="logout" />
                   </ListItemIcon>
@@ -550,6 +617,7 @@ export default function MiniDrawer() {
           </Drawer>
         </div>
       </div>
+      <LogoutModel open={openLogout} handleClose={handleCloseLogout} />
     </>
   );
 }
