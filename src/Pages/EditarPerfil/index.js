@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Paper, Button, Typography, Popover } from "@material-ui/core";
 import NavBar from "../../Components/NavBar";
@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import cep from "cep-promise";
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
+import ApiService from "../../variables/ApiService";
 import "./styles.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -77,7 +78,7 @@ export default function EditarPerfil(props) {
   const [city, setCity] = useState("");
   const [number, setNumber] = useState("");
   const [complemento, setComplemento] = useState("");
-
+  const [pin, setPin] = useState();
   const [descricao, setDescricao] = useState("");
   const [link, setLink] = useState("");
 
@@ -153,6 +154,30 @@ export default function EditarPerfil(props) {
       );
   }
 
+  const buscaAtleticaPorUsername = async (username) => {
+    await ApiService.PesquisaAtleticaPorUsername(username)
+      .then((res) => {
+        console.log(res.data);
+        setDescricao(res.data.descricao);
+        setLink(res.data.linkProsel);
+        setCepcp(res.data.campus.cep);
+        setComplemento(res.data.complemento);
+        setPin(res.data.pin);
+        if (res.data.atleticaImagens.length > 0) {
+          res.data.atleticaImagens.map((img) => {
+            if (img.tipo === "P") setImagemPerfil(img);
+            else setImagemCapa(img);
+          });
+        }
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    buscaAtleticaPorUsername(props.match.params.username);
+  }, []);
+
   return (
     <>
       <div className={classes.root}>
@@ -207,8 +232,8 @@ export default function EditarPerfil(props) {
                             }}
                           >
                             <Typography style={{ padding: 10 }}>
-                              O PIN para cadastrar um membro na sua atlética é:
-                              44134
+                              O PIN para cadastrar um membro na sua atlética é:{" "}
+                              {pin}
                             </Typography>
                           </Popover>
                         </Grid>
@@ -231,6 +256,7 @@ export default function EditarPerfil(props) {
                         validate={{
                           maxLength: { value: 300 },
                         }}
+                        value={descricao}
                       />
 
                       <br />
@@ -242,6 +268,7 @@ export default function EditarPerfil(props) {
                       </p>
 
                       <AvField
+                        value={link}
                         name="link"
                         type="text"
                         onChange={handleChangeLink}
@@ -489,6 +516,7 @@ export default function EditarPerfil(props) {
                         validate={{
                           maxLength: { value: 300 },
                         }}
+                        value={descricao}
                       />
 
                       <br />
@@ -600,65 +628,14 @@ export default function EditarPerfil(props) {
                           />
                         </Grid>
                       </Grid>
-
-                      {/* {imagemPerfil === null && imagemCapa === null ? (
-
-
-                                                <Grid item xs={4}>
-                                                    {showAdicionarImagemPerfil()}
-                                                    <Paper style={{ backgroundColor: "#636363", width: 250 }}>
-                                                        <Grid
-                                                            container
-                                                            justify="center"
-                                                            alignContent="center"
-                                                            style={{ height: 250, marginTop: -7 }}
-                                                        >
-                                                            <BotaoUploadImagemMobile setPath={setPathPerfil} setImagem={setImagemPerfil} imagem={imagemPerfil} path={pathPerfil} />
-
-                                                        </Grid>
-                                                    </Paper>
-                                                </Grid>
-
-
-
-                                            ) : (
-
-                                                    <Grid container >
-
-                                                        <Grid item xs={12}>
-                                                            {showAdicionarImagemPerfil()}
-                                                            <Paper style={{ backgroundColor: "#636363", width: 250 }}>
-                                                                <Grid
-                                                                    container
-                                                                    justify="center"
-                                                                    alignContent="center"
-                                                                    style={{ height: 250, marginTop: -7 }}
-                                                                >
-                                                                    <BotaoUploadImagemMobile setPath={setPathPerfil} setImagem={setImagemPerfil} imagem={imagemPerfil} path={pathPerfil} />
-
-                                                                </Grid>
-                                                            </Paper>
-                                                        </Grid>
-
-                                                        <Grid item xs={12}>
-                                                            {showAdicionarImagemCapa()}
-                                                            <Paper style={{ backgroundColor: "#636363", width: 450 }}>
-                                                                <Grid
-                                                                    container
-                                                                    justify="center"
-                                                                    alignContent="center"
-                                                                    style={{ height: 250, marginTop: -7 }}
-                                                                >
-                                                                    <Grid item>
-                                                                        <BotaoAuxiliar setPath={setPathCapa} setImagem={setImagemCapa} imagem={imagemCapa} path={pathCapa} />
-
-                                                                    </Grid>
-                                                                </Grid>
-                                                            </Paper>
-                                                        </Grid>
-                                                    </Grid>
-
-                                                )} */}
+                      <Grid container justify="center">
+                        <Grid item>
+                          <Typography>
+                            Para que seja possivel o upload de imagem, acesso
+                            nosso sistema pelo computador
+                          </Typography>
+                        </Grid>
+                      </Grid>
 
                       <Grid container justify="center">
                         <Button
