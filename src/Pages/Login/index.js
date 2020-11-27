@@ -11,6 +11,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import ApiService from "../../variables/ApiService";
+import { atleticaUsername } from '../../utils/storage'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,9 +85,12 @@ export default function Login() {
         senha: login.Senha,
       };
 
-      ApiService.LoginAtletica(loginData)
-        .then(() => (window.location.href = "/Perfil"))
-        .catch((err) => console.log(err));
+      await ApiService.LoginAtletica(loginData)
+        .then(() =>
+          window.location.href = "/Perfil/" + atleticaUsername()
+        ).catch((err) =>
+          console.log(err)
+        );
     } else {
       let loginM = {
         senha: login.Senha,
@@ -95,7 +99,7 @@ export default function Login() {
         },
       };
 
-      ApiService.LoginMembro(loginM)
+      await ApiService.LoginMembro(loginM)
         .then()
         .catch((err) => console.log(err));
     }
