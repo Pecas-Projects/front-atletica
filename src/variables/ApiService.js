@@ -1,5 +1,5 @@
 import api from "../services/api";
-import { login } from "../utils/storage";
+import { login, loginAtletica, loginMembro } from "../utils/storage";
 
 const ApiService = {
 
@@ -7,7 +7,7 @@ const ApiService = {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        login(res.data.token, 'A', res.data.atletica.atleticaId)
+        loginAtletica(res.data.token, 'A', res.data.atletica.atleticaId)
         return res
       })
       .catch((error) => {
@@ -32,7 +32,7 @@ const ApiService = {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
-        login(res.data.token, 'A', res.data.atletica.membroId)
+        loginMembro(res.data.token, 'A', res.data.atletica.membroId, res.data.atletica.pessoa.atleticaId)
         return res;
       })
       .catch((error) => {
@@ -90,8 +90,33 @@ const ApiService = {
         return Promise.reject(error);
       });
 
+  },
+
+  BuscarAtletaModalidade: (atleticaModalidadeId) => {
+    return api
+      .get(`/api/AtletaModalidade/${atleticaModalidadeId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarAddAtletas: (atleticaId, modalidadeId) => {
+    return api
+      .get(`/api/AtletaModalidade/${atleticaId}/${modalidadeId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
   }
-};
+}
 
 export default ApiService;
 
