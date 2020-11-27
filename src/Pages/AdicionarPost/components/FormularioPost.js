@@ -55,11 +55,20 @@ export default function FormularioPost() {
       });
   }
 
-
+  async function criarPost(){
+    await ApiService.EnviarPost(post)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+  }
 
   async function submit() {
 
     envioImagem();
+    criarPost();
   }
 
   return (
