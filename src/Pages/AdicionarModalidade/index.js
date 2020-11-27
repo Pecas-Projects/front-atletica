@@ -12,6 +12,7 @@ import CardModalidadeMobile from './Components/CardModalidadeMobile'
 import CardAddModalidade from "./Components/CardAddModalidade"
 import CardAddModalidadeMobile from "./Components/CardAddModalidadeMobile"
 import ApiService from "../../variables/ApiService"
+import storage, { getAtleticaId, getToken } from "../../utils/storage"
 
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -75,21 +76,39 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AdicionarModalidade() {
 
-    const [modalidades, setModalidades] = useState([])
+    const [modalidades, setModalidades] = useState()
+    const [loading, setLoading] = useState(true)
 
 
     useEffect(() => {
 
-        console.log(localStorage.getItem("@Olympos:token"))
-        console.log(JSON.parse(localStorage.getItem("@Olympos:userInfo/AtleticaId")))
 
-        ApiService.ModalidadesAtletica(JSON.parse(localStorage.getItem("@Olympos:userInfo/AtleticaId")))
-            .then((res) => {
-                console.log(res)
-                setModalidades(res.data)
-            })
+        async function getInfo() {
+
+            await ApiService.ModalidadesAtletica(getAtleticaId())
+                .then((res) => {
+                    console.log(res)
+                    setModalidades(res.data)
+
+
+                })
+        }
+
+        getInfo()
+
 
     }, [])
+
+    useEffect(() => {
+
+        console.log(modalidades)
+        console.log(getToken())
+
+        if (modalidades !== undefined) {
+            setLoading(false)
+        }
+
+    }, [modalidades])
 
 
 
@@ -111,13 +130,21 @@ export default function AdicionarModalidade() {
     };
 
     return (
-        <div className={classes.root}>
-            <NavBar />
+        <>
+            {loading ? (
+                <>
+                    <h1>loading</h1>
+                </>
 
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
+            ) : (
+                    <>
+                        <div className={classes.root}>
+                            <NavBar />
 
-                {/*
+                            <main className={classes.content}>
+                                <div className={classes.toolbar} />
+
+                                {/*
         
         
         
@@ -127,59 +154,71 @@ export default function AdicionarModalidade() {
         
         */}
 
-                <div className={classes.sectionDesktop}>
+                                <div className={classes.sectionDesktop}>
 
-                    <Grid container  >
+                                    <Grid container  >
 
-                        <Grid item xs={12} >
+                                        <Grid item xs={12} >
 
-                            <Grid container justify='flex-start' >
-                                <FormControl component="fieldset" style={{ marginLeft: 90 }}>
-                                    <RadioGroup row aria-label="modalidade" name="modalidade" value={value} onChange={handleChange}>
-                                        <FormControlLabel value="Mostrar" control={<Radio />} label="Ver Modalidades" />
-                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar Modalidade" />
-                                    </RadioGroup>
-                                </FormControl>
-
-
-                            </Grid>
-                        </Grid>
-
-                        {value === 'Mostrar' ? (
-
-                            <Grid item xs={12}>
-
-                                <Grid container justify="center">
-
-                                    {modalidades.map((item, index) =>
-                                        <CardModalidade
-                                            item={item}
-                                            index={index}
-                                            DeleteModalidade={DeleteModalidade} />
-                                    )}
-
-                                </Grid>
-                            </Grid>
+                                            <Grid container justify='flex-start' >
+                                                <FormControl component="fieldset" style={{ marginLeft: 90 }}>
+                                                    <RadioGroup row aria-label="modalidade" name="modalidade" value={value} onChange={handleChange}>
+                                                        <FormControlLabel value="Mostrar" control={<Radio />} label="Ver Modalidades" />
+                                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar Modalidade" />
+                                                    </RadioGroup>
+                                                </FormControl>
 
 
-                        ) : (
-                                <>
+                                            </Grid>
+                                        </Grid>
 
-                                    <Grid container justify='center'>
+                                        {value === 'Mostrar' ? (
 
-                                        <CardAddModalidade />
+                                            <Grid item xs={12}>
+
+                                                <Grid container justify="center">
+
+                                                    {modalidades !== undefined ? (
+                                                        <>
+                                                            {
+                                                                modalidades.map((item, index) =>
+                                                                    <CardModalidade
+                                                                        item={item}
+                                                                        index={index}
+                                                                        DeleteModalidade={DeleteModalidade} />
+                                                                )
+                                                            }
+                                                        </>
+
+                                                    ) : (
+                                                            <>
+                                                            </>
+                                                        )}
+
+
+
+                                                </Grid>
+                                            </Grid>
+
+
+                                        ) : (
+                                                <>
+
+                                                    <Grid container justify='center'>
+
+                                                        <CardAddModalidade />
+
+                                                    </Grid>
+
+                                                </>
+                                            )}
+
 
                                     </Grid>
 
-                                </>
-                            )}
+                                </div>
 
-
-                    </Grid>
-
-                </div>
-
-                {/* 
+                                {/* 
                 
                 
                 
@@ -192,59 +231,72 @@ export default function AdicionarModalidade() {
                 
                 */}
 
-                <div className={classes.sectionMobile}>
+                                <div className={classes.sectionMobile}>
 
-                    <Grid container  >
+                                    <Grid container  >
 
-                        <Grid item xs={12} style={{ marginBottom: 30 }} >
+                                        <Grid item xs={12} style={{ marginBottom: 30 }} >
 
-                            <Grid container justify='flex-start' >
-                                <FormControl component="fieldset" >
-                                    <RadioGroup row aria-label="modalidade" name="modalidade" value={value} onChange={handleChange}>
-                                        <FormControlLabel value="Mostrar" control={<Radio />} label="Ver Modalidades" />
-                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar Modalidade" />
-                                    </RadioGroup>
-                                </FormControl>
-
-
-                            </Grid>
-                        </Grid>
-
-                        {value === 'Mostrar' ? (
-
-                            <Grid item xs={12}>
-
-                                <Grid container justify="center">
-
-                                    {modalidades.map((item, index) =>
-                                        <CardModalidadeMobile
-                                            item={item}
-                                            index={index}
-                                            DeleteModalidade={DeleteModalidade} />
-                                    )}
-
-                                </Grid>
-                            </Grid>
+                                            <Grid container justify='flex-start' >
+                                                <FormControl component="fieldset" >
+                                                    <RadioGroup row aria-label="modalidade" name="modalidade" value={value} onChange={handleChange}>
+                                                        <FormControlLabel value="Mostrar" control={<Radio />} label="Ver Modalidades" />
+                                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar Modalidade" />
+                                                    </RadioGroup>
+                                                </FormControl>
 
 
-                        ) : (
-                                <>
+                                            </Grid>
+                                        </Grid>
 
-                                    <Grid container justify='center'>
+                                        {value === 'Mostrar' ? (
 
-                                        <CardAddModalidadeMobile />
+                                            <Grid item xs={12}>
+
+                                                <Grid container justify="center">
+                                                    {modalidades !== undefined ? (
+                                                        <>
+                                                            {modalidades.map((item, index) =>
+                                                                <CardModalidadeMobile
+                                                                    item={item}
+                                                                    index={index}
+                                                                    DeleteModalidade={DeleteModalidade} />
+                                                            )}
+                                                        </>
+                                                    ) : (
+                                                            <>
+                                                            </>
+
+                                                        )}
+
+
+
+                                                </Grid>
+                                            </Grid>
+
+
+                                        ) : (
+                                                <>
+
+                                                    <Grid container justify='center'>
+
+                                                        <CardAddModalidadeMobile />
+
+                                                    </Grid>
+
+                                                </>
+                                            )}
+
 
                                     </Grid>
 
-                                </>
-                            )}
 
+                                </div>
+                            </main>
+                        </div>
+                    </>
 
-                    </Grid>
-
-
-                </div>
-            </main>
-        </div>
+                )}
+        </>
     );
 }
