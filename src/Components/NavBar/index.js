@@ -21,7 +21,8 @@ import Ranking from "../../assets/icons/ranking.svg";
 import { isLogin } from "../../utils/storage";
 import Trofeu from "../../assets/imagem/trophy.svg";
 import Bag from "../../assets/imagem/shopping-bag.svg";
-import More from "../../assets/imagem/more-vertical-alt.svg";
+import Jogo from "../../assets/icons/jogoIcon.svg";
+import Modalidade from "../../assets/icons/modalidadeIcon.svg";
 import LogOut from "../../assets/imagem/log-out.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import "./NavBar.css";
@@ -365,6 +366,22 @@ export default function MiniDrawer() {
                             <img src={Ranking} alt="Ranking" />
                           </ListItemIcon>
                           <ListItemText className="item" primary="Ranking" />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Jogo">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Jogo} alt="Jogo" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Jogos" />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Modalidades">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Modalidade} alt="Modalidade" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Modalidade" />
                         </ListItem>
                       </Link>
                     </>
