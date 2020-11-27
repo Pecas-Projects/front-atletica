@@ -1,12 +1,12 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import "./styles.css"
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 import Post from "./Components/Post"
-import ApiService, { GetUserInfo } from "../../variables/ApiService";
-import AuthContext from "../../context/auth";
+import ApiService from "../../variables/ApiService";
+import { getUserId } from "../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,9 +43,25 @@ const useStyles = makeStyles((theme) => ({
 export default function Feed() {
 
     const classes = useStyles();
-    const { userInfo, userType } = useContext(AuthContext);
+    const [posts, setPosts] = useState([])
+    const userId = getUserId();
 
- 
+
+    useEffect(() => {
+        if(userId !== undefined)
+            getAllPosts();
+    }, []);
+
+    async function getAllPosts(){
+
+        await ApiService.BuscarTodosPosts(userId)
+        .then((res) => {
+            setPosts(res.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        }) 
+    }
 
     return (
 
@@ -64,6 +80,7 @@ export default function Feed() {
     
     
                 */}
+
 
                 <div className={classes.sectionDesktop}>
 
