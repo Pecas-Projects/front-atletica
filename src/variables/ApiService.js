@@ -33,16 +33,6 @@ const ApiService = {
       });
   },
 
-  PesquisaAtleticas: (nomeAtletica) => {
-    return api
-      .get("/api/AtleticaNome/" + nomeAtletica)
-      .then((res) => {
-        return Promise.resolve(res);
-      })
-      .catch((error) => {
-        return Promise.reject(error);
-      });
-  },
   CadastroAtletica: (Atletica) => {
     return api
       .post("/api/Registro/Atletica", Atletica)
@@ -51,17 +41,6 @@ const ApiService = {
       })
       .catch((error) => {
         console.error(error);
-        return Promise.reject(error);
-      });
-  },
-
-  PesquisaAtleticaPorUsername: (username) => {
-    return api
-      .get("/api/Atletica/BuscaPorUsername/" + username)
-      .then((res) => {
-        return Promise.resolve(res);
-      })
-      .catch((error) => {
         return Promise.reject(error);
       });
   },
@@ -79,6 +58,26 @@ const ApiService = {
           return Promise.reject(error);
         })
     );
+  },
+  PesquisaAtleticaPorUsername: (username) => {
+    return api
+      .get(`/api/Atletica/BuscaPorUsername/${username}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  PesquisaAtleticas: (nomeAtletica) => {
+    return api
+      .get("/api/AtleticaNome/" + nomeAtletica)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
   },
 };
 
