@@ -234,7 +234,7 @@ export default function Cadastro() {
 
                                     <Paper className={classes.paperA}>
 
-                                        <h1 className="MyTitle">CADASTRE-SE</h1>
+                                        <h1 className="MyTitleC">CADASTRE-SE</h1>
 
                                         <Grid item xs={12} style={{ marginTop: 20 }}>
 
@@ -513,7 +513,7 @@ export default function Cadastro() {
                         <Grid item xs={12} >
 
                             <Paper className={classes.paperAMobile}>
-                                <h1 className="MyTitle">CADASTRE-SE</h1>
+                                <h1 className="MyTitleC">CADASTRE-SE</h1>
 
                                 <Grid item xs={12} style={{ marginTop: 20 }}>
 
