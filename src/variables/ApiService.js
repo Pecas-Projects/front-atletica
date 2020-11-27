@@ -53,17 +53,13 @@ const ApiService = {
       });
   },
 
-  BuscarTodosPosts: (id) => {
+  BuscarTodosPosts: (atleticaId) => {
     return api
-      .get("api/PublicacaoAtletica/" + id)
+      .get("api/PublicacaoAtletica/" + atleticaId)
       .then((res) => {
-        console.log(id)
-        console.log(res)
         return res;
       })
       .catch((err) => {
-        console.log(id)
-        console.log(err)
         return err;
       });
   },
