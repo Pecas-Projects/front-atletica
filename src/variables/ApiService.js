@@ -79,6 +79,16 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+  AtualizarAtletica: (atleticaId, atleticaDados) => {
+    return api
+      .put(`/api/Atletica/${atleticaId}`, atleticaDados)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 };
 
 export default ApiService;

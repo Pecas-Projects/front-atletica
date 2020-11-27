@@ -69,6 +69,7 @@ export default function EditarPerfil(props) {
   const { username } = props.match.params.username;
 
   const [loading, setLoading] = useState(true);
+  const [atletica, setAtletica] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [cepcp, setCepcp] = useState("");
@@ -81,10 +82,8 @@ export default function EditarPerfil(props) {
   const [pin, setPin] = useState();
   const [descricao, setDescricao] = useState("");
   const [link, setLink] = useState("");
-
   const [imagemPerfil, setImagemPerfil] = useState(null);
   const [pathPerfil, setPathPerfil] = useState();
-
   const [imagemCapa, setImagemCapa] = useState(null);
   const [pathCapa, setPathCapa] = useState();
 
@@ -157,7 +156,7 @@ export default function EditarPerfil(props) {
   const buscaAtleticaPorUsername = async (username) => {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
-        console.log(res.data);
+        setAtletica(res.data);
         setDescricao(res.data.descricao);
         setLink(res.data.linkProsel);
         setCepcp(res.data.campus.cep);
@@ -177,6 +176,42 @@ export default function EditarPerfil(props) {
   useEffect(() => {
     buscaAtleticaPorUsername(props.match.params.username);
   }, []);
+
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+
+    let imgs = [
+      {
+        tipo: "C",
+        imagemId: imagemCapa.imagemId,
+      },
+      {
+        tipo: "P",
+        imagemId: imagemPerfil.imagemId,
+      },
+    ];
+
+    let atleticaDados = {
+      nome: atletica.nome,
+      email: atletica.email,
+      username: atletica.username,
+      descricao: descricao,
+      campus: {
+        nome: atletica.campus.nome,
+        cidade: city,
+        bairro: neighbourhood,
+        rua: street,
+        estado: state,
+        cep: cepcp,
+        faculdade: {
+          nome: atletica.campus.faculdade.nome,
+        },
+      },
+      imagens: imgs,
+    };
+
+    console.log(atleticaDados);
+  };
 
   return (
     <>
@@ -247,7 +282,7 @@ export default function EditarPerfil(props) {
                       Fale um pouco sobre sua atlética
                     </p>
 
-                    <AvForm>
+                    <AvForm onSubmit={onFormSubmit}>
                       <AvField
                         name="descricao"
                         type="textarea"
@@ -467,6 +502,7 @@ export default function EditarPerfil(props) {
 
                       <Grid container justify="center">
                         <Button
+                          type="submit"
                           style={{ marginTop: 60, width: 400 }}
                           variant="contained"
                           color="secondary"
