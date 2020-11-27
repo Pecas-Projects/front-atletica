@@ -54,7 +54,6 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
-<<<<<<< Updated upstream
 
   PesquisaAtleticaPorUsername: (username) => {
     return api
@@ -66,8 +65,6 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
-=======
->>>>>>> Stashed changes
 
   CadastroMembro: (Membro, PIN) => {
     return (
