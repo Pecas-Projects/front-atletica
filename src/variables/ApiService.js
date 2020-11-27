@@ -47,6 +47,19 @@ const ApiService = {
         return Promise.reject(error);
       });
 
+  },
+
+  CadastrarModalidade: (atleticaId, AtleticaModalidade) => {
+    return api
+      .post(`/api/AtleticaModalidade/${atleticaId}`, AtleticaModalidade)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
   }
 };
 
