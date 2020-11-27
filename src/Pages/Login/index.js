@@ -126,7 +126,7 @@ export default function Login() {
       };
 
       ApiService.LoginMembro(loginM)
-        .then()
+        .then(() => setLogado(true))
         .catch((err) => console.log(err));
     }
   };
