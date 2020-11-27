@@ -18,7 +18,7 @@ import Home from "../../assets/imagem/home.svg";
 import Feed from "../../assets/imagem/today (1).svg";
 import Bell from "../../assets/icons/bellIcon.svg";
 import Ranking from "../../assets/icons/ranking.svg";
-import { isLogin } from "../../utils/storage";
+import { isLogin, getUserType } from "../../utils/storage";
 import Trofeu from "../../assets/imagem/trophy.svg";
 import Bag from "../../assets/imagem/shopping-bag.svg";
 import Jogo from "../../assets/icons/jogoIcon.svg";
@@ -389,16 +389,18 @@ export default function MiniDrawer() {
                 </List>
               </Grid>
 
-              <div className="absolute">
-                <List>
-                  <ListItem button onClick={handleClickOpenLogout}>
-                    <ListItemIcon>
-                      <img src={LogOut} alt="logout" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Logout" />
-                  </ListItem>
-                </List>
-              </div>
+              {getUserType() === "A" && (
+                <div className="absolute">
+                  <List>
+                    <ListItem button onClick={handleClickOpenLogout}>
+                      <ListItemIcon>
+                        <img src={LogOut} alt="logout" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Logout" />
+                    </ListItem>
+                  </List>
+                </div>
+              )}
             </Drawer>
           </div>
         </div>
@@ -581,14 +583,16 @@ export default function MiniDrawer() {
             </Grid>
 
             <div className="absoluteMobile">
-              <Link to="/EditarPerfil">
-                <ListItem button>
-                  <ListItemIcon>
-                    <PermIdentityIcon style={{ color: "white" }} />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Meu Perfil" />
-                </ListItem>
-              </Link>
+              {getUserType() === "A" && (
+                <Link to="/EditarPerfil">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PermIdentityIcon style={{ color: "white" }} />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Meu Perfil" />
+                  </ListItem>
+                </Link>
+              )}
 
               <List>
                 <ListItem button onClick={handleClickOpenLogout}>
