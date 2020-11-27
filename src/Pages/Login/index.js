@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
 import AuthContext from "../../context/auth";
 import NavBar from "../../Components/NavBar";
+import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, Paper } from "@material-ui/core";
+import { Button, Grid, Paper, Snackbar } from "@material-ui/core";
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import "./styles.css";
 import ImageLogin from "../../assets/imagem/undraw_Login.svg";
@@ -12,6 +13,11 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 //import ApiService, { SetUserIdAndType } from "../../variables/ApiService";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +63,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
+
+  const [logado, setLogado] = useState(false)
+  const [erroLogin, setErroLogin] = useState(false)
   const classes = useStyles();
   const { LoginAtletica, LoginMembro } = useContext(AuthContext);
   const [login, setLogin] = useState({
@@ -77,6 +86,26 @@ export default function Login() {
     setLogin({ ...login, Type: e.target.value });
   };
 
+  const handleCloseLogado = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setLogado(false);
+  };
+
+  const handleErro = () => {
+    setErroLogin(true);
+  };
+
+  const handleCloseErro = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setErroLogin(false);
+  };
+
   const OnFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -88,8 +117,10 @@ export default function Login() {
 
       try {
         await LoginAtletica(loginData);
-        window.location.href = "/Perfil";
+        setLogado(true)
+        setTimeout(function () { return (window.location.href = "/Perfil") }, 4000)
       } catch (err) {
+        setErroLogin(true)
         console.log(err);
       }
 
@@ -104,19 +135,33 @@ export default function Login() {
       try {
         await LoginMembro(loginM);
       } catch (err) {
+        setErroLogin(true)
         console.log(err);
       }
     }
   };
 
   return (
-    <div className={classes.root}>
-      <NavBar />
+    <>
+      <Snackbar open={logado} autoHideDuration={4000} onClose={handleCloseLogado}>
+        <Alert onClose={handleCloseLogado} severity="success">
+          Usuário logado com sucesso!
+    </Alert>
+      </Snackbar>
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      <Snackbar open={erroLogin} autoHideDuration={4000} onClose={handleCloseErro}>
+        <Alert onClose={handleCloseErro} severity="error">
+          E-mail ou senha incorreto!
+    </Alert>
+      </Snackbar>
 
-        {/*
+      <div className={classes.root}>
+        <NavBar />
+
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+
+          {/*
     
     
     
@@ -126,100 +171,100 @@ export default function Login() {
     
                 */}
 
-        <div className={classes.sectionDesktop}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Grid container justify="center">
-                <Paper className={classes.paperA}>
-                  <h1 className="MyTitleLogin">LOGIN</h1>
+          <div className={classes.sectionDesktop}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Grid container justify="center">
+                  <Paper className={classes.paperA}>
+                    <h1 className="MyTitleLogin">LOGIN</h1>
 
-                  <Grid container spacing={1}>
-                    <Grid item xs={6} style={{ marginTop: 40 }}>
-                      <AvForm onSubmit={(e) => OnFormSubmit(e)}>
-                        <AvField
-                          onChange={handleEmail}
-                          style={{ width: "80%", marginBottom: 30 }}
-                          name="email"
-                          label="E-mail"
-                          type="text"
-                          errorMessage="Campo obrigatório"
-                          validate={{
-                            required: { value: true },
-                          }}
-                        />
+                    <Grid container spacing={1}>
+                      <Grid item xs={6} style={{ marginTop: 40 }}>
+                        <AvForm onSubmit={(e) => OnFormSubmit(e)}>
+                          <AvField
+                            onChange={handleEmail}
+                            style={{ width: "80%", marginBottom: 30 }}
+                            name="email"
+                            label="E-mail"
+                            type="text"
+                            errorMessage="Campo obrigatório"
+                            validate={{
+                              required: { value: true },
+                            }}
+                          />
 
-                        <AvField
-                          onChange={handleSenha}
-                          style={{ width: "80%" }}
-                          name="senha"
-                          label="Senha"
-                          type="password"
-                          errorMessage="Campo obrigatório"
-                          validate={{
-                            required: { value: true },
-                          }}
-                        />
+                          <AvField
+                            onChange={handleSenha}
+                            style={{ width: "80%" }}
+                            name="senha"
+                            label="Senha"
+                            type="password"
+                            errorMessage="Campo obrigatório"
+                            validate={{
+                              required: { value: true },
+                            }}
+                          />
 
-                        <Grid item xs={12} style={{ marginTop: 20 }}>
-                          <FormControl component="fieldset">
-                            <FormLabel component="legend">
-                              Entrar como:
+                          <Grid item xs={12} style={{ marginTop: 20 }}>
+                            <FormControl component="fieldset">
+                              <FormLabel component="legend">
+                                Entrar como:
                             </FormLabel>
-                            <RadioGroup
-                              row
-                              aria-label="gender"
-                              name="gender1"
-                              value={login.Type}
-                              onChange={handleType}
-                            >
-                              <FormControlLabel
-                                value="Atletica"
-                                control={<Radio />}
-                                label="Atlética"
-                              />
-                              <FormControlLabel
-                                value="Membro"
-                                control={<Radio />}
-                                label="Membro"
-                              />
-                            </RadioGroup>
-                          </FormControl>
-                        </Grid>
-
-                        <Grid item xs={8}>
-                          <Grid
-                            container
-                            justify="flex-end"
-                            style={{ marginTop: 20 }}
-                          >
-                            <Button
-                              type="submit"
-                              style={{ width: 300 }}
-                              variant="contained"
-                              color="secondary"
-                            >
-                              entrar{" "}
-                            </Button>
+                              <RadioGroup
+                                row
+                                aria-label="gender"
+                                name="gender1"
+                                value={login.Type}
+                                onChange={handleType}
+                              >
+                                <FormControlLabel
+                                  value="Atletica"
+                                  control={<Radio />}
+                                  label="Atlética"
+                                />
+                                <FormControlLabel
+                                  value="Membro"
+                                  control={<Radio />}
+                                  label="Membro"
+                                />
+                              </RadioGroup>
+                            </FormControl>
                           </Grid>
-                        </Grid>
-                      </AvForm>
-                    </Grid>
 
-                    <Grid item xs={6}>
-                      <img
-                        style={{ width: "100%" }}
-                        src={ImageLogin}
-                        alt="undraw_login"
-                      />
+                          <Grid item xs={8}>
+                            <Grid
+                              container
+                              justify="flex-end"
+                              style={{ marginTop: 20 }}
+                            >
+                              <Button
+                                type="submit"
+                                style={{ width: 300 }}
+                                variant="contained"
+                                color="secondary"
+                              >
+                                entrar{" "}
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </AvForm>
+                      </Grid>
+
+                      <Grid item xs={6}>
+                        <img
+                          style={{ width: "100%" }}
+                          src={ImageLogin}
+                          alt="undraw_login"
+                        />
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Paper>
+                  </Paper>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </div>
+          </div>
 
-        {/* 
+          {/* 
 
 
 
@@ -231,76 +276,77 @@ export default function Login() {
 
                 */}
 
-        <div className={classes.sectionMobile}>
-          <Grid container>
-            <Grid item xs={12}>
-              <Paper className={classes.paperAMobile}>
-                <h1 className="MyTitleLogin">Login</h1>
+          <div className={classes.sectionMobile}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Paper className={classes.paperAMobile}>
+                  <h1 className="MyTitleLogin">Login</h1>
 
-                <AvForm onValidSubmit={OnFormSubmit}>
-                  <AvField
-                    style={{ marginBottom: 30 }}
-                    onChange={handleEmail}
-                    name="email"
-                    label="E-mail"
-                    type="text"
-                    errorMessage="Campo obrigatório"
-                    validate={{
-                      required: { value: true },
-                    }}
-                  />
+                  <AvForm onValidSubmit={OnFormSubmit}>
+                    <AvField
+                      style={{ marginBottom: 30 }}
+                      onChange={handleEmail}
+                      name="email"
+                      label="E-mail"
+                      type="text"
+                      errorMessage="Campo obrigatório"
+                      validate={{
+                        required: { value: true },
+                      }}
+                    />
 
-                  <AvField
-                    onChange={handleSenha}
-                    name="senha"
-                    label="Senha"
-                    type="password"
-                    errorMessage="Campo obrigatório"
-                    validate={{
-                      required: { value: true },
-                    }}
-                  />
+                    <AvField
+                      onChange={handleSenha}
+                      name="senha"
+                      label="Senha"
+                      type="password"
+                      errorMessage="Campo obrigatório"
+                      validate={{
+                        required: { value: true },
+                      }}
+                    />
 
-                  <Grid item xs={12} style={{ marginTop: 20 }}>
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">Entrar como:</FormLabel>
-                      <RadioGroup
-                        row
-                        aria-label="type"
-                        name="type1"
-                        value={login.Type}
-                        onChange={handleType}
+                    <Grid item xs={12} style={{ marginTop: 20 }}>
+                      <FormControl component="fieldset">
+                        <FormLabel component="legend">Entrar como:</FormLabel>
+                        <RadioGroup
+                          row
+                          aria-label="type"
+                          name="type1"
+                          value={login.Type}
+                          onChange={handleType}
+                        >
+                          <FormControlLabel
+                            value="Atletica"
+                            control={<Radio />}
+                            label="Atlética"
+                          />
+                          <FormControlLabel
+                            value="Membro"
+                            control={<Radio />}
+                            label="Membro"
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </Grid>
+
+                    <Grid container style={{ marginTop: 10 }}>
+                      <Button
+                        type='submit'
+                        style={{ width: "100%" }}
+                        variant="contained"
+                        color="secondary"
                       >
-                        <FormControlLabel
-                          value="Atletica"
-                          control={<Radio />}
-                          label="Atlética"
-                        />
-                        <FormControlLabel
-                          value="Membro"
-                          control={<Radio />}
-                          label="Membro"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid container style={{ marginTop: 10 }}>
-                    <Button
-                      type='submit'
-                      style={{ width: "100%" }}
-                      variant="contained"
-                      color="secondary"
-                    >
-                      entrar
+                        entrar
                     </Button>
-                  </Grid>
-                </AvForm>
-              </Paper>
+                    </Grid>
+                  </AvForm>
+                </Paper>
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
-      </main>
-    </div>
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
