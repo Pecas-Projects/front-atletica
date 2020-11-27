@@ -5,23 +5,28 @@ import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem";
 import ApiService from "../../../variables/ApiService";
+import { getUserId } from "../../../utils/storage";
 
 import api from "../../../services/api";
 
 export default function FormularioPost() {
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
-  const [titulo, setTitulo] = useState();
-  const [descricao, setDescricao] = useState();
+  const [post, setPost] = useState({
+    Titulo: "",
+    Descricao: "",
+    AtleticaId: parseInt(getUserId()),
+    ImagemId: null
+  });
 
   const handleTitleChange = (event) => {
     event.preventDefault();
-    setTitulo(event.target.value);
+    setPost({...post, Titulo: event.target.value})
   };
 
   const handleTextoChange = (event) => {
     event.preventDefault();
-    setDescricao(event.target.value);
+    setPost({...post, Descricao: event.target.value})
   };
 
   function showAdicionarImagem() {
@@ -43,32 +48,18 @@ export default function FormularioPost() {
     await ApiService.UploadImagem(file)
       .then((res) => {
         console.log(res)
+        setPost({...post, ImagemId: res.data.imagemId})
       })
       .catch((error) => {
         console.log(error)
       });
   }
 
+
+
   async function submit() {
 
     envioImagem();
-
-    /*let data = {
-      titulo: titulo,
-      descricao: descricao,
-      atleticaId: 1,
-      imagemId: 
-    }
-
-    ApiService.EnviarPost(data, config)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) =>
-        console.log(err)
-      )
-      */
-
   }
 
   return (
