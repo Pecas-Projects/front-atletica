@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import {
     Avatar,
     Button,
@@ -41,7 +41,7 @@ function NotificacaoMobile(props) {
     const { item } = props
 
     function corpo() {
-        if (item.tipo === 'atletas') {
+        if (item.solicitacaoAtletaId !== undefined) {
             return (
                 <>
                     <Typography gutterBottom >
@@ -80,7 +80,7 @@ function NotificacaoMobile(props) {
                 <Paper className={classes.paper}>
                     <Grid container xs={12} spacing={2} style={{ paddingLeft: 10, paddingTop: 10 }}>
                         <Grid item xs={4} >
-                            <Avatar alt="Remy Sharp" src={item.tipo === 'atletas' ? atleta_icon : jogo_icon} className={classes.large} />
+                            <Avatar alt="Remy Sharp" src={item.solicitacaoAtletaId !== undefined ? atleta_icon : jogo_icon} className={classes.large} />
                         </Grid>
 
                         <Grid item xs={8}  >
