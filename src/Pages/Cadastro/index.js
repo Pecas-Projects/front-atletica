@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, Paper, Fade } from "@material-ui/core";
+import { Button, Grid, Paper, Fade, TextField, Checkbox, FormGroup } from "@material-ui/core";
 import { AvField, AvForm } from "availity-reactstrap-validation"
 import "./styles.css"
 import cep from 'cep-promise'
@@ -18,6 +18,8 @@ import InputMask from 'react-input-mask';
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem"
 import { Input } from 'reactstrap';
 import ProfileUndraw from '../../assets/imagem/undraw_profile.svg'
+import ApiService from "../../variables/ApiService"
+
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 
 
@@ -73,10 +75,18 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
+    chip: {
+        margin: theme.spacing(0.5),
+    },
 
 }));
 
 export default function Cadastro() {
+
+    const cursos = ["curso1", "curso2", "curso3", "curso4", "engenharia", "medicina", "Biologia", "matemática"];
+    const generos = [
+        "Feminino", "Masculino", "Outro"
+    ]
 
     const classes = useStyles();
 
@@ -93,12 +103,15 @@ export default function Cadastro() {
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [number, setNumber] = useState('');
-    const [complemento, setComplemento] = useState('');
+    const [nomeCampus, setNomeCampus] = useState('');
+    const [senhaAtletica, setSenhaAtletica] = useState('')
+
 
     const [atletica, setAtletica] = useState({
         Nome: "",
         Email: "",
-        Senha: ""
+        faculdade: "Faculdade Braba",
+        cursos: []
     });
 
     const [membro, setMembro] = useState({
@@ -108,7 +121,8 @@ export default function Cadastro() {
         Telefone: "",
         Senha: "",
         Pin: "",
-        Atletica: ""
+        Curso: "",
+        Genero: ""
     })
 
 
@@ -121,8 +135,29 @@ export default function Cadastro() {
     };
 
     const handleAtleticaSenha = (event) => {
-        setAtletica({ ...atletica, Senha: event.target.value });
+        setSenhaAtletica(event.target.value)
     };
+
+    const handleAtleticaFaculdade = (event) => {
+        setAtletica({ ...atletica, faculdade: event.target.value });
+    };
+
+    const handleAtleticaCursos = (e) => {
+
+        if (atletica.cursos.indexOf(e.target.name) === -1) {
+
+            atletica.cursos.push(e.target.name)
+        }
+        else {
+
+            var aux = atletica.cursos.filter(function (nome) { return nome !== e.target.name })
+
+            atletica.cursos = aux;
+        }
+
+        console.log(atletica.cursos)
+    };
+
 
     const handleMembroNome = (event) => {
         setMembro({ ...membro, Nome: event.target.value });
@@ -148,8 +183,15 @@ export default function Cadastro() {
         setMembro({ ...membro, Senha: event.target.value });
     };
 
-    const handleMembroAtletica = (event) => {
-        setMembro({ ...membro, Atletica: event.target.value });
+    const handleMembroCurso = (event) => {
+        setMembro({ ...membro, Curso: event.target.value });
+    };
+
+    const handleMembroGenero = (event) => {
+        if (event.target.value === "Masculino") setMembro({ ...membro, Genero: 'M' });
+        if (event.target.value === "Feminino") setMembro({ ...membro, Genero: 'F' });
+        if (event.target.value === "Outro") setMembro({ ...membro, Genero: 'I' });
+
     };
 
     const handleFormChange = (e) => {
@@ -174,9 +216,9 @@ export default function Cadastro() {
         }
     };
 
-    const handleComplementoChange = (e) => {
+    const handleNomeCampusChange = (e) => {
         e.preventDefault();
-        setComplemento(e.target.value);
+        setNomeCampus(e.target.value);
     };
 
     const handleChangeNumber = (e) => {
@@ -191,8 +233,75 @@ export default function Cadastro() {
     }
 
 
+    const onFormSubmit = async (e) => {
+        e.preventDefault();
+
+        let Atletica = {
+            Nome: atletica.Nome,
+            Email: atletica.Email,
+            senha: senhaAtletica,
+            Descricao: " ",
+            CursosIds: [1],
+            Campus: {
+                Cidade: city,
+                Bairro: neighbourhood,
+                Rua: street,
+                Estado: state,
+                CEP: cepcp,
+                Nome: "Cimatreco",
+                Faculdade: {
+                    Nome: "Seiani Cimatec"
+                }
+
+            }
+        }
+
+        console.log(Atletica)
+        console.log(typeof (Atletica))
 
 
+        ApiService.CadastroAtletica(Atletica)
+
+            .then(res => {
+                console.log("01")
+                console.log(res)
+            })
+            .catch(error => {
+                console.log("02")
+                console.log(error)
+            })
+
+    }
+
+    const onFormSubmitMembro = async (e) => {
+        e.preventDefault();
+        console.log("entar1")
+
+        let Membro = {
+            senha: membro.Senha,
+            pessoa: {
+                nome: membro.Nome,
+                sobrenome: membro.Sobrenome,
+                email: membro.Email,
+                whatsapp: membro.Telefone,
+                tipo: "M",
+                genero: membro.Genero,
+                cursoId: 1
+            }
+        }
+
+        console.log(Membro)
+
+        ApiService.CadastroMembro(Membro, membro.Pin)
+            .then(res => {
+                console.log("01")
+                console.log(res)
+            })
+            .catch(error => {
+                console.log("02")
+                console.log(error)
+            })
+    }
 
     return (
 
@@ -255,12 +364,11 @@ export default function Cadastro() {
 
                                                 <Fade in={showMembro}>
 
-                                                    <AvForm>
+                                                    <AvForm onValidSubmit={onFormSubmitMembro}>
 
                                                         <AvField onChange={handleMembroEmail} name="email" label="E-mail" type="text" validate={{
                                                             required: { value: true, errorMessage: "Campo obrigatório" },
-                                                            pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "E-mail inválido" },
-                                                            minLength: { value: 10, errorMessage: "E-mail muito pequeno" },
+                                                            minLength: { value: 6, errorMessage: "E-mail muito pequeno" },
 
                                                         }} />
 
@@ -284,16 +392,6 @@ export default function Cadastro() {
                                                                 required: { value: true, errorMessage: "Campo obrigatório" }
                                                             }} />
 
-                                                        <AvField name="senha" label="Senha" type="password" validate={{
-                                                            required: { value: true, errorMessage: "Campo obrigatório" },
-                                                            minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
-
-                                                        }} />
-                                                        <AvField onChange={handleMembroSenha} name="ConfirmarSenha" label="Confirme sua senha" type="password" validate={{
-                                                            required: { value: true, errorMessage: "Campo obrigatório" },
-                                                            match: { value: "senha", errorMessage: "Senhas diferentes" }
-
-                                                        }} />
 
                                                         <AvField onChange={handleMembroPIN} name="pin" label="PIN da sua Atlética" type="password" validate={{
                                                             required: { value: true, errorMessage: "Campo obrigatório" },
@@ -301,9 +399,38 @@ export default function Cadastro() {
 
                                                         }} />
 
+                                                        <TextField
+                                                            id="standard-select-currency"
+                                                            select
+                                                            fullWidth
+                                                            label="Curso"
+                                                            value={membro.Curso}
+                                                            onChange={handleMembroCurso}
 
+                                                        >
+                                                            {cursos.map((option) => (
+                                                                <MenuItem key={option} value={option}>
+                                                                    {option}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
 
+                                                        <TextField
+                                                            id="standard-select-genero"
+                                                            select
+                                                            fullWidth
+                                                            label="Gênero"
+                                                            value={membro.genero}
+                                                            onChange={handleMembroGenero}
+                                                            style={{ marginTop: 15, marginBottom: 20 }}
 
+                                                        >
+                                                            {generos.map((option) => (
+                                                                <MenuItem key={option} value={option}>
+                                                                    {option}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
 
                                                         <Grid container spacing={1}>
                                                             <Grid item xs={6}>
@@ -329,10 +456,23 @@ export default function Cadastro() {
 
                                                         </Grid>
 
-
                                                         <br />
 
-                                                        <Grid container spacing={1}>
+                                                        <AvField name="senha" label="Senha" type="password" validate={{
+                                                            required: { value: true, errorMessage: "Campo obrigatório" },
+                                                            minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
+
+                                                        }} />
+                                                        <AvField onChange={handleMembroSenha} name="ConfirmarSenha" label="Confirme sua senha" type="password" validate={{
+                                                            required: { value: true, errorMessage: "Campo obrigatório" },
+                                                            match: { value: "senha", errorMessage: "Senhas diferentes" }
+
+                                                        }} />
+
+
+
+
+                                                        {/* <Grid container spacing={1}>
                                                             <Grid item xs={6}>
 
                                                                 <FormControl className={classes.formControl}>
@@ -342,7 +482,7 @@ export default function Cadastro() {
                                                                         id="demo-simple-select-outlined"
                                                                         value={membro.Atletica}
                                                                         onChange={handleMembroAtletica}
-                                                                        label="Age"
+                                                                        label="Atleticas"
                                                                     >
 
                                                                         <MenuItem value={"Cimatlética"}>Cimatlética</MenuItem>
@@ -350,14 +490,14 @@ export default function Cadastro() {
                                                                         <MenuItem value={"Atlética PoliUFBA"}>Atlética PoliUFBA</MenuItem>
                                                                     </Select>
                                                                 </FormControl>
-                                                            </Grid>
+                                                            </Grid> */}
 
 
-                                                            <Grid item xs={6}>
-                                                                <Button type='submit' style={{ width: 230, marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
-                                                            </Grid>
-
+                                                        <Grid item xs={12}>
+                                                            <Button type='submit' fullWidth style={{ marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
                                                         </Grid>
+
+                                                        {/* </Grid> */}
                                                     </AvForm>
 
                                                 </Fade>
@@ -367,10 +507,9 @@ export default function Cadastro() {
                                                     <Fade in={showAtletica}>
 
 
-                                                        <AvForm>
+                                                        <AvForm onValidSubmit={onFormSubmit}>
                                                             <AvField onChange={handleAtleticaEmail} name="email" label="E-mail" type="text" validate={{
                                                                 required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "E-mail inválido" },
                                                                 minLength: { value: 10, errorMessage: "E-mail muito pequeno" },
 
                                                             }} />
@@ -383,12 +522,50 @@ export default function Cadastro() {
 
                                                             }} />
 
+                                                            <TextField
+                                                                fullWidth
+                                                                id="standard-select-coordenador"
+                                                                select
+                                                                label="Faculdade"
+                                                                style={{ marginBottom: 20 }}
+                                                                // value={coordenador}
+                                                                onChange={handleAtleticaFaculdade}
+                                                            >
+                                                                {/* {membros.map((option) => (
+                                                                    <MenuItem key={option.value} value={option.value}>
+                                                                        {option.value}
+                                                                    </MenuItem>
+                                                                ))} */}
+                                                            </TextField>
+
+                                                            <p className='subtitle2'>Cursos presentes na sua atlética</p>
+
+
+                                                            <div className='scroll'>
+
+                                                                <FormControl component="fieldset" className={classes.formControl}>
+
+                                                                    <FormGroup>
+                                                                        {cursos.map((option) => (
+                                                                            <FormControlLabel
+                                                                                control={<Checkbox onChange={handleAtleticaCursos} name={option} />}
+                                                                                label={option}
+                                                                            />
+
+                                                                        ))}
+
+                                                                    </FormGroup>
+                                                                </FormControl>
+
+
+                                                            </div>
+
                                                             <p className="MySubtitle">Endereço</p>
                                                             <p className="MySubtitle2">O campus que sua atlética está sediada</p>
 
                                                             <Grid container spacing={1}>
 
-                                                                <Grid item xs={6} >
+                                                                <Grid item xs={12} >
 
                                                                     <AvField data-cy='cep-input' value={cepcp} onChange={handleCepChange} name="cep" label="CEP" type="text"
                                                                         placeholder="00000000" validate={{
@@ -401,16 +578,6 @@ export default function Cadastro() {
 
                                                                 </Grid>
 
-                                                                <Grid item xs={6}>
-
-                                                                    <AvField value={number} onChange={handleChangeNumber} name="num" label="Número"
-                                                                        validate={{
-                                                                            required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                            pattern: { value: '[0-9]', errorMessage: "Senha inválida" },
-                                                                        }}
-                                                                    />
-
-                                                                </Grid>
 
                                                                 <Grid item xs={6} >
 
@@ -438,27 +605,35 @@ export default function Cadastro() {
 
                                                                 <Grid item xs={12} style={{ marginBottom: 20 }}>
 
-                                                                    <AvField value={complemento} label="Complemento" name="complemento" type="text" onChange={handleComplementoChange}
+                                                                    <AvField value={nomeCampus} label="Nome do Campus" name="complemento" type="text" onChange={handleNomeCampusChange}
                                                                         validate={{
                                                                             maxLength: { value: 255, errorMessage: "Muito grande" }
-
                                                                         }} />
 
                                                                 </Grid>
 
                                                             </Grid>
 
-                                                            <AvField name="senha" label="Senha" type="password" validate={{
-                                                                required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
+                                                            <Grid item xs={12}>
 
-                                                            }} />
-                                                            <AvField onChange={handleAtleticaSenha} name="ConfirmarSenha" label="Confirme sua senha" type="password" validate={{
-                                                                required: { value: true, errorMessage: "Campo obrigatório" },
-                                                                match: { value: "senha", errorMessage: "Senhas diferentes" }
+                                                                <AvField name="SENHA" label="Senha" type="password" validate={{
+                                                                    required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                    pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "Senha inválida" },
+                                                                    minLength: { value: 6, errorMessage: "Senha fraca" },
 
-                                                            }} />
+                                                                }} />
 
+                                                            </Grid>
+
+                                                            <Grid item xs={12}>
+
+                                                                <AvField name="Confirmada" value={atletica.Senha} onChange={handleAtleticaSenha} label="Confirme sua senha" type="password" validate={{
+                                                                    required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                    pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "Senha inválida" },
+                                                                    match: { value: 'SENHA', errorMessage: "Senhas diferentes" }
+                                                                }} />
+
+                                                            </Grid>
                                                             <Grid item xs={12}>
 
                                                                 <Button type='submit' style={{ width: "100%", marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
@@ -563,6 +738,42 @@ export default function Cadastro() {
                                                         required: { value: true, errorMessage: "Campo obrigatório" }
                                                     }} />
 
+                                                <TextField
+                                                    id="standard-select-currency"
+                                                    select
+                                                    fullWidth
+                                                    label="Curso"
+                                                    value={membro.Curso}
+                                                    onChange={handleMembroCurso}
+                                                // style={{ width: "90%", marginTop: 15 }}
+
+
+                                                >
+                                                    {cursos.map((option) => (
+                                                        <MenuItem key={option} value={option}>
+                                                            {option}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+
+                                                <TextField
+                                                    id="standard-select-genero"
+                                                    select
+                                                    fullWidth
+                                                    label="Gênero"
+                                                    value={membro.genero}
+                                                    onChange={handleMembroGenero}
+                                                    style={{ marginTop: 15, marginBottom: 20 }}
+
+                                                >
+                                                    {generos.map((option) => (
+                                                        <MenuItem key={option} value={option}>
+                                                            {option}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+
+
                                                 <AvField name="senha" label="Senha" type="password" validate={{
                                                     required: { value: true, errorMessage: "Campo obrigatório" },
                                                     minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },
@@ -574,17 +785,11 @@ export default function Cadastro() {
 
                                                 }} />
 
-                                                <AvField onChange={handleMembroPIN} name="pin" label="PIN da sua Atlética" type="password" validate={{
-                                                    required: { value: true, errorMessage: "Campo obrigatório" },
-
-
-                                                }} />
-
 
 
                                                 <Grid container spacing={1}>
 
-                                                    <Grid item xs={12}>
+                                                    {/* <Grid item xs={12}>
 
                                                         <FormControl className={classes.formControlMobile}>
                                                             <InputLabel id="demo-simple-select-outlined-label">Atlética</InputLabel>
@@ -602,7 +807,7 @@ export default function Cadastro() {
                                                             </Select>
                                                         </FormControl>
 
-                                                    </Grid>
+                                                    </Grid> */}
 
                                                     <Grid item xs={12}>
 
@@ -618,7 +823,7 @@ export default function Cadastro() {
                                             <Fade in={showAtletica}>
 
 
-                                                <AvForm>
+                                                <AvForm onValidSubmit={onFormSubmit}>
                                                     <AvField onChange={handleAtleticaEmail} name="email" label="E-mail" type="text" validate={{
                                                         required: { value: true, errorMessage: "Campo obrigatório" },
                                                         pattern: { value: '^[A-Za-z0-9]+$', errorMessage: "E-mail inválido" },
@@ -633,6 +838,94 @@ export default function Cadastro() {
                                                         maxLength: { value: 20, errorMessage: "Nome muito grande" }
 
                                                     }} />
+
+                                                    <TextField
+                                                        fullWidth
+                                                        id="standard-select-coordenador"
+                                                        select
+                                                        label="Faculdade"
+                                                        style={{ marginBottom: 20 }}
+                                                        // value={coordenador}
+                                                        onChange={handleAtleticaFaculdade}
+                                                    >
+                                                        {/* {membros.map((option) => (
+                                                                    <MenuItem key={option.value} value={option.value}>
+                                                                        {option.value}
+                                                                    </MenuItem>
+                                                                ))} */}
+                                                    </TextField>
+
+                                                    <p className='subtitle2'>Cursos presentes na sua atlética</p>
+
+
+                                                    <div className='scroll'>
+
+                                                        <FormControl component="fieldset" className={classes.formControl}>
+
+                                                            <FormGroup>
+                                                                {cursos.map((option) => (
+                                                                    <FormControlLabel
+                                                                        control={<Checkbox onChange={handleAtleticaCursos} name={option} />}
+                                                                        label={option}
+                                                                    />
+
+                                                                ))}
+
+                                                            </FormGroup>
+                                                        </FormControl>
+
+
+                                                    </div>
+
+                                                    <Grid item xs={12} >
+
+                                                        <AvField data-cy='cep-input' value={cepcp} onChange={handleCepChange} name="cep" label="CEP" type="text"
+                                                            placeholder="00000000" validate={{
+                                                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                pattern: { value: '[0-9]', errorMessage: "Use apenas números" },
+                                                                minLength: { value: 8, errorMessage: "CEP inválido" },
+                                                                maxLength: { value: 8, errorMessage: "CEP inválido" }
+
+                                                            }} />
+
+                                                    </Grid>
+
+
+                                                    <Grid item xs={12} >
+
+                                                        <AvField value={state} name="estado" label="Estado" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+
+                                                        <AvField value={city} name="cidade" label="Cidade" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+
+                                                        <AvField value={neighbourhood} name="bairro" label="Bairro" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+
+                                                        <AvField value={street} name="rua" label="Rua" type="text" />
+
+                                                    </Grid>
+
+                                                    <Grid item xs={12} style={{ marginBottom: 20 }}>
+
+                                                        <AvField value={nomeCampus} label="Nome do campus" name="nomeCampus" type="text" onChange={handleNomeCampusChange}
+                                                            validate={{
+                                                                maxLength: { value: 255, errorMessage: "Muito grande" }
+
+                                                            }} />
+
+                                                    </Grid>
+
+
                                                     <AvField name="senha" label="Senha" type="password" validate={{
                                                         required: { value: true, errorMessage: "Campo obrigatório" },
                                                         minLength: { value: 6, errorMessage: "A senha precisa ter no mínimo 6 caracteres" },

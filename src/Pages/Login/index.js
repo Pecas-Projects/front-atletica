@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import AuthContext from "../../context/auth";
+import React, { useState } from "react";
 import NavBar from "../../Components/NavBar";
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,7 +11,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-//import ApiService, { SetUserIdAndType } from "../../variables/ApiService";
+import ApiService from "../../variables/ApiService";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -67,7 +66,6 @@ export default function Login() {
   const [logado, setLogado] = useState(false)
   const [erroLogin, setErroLogin] = useState(false)
   const classes = useStyles();
-  const { LoginAtletica, LoginMembro } = useContext(AuthContext);
   const [login, setLogin] = useState({
     Email: " ",
     Senha: " ",
@@ -115,14 +113,9 @@ export default function Login() {
         senha: login.Senha,
       };
 
-      try {
-        await LoginAtletica(loginData);
-        setLogado(true)
-        setTimeout(function () { return (window.location.href = "/Perfil") }, 4000)
-      } catch (err) {
-        setErroLogin(true)
-        console.log(err);
-      }
+      ApiService.LoginAtletica(loginData)
+        .then(() => (window.location.href = "/Perfil"))
+        .catch((err) => console.log(err));
 
     } else {
       let loginM = {
@@ -132,12 +125,9 @@ export default function Login() {
         },
       };
 
-      try {
-        await LoginMembro(loginM);
-      } catch (err) {
-        setErroLogin(true)
-        console.log(err);
-      }
+      ApiService.LoginMembro(loginM)
+        .then()
+        .catch((err) => console.log(err));
     }
   };
 
