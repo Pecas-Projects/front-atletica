@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./Routes";
-import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import Footer from './Components/Footer'
-import "./stylesApp.css"
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+import Footer from "./Components/Footer";
+import "./stylesApp.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -18,12 +18,11 @@ const theme = createMuiTheme({
 });
 
 function App() {
-
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <div className='page-container'>
-          <div className='content-wrap'>
+        <div className="page-container">
+          <div className="content-wrap">
             <Routes />
           </div>
           <Footer />

@@ -23,8 +23,10 @@ import More from "../../assets/imagem/more-vertical-alt.svg"
 import LogOut from "../../assets/imagem/log-out.svg"
 import SearchIcon from "@material-ui/icons/Search";
 import "./NavBar.css";
-import { Fade, Grid, Grow } from "@material-ui/core";
+import { Grid, TextField, InputAdornment } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab"
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
+import ApiService from '../../variables/ApiService'
 
 const drawerWidth = 200;
 
@@ -99,19 +101,21 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  search: {
+  divSearch: {
     position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: 170,
       width: "50%",
+    },
+    marginRight: theme.spacing(2),
+    marginLeft: 0
+  },
+  search: {
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
     },
   },
   searchIcon: {
@@ -127,6 +131,7 @@ const useStyles = makeStyles((theme) => ({
     color: "inherit",
   },
   inputInput: {
+    color: "#FFFFFF",
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
@@ -163,13 +168,11 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
-
+  const [atleticas, setAtleticas] = useState([])
 
   const handleChange = () => {
     setShowSearch(false)
-
   };
-
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -179,6 +182,18 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const pesquisaAtleticas = async (text) => {
+    if (text)
+      await ApiService.PesquisaAtleticas(text)
+        .then(res =>
+          setAtleticas(res.data)
+        )
+        .catch(err =>
+          console.log(err)
+        )
+    else
+      setAtleticas([])
+  }
 
   return (
 
@@ -222,19 +237,34 @@ export default function MiniDrawer() {
 
                 <h1 className="Mylogo">OLYMPOS</h1>
 
-                <div className={classes.search}>
-
-                  <div className={classes.searchIcon}>
-                    <SearchIcon />
-                  </div>
-
-                  <InputBase
-                    placeholder="Pesquise uma atletica"
+                <div className={classes.divSearch}>
+                  <Autocomplete
+                    freeSolo
+                    options={atleticas.map((option) => option.nome)}
                     classes={{
                       root: classes.inputRoot,
                       input: classes.inputInput,
                     }}
-                    inputProps={{ "aria-label": "search" }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        placeholder="Pesquise uma atletica"
+                        margin="dense"
+                        variant="outlined"
+                        className={classes.search}
+                        onChange={(e) =>
+                          pesquisaAtleticas(e.target.value)
+                        }
+                        InputProps={{
+                          ...params.InputProps,
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <SearchIcon style={{ color: "#FFFFFF" }} />
+                            </InputAdornment>
+                          )
+                        }}
+                      />
+                    )}
                   />
                 </div>
 
@@ -409,21 +439,35 @@ export default function MiniDrawer() {
 
               ) : (
                   <>
-                    <div className={classes.search}>
-
-                      <div className={classes.searchIcon}>
-                        <SearchIcon />
-                      </div>
-
-                      <InputBase
-                        placeholder="Pesquise uma atletica"
+                    <div className={classes.divSearch}>
+                      <Autocomplete
+                        freeSolo
+                        options={atleticas.map((option) => option.nome)}
                         classes={{
                           root: classes.inputRoot,
                           input: classes.inputInput,
                         }}
-                        inputProps={{ "aria-label": "search" }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            placeholder="Pesquise uma atletica"
+                            margin="dense"
+                            variant="outlined"
+                            className={classes.search}
+                            onChange={(e) =>
+                              pesquisaAtleticas(e.target.value)
+                            }
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <SearchIcon style={{ color: "#FFFFFF" }} />
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        )}
                       />
-
                     </div>
 
 
