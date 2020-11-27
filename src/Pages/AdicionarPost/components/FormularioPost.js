@@ -4,7 +4,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem";
-import ApiService, { GetUserInfo } from "../../../variables/ApiService";
+import ApiService from "../../../variables/ApiService";
 
 import api from "../../../services/api";
 
@@ -28,68 +28,36 @@ export default function FormularioPost() {
     if (imagem === null) {
       return <p>Adicione uma Imagem</p>;
     } else
-    storePicture();
-    console.log(imagem)
-    console.log(path)
-      return (
-        <div>
-          <br />
-          <br />
-        </div>
-      );
+    return (
+      <div>
+        <br />
+        <br />
+      </div>
+    );
   }
 
-  async function storePicture(){
-
-    let data = new FormData();
-    data.append('teste', imagem);
-
-    const token = localStorage.getItem("@Olympos:token");
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-
-    await api.post(`/api/Imagem/Upload`, data, config)
-      .then(response => {
-          console.log(response)
-        })
-      .catch(error => {
-          console.log(error)
-      })
-  }  
-
-  function submit(){
-
-    let imagemId = 1;
-
+  async function envioImagem(){
     let file = new FormData();
-    file.append('teste', imagem);
+    file.append('value', imagem);
 
-    const token = localStorage.getItem("@Olympos:token");
+    await ApiService.UploadImagem(file)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
+  async function submit() {
 
-    // ApiService.UploadImagem(file, config)
-    //   .then((res) => {
-    //     imagemId = res.imagemId
-    //     console.log("uiuiui")
-    //   })
-    //   .catch((err) => {
-    //     console.log("tristeza")
-    //   })
+    envioImagem();
 
-    let data = {
+    /*let data = {
       titulo: titulo,
       descricao: descricao,
-      atleticaId: GetUserInfo,
-      imagemId:  imagemId
+      atleticaId: 1,
+      imagemId: 
     }
 
     ApiService.EnviarPost(data, config)
@@ -99,6 +67,7 @@ export default function FormularioPost() {
       .catch((err) =>
         console.log(err)
       )
+      */
 
   }
 
@@ -164,15 +133,15 @@ export default function FormularioPost() {
                   />
                 </Grid>
                 <Grid container style={{ paddingRight: 20 }} justify="flex-end">
-                    <Button
-                      style={{
-                        background: "#DB4922",
-                        width: 200,
-                        marginTop: 24,
-                      }}
-                      onClick={submit}
-                    >
-                      Postar
+                  <Button
+                    style={{
+                      background: "#DB4922",
+                      width: 200,
+                      marginTop: 24,
+                    }}
+                    onClick={submit}
+                  >
+                    Postar
                     </Button>
                 </Grid>
               </Grid>
