@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Grid, Paper, Button, Checkbox, FormGroup, FormLabel } from "@material-ui/core";
+import { Grid, Paper, Button, Checkbox, FormGroup, FormLabel, Snackbar } from "@material-ui/core";
 import Navbar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import CardMembro from "./Components/CardMembro"
@@ -14,7 +14,14 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import ApiService from '../../variables/ApiService'
+import PerfilBackground from '../../assets/imagem/fundo_pagina.png'
+import FotoPerfil from "../../assets/imagem/fotoPerfil.png"
 import "./styles.css"
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -90,19 +97,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Perfil(props) {
 
-  const cursos = ["Engenharia da computação", "Análise de sistemas", "Engenharia de software", "Tecnologia da informação"]
-
-  const modalidades = [
-    "Futebol", "Vôlei", "Basquete", "Atletismo", "Futsal", "Vôlei de Praia", "Natação",
-  ]
-
   const generos = [
-    "Feminino", "Masculino", "Misto"
+    {
+      Nome: "Feminino",
+      Valor: 'F'
+    },
+    {
+      Nome: "Masculino",
+      Valor: 'M'
+    },
+    {
+      Nome: "Outro",
+      Valor: 'I'
+    }
   ]
 
   const classes = useStyles();
 
-  const [opcao, setOpcao] = useState('Atleta')
   const [capa, setCapa] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
   const [perfil, setPerfil] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
 
@@ -110,11 +121,11 @@ export default function Perfil(props) {
     Nome: "",
     Sobrenome: "",
     Email: "",
-    Telefone: "",
-    Curso: "",
-    AnoIngresso: "",
-    Genero: "",
-    modalidades: []
+    WhatsApp: "",
+    CursoId: null,
+    AnoEntradaFacul: "",
+    Genero: '',
+    ModalidadesId: []
   })
 
   const [atletica, setAtletica] = useState({
@@ -142,6 +153,55 @@ export default function Perfil(props) {
     membros: []
   })
 
+  const [msgAlerta, setMsgAlerta] = useState("Ocorreu um erro, verifique os dados inseridos.")
+  const [openAdd, setOpenAdd] = useState(false)
+  const [tipoAlerta, setTipoAlerta] = useState('success')
+  const [opcao, setOpcao] = useState('Atleta')
+  const [cursos, setCursos] = useState([])
+  const [modalidades, setModalidades] = useState([])
+
+
+  useEffect(() => {
+    buscarCursos();
+    buscarModalidades();
+  }, []);
+
+  const buscarCursos = async () => {
+    await ApiService.BuscarTodosCursos()
+      .then(res =>
+        setCursos(res.data)
+      )
+      .catch(err =>
+        console.log(err)
+      )
+  }
+
+  const buscarModalidades = async () => {
+    await ApiService.BuscarAtleticaModalidades(atletica.atleticaId)
+      .then(res =>
+        setModalidades(res.data)
+      )
+      .catch(err =>
+        console.log(err)
+      )
+  }
+
+  const enviarSolicitacao = async () => {
+    await ApiService.CriarSolicitacaoAtleta(atletica.atleticaId, atleta)
+      .then(res => {
+        setMsgAlerta("Sua solicitação foi enviada com sucesso! Aguarde a confirmação da atlética.")
+        setTipoAlerta('success')
+        handleOpenAdd(true)
+      })
+      .catch(err => {
+        setMsgAlerta("Ocorreu um erro, verifique os dados inseridos.")
+        setTipoAlerta('error')
+        handleOpenAdd(true)
+        console.log(err)
+      })
+  }
+
+
   const handleEmail = (e) => {
     setAtleta({ ...atleta, Email: e.target.value })
   }
@@ -154,16 +214,16 @@ export default function Perfil(props) {
     setAtleta({ ...atleta, Sobrenome: e.target.value })
   }
 
-  const handleTelefone = (e) => {
-    setAtleta({ ...atleta, Telefone: e.target.value })
+  const handleWhatsApp = (e) => {
+    setAtleta({ ...atleta, WhatsApp: e.target.value })
   }
 
   const handleCurso = (e) => {
-    setAtleta({ ...atleta, Curso: e.target.value })
+    setAtleta({ ...atleta, CursoId: e.target.value })
   }
 
-  const handleData = (e) => {
-    setAtleta({ ...atleta, AnoIngresso: e.target.value })
+  const handleDate = (e) => {
+    setAtleta({ ...atleta, AnoEntradaFacul: e.target.value + "-01-01T23:59:59.063Z" })
   }
 
   const handleGenero = (e) => {
@@ -172,20 +232,29 @@ export default function Perfil(props) {
 
   const handleModalidades = (e) => {
 
-    if (atleta.modalidades.indexOf(e.target.name) === -1) {
+    if (atleta.ModalidadesId.indexOf(parseInt(e.target.name)) === -1) {
 
-      atleta.modalidades.push(e.target.name)
+      atleta.ModalidadesId.push(parseInt(e.target.name))
     }
     else {
 
-      var aux = atleta.modalidades.filter(function (nome) { return nome !== e.target.name })
+      var aux = atleta.ModalidadesId.filter(function (nome) { return nome !== parseInt(e.target.name) })
 
-      atleta.modalidades = aux;
+      atleta.ModalidadesId = aux;
     }
 
+  }
 
-    console.log(atleta.modalidades)
+  const handleCloseAdd = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
+    setOpenAdd(false);
+  };
+
+  const handleOpenAdd = () => {
+    setOpenAdd(true)
   }
 
   const concatenaEndereco = () => {
@@ -234,6 +303,11 @@ export default function Perfil(props) {
 
   return (
     <div className={classes.root}>
+      <Snackbar open={openAdd} autoHideDuration={4000} onClose={handleCloseAdd}>
+        <Alert onClose={handleCloseAdd} severity={tipoAlerta}>
+          {msgAlerta}
+        </Alert>
+      </Snackbar>
       <Navbar />
       <main className={classes.content}>
         <div className={classes.toolbar} />
@@ -377,16 +451,14 @@ export default function Perfil(props) {
                         <Grid item xs={4}>
 
                           <AvField style={{ width: "90%" }} name="whatsapp" label="WhatsApp" type="text" tag={[Input, InputMask]}
-                            onChange={handleTelefone} mask="(99) 99999-9999" validate={{
+                            onChange={handleWhatsApp} mask="(99) 99999-9999" validate={{
                               required: { value: true, errorMessage: "Campo obrigatório" },
-                              pattern: { value: "[0-9]", errorMessage: "Utilize apenas números" },
-                              minLength: { value: 10, errorMessage: 'Número inválido' },
-                              maxLength: { value: 17, errorMessage: 'Número inválido' }
+                              pattern: { value: "[0-9]", errorMessage: "Utilize apenas números" }
                             }} />
 
 
 
-                          <AvField style={{ width: "90%" }} name="dataIngresso" label="Ano de ingresso na faculdade" type="text" onChange={handleEmail} validate={{
+                          <AvField style={{ width: "90%" }} name="dataIngresso" label="Ano de ingresso na faculdade" type="text" onChange={handleDate} validate={{
                             required: { value: true, errorMessage: "Campo obrigatório" },
                             pattern: { value: '[0-9]', errorMessage: "Utilize apenas números" },
                             minLength: { value: 4, errorMessage: 'Ano inválido' },
@@ -399,15 +471,15 @@ export default function Perfil(props) {
                             select
 
                             label="Curso"
-                            value={atleta.Curso}
+                            value={atleta.CursoId}
                             onChange={handleCurso}
                             style={{ width: "90%", marginTop: 15 }}
 
 
                           >
                             {cursos.map((option) => (
-                              <MenuItem key={option} value={option}>
-                                {option}
+                              <MenuItem key={option.cursoId} value={option.cursoId}>
+                                {option.nome}
                               </MenuItem>
                             ))}
                           </TextField>
@@ -417,51 +489,60 @@ export default function Perfil(props) {
                             select
 
                             label="Gênero"
-                            value={atleta.genero}
+                            value={atleta.Genero}
                             onChange={handleGenero}
                             style={{ width: "90%", marginTop: 15 }}
 
                           >
                             {generos.map((option) => (
-                              <MenuItem key={option} value={option}>
-                                {option}
+                              <MenuItem key={option.Valor} value={option.Valor}>
+                                {option.Nome}
                               </MenuItem>
                             ))}
                           </TextField>
 
 
                         </Grid>
+                        {
+                          modalidades.length == 0 ? null :
+                            <Grid item xs={4}>
 
-                        <Grid item xs={4}>
-
-                          <div className='scroll'>
-
-
-
-                            <FormControl component="fieldset" className={classes.formControl}>
-                              <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
-                              <FormGroup>
-                                {modalidades.map((option) => (
-                                  <FormControlLabel
-                                    control={<Checkbox onChange={handleModalidades} name={option} />}
-                                    label={option}
-                                  />
-
-                                ))}
-
-                              </FormGroup>
-                            </FormControl>
+                              <div className='scroll'>
 
 
-                          </div>
 
-                        </Grid>
+                                <FormControl component="fieldset" className={classes.formControl}>
+                                  <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
+                                  <FormGroup>
+                                    {modalidades.map((option) => (
+                                      <FormControlLabel
+                                        control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
+                                        label={option.modalidade}
+                                      />
+
+                                    ))}
+
+                                  </FormGroup>
+                                </FormControl>
+
+
+                              </div>
+
+                            </Grid>
+                        }
+
 
                         <Grid item xs={12}  >
 
                           <Grid container justify="flex-end">
 
-                            <Button style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }} variant="contained">Enviar</Button>
+                            <Button
+                              style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }}
+                              variant="contained"
+                              onClick={enviarSolicitacao}
+                            >
+                              Enviar
+                            </Button>
 
                           </Grid>
 
@@ -661,12 +742,10 @@ export default function Perfil(props) {
 
                       <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
 
-                        <AvField name="whatsapp" label="WhatsApp" type="text" onChange={handleTelefone}
+                        <AvField name="whatsapp" label="WhatsApp" type="text" onChange={handleWhatsApp}
                           tag={[Input, InputMask]} mask="(99) 99999-9999" validate={{
                             required: { value: true, errorMessage: "Campo obrigatório" },
-                            pattern: { value: "\d*", errorMessage: "Utilize apenas números" },
-                            minLength: { value: 10, errorMessage: 'Número inválido' },
-                            maxLength: { value: 17, errorMessage: 'Número inválido' }
+                            pattern: { value: "\d*", errorMessage: "Utilize apenas números" }
                           }} />
 
 
@@ -679,15 +758,15 @@ export default function Perfil(props) {
                           select
 
                           label="Curso"
-                          value={atleta.Curso}
+                          value={atleta.CursoId}
                           onChange={handleCurso}
                           style={{ width: "90%" }}
 
 
                         >
                           {cursos.map((option) => (
-                            <MenuItem key={option} value={option}>
-                              {option}
+                            <MenuItem key={option.cursoId} value={option.cursoId}>
+                              {option.nome}
                             </MenuItem>
                           ))}
                         </TextField>
@@ -701,43 +780,51 @@ export default function Perfil(props) {
                           select
 
                           label="Gênero"
-                          value={atleta.genero}
+                          value={atleta.Genero}
                           onChange={handleGenero}
                           style={{ width: "90%", marginTop: 15 }}
 
                         >
                           {generos.map((option) => (
-                            <MenuItem key={option} value={option}>
-                              {option}
+                            <MenuItem key={option.Valor} value={option.Valor}>
+                              {option.Nome}
                             </MenuItem>
                           ))}
                         </TextField>
 
                       </Grid>
+                      {
+                        modalidades.length == 0 ? null :
+                          <Grid container justify='center'>
 
-                      <Grid container justify='center'>
 
+                            <FormControl component="fieldset" className={classes.formControl}>
+                              <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
+                              <FormGroup>
+                                {modalidades.map((option) => (
+                                  <FormControlLabel
+                                    control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
+                                    label={option.modalidade}
+                                  />
 
-                        <FormControl component="fieldset" className={classes.formControl}>
-                          <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
-                          <FormGroup>
-                            {modalidades.map((option) => (
-                              <FormControlLabel
-                                control={<Checkbox onChange={handleModalidades} name={option} />}
-                                label={option}
-                              />
+                                ))}
 
-                            ))}
+                              </FormGroup>
+                            </FormControl>
 
-                          </FormGroup>
-                        </FormControl>
+                          </Grid>
+                      }
 
-                      </Grid>
 
                       <Grid item xs={12}  >
 
 
-                        <Button style={{ backgroundColor: "#DB4922", width: "100%", marginTop: 10 }} variant="contained">Enviar</Button>
+                        <Button
+                          style={{ backgroundColor: "#DB4922", width: "100%", marginTop: 10 }}
+                          variant="contained"
+                          onClick={enviarSolicitacao}>
+                          Enviar
+                        </Button>
 
 
                       </Grid>
