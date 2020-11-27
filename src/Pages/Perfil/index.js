@@ -114,7 +114,6 @@ export default function Perfil(props) {
 
   const classes = useStyles();
 
-  const [opcao, setOpcao] = useState('Atleta')
   const [capa, setCapa] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
   const [perfil, setPerfil] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
 
@@ -178,7 +177,7 @@ export default function Perfil(props) {
   }
 
   const buscarModalidades = async () => {
-    await ApiService.BuscarAtleticaModalidades(1)
+    await ApiService.BuscarAtleticaModalidades(atletica.atleticaId)
       .then(res =>
         setModalidades(res.data)
       )
@@ -188,12 +187,11 @@ export default function Perfil(props) {
   }
 
   const enviarSolicitacao = async () => {
-    await ApiService.CriarSolicitacaoAtleta(1, atleta)
+    await ApiService.CriarSolicitacaoAtleta(atletica.atleticaId, atleta)
       .then(res => {
         setMsgAlerta("Sua solicitação foi enviada com sucesso! Aguarde a confirmação da atlética.")
         setTipoAlerta('success')
         handleOpenAdd(true)
-        console.log(res)
       })
       .catch(err => {
         setMsgAlerta("Ocorreu um erro, verifique os dados inseridos.")
@@ -229,7 +227,6 @@ export default function Perfil(props) {
   }
 
   const handleGenero = (e) => {
-    console.log(e.target.value)
     setAtleta({ ...atleta, Genero: e.target.value })
   }
 

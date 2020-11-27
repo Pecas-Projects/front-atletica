@@ -85,7 +85,6 @@ const ApiService = {
 
   CadastroMembro: (Membro, PIN) => {
     return api
-      // .post(`/api​/Registro​/Membro​/${PIN}`, Membro)
       .post(`/api/Registro/Membro/${PIN}`, Membro)
       .then((res) => {
         return Promise.resolve(res);
