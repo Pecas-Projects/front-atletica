@@ -16,6 +16,7 @@ import { Autocomplete } from "@material-ui/lab"
 import MoreIcon from "@material-ui/icons/MoreVert";
 import AvatarIcon from "../../assets/icons/user.svg";
 import ApiService from '../../variables/ApiService'
+import { atleticaUsername } from '../../utils/storage'
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -116,6 +117,7 @@ ElevationScroll.propTypes = {
 
 export default function ElevateAppBar(props) {
   const classes = useStyles();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [atleticas, setAtleticas] = React.useState([])
@@ -207,10 +209,15 @@ export default function ElevateAppBar(props) {
               <div className={classes.divSearch}>
                 <Autocomplete
                   freeSolo
-                  options={atleticas.map((option) => option.nome)}
+                  options={atleticas}
+                  getOptionLabel={(option) => option.nome}
                   classes={{
                     root: classes.inputRoot,
                     input: classes.inputInput,
+                  }}
+                  onChange={(event, newValue) => {
+                    atleticaUsername(newValue.username)
+                    window.location.href = "/Perfil/" + newValue.username
                   }}
                   renderInput={(params) => (
                     <TextField
