@@ -48,19 +48,34 @@ export default function Feed() {
 
 
     useEffect(() => {
-        if(userId !== undefined)
+        if (userId !== undefined)
             getAllPosts();
     }, []);
 
-    async function getAllPosts(){
+    async function getAllPosts() {
 
         await ApiService.BuscarTodosPosts(userId)
-        .then((res) => {
-            setPosts(res.data)
-        })
-        .catch((err) => {
-            console.log(err)
-        }) 
+            .then((res) => {
+                setPosts(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    function apresentaPosts() {
+        if (posts !== undefined) 
+            return (
+                posts.map((item) => (
+                    <Post post={item} />
+                ))
+
+            );
+        
+        else 
+            return (
+                <div></div>
+            );    
     }
 
     return (
@@ -92,7 +107,8 @@ export default function Feed() {
 
                             <Grid container justify='center'>
 
-                                <Post />
+
+                                {apresentaPosts()}
 
                             </Grid>
 
@@ -121,9 +137,7 @@ export default function Feed() {
                     <Grid container  >
 
                         <Grid item xs={12} >
-
-                            <Post />
-
+                            {apresentaPosts()}
                         </Grid>
                     </Grid>
 
