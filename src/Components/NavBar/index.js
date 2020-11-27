@@ -559,6 +559,22 @@ export default function MiniDrawer() {
                         <ListItemText className="item" primary="Ranking" />
                       </ListItem>
                     </Link>
+                    <Link to="/Jogo">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Jogo} alt="Jogo" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Jogos" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Modalidades">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Modalidade} alt="Modalidade" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Modalidade" />
+                      </ListItem>
+                    </Link>
                   </>
                 )}
               </List>
