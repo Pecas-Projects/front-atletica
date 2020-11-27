@@ -48,7 +48,7 @@ export default function Feed() {
 
 
     useEffect(() => {
-        if (userId !== undefined)
+        if (userId !== undefined && userId !== null)
             getAllPosts();
     }, []);
 
