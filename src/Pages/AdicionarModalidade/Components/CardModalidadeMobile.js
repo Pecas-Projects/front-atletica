@@ -243,9 +243,9 @@ export default function CardModalidade(props) {
 
                     <Grid container spacing={3}>
 
-                        {item.atletas.map((atleta) =>
+                        {/* {item.atletas.map((atleta) =>
                             <CardAtleta atleta={atleta} />
-                        )}
+                        )} */}
 
                     </Grid>
 
@@ -275,12 +275,12 @@ export default function CardModalidade(props) {
                 <Collapse in={expandedAtletaDelete} timeout="auto" unmountOnExit>
                     <Grid container spacing={3} style={{ marginTop: 20 }}>
 
-                        {item.atletas.map((atleta, index) =>
+                        {/* {item.atletas.map((atleta, index) =>
                             <CardAtletaDelete
                                 atleta={atleta}
                                 index={index}
                                 DeleteAtleta={DeleteAtleta} />
-                        )}
+                        )} */}
 
                     </Grid>
 
@@ -289,9 +289,9 @@ export default function CardModalidade(props) {
                 <Collapse in={expandedAtletaAdd} timeout="auto" unmountOnExit>
                     <Grid container spacing={3} style={{ marginTop: 20 }}>
 
-                        {item.atletas.map((atleta) =>
+                        {/* {item.atletas.map((atleta) =>
                             <CardAtletaAdd atleta={atleta} />
-                        )}
+                        )} */}
 
                     </Grid>
 
