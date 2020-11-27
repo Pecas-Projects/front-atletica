@@ -3,7 +3,6 @@ import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { Grid, Paper, Button, Checkbox, FormGroup, FormLabel, Snackbar } from "@material-ui/core";
 import Navbar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-import fotoCapa from "../../assets/imagem/fotoCapa.png"
 import CardMembro from "./Components/CardMembro"
 import contactImage from "../../assets/imagem/undraw_contact_u.svg"
 import InputMask from 'react-input-mask';
@@ -96,56 +95,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function Perfil() {
-
-
-  const Membros = [
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-    {
-      nome: "Beatriz Calazans",
-      funcao: "Coordenadora de volei",
-      imagem: "https://www.oliberal.com/image/contentid/policy:1.163651:1590412540/Gretchen.jpg?f=2x1&$p$f=ee801a7&w=1500&$w=f075b93"
-    },
-  ]
+export default function Perfil(props) {
 
   const generos = [
     {
@@ -164,6 +114,10 @@ export default function Perfil() {
 
   const classes = useStyles();
 
+  const [opcao, setOpcao] = useState('Atleta')
+  const [capa, setCapa] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
+  const [perfil, setPerfil] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
+
   const [atleta, setAtleta] = useState({
     Nome: "",
     Sobrenome: "",
@@ -175,12 +129,38 @@ export default function Perfil() {
     ModalidadesId: []
   })
 
+  const [atletica, setAtletica] = useState({
+    atleticaId: 0,
+    nome: "",
+    email: "",
+    username: "",
+    descricao: "",
+    pin: "",
+    telefone: "",
+    linkProsel: "",
+    atleticaImagens: [],
+    campus: {
+      cidade: "",
+      bairro: "",
+      rua: "",
+      estado: "",
+      cep: "",
+      nome: "",
+      complemento: "",
+      faculdade: {
+        nome: ""
+      }
+    },
+    membros: []
+  })
+
   const [msgAlerta, setMsgAlerta] = useState("Ocorreu um erro, verifique os dados inseridos.")
   const [openAdd, setOpenAdd] = useState(false)
   const [tipoAlerta, setTipoAlerta] = useState('success')
   const [opcao, setOpcao] = useState('Atleta')
   const [cursos, setCursos] = useState([])
   const [modalidades, setModalidades] = useState([])
+
 
   useEffect(() => {
     buscarCursos();
@@ -222,6 +202,7 @@ export default function Perfil() {
         console.log(err)
       })
   }
+
 
   const handleEmail = (e) => {
     setAtleta({ ...atleta, Email: e.target.value })
@@ -279,8 +260,49 @@ export default function Perfil() {
     setOpenAdd(true)
   }
 
+  const concatenaEndereco = () => {
 
+    let endereco = ""
 
+    if (atletica.campus.faculdade.nome)
+      endereco += atletica.campus.faculdade.nome + ", "
+    if (atletica.campus.nome)
+      endereco += atletica.campus.nome + ", "
+    if (atletica.campus.bairro)
+      endereco += atletica.campus.bairro + ", "
+    if (atletica.campus.rua)
+      endereco += atletica.campus.rua + ", "
+    if (atletica.campus.complemento)
+      endereco += atletica.campus.complemento + ", "
+    if (atletica.campus.cidade)
+      endereco += atletica.campus.cidade + " - "
+    if (atletica.campus.estado)
+      endereco += atletica.campus.estado + ". "
+    if (atletica.campus.cep)
+      endereco += atletica.campus.cep
+
+    return endereco
+  }
+
+  const buscaAtleticaPorUsername = async (username) => {
+    await ApiService.PesquisaAtleticaPorUsername(username)
+      .then((res) => {
+        setAtletica(res.data)
+        if (res.data.atleticaImagens !== null)
+          res.data.atleticaImagens.forEach(img => {
+            if (img.tipo === "C")
+              setCapa(img.imagem.path)
+            else if (img.tipo === "P")
+              setPerfil(img.imagem.path)
+          });
+      }).catch((err) =>
+        console.log(err)
+      )
+  }
+
+  useEffect(() => {
+    buscaAtleticaPorUsername(props.match.params.username)
+  }, [])
 
   return (
     <div className={classes.root}>
@@ -322,7 +344,7 @@ export default function Perfil() {
 
                   <div className="containerCapa">
 
-                    <img className="imageCapa" src={fotoCapa} alt="fotoCapa" />
+                    <img className="imageCapa" src={capa} alt="fotoCapa" />
 
                   </div>
 
@@ -330,7 +352,7 @@ export default function Perfil() {
 
                     <Grid style={{ marginTop: 10 }} container justify='center'>
 
-                      <img className='imagePerfil' src={FotoPerfil} alt="fotoPerfil" />
+                      <img className='imagePerfil' src={perfil} alt="fotoPerfil" />
 
                     </Grid>
 
@@ -341,19 +363,10 @@ export default function Perfil() {
 
                     <Paper className={classes.paperBackgroud}>
 
-                      <h3 className="MyTitle">Cimatlética - Atlética do SENAI CIMATEC</h3>
-
+                      <h3 className="MyTitle">{atletica.nome}</h3>
                       <br />
-
-
                       <p className='subtitleW' >SOBRE NÒS</p>
-
-                      <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                  non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
+                      <p className="subtitle2W">{atletica.descricao}</p>
 
                     </Paper>
 
@@ -362,17 +375,18 @@ export default function Perfil() {
                 </div>
               </Grid>
 
-
-
               <Paper className={classes.paperA}>
 
                 <h4 className="subtitle">NOSSOS MEMBROS</h4>
 
                 <Grid container spacing={3}>
 
-                  {Membros.map((item) =>
-                    <CardMembro item={item} />
-                  )}
+                  {
+                    atletica.membros !== null ?
+                      atletica.membros.map((item) =>
+                        <CardMembro item={item} />
+                      ) : null
+                  }
 
 
                 </Grid>
@@ -579,9 +593,9 @@ export default function Perfil() {
 
                       <h4 className="subtitle">ENTRE EM CONTATO</h4>
 
-                      <p className="subtitle2">EMAIL - atleticabraba@gmail.com</p>
-                      <p className="subtitle2">TELEFONE - 71 973673287</p>
-                      <p className="subtitle2">Av. Orlando Gomes, 1845 - Piatã, Salvador - BA, 41650-010</p>
+                      <p className="subtitle2">EMAIL - {atletica.email}</p>
+                      <p className="subtitle2">TELEFONE - {atletica.telefone}</p>
+                      <p className="subtitle2">{concatenaEndereco()}</p>
 
                     </Grid>
 
@@ -632,28 +646,20 @@ export default function Perfil() {
 
                 <Grid style={{ marginTop: 10, }} container justify='center'>
 
-                  <img className='imagePerfilMobile' src={FotoPerfil} alt="fotoPerfil" />
-
-                  <h3 className="MyTitleMobile">Cimatlética - Atlética do SENAI CIMATEC</h3>
+                  <img className='imagePerfilMobile' src={perfil} alt="fotoPerfil" />
 
                 </Grid>
+
+                <h3 className="MyTitleMobile">{atletica.nome}</h3>
 
               </Paper>
 
               <Paper className={classes.paperBMobile}>
 
-                <Grid container justify="flex-start">
+                <p className='subtitleWMobile' >SOBRE NÒS</p>
 
-                  <p className='subtitleWMobile' >SOBRE NÒS</p>
+                <p className="subtitle2W">{atletica.descricao}</p>
 
-                  <p className="subtitle2W">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-
-                </Grid>
               </Paper>
 
             </Grid>
@@ -667,9 +673,12 @@ export default function Perfil() {
 
                 <Grid container spacing={3}>
 
-                  {Membros.map((item) =>
-                    <CardMembro item={item} />
-                  )}
+                  {
+                    atletica.membros !== null ?
+                      atletica.membros.map((item) =>
+                        <CardMembro item={item} />
+                      ) : null
+                  }
 
 
                 </Grid>
@@ -857,9 +866,9 @@ export default function Perfil() {
 
                     <h4 className="subtitle">ENTRE EM CONTATO</h4>
 
-                    <p className="subtitle2">EMAIL - atleticabraba@gmail.com</p>
-                    <p className="subtitle2">TELEFONE - 71 973673287</p>
-                    <p className="subtitle2">Av. Orlando Gomes, 1845 - Piatã, Salvador - BA, 41650-010</p>
+                    <p className="subtitle2">EMAIL - {atletica.email}</p>
+                    <p className="subtitle2">TELEFONE - {atletica.telefone}</p>
+                    <p className="subtitle2">{concatenaEndereco()}</p>
 
                   </Grid>
 

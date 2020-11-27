@@ -2,6 +2,7 @@ import api from "../services/api";
 import { login } from "../utils/storage";
 
 const ApiService = {
+
   LoginAtletica: (crecencial) => {
     return api
       .post("/api/Login/Atletica", crecencial)
@@ -70,6 +71,43 @@ const ApiService = {
       });
   },
 
+  CadastroAtletica: (Atletica) => {
+    return api
+      .post("/api/Registro/Atletica", Atletica)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+
+  CadastroMembro: (Membro, PIN) => {
+    return api
+      // .post(`/api​/Registro​/Membro​/${PIN}`, Membro)
+      .post(`/api/Registro/Membro/${PIN}`, Membro)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+
+  PesquisaAtleticaPorUsername: (username) => {
+    return api
+      .get("/api/Atletica/BuscaPorUsername/" + username)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
 };
 
 export default ApiService;
+

@@ -11,22 +11,27 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { ChevronLeft } from "@material-ui/icons";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InputBase from "@material-ui/core/InputBase";
-import Home from "../../assets/imagem/home.svg"
-import Feed from "../../assets/imagem/today (1).svg"
-import Calendario from "../../assets/imagem/calendar-today.svg"
-import Trofeu from "../../assets/imagem/trophy.svg"
-import Bag from "../../assets/imagem/shopping-bag.svg"
-import More from "../../assets/imagem/more-vertical-alt.svg"
-import LogOut from "../../assets/imagem/log-out.svg"
+import { Link } from "react-router-dom";
+import Home from "../../assets/imagem/home.svg";
+import Feed from "../../assets/imagem/today (1).svg";
+import Bell from "../../assets/icons/bellIcon.svg";
+import Ranking from "../../assets/icons/ranking.svg";
+import { isLogin, getUserType } from "../../utils/storage";
+import Trofeu from "../../assets/imagem/trophy.svg";
+import Bag from "../../assets/imagem/shopping-bag.svg";
+import Jogo from "../../assets/icons/jogoIcon.svg";
+import Modalidade from "../../assets/icons/modalidadeIcon.svg";
+import LogOut from "../../assets/imagem/log-out.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import "./NavBar.css";
 import { Grid, TextField, InputAdornment } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab"
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import ApiService from '../../variables/ApiService'
+import { Autocomplete } from "@material-ui/lab";
+import PermIdentityIcon from "@material-ui/icons/PermIdentity";
+import LogoutModel from "../../Components/ModalLogout";
+import ApiService from "../../variables/ApiService";
+import { atleticaUsername } from '../../utils/storage'
 
 const drawerWidth = 200;
 
@@ -109,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
       width: "50%",
     },
     marginRight: theme.spacing(2),
-    marginLeft: 0
+    marginLeft: 0,
   },
   search: {
     borderRadius: theme.shape.borderRadius,
@@ -159,8 +164,6 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-
-
 }));
 
 export default function MiniDrawer() {
@@ -168,10 +171,19 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
-  const [atleticas, setAtleticas] = useState([])
+  const [atleticas, setAtleticas] = useState([]);
+  const [openLogout, setOpenLogout] = useState(false);
+
+  const handleClickOpenLogout = () => {
+    setOpenLogout(true);
+  };
+
+  const handleCloseLogout = () => {
+    setOpenLogout(false);
+  };
 
   const handleChange = () => {
-    setShowSearch(false)
+    setShowSearch(false);
   };
 
   const handleDrawerOpen = () => {
@@ -185,20 +197,13 @@ export default function MiniDrawer() {
   const pesquisaAtleticas = async (text) => {
     if (text)
       await ApiService.PesquisaAtleticas(text)
-        .then(res =>
-          setAtleticas(res.data)
-        )
-        .catch(err =>
-          console.log(err)
-        )
-    else
-      setAtleticas([])
-  }
+        .then((res) => setAtleticas(res.data))
+        .catch((err) => console.log(err));
+    else setAtleticas([]);
+  };
 
   return (
-
     <>
-
       {/*
       
       
@@ -210,12 +215,10 @@ export default function MiniDrawer() {
       */}
 
       <div className={classes.sectionDesktop}>
-
         <div className={classes.root}>
           <CssBaseline />
 
           <div className="parent">
-
             <AppBar
               position="fixed"
               className={clsx(classes.appBar, {
@@ -234,16 +237,22 @@ export default function MiniDrawer() {
                 >
                   <MenuIcon />
                 </IconButton>
-
-                <h1 className="Mylogo">OLYMPOS</h1>
+                <Link style={{ textDecoration: "none" }} to="/">
+                  <h1 className="Mylogo">OLYMPOS</h1>
+                </Link>
 
                 <div className={classes.divSearch}>
                   <Autocomplete
                     freeSolo
-                    options={atleticas.map((option) => option.nome)}
+                    options={atleticas}
+                    getOptionLabel={(option) => option.nome}
                     classes={{
                       root: classes.inputRoot,
                       input: classes.inputInput,
+                    }}
+                    onChange={(event, newValue) => {
+                      atleticaUsername(newValue.username)
+                      window.location.href = "/Perfil/" + newValue.username
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -252,16 +261,14 @@ export default function MiniDrawer() {
                         margin="dense"
                         variant="outlined"
                         className={classes.search}
-                        onChange={(e) =>
-                          pesquisaAtleticas(e.target.value)
-                        }
+                        onChange={(e) => pesquisaAtleticas(e.target.value)}
                         InputProps={{
                           ...params.InputProps,
                           startAdornment: (
                             <InputAdornment position="start">
                               <SearchIcon style={{ color: "#FFFFFF" }} />
                             </InputAdornment>
-                          )
+                          ),
                         }}
                       />
                     )}
@@ -269,23 +276,20 @@ export default function MiniDrawer() {
                 </div>
 
                 <div className="userButtom">
-
-                  <IconButton>
-
-                    <PermIdentityIcon fontSize='large' style={{ color: "white" }} />
-
-                  </IconButton>
-
+                  <Link to="/EditarPerfil">
+                    <IconButton>
+                      <PermIdentityIcon
+                        fontSize="large"
+                        style={{ color: "white" }}
+                      />
+                    </IconButton>
+                  </Link>
                 </div>
-
               </Toolbar>
-
             </AppBar>
-
           </div>
 
           <div className="parent">
-
             <Drawer
               containerStyle={{ background: "#020431" }}
               variant="permanent"
@@ -301,83 +305,110 @@ export default function MiniDrawer() {
               }}
             >
               <div className={classes.toolbar}>
-                <IconButton onClick={handleDrawerClose} style={{ color: "white" }}>
-                  {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
+                <IconButton
+                  onClick={handleDrawerClose}
+                  style={{ color: "white" }}
+                >
+                  {theme.direction === "rtl" ? (
+                    <ChevronRight />
+                  ) : (
+                      <ChevronLeft />
+                    )}
                 </IconButton>
               </div>
 
-
-
               <Grid style={{ marginTop: 80 }}>
+                <List>
+                  <Link to={"/Perfil/" + atleticaUsername()}>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <img src={Home} alt="home" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Home" />
+                    </ListItem>
+                  </Link>
 
-                <List >
+                  <Link to="/Feed">
+                    <ListItem button>
+                      <ListItemIcon>
+                        <img src={Feed} alt="feed" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Feed" />
+                    </ListItem>
+                  </Link>
+                  <Link to="/Times">
+                    <ListItem button>
+                      <ListItemIcon>
+                        <img src={Trofeu} alt="times" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Times" />
+                    </ListItem>
+                  </Link>
 
-                  <ListItem button >
-                    <ListItemIcon >
-                      <img src={Home} alt="home" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Home" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Feed} alt="feed" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Feed" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Calendario} alt="calendario" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Calendário" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Trofeu} alt="times" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Times" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Bag} alt="produtos" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Produtos" />
-                  </ListItem>
+                  <Link to="/Produtos">
+                    <ListItem button>
+                      <ListItemIcon>
+                        <img src={Bag} alt="produtos" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Produtos" />
+                    </ListItem>
+                  </Link>
+                  {isLogin() && (
+                    <>
+                      <Link to="/Notificacoes">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Bell} alt="Notificação" />
+                          </ListItemIcon>
+                          <ListItemText
+                            className="item"
+                            primary="Notificações"
+                          />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Ranking">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Ranking} alt="Ranking" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Ranking" />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Jogo">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Jogo} alt="Jogo" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Jogos" />
+                        </ListItem>
+                      </Link>
+                      <Link to="/Modalidades">
+                        <ListItem button>
+                          <ListItemIcon>
+                            <img src={Modalidade} alt="Modalidade" />
+                          </ListItemIcon>
+                          <ListItemText className="item" primary="Modalidade" />
+                        </ListItem>
+                      </Link>
+                    </>
+                  )}
                 </List>
-
               </Grid>
 
-
-              <div className="absolute">
-
-                <List>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={More} alt="configurações" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Configurações" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={LogOut} alt="logout" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Logout" />
-                  </ListItem>
-                </List>
-
-
-              </div>
-
-
+              {getUserType() === "A" && (
+                <div className="absolute">
+                  <List>
+                    <ListItem button onClick={handleClickOpenLogout}>
+                      <ListItemIcon>
+                        <img src={LogOut} alt="logout" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Logout" />
+                    </ListItem>
+                  </List>
+                </div>
+              )}
             </Drawer>
-
           </div>
-
         </div>
       </div>
 
@@ -391,13 +422,10 @@ export default function MiniDrawer() {
       
       */}
 
-
       <div className={classes.sectionMobile}>
-
         <CssBaseline />
 
         <div className="parent">
-
           <AppBar
             position="fixed"
             className={clsx(classes.appBarMobile, {
@@ -419,33 +447,30 @@ export default function MiniDrawer() {
 
               {showSearch ? (
                 <>
-
                   <div className="divLogoMobile">
-
                     <h3 className="MylogoMobile">OLYMPOS</h3>
-
                   </div>
 
-
                   <div className="userButtom">
-
                     <IconButton onClick={handleChange}>
                       <SearchIcon style={{ color: "white" }} />
                     </IconButton>
-
-
                   </div>
                 </>
-
               ) : (
                   <>
                     <div className={classes.divSearch}>
                       <Autocomplete
                         freeSolo
-                        options={atleticas.map((option) => option.nome)}
+                        options={atleticas}
+                        getOptionLabel={(option) => option.nome}
                         classes={{
                           root: classes.inputRoot,
                           input: classes.inputInput,
+                        }}
+                        onChange={(event, newValue) => {
+                          atleticaUsername(newValue.username)
+                          window.location.href = "/Perfil/" + newValue.username
                         }}
                         renderInput={(params) => (
                           <TextField
@@ -454,34 +479,26 @@ export default function MiniDrawer() {
                             margin="dense"
                             variant="outlined"
                             className={classes.search}
-                            onChange={(e) =>
-                              pesquisaAtleticas(e.target.value)
-                            }
+                            onChange={(e) => pesquisaAtleticas(e.target.value)}
                             InputProps={{
                               ...params.InputProps,
                               startAdornment: (
                                 <InputAdornment position="start">
                                   <SearchIcon style={{ color: "#FFFFFF" }} />
                                 </InputAdornment>
-                              )
+                              ),
                             }}
                           />
                         )}
                       />
                     </div>
-
-
                   </>
                 )}
-
-
             </Toolbar>
           </AppBar>
-
         </div>
 
         <div className="parent">
-
           <Drawer
             containerStyle={{ background: "#020431" }}
             variant="persistent"
@@ -492,90 +509,115 @@ export default function MiniDrawer() {
             }}
           >
             <div className={classes.toolbar}>
-              <IconButton onClick={handleDrawerClose} style={{ color: "white" }}>
+              <IconButton
+                onClick={handleDrawerClose}
+                style={{ color: "white" }}
+              >
                 {theme.direction === "rtl" ? <ChevronRight /> : <ChevronLeft />}
               </IconButton>
             </div>
 
-
-
             <Grid style={{ marginTop: 30 }}>
+              <List>
+                <Link to={"/Perfil/" + atleticaUsername()}>
+                  <ListItem button className="listItem">
+                    <ListItemIcon>
+                      <img src={Home} alt="home" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Home" />
+                  </ListItem>
+                </Link>
 
-              <List >
+                <Link to="/Feed">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <img src={Feed} alt="feed" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Feed" />
+                  </ListItem>
+                </Link>
 
-                <ListItem button className="listItem">
-                  <ListItemIcon  >
-                    <img src={Home} alt="home" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Home" />
-                </ListItem>
+                <Link to="/Times">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <img src={Trofeu} alt="times" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Times" />
+                  </ListItem>
+                </Link>
 
-
-                <ListItem button >
-                  <ListItemIcon>
-                    <img src={Feed} alt="feed" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Feed" />
-                </ListItem>
-
-                <ListItem button >
-                  <ListItemIcon>
-                    <img src={Calendario} alt="calendario" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Calendário" />
-                </ListItem>
-
-                <ListItem button >
-                  <ListItemIcon>
-                    <img src={Trofeu} alt="times" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Times" />
-                </ListItem>
-
-                <ListItem button >
-                  <ListItemIcon>
-                    <img src={Bag} alt="produtos" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Produtos" />
-                </ListItem>
+                <Link to="/Produtos">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <img src={Bag} alt="produtos" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Produtos" />
+                  </ListItem>
+                </Link>
+                {isLogin() && (
+                  <>
+                    <Link to="/Notificacoes">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Bell} alt="Notificação" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Notificações" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Ranking">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Ranking} alt="Ranking" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Ranking" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Jogo">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Jogo} alt="Jogo" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Jogos" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Modalidades">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Modalidade} alt="Modalidade" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Modalidade" />
+                      </ListItem>
+                    </Link>
+                  </>
+                )}
               </List>
-
             </Grid>
 
             <div className="absoluteMobile">
-
-
-              <ListItem button >
-                <ListItemIcon>
-                  <PermIdentityIcon style={{ color: "white" }} />
-                </ListItemIcon>
-                <ListItemText className="item" primary="Meu Perfil" />
-              </ListItem>
+              {getUserType() === "A" && (
+                <Link to="/EditarPerfil">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PermIdentityIcon style={{ color: "white" }} />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Meu Perfil" />
+                  </ListItem>
+                </Link>
+              )}
 
               <List>
-                <ListItem button >
-                  <ListItemIcon>
-                    <img src={More} alt="configurações" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Configurações" />
-                </ListItem>
-
-                <ListItem button >
+                <ListItem button onClick={handleClickOpenLogout}>
                   <ListItemIcon>
                     <img src={LogOut} alt="logout" />
                   </ListItemIcon>
                   <ListItemText className="item" primary="Logout" />
                 </ListItem>
               </List>
-
             </div>
-
-
           </Drawer>
         </div>
-
       </div>
-
+      <LogoutModel open={openLogout} handleClose={handleCloseLogout} />
     </>
   );
 }
