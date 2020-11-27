@@ -12,7 +12,7 @@ import CardModalidadeMobile from './Components/CardModalidadeMobile'
 import CardAddModalidade from "./Components/CardAddModalidade"
 import CardAddModalidadeMobile from "./Components/CardAddModalidadeMobile"
 import ApiService from "../../variables/ApiService"
-import AuthContext from "../../context/auth"
+
 import MuiAlert from '@material-ui/lab/Alert';
 
 
