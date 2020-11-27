@@ -64,7 +64,18 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-  }
+  },
+
+  PesquisaAtleticaPorUsername: (username) => {
+    return api
+      .get("/api/Atletica/BuscaPorUsername/" + username)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 
 };
 
