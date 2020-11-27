@@ -64,7 +64,7 @@ export default function Feed() {
     }
 
     function apresentaPosts() {
-        if (posts !== undefined) 
+        if (posts !== undefined && posts !== null) 
             return (
                 posts.map((item) => (
                     <Post post={item} />
