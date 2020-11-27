@@ -128,9 +128,9 @@ const ApiService = {
       })
   },
 
-  EnviarPost: (dados, config) => {
+  EnviarPost: (dados) => {
     return api
-      .post("/api/Publicacao", dados, config)
+      .post("/api/Publicacao", dados)
       .then((response) => {
         return response;
       })
