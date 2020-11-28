@@ -64,7 +64,51 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-  }
+  },
+
+  GetModalidadeId: (modalidadeId)=>{
+    return api
+      .get(`​/api/modalidade/${modalidadeId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesJogo: (atleticaId)=>{
+    return api
+      .get(`/api/SolicitacaoJogo/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesAtleta: (atleticaId)=>{
+    return api
+      .get(`/api/SolicitacaoAtleta/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacoesAtleta: (solicitacaoAtletaId)=>{
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 
 };
 

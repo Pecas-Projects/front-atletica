@@ -109,12 +109,12 @@ function Notificacoes() {
   useEffect(() => {
     async function getSolicitacoes() {
       await ApiService.GetSolicitacoesAtleta(atleticaId).then((res) => {
-        //console.log(res);
+        console.log(res);
         setSolicitacoesAtleta(res.data);
       });
 
       await ApiService.GetSolicitacoesJogo(atleticaId).then((res) => {
-        //console.log(res);
+        console.log(res);
         setSolicitacoesJogo(res.data);
       });
 

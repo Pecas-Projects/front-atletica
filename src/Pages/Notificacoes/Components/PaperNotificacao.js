@@ -36,47 +36,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function AcertarData(data) {
+
+  var ano = "", mes = "", dia = "", hora ="", minuto=""
+  for (var i = 0; i < 4; i++) {
+    ano = ano + data[i];
+  }
+  for (var j = 5; j < 7; j++) {
+    mes = mes + data[j];
+  }
+  for (var t = 8; t < 10; t++) {
+    dia = dia + data[t];
+  }
+  for (var k = 11; k< 13; k++){
+    hora = hora + data[k];
+  }
+  for (var l = 14; l< 16; l++){
+    minuto = minuto + data[l];
+  }
+
+  return (dia + "/" + mes + "/" + ano + ", " + hora + ":" + minuto)
+}
+
 function PaperNotificacao(props) {
   const classes = useStyles();
   const { item } = props;
-  const modalidadesAtleta = [];
-  const [modalidadeJogo, setModalidaeJogo] = useState();
 
-  useEffect(() => {
-      getModalidade()
-      //console.log(item.modalidadeId)
-  }, [props.tipo]);
+  async function aprovaSolicitacaoAtleta(solicitacaoAtletaId) {
+    await ApiService.AprovarSolicitacoesAtleta(solicitacaoAtletaId).then((res) => {
+      console.log("aprovou");
+    });}
 
-  async function getModalidade() {
-
-    if (props.tipo === "atleta") {
-      //await ApiService.getModalidade(modalidadeId).then((res) => {
-      //console.log(res);});
-    } 
-    
-    if (props.tipo === "jogos"){
-      //console.log(props.tipo)
-      await ApiService.GetModalidadeId(item.modalidadeId).then((res) => {
-        console.log(res);
-        //setModalidaeJogo(res);
-      });
+  function handleAceitarSolicitacao(){
+    if(props.tipo === "atletas"){
+      console.log("entrou")
+      aprovaSolicitacaoAtleta(item.solicitacaoAtletaId)
     }
   }
 
-  // function modalidadesInteresse() {
-  //   item.solicitacaoAtletaModalidade.map((item) => getModalidade());
-  // }
+  function handleRecusarSolicitacao(){
+    console.log("ui2")
+  }
+
+   function modalidadesInteresse(modalidades) {
+     var listaModalidades = "";
+     modalidades.map((modalidade) => listaModalidades = listaModalidades + modalidade.nome + ", ");
+     listaModalidades= listaModalidades.slice(0, (listaModalidades.length -2))
+     return listaModalidades;
+   }
 
   function corpo() {
-    //console.log(modalidadeJogo)
     if (item.solicitacaoAtletaId !== undefined) {
       return (
         <>
           <Typography gutterBottom style={{ fontSize: 18 }}>
-            {item.nome} quer participar como atleta!
+            {item.nome} {item.sobrenome} quer participar como atleta!
           </Typography>
           <Typography variant="body2" component="p">
-            Modalidades de interesse: {item.modalidades}
+            Modalidades de interesse: {modalidadesInteresse(item.modalidadesInteresse)}
           </Typography>
         </>
       );
@@ -84,13 +101,13 @@ function PaperNotificacao(props) {
       return (
         <>
           <Typography gutterBottom style={{ fontSize: 18 }}>
-            A Atlética {item.nome} está te convidando para um jogo!
+            A Atlética {item.atleticaAdversaria.nome} está te convidando para um jogo!
           </Typography>
           <Typography variant="body2" component="p">
-            Modalidade: {item.modalidades}
+            Modalidade: {item.modalidade.nome}
           </Typography>
           <Typography variant="body2" component="p">
-            Data e Horário: {item.dataHora}
+            Data e Horário: {AcertarData(item.dataHora)}
           </Typography>
           <Typography variant="body2" component="p">
             Local: {item.local}
@@ -129,6 +146,7 @@ function PaperNotificacao(props) {
                   marginTop: 20,
                   color: "black",
                 }}
+                onClick = {handleAceitarSolicitacao}
               >
                 Aceitar
               </Button>
@@ -142,6 +160,7 @@ function PaperNotificacao(props) {
                   width: 114,
                   marginTop: 20,
                 }}
+                onClick = {handleRecusarSolicitacao}
               >
                 Recusar
               </Button>
