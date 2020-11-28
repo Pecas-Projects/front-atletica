@@ -138,7 +138,7 @@ const ApiService = {
       });
   },
 
-  AprovarSolicitacoesAtleta: (solicitacaoAtletaId)=>{
+  AprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
     return api
       .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/aprovado`)
       .then((res) => {
@@ -148,6 +148,40 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
+  ReprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  ReprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
 
   PesquisaAtleticaPorUsername: (username) => {
     return api

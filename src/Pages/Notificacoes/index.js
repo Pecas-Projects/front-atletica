@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../variables/ApiService";
 import NavBar from "../../Components/NavBar";
+import {getUserId} from "../../utils/storage"
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -72,19 +73,31 @@ function Notificacoes() {
   const [solicitacoesAtleta, setSolicitacoesAtleta] = useState([]);
   const [solicitacoesJogo, setSolicitacoesJogo] = useState([]);
   const [loding, setLoding] = useState(true);
-  const atleticaId = 1;
+  const atleticaId = getUserId();
 
   function notificacaoAtletas() {
     if (solicitacoesAtleta.length !== 0) {
-      return solicitacoesAtleta.map((item) => <PaperNotificacao item={item} tipo={tipo}/>);
+      return solicitacoesAtleta.map((item) => (
+        <PaperNotificacao
+          item={item}
+          tipo={tipo}
+          getSolicitacoes={getSolicitacoes}
+        />
+      ));
     } else {
       return <div></div>;
     }
   }
 
   function notificacaoJogos() {
-    if (solicitacoesAtleta.length !== 0) {
-      return solicitacoesJogo.map((item) => <PaperNotificacao item={item} tipo={tipo}/>);
+    if (solicitacoesJogo.length !== 0) {
+      return solicitacoesJogo.map((item) => (
+        <PaperNotificacao
+          item={item}
+          tipo={tipo}
+          getSolicitacoes={getSolicitacoes}
+        />
+      ));
     } else {
       return <div></div>;
     }
@@ -92,34 +105,48 @@ function Notificacoes() {
 
   function notificacaoAtletasMobile() {
     if (solicitacoesAtleta.length !== 0) {
-      return solicitacoesAtleta.map((item) => <NotificacaoMobile item={item} tipo={tipo}/>);
+      return solicitacoesAtleta.map((item) => (
+        <NotificacaoMobile
+          item={item}
+          tipo={tipo}
+          getSolicitacoes={getSolicitacoes}
+        />
+      ));
     } else {
       return <div></div>;
     }
   }
 
   function notificacaoJogosMobile() {
-    if (solicitacoesAtleta.length !== 0) {
-      return solicitacoesJogo.map((item) => <NotificacaoMobile item={item} />);
+    if (solicitacoesJogo.length !== 0) {
+      return solicitacoesJogo.map((item) => (
+        <NotificacaoMobile
+          item={item}
+          tipo={tipo}
+          getSolicitacoes={getSolicitacoes}
+        />
+      ));
     } else {
       return <div></div>;
     }
   }
 
+  async function getSolicitacoes() {
+    await ApiService.GetSolicitacoesAtleta(atleticaId).then((res) => {
+      console.log(res);
+      setSolicitacoesAtleta(res.data);
+    });
+
+    await ApiService.GetSolicitacoesJogo(atleticaId).then((res) => {
+      console.log(res);
+      setSolicitacoesJogo(res.data);
+    });
+
+    setLoding(false);
+  }
+
   useEffect(() => {
-    async function getSolicitacoes() {
-      await ApiService.GetSolicitacoesAtleta(atleticaId).then((res) => {
-        console.log(res);
-        setSolicitacoesAtleta(res.data);
-      });
-
-      await ApiService.GetSolicitacoesJogo(atleticaId).then((res) => {
-        console.log(res);
-        setSolicitacoesJogo(res.data);
-      });
-
-      setLoding(false);
-    }
+    getSolicitacoes();
 
     if (loding === true) {
       getSolicitacoes();
@@ -210,7 +237,9 @@ function Notificacoes() {
               </Grid>
 
               <Grid item>
-                {tipo === "atletas" ? notificacaoAtletasMobile() : notificacaoJogosMobile()}
+                {tipo === "atletas"
+                  ? notificacaoAtletasMobile()
+                  : notificacaoJogosMobile()}
               </Grid>
             </Grid>
           </div>
