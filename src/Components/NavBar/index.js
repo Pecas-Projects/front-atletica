@@ -31,6 +31,7 @@ import { Autocomplete } from "@material-ui/lab";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import LogoutModel from "../../Components/ModalLogout";
 import ApiService from "../../variables/ApiService";
+import { atleticaUsername } from '../../utils/storage'
 
 const drawerWidth = 200;
 
@@ -243,10 +244,15 @@ export default function MiniDrawer() {
                 <div className={classes.divSearch}>
                   <Autocomplete
                     freeSolo
-                    options={atleticas.map((option) => option.nome)}
+                    options={atleticas}
+                    getOptionLabel={(option) => option.nome}
                     classes={{
                       root: classes.inputRoot,
                       input: classes.inputInput,
+                    }}
+                    onChange={(event, newValue) => {
+                      atleticaUsername(newValue.username)
+                      window.location.href = "/Perfil/" + newValue.username
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -306,14 +312,14 @@ export default function MiniDrawer() {
                   {theme.direction === "rtl" ? (
                     <ChevronRight />
                   ) : (
-                    <ChevronLeft />
-                  )}
+                      <ChevronLeft />
+                    )}
                 </IconButton>
               </div>
 
               <Grid style={{ marginTop: 80 }}>
                 <List>
-                  <Link to="perfil">
+                  <Link to={"/Perfil/" + atleticaUsername()}>
                     <ListItem button>
                       <ListItemIcon>
                         <img src={Home} alt="home" />
@@ -368,7 +374,7 @@ export default function MiniDrawer() {
                           <ListItemText className="item" primary="Ranking" />
                         </ListItem>
                       </Link>
-                      <Link to="/Jogo">
+                      <Link to="/Jogos">
                         <ListItem button>
                           <ListItemIcon>
                             <img src={Jogo} alt="Jogo" />
@@ -452,37 +458,42 @@ export default function MiniDrawer() {
                   </div>
                 </>
               ) : (
-                <>
-                  <div className={classes.divSearch}>
-                    <Autocomplete
-                      freeSolo
-                      options={atleticas.map((option) => option.nome)}
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          placeholder="Pesquise uma atletica"
-                          margin="dense"
-                          variant="outlined"
-                          className={classes.search}
-                          onChange={(e) => pesquisaAtleticas(e.target.value)}
-                          InputProps={{
-                            ...params.InputProps,
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <SearchIcon style={{ color: "#FFFFFF" }} />
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      )}
-                    />
-                  </div>
-                </>
-              )}
+                  <>
+                    <div className={classes.divSearch}>
+                      <Autocomplete
+                        freeSolo
+                        options={atleticas}
+                        getOptionLabel={(option) => option.nome}
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        onChange={(event, newValue) => {
+                          atleticaUsername(newValue.username)
+                          window.location.href = "/Perfil/" + newValue.username
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            placeholder="Pesquise uma atletica"
+                            margin="dense"
+                            variant="outlined"
+                            className={classes.search}
+                            onChange={(e) => pesquisaAtleticas(e.target.value)}
+                            InputProps={{
+                              ...params.InputProps,
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <SearchIcon style={{ color: "#FFFFFF" }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        )}
+                      />
+                    </div>
+                  </>
+                )}
             </Toolbar>
           </AppBar>
         </div>
@@ -508,7 +519,7 @@ export default function MiniDrawer() {
 
             <Grid style={{ marginTop: 30 }}>
               <List>
-                <Link to="/Perfil">
+                <Link to={"/Perfil/" + atleticaUsername()}>
                   <ListItem button className="listItem">
                     <ListItemIcon>
                       <img src={Home} alt="home" />
@@ -561,7 +572,7 @@ export default function MiniDrawer() {
                         <ListItemText className="item" primary="Ranking" />
                       </ListItem>
                     </Link>
-                    <Link to="/Jogo">
+                    <Link to="/Jogos">
                       <ListItem button>
                         <ListItemIcon>
                           <img src={Jogo} alt="Jogo" />

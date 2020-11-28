@@ -15,6 +15,36 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+  BuscarTodosCursos: () => {
+    return api
+      .get("/api/Cursos")
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  BuscarAtleticaModalidades: (atleticaId) => {
+    return api
+      .get("/api/AtleticaModalidade/" + atleticaId)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  CriarSolicitacaoAtleta: (atleticaId, atleta) => {
+    return api
+      .post("/api/SolicitacaoAtleta/" + atleticaId, atleta)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 
   PesquisaAtleticas: (nomeAtletica) => {
     return api
@@ -53,9 +83,18 @@ const ApiService = {
       });
   },
 
+  BuscarTodosPosts: (atleticaId) => {
+    return api
+      .get("api/PublicacaoAtletica/" + atleticaId)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
   CadastroMembro: (Membro, PIN) => {
     return api
-      // .post(`/api​/Registro​/Membro​/${PIN}`, Membro)
       .post(`/api/Registro/Membro/${PIN}`, Membro)
       .then((res) => {
         return Promise.resolve(res);
@@ -102,6 +141,17 @@ const ApiService = {
   AprovarSolicitacoesAtleta: (solicitacaoAtletaId)=>{
     return api
       .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  PesquisaAtleticaPorUsername: (username) => {
+    return api
+      .get("/api/Atletica/BuscaPorUsername/" + username)
       .then((res) => {
         return Promise.resolve(res);
       })

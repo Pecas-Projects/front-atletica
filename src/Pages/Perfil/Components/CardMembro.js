@@ -14,10 +14,10 @@ export default function CardMembro(props) {
 
                     <CardHeader
                         avatar={
-                            <Avatar alt={item.nome} src={item.imagem} ></Avatar>
+                            <Avatar alt={item.nome} src={item.membro.imagem.path} ></Avatar>
                         }
 
-                        title={item.nome} subheader={item.funcao}
+                        title={item.nome + " " + item.sobrenome} subheader={item.funcao}
                     />
 
 
