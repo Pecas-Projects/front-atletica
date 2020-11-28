@@ -116,6 +116,30 @@ const ApiService = {
       });
   },
 
+  UploadImagem: (data) => {
+    return api
+      .post(`/api/Imagem/Upload`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
+  },
+
+  EnviarPost: (dados) => {
+    return api
+      .post("/api/Publicacao", dados)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
+  },
+
 };
 
 export default ApiService;
