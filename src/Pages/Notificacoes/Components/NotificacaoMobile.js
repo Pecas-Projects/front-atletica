@@ -1,120 +1,228 @@
 import React, { useState, useEffect } from "react";
+import ApiService from "../../../variables/ApiService";
 import {
-    Avatar,
-    Button,
-    Grid,
-    Paper,
-    Typography,
-    makeStyles
+  Avatar,
+  Button,
+  Grid,
+  Paper,
+  Typography,
+  makeStyles,
 } from "@material-ui/core";
 import "../styles.css";
 
-import atleta_icon from "../../../assets/imagem/atleta_icon.svg"
-import jogo_icon from "../../../assets/imagem/jogo_icon.svg"
+import atleta_icon from "../../../assets/imagem/atleta_icon.svg";
+import jogo_icon from "../../../assets/imagem/jogo_icon.svg";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        '& > *': {
-            margin: theme.spacing(1),
-        },
+  root: {
+    display: "flex",
+    "& > *": {
+      margin: theme.spacing(1),
     },
-    small: {
-        width: theme.spacing(3),
-        height: theme.spacing(3),
-    },
-    large: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
-    },
-    paper: {
-        width: "100%",
-        padding: "2%",
-        backgroundColor: "#C4C4C4",
-    }
+  },
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+  },
+  large: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  paper: {
+    width: "100%",
+    padding: "2%",
+    backgroundColor: "#C4C4C4",
+  },
 }));
 
+function AcertarData(data) {
+    var ano = "",
+      mes = "",
+      dia = "",
+      hora = "",
+      minuto = "";
+    for (var i = 0; i < 4; i++) {
+      ano = ano + data[i];
+    }
+    for (var j = 5; j < 7; j++) {
+      mes = mes + data[j];
+    }
+    for (var t = 8; t < 10; t++) {
+      dia = dia + data[t];
+    }
+    for (var k = 11; k < 13; k++) {
+      hora = hora + data[k];
+    }
+    for (var l = 14; l < 16; l++) {
+      minuto = minuto + data[l];
+    }
+  
+    return dia + "/" + mes + "/" + ano + ", " + hora + ":" + minuto;
+  }
 
 function NotificacaoMobile(props) {
+  const classes = useStyles();
+  const { item } = props;
 
-    const classes = useStyles();
-    const { item } = props
+  async function aprovaSolicitacaoAtleta(solicitacaoAtletaId) {
+    await ApiService.AprovarSolicitacaoAtleta(solicitacaoAtletaId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      props.getSolicitacoes()
+  }
 
-    function corpo() {
-        if (item.solicitacaoAtletaId !== undefined) {
-            return (
-                <>
-                    <Typography gutterBottom >
-                        {item.nome} quer participar como atleta!
-                    </Typography>
-                    <Typography variant="body2" component="p" style={{ paddingTop: 10 }}>
-                        Modalidades de interesse: {item.modalidades}
-                    </Typography>
-                </>
-            );
-        }
-        else {
-            return (
-                <>
-                    <Typography gutterBottom >
-                        A Atlética {item.nome} está te convidando para um jogo!
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        Modalidade: {item.modalidades}
-                    </Typography>
-                    <Typography variant="body2" component="p" style={{ paddingTop: 5 }}>
-                        Data e Horário: 22 de outubro de 2022
-                    </Typography>
-                    <Typography variant="body2" component="p" style={{ paddingTop: 5 }}>
-                        Local: Ufba
-                    </Typography>
-                </>
-            );
-        }
+  async function reprovaSolicitacaoAtleta(solicitacaoAtletaId) {
+    await ApiService.ReprovarSolicitacaoAtleta(solicitacaoAtletaId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      props.getSolicitacoes()
+  }
 
+  async function aprovaSolicitacaoJogo(solicitacaoJogoId) {
+    await ApiService.AprovarSolicitacaoJogo(solicitacaoJogoId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      props.getSolicitacoes()
+  }
+
+  async function reprovaSolicitacaoJogo(solicitacaoJogoId) {
+    await ApiService.ReprovarSolicitacaoJogo(solicitacaoJogoId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      props.getSolicitacoes()
+  }
+
+  function handleAceitarSolicitacao() {
+    if (props.tipo === "atletas") {
+      aprovaSolicitacaoAtleta(item.solicitacaoAtletaId);
+    } else if (props.tipo === "jogos") {
+      aprovaSolicitacaoJogo(item.solicitacaoJogoId);
     }
+  }
 
-    return (
-        <>
-            <Grid item style={{ marginBottom: 20 }} xs={12} >
-                <Paper className={classes.paper}>
-                    <Grid container xs={12} spacing={2} style={{ paddingLeft: 10, paddingTop: 10 }}>
-                        <Grid item xs={4} >
-                            <Avatar alt="Remy Sharp" src={item.solicitacaoAtletaId !== undefined ? atleta_icon : jogo_icon} className={classes.large} />
-                        </Grid>
+  function handleRecusarSolicitacao() {
+    if (props.tipo === "atletas") {
+      reprovaSolicitacaoAtleta(item.solicitacaoAtletaId);
+    } else if (props.tipo === "jogos") {
+      reprovaSolicitacaoJogo(item.solicitacaoJogoId);
+    }
+  }
 
-                        <Grid item xs={8}  >
-                            {corpo()}
-                        </Grid>
-
-                        <Grid item xs={6} justify="flex-start" style={{ marginBottom: 10}}>
-                            <Button
-                                style={{
-                                    background: "#F3BF3A",
-                                    color: "black"
-                                }}
-                                fullWidth={true}
-                            >
-                                Aceitar
-                            </Button>
-                        </Grid>
-                        <Grid item xs={6} justify="flex-end" style={{ marginBottom: 10}}>
-                            <Button
-                                style={{
-                                    color: "black",
-                                    border: '2px solid #F3BF3A',
-                                    height: 35,
-                                }}
-                                fullWidth={true}
-                            >
-                                Recusar
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </Grid>
-        </>
+  function modalidadesInteresse(modalidades) {
+    var listaModalidades = "";
+    modalidades.map(
+      (modalidade) =>
+        (listaModalidades = listaModalidades + modalidade.nome + ", ")
     );
+    listaModalidades = listaModalidades.slice(0, listaModalidades.length - 2);
+    return listaModalidades;
+  }
+
+  function corpo() {
+    if (item.solicitacaoAtletaId !== undefined) {
+      return (
+        <>
+          <Typography gutterBottom>
+            {item.nome} {item.sobrenome} quer participar como atleta!
+          </Typography>
+          <Typography variant="body2" component="p" style={{ paddingTop: 10 }}>
+            Modalidades de interesse:{" "}
+            {modalidadesInteresse(item.modalidadesInteresse)}
+          </Typography>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Typography gutterBottom>
+            A atlética {item.atleticaAdversaria.nome} está te convidando para um jogo!
+          </Typography>
+          <Typography variant="body2" component="p">
+            Modalidade: {item.modalidade.nome}
+          </Typography>
+          <Typography variant="body2" component="p" style={{ paddingTop: 5 }}>
+            Data e Horário: {AcertarData(item.dataHora)}
+          </Typography>
+          <Typography variant="body2" component="p" style={{ paddingTop: 5 }}>
+            Local: {item.local}
+          </Typography>
+        </>
+      );
+    }
+  }
+
+  return (
+    <>
+      <Grid item style={{ marginBottom: 20 }} xs={12}>
+        <Paper className={classes.paper}>
+          <Grid
+            container
+            xs={12}
+            spacing={2}
+            style={{ paddingLeft: 10, paddingTop: 10 }}
+          >
+            <Grid item xs={4}>
+              <Avatar
+                alt="Remy Sharp"
+                src={
+                  item.solicitacaoAtletaId !== undefined
+                    ? atleta_icon
+                    : jogo_icon
+                }
+                className={classes.large}
+              />
+            </Grid>
+
+            <Grid item xs={8}>
+              {corpo()}
+            </Grid>
+
+            <Grid item xs={6} justify="flex-start" style={{ marginBottom: 10 }}>
+              <Button
+                style={{
+                  background: "#F3BF3A",
+                  color: "black",
+                }}
+                fullWidth={true}
+                onClick={handleAceitarSolicitacao}
+              >
+                Aceitar
+              </Button>
+            </Grid>
+            <Grid item xs={6} justify="flex-end" style={{ marginBottom: 10 }}>
+              <Button
+                style={{
+                  color: "black",
+                  border: "2px solid #F3BF3A",
+                  height: 35,
+                }}
+                fullWidth={true}
+                onClick={handleRecusarSolicitacao}
+              >
+                Recusar
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+    </>
+  );
 }
 
 export default NotificacaoMobile;
