@@ -116,6 +116,28 @@ const ApiService = {
       });
   },
 
+  BuscarRankingModalidade: (modalidadeId) => {
+    return api
+      .get(`/api/RankingModalidade/${modalidadeId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarModalidades: () => {
+    return api
+      .get(`/api/Modalidade`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
 };
 
 export default ApiService;
