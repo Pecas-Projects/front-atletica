@@ -122,9 +122,9 @@ export default function Produtos(props) {
           <Grid container spacing={1} style={{ marginTop: 20 }}>
             {
               produtos !== undefined && produtos !== null && produtos.length !== 0 ?
-                <h4 className="MyTitle">Nossos Produtos</h4>
+                <h4 className="MyTitle" style={{ color: 'black' }}>Nossos Produtos</h4>
                 :
-                <h4 className="MyTitle">Essa atlética não possui produtos cadastrados!</h4>
+                <h4 className="MyTitle" style={{ color: 'black' }}>Essa atlética não possui produtos cadastrados!</h4>
             }
             {produtos.map((item) => (
               <CardProduto item={item} />
