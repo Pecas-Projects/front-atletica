@@ -87,12 +87,13 @@ const ApiService = {
     return api
       .get("api/PublicacaoAtletica/" + atleticaId)
       .then((res) => {
-        return res;
+        return Promise.resolve(res);
       })
-      .catch((err) => {
-        return err;
+      .catch((error) => {
+        return Promise.reject(error);
       });
   },
+  
   CadastroMembro: (Membro, PIN) => {
     return api
       .post(`/api/Registro/Membro/${PIN}`, Membro)
