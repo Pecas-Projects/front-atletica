@@ -9,22 +9,7 @@ import { getAtleticaId } from "../../../utils/storage";
 export default function FormularioProdutoMobile() {
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
-  const [categoria, setCategoria] = useState();
-  const categorias = [
-    {
-      produtoCategoriaId: 1,
-      nome: "Roupa"
-    },
-    {
-      produtoCategoriaId: 2,
-      nome: "Caneca"
-    },
-    {
-      produtoCategoriaId: 3,
-      nome: "Tirante"
-    }
-  ];
-
+  const [categorias, setCategorias] = useState([]);
   const [produto, setProduto] = useState({
     Nome: "",
     Descricao: "",
@@ -58,6 +43,26 @@ export default function FormularioProdutoMobile() {
     e.preventDefault();
     setProduto({...produto, Estoque: !produto.Estoque})
   };
+
+  useEffect(() => {
+    buscarTodasCategorias();
+    if(produto.ImagemId !== null && produto.ImagemId !== undefined)
+      criarProduto();
+  },[produto.ImagemId]);
+
+  async function envioImagem(){
+    let file = new FormData();
+    file.append('value', imagem);
+
+    await ApiService.UploadImagem(file)
+      .then((res) => {
+        console.log(res)
+        setProduto({...produto, ImagemId: res.data.imagemId})
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
 
   function showAdicionarImagem() {
     if (imagem === null) {
@@ -164,7 +169,7 @@ export default function FormularioProdutoMobile() {
                       select
                       label="Categoria"
                       style={{ marginTop: 5, marginLeft: 5 }}
-                      value={categoria}
+                      value={produto.ProdutoCategoriaId}
                       onChange={handleCategoriaChange}
                     >
                       {categorias.map((option) => (
