@@ -3,7 +3,6 @@ import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto"
-import productImage from "../../assets/imagem/productImage.svg"
 import "./styles.css"
 import ApiService from "../../variables/ApiService";
 
@@ -67,41 +66,6 @@ export default function Produtos(props) {
   const [atleticaId, setAtleticaId] = useState();
   const [produtos, setProdutos] = useState([]);
 
-  const products = [
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-
-    },
-
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-  ];
-
   useEffect(() => {
     buscaAtletica();
     if(atleticaId !== undefined && atleticaId !== null)
@@ -121,13 +85,13 @@ export default function Produtos(props) {
   async function buscarProdutos(){
     await ApiService.BuscarProdutosAtletica(atleticaId)
       .then((res) => {
+        console.log(res.data)
         setProdutos(res.data)
       })
       .catch((error) => {
         console.log(error)
       })
   }
-
 
   return (
     <div className={classes.root}>
@@ -142,7 +106,7 @@ export default function Produtos(props) {
               <h4 className="MyTitle">Nossos Produtos</h4>
 
               <Grid container spacing={1} style={{ marginTop: 20 }}>
-                {products.map((item) => (
+                {produtos.map((item) => (
                   <CardProduto item={item} />
                 ))}
               </Grid>
@@ -154,7 +118,7 @@ export default function Produtos(props) {
           <Grid item xs={1}></Grid>
           <Grid container spacing={1} style={{ marginTop: 20 }}>
             <h4 className="MyTitle">Nossos Produtos</h4>
-            {products.map((item) => (
+            {produtos.map((item) => (
               <CardProduto item={item} />
             ))}
           </Grid>

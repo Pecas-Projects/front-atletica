@@ -16,7 +16,7 @@ export default function CardProduto(props) {
       <Grid item xs={12} sm={4} style={{ marginBottom: 25 }}>
         <Card style={{ backgroundColor: "#73797D", maxWidth: 300 }}>
           <CardMedia
-            image={item.imagem}
+            image={item.imagem.path}
             title={item.titulo}
             style={{ height: 300 }}
           />
