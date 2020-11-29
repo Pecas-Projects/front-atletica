@@ -9,6 +9,7 @@ import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
 import Alert from "@material-ui/lab/Alert";
 import { getUserId } from "../../utils/storage";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import "./styles.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -158,6 +159,7 @@ export default function EditarPerfil(props) {
   const buscaAtleticaPorUsername = async (username) => {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
+        console.log(res.data);
         setAtletica(res.data);
         setDescricao(res.data.descricao);
         setLink(res.data.linkProsel);
@@ -353,6 +355,23 @@ export default function EditarPerfil(props) {
                         type="text"
                         onChange={handleChangeLink}
                       />
+                      <br />
+
+                      {/* <Autocomplete
+                        multiple
+                        id="tags-standard"
+                        options={}
+                        getOptionLabel={(option) => option.title}
+                        defaultValue={[top100Films[13]]}
+                        renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant="standard"
+                            label="Multiple values"
+                            placeholder="Favorites"
+                        />
+                        )}
+                    /> */}
 
                       <br />
 
@@ -490,7 +509,7 @@ export default function EditarPerfil(props) {
                           Salvar Imagens
                         </Button>
                         {imagemPerfil === null && imagemCapa === null ? (
-                          <Grid item xs={4}>
+                          <Grid item xs={4} style={{ marginTop: 30 }}>
                             {showAdicionarImagemPerfil()}
                             <Paper
                               style={{ backgroundColor: "#636363", width: 250 }}
