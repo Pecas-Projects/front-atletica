@@ -24,10 +24,9 @@ export const isLogin = () => {
 };
 
 export const atleticaUsername = (username) => {
-    if (username)
-        localStorage.setItem('ATLETICA_USERNAME', username);
-    return localStorage.getItem('ATLETICA_USERNAME')
-}
+  if (username) localStorage.setItem("ATLETICA_USERNAME", username);
+  return localStorage.getItem("ATLETICA_USERNAME");
+};
 
 export const getToken = () => {
   return localStorage.getItem("TOKEN");
@@ -43,4 +42,9 @@ export const getUserId = () => {
 
 export const getUsername = () => {
   return localStorage.getItem("USERNAME");
+};
+
+export const resetUsername = (username) => {
+  localStorage.removeItem("USERNAME");
+  localStorage.setItem("USERNAME", username);
 };
