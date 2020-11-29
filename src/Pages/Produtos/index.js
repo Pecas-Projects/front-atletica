@@ -104,7 +104,9 @@ export default function Produtos(props) {
 
   useEffect(() => {
     buscaAtletica();
-  }, []);
+    if(atleticaId !== undefined && atleticaId !== null)
+      buscarProdutos();
+  }, [atleticaId]);
 
   async function buscaAtletica(){
     await ApiService.PesquisaAtleticaPorUsername(username)
@@ -114,7 +116,17 @@ export default function Produtos(props) {
         .catch((err) => {
             console.log(err)
         })
-}
+  }
+
+  async function buscarProdutos(){
+    await ApiService.BuscarProdutosAtletica(atleticaId)
+      .then((res) => {
+        setProdutos(res.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
 
   return (
