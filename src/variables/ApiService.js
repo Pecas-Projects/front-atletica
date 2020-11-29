@@ -221,11 +221,10 @@ const ApiService = {
     return api
       .post(`/api/Imagem/Upload`, data)
       .then((response) => {
-        return response;
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        console.log(error)
-        return error;
+        return Promise.reject(error);
       })
   },
 
@@ -233,11 +232,10 @@ const ApiService = {
     return api
       .post("/api/Publicacao", dados)
       .then((response) => {
-        return response;
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        console.log(error)
-        return error;
+        return Promise.reject(error);
       })
   },
 };
