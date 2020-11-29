@@ -238,6 +238,19 @@ const ApiService = {
         return Promise.reject(error);
       })
   },
+
+  BuscarTodasCategorias: () => {
+    return api
+      .get("/api/ProdutoCategoria")
+      .then((response) => {
+        console.log(response)
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      })
+  },
+
 };
 
 export default ApiService;
