@@ -87,12 +87,13 @@ const ApiService = {
     return api
       .get("api/PublicacaoAtletica/" + atleticaId)
       .then((res) => {
-        return res;
+        return Promise.resolve(res);
       })
-      .catch((err) => {
-        return err;
+      .catch((error) => {
+        return Promise.reject(error);
       });
   },
+  
   CadastroMembro: (Membro, PIN) => {
     return api
       .post(`/api/Registro/Membro/${PIN}`, Membro)
@@ -104,6 +105,84 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
+  GetModalidadeId: (modalidadeId)=>{
+    return api
+      .get(`​/api/modalidade/${modalidadeId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesJogo: (atleticaId)=>{
+    return api
+      .get(`/api/SolicitacaoJogo/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesAtleta: (atleticaId)=>{
+    return api
+      .get(`/api/SolicitacaoAtleta/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  ReprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  ReprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
 
   PesquisaAtleticaPorUsername: (username) => {
     return api
@@ -136,8 +215,31 @@ const ApiService = {
       .catch((error) => {
         return Promise.reject(error);
       });
+    },
+
+  UploadImagem: (data) => {
+    return api
+      .post(`/api/Imagem/Upload`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
   },
 
+  EnviarPost: (dados) => {
+    return api
+      .post("/api/Publicacao", dados)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
+  },
 };
 
 export default ApiService;
