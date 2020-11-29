@@ -4,7 +4,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
-
+import ApiService from "../../../variables/ApiService";
 import { getUserId } from "../../../utils/storage";
 
 export default function FormularioPostMobile() {
@@ -37,6 +37,20 @@ export default function FormularioPostMobile() {
           <br />
         </div>
       );
+  }
+
+  async function envioImagem(){
+    let file = new FormData();
+    file.append('value', imagem);
+
+    await ApiService.UploadImagem(file)
+      .then((res) => {
+        console.log(res)
+        setPost({...post, ImagemId: res.data.imagemId})
+      })
+      .catch((error) => {
+        console.log(error)
+      });
   }
 
   return (
