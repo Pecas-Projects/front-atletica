@@ -114,8 +114,8 @@ export default function Perfil(props) {
 
   const classes = useStyles();
 
-  const [capa, setCapa] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
-  const [perfil, setPerfil] = useState("https://lh3.googleusercontent.com/proxy/s1Yj8lBK43z3VjbJD0ttWFnaMdKPl1XTfPK4iygPSVYlOZGAVl-T6rFBvNU_wbfOjilcyHXiWuTH8nWs5a6n6TLCM1-s11F2SuWpZtHd3IhbrY9LWJ-H4E2uGWp7jaREdw")
+  const [capa, setCapa] = useState("https://cdn11.bigcommerce.com/s-z50x8yyfzt/stencil/4986d880-a35b-0138-2c32-0242ac11000c/e/be244520-c8c1-0138-eb8d-0242ac110012/icons/icon-no-image.svg")
+  const [perfil, setPerfil] = useState("https://barcarena.pa.gov.br/portal/img/perfil/padrao.jpg")
 
   const [atleta, setAtleta] = useState({
     Nome: "",

@@ -14,7 +14,7 @@ export default function CardMembro(props) {
 
                     <CardHeader
                         avatar={
-                            <Avatar alt={item.nome} src={item.membro.imagem.path} ></Avatar>
+                            <Avatar alt={item.nome} src={item.membro == null ? null : item.membro.imagem.path} ></Avatar>
                         }
 
                         title={item.nome + " " + item.sobrenome} subheader={item.funcao}
