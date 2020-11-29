@@ -24,20 +24,19 @@ export default function FormularioProduto() {
 
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
-  const [categoria, setCategoria] = useState();
   const [categorias, setCategorias] = useState([]);
   const [produto, setProduto] = useState({
     Nome: "",
     Descricao: "",
     Preco: "",
-    ProdutoCategoriaId: null,
+    ProdutoCategoriaId: undefined,
     Estoque: false,
     AtleticaId: getAtleticaId(),
     ImagemId: null
   });
 
   const handleCategoriaChange = (e) => {
-    setCategoria(e.target.value)
+    setProduto({...produto, ProdutoCategoriaId: e.target.value})
   }
 
   const handleNomeChange = (e) => {
@@ -62,7 +61,9 @@ export default function FormularioProduto() {
 
   useEffect(() => {
     buscarTodasCategorias();
-  },[]);
+    if(produto.ImagemId !== null && produto.ImagemId !== undefined)
+      criarProduto();
+  },[produto.ImagemId]);
 
   async function envioImagem(){
     let file = new FormData();
@@ -88,12 +89,23 @@ export default function FormularioProduto() {
       })
   }
 
+  async function criarProduto(){
+    ApiService.CriarProduto(produto)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })  
+  }
+
   function showAdicionarImagem() {
     if (imagem === null) {
       return <p>Adicione uma Imagem</p>
     } else return <div><br /><br /></div>;
   }
 
+  
   return (
     <>
       <Grid container justify="center" style={{ marginBottom: 25 }}>
@@ -170,7 +182,7 @@ export default function FormularioProduto() {
                       select
                       label="Categoria"
                       style={{ marginTop: 5, marginLeft: 5 }}
-                      value={categoria}
+                      value={produto.ProdutoCategoriaId}
                       onChange={handleCategoriaChange}
                     >
                       {categorias.map((option) => (
@@ -208,6 +220,7 @@ export default function FormularioProduto() {
                     color='secondary'
                     variant='contained'
                     style={{ width: 300 }}
+                    onClick={submit}
                   >
                     Postar
                       </Button>
