@@ -102,6 +102,30 @@ const ApiService = {
         return error;
       });
   },
+
+  GetTodosCurso: () => {
+    return api
+      .get("api/Cursos")
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
+  },
+
+  ResetPin: (atleticaId) => {
+    api
+      .put(`/api/Atletica/ResetPin/${atleticaId}`)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
+  },
 };
 
 export default ApiService;
