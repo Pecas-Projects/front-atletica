@@ -68,24 +68,23 @@ export default function Produtos(props) {
 
   useEffect(() => {
     buscaAtletica();
-    if(atleticaId !== undefined && atleticaId !== null)
+    if (atleticaId !== undefined && atleticaId !== null)
       buscarProdutos();
   }, [atleticaId]);
 
-  async function buscaAtletica(){
+  async function buscaAtletica() {
     await ApiService.PesquisaAtleticaPorUsername(username)
-        .then((res) => {
-            setAtleticaId(res.data.atleticaId)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+      .then((res) => {
+        setAtleticaId(res.data.atleticaId)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
-  async function buscarProdutos(){
+  async function buscarProdutos() {
     await ApiService.BuscarProdutosAtletica(atleticaId)
       .then((res) => {
-        console.log(res.data)
         setProdutos(res.data)
       })
       .catch((error) => {
@@ -103,8 +102,12 @@ export default function Produtos(props) {
         <div className={classes.sectionDesktop}>
           <Grid container justify="center">
             <Paper className={classes.paperA}>
-              <h4 className="MyTitle">Nossos Produtos</h4>
-
+              {
+                produtos !== undefined && produtos !== null && produtos.length !== 0 ?
+                  <h4 className="MyTitle">Nossos Produtos</h4>
+                  :
+                  <h4 className="MyTitle">Essa atlética não possui produtos cadastrados!</h4>
+              }
               <Grid container spacing={1} style={{ marginTop: 20 }}>
                 {produtos.map((item) => (
                   <CardProduto item={item} />
@@ -117,7 +120,12 @@ export default function Produtos(props) {
         <div className={classes.sectionMobile}>
           <Grid item xs={1}></Grid>
           <Grid container spacing={1} style={{ marginTop: 20 }}>
-            <h4 className="MyTitle">Nossos Produtos</h4>
+            {
+              produtos !== undefined && produtos !== null && produtos.length !== 0 ?
+                <h4 className="MyTitle">Nossos Produtos</h4>
+                :
+                <h4 className="MyTitle">Essa atlética não possui produtos cadastrados!</h4>
+            }
             {produtos.map((item) => (
               <CardProduto item={item} />
             ))}
