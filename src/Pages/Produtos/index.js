@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto"
 import productImage from "../../assets/imagem/productImage.svg"
 import "./styles.css"
+import ApiService from "../../variables/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,6 +62,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Produtos(props) {
+  const classes = useStyles();
+  const username = props.match.params.username;
+  const [atleticaId, setAtleticaId] = useState();
+  const [produtos, setProdutos] = useState([]);
+
   const products = [
     {
       imagem: productImage,
@@ -96,7 +102,20 @@ export default function Produtos(props) {
     },
   ];
 
-  const classes = useStyles();
+  useEffect(() => {
+    buscaAtletica();
+  }, []);
+
+  async function buscaAtletica(){
+    await ApiService.PesquisaAtleticaPorUsername(username)
+        .then((res) => {
+            setAtleticaId(res.data.atleticaId)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+}
+
 
   return (
     <div className={classes.root}>
@@ -104,16 +123,6 @@ export default function Produtos(props) {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
-        {/*
-        
-        
-        
-        DESKTOP
-        
-        
-        
-        */}
 
         <div className={classes.sectionDesktop}>
           <Grid container justify="center">
@@ -139,6 +148,7 @@ export default function Produtos(props) {
           </Grid>
           <Grid item xs={1}></Grid>
         </div>
+
       </main>
     </div>
   );
