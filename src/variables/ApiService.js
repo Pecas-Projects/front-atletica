@@ -91,6 +91,17 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+  UploadImagem: (data) => {
+    return api
+      .post(`/api/Imagem/Upload`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
+  },
 };
 
 export default ApiService;

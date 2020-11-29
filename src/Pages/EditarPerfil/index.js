@@ -179,13 +179,39 @@ export default function EditarPerfil(props) {
     buscaAtleticaPorUsername(props.match.params.username);
   }, []);
 
-  const UploadImagens = () => {
-    console.log(imagemPerfil);
+  const UploadImagens = async () => {
+    if (imagemPerfil !== null) {
+      let file = new FormData();
+      file.append("value", imagemPerfil);
+
+      await ApiService.UploadImagem(file)
+        .then((res) => {
+          //console.log(res.data);
+          setImagemPerfil(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    if (imagemCapa !== null) {
+      let file = new FormData();
+      file.append("value", imagemCapa);
+
+      await ApiService.UploadImagem(file)
+        .then((res) => {
+          // console.log(res);
+          setImagemCapa(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(imagemCapa);
     let imgs;
     if (imagemCapa !== null && imagemPerfil !== null) {
       imgs = [
@@ -212,6 +238,7 @@ export default function EditarPerfil(props) {
       email: atletica.email,
       username: atletica.username,
       descricao: descricao,
+      senha: "123456",
       campus: {
         nome: atletica.campus.nome,
         cidade: city,
@@ -226,11 +253,9 @@ export default function EditarPerfil(props) {
       imagens: imgs,
     };
 
-    console.log(imgs);
-
-    // ApiService.AtualizarAtletica(getUserId(), atleticaDados).then((res) =>
-    //   console.log(res.data)
-    // );
+    ApiService.AtualizarAtletica(getUserId(), atleticaDados)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
   };
 
   return (
