@@ -1,12 +1,29 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
+import { Grid, Typography, Paper, Button, IconButton, TextField, MenuItem } from "@material-ui/core";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
+import ApiService from "../../../variables/ApiService";
+import { getAtleticaId } from "../../../utils/storage";
 
 export default function FormularioProdutoMobile() {
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
+  const [categoria, setCategoria] = useState();
+  const categorias = [
+    {
+      produtoCategoriaId: 1,
+      nome: "Roupa"
+    },
+    {
+      produtoCategoriaId: 2,
+      nome: "Caneca"
+    },
+    {
+      produtoCategoriaId: 3,
+      nome: "Tirante"
+    }
+  ]
 
   function showAdicionarImagem() {
     if (imagem === null) {
@@ -85,9 +102,20 @@ export default function FormularioProdutoMobile() {
               <AvField name="preço" label="Preço" type="number" />
             </Grid>
             <Grid item xs={12}>
-              <AvField name="categoria" label="Categoria" type="select">
-                <option>Roupa</option>
-              </AvField>
+            <TextField
+                      fullWidth
+                      id="standard-select-categoria"
+                      select
+                      label="Categoria"
+                      style={{ marginTop: 5, marginLeft: 5 }}
+                      value={categoria}
+                    >
+                      {categorias.map((option) => (
+                        <MenuItem value={option.produtoCategoriaId} key={option.nome}>
+                          {option.nome}
+                        </MenuItem>
+                      ))}
+                    </TextField>
             </Grid>
             <Button
               style={{
