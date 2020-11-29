@@ -7,6 +7,8 @@ import cep from "cep-promise";
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
+import Alert from "@material-ui/lab/Alert";
+import { getUserId } from "../../utils/storage";
 import "./styles.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -177,19 +179,33 @@ export default function EditarPerfil(props) {
     buscaAtleticaPorUsername(props.match.params.username);
   }, []);
 
-  const onFormSubmit = (e) => {
+  const UploadImagens = () => {
+    console.log(imagemPerfil);
+  };
+
+  const onFormSubmit = async (e) => {
     e.preventDefault();
 
-    let imgs = [
-      {
-        tipo: "C",
-        imagemId: imagemCapa.imagemId,
-      },
-      {
-        tipo: "P",
-        imagemId: imagemPerfil.imagemId,
-      },
-    ];
+    let imgs;
+    if (imagemCapa !== null && imagemPerfil !== null) {
+      imgs = [
+        {
+          tipo: "C",
+          imagemId: imagemCapa.imagemId,
+        },
+        {
+          tipo: "P",
+          imagemId: imagemPerfil.imagemId,
+        },
+      ];
+    } else {
+      imgs = [
+        {
+          tipo: "P",
+          imagemId: imagemPerfil.imagemId,
+        },
+      ];
+    }
 
     let atleticaDados = {
       nome: atletica.nome,
@@ -210,7 +226,11 @@ export default function EditarPerfil(props) {
       imagens: imgs,
     };
 
-    console.log(atleticaDados);
+    console.log(imgs);
+
+    // ApiService.AtualizarAtletica(getUserId(), atleticaDados).then((res) =>
+    //   console.log(res.data)
+    // );
   };
 
   return (
@@ -425,35 +445,26 @@ export default function EditarPerfil(props) {
                           />
                         </Grid>
                       </Grid>
-
-                      <p className="MySubtitle">Adicionar fotos</p>
-                      <p className="MySubtitle2">
-                        Adicione imagens de perfil e capa da sua atlética
-                      </p>
-
-                      {imagemPerfil === null && imagemCapa === null ? (
-                        <Grid item xs={4}>
-                          {showAdicionarImagemPerfil()}
-                          <Paper
-                            style={{ backgroundColor: "#636363", width: 250 }}
-                          >
-                            <Grid
-                              container
-                              justify="center"
-                              alignContent="center"
-                              style={{ height: 250, marginTop: -7 }}
-                            >
-                              <BotaoUploadImagem
-                                setPath={setPathPerfil}
-                                setImagem={setImagemPerfil}
-                                imagem={imagemPerfil}
-                                path={pathPerfil}
-                              />
-                            </Grid>
-                          </Paper>
-                        </Grid>
-                      ) : (
-                        <Grid container style={{ paddingTop: 30 }}>
+                      <Grid>
+                        <p className="MySubtitle" style={{ marginTop: 20 }}>
+                          Adicionar fotos
+                        </p>
+                        <p className="MySubtitle2">
+                          Adicione imagens de perfil e capa da sua atlética
+                        </p>
+                        <Alert svariant="outlined" severity="info">
+                          Para salvar as mudanças feitas nas imagens clique no
+                          botão abaixo!
+                        </Alert>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          style={{ marginTop: 20 }}
+                          onClick={UploadImagens}
+                        >
+                          Salvar Imagens
+                        </Button>
+                        {imagemPerfil === null && imagemCapa === null ? (
                           <Grid item xs={4}>
                             {showAdicionarImagemPerfil()}
                             <Paper
@@ -474,41 +485,69 @@ export default function EditarPerfil(props) {
                               </Grid>
                             </Paper>
                           </Grid>
-
-                          <Grid item xs={4}>
-                            {showAdicionarImagemCapa()}
-                            <Paper
-                              style={{ backgroundColor: "#636363", width: 450 }}
-                            >
-                              <Grid
-                                container
-                                justify="center"
-                                alignContent="center"
-                                style={{ height: 250, marginTop: -7 }}
+                        ) : (
+                          <Grid container style={{ paddingTop: 30 }}>
+                            <Grid item xs={4}>
+                              {showAdicionarImagemPerfil()}
+                              <Paper
+                                style={{
+                                  backgroundColor: "#636363",
+                                  width: 250,
+                                }}
                               >
-                                <Grid item>
-                                  <BotaoAuxiliar
-                                    setPath={setPathCapa}
-                                    setImagem={setImagemCapa}
-                                    imagem={imagemCapa}
-                                    path={pathCapa}
+                                <Grid
+                                  container
+                                  justify="center"
+                                  alignContent="center"
+                                  style={{ height: 250, marginTop: -7 }}
+                                >
+                                  <BotaoUploadImagem
+                                    setPath={setPathPerfil}
+                                    setImagem={setImagemPerfil}
+                                    imagem={imagemPerfil}
+                                    path={pathPerfil}
                                   />
                                 </Grid>
-                              </Grid>
-                            </Paper>
-                          </Grid>
-                        </Grid>
-                      )}
+                              </Paper>
+                            </Grid>
 
-                      <Grid container justify="center">
-                        <Button
-                          type="submit"
-                          style={{ marginTop: 60, width: 400 }}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Salvar Alterações
-                        </Button>
+                            <Grid item xs={4}>
+                              {showAdicionarImagemCapa()}
+                              <Paper
+                                style={{
+                                  backgroundColor: "#636363",
+                                  width: 450,
+                                }}
+                              >
+                                <Grid
+                                  container
+                                  justify="center"
+                                  alignContent="center"
+                                  style={{ height: 250, marginTop: -7 }}
+                                >
+                                  <Grid item>
+                                    <BotaoAuxiliar
+                                      setPath={setPathCapa}
+                                      setImagem={setImagemCapa}
+                                      imagem={imagemCapa}
+                                      path={pathCapa}
+                                    />
+                                  </Grid>
+                                </Grid>
+                              </Paper>
+                            </Grid>
+                          </Grid>
+                        )}
+                        <Grid container justify="center">
+                          <Button
+                            type="submit"
+                            style={{ marginTop: 60, width: 400 }}
+                            variant="contained"
+                            color="secondary"
+                          >
+                            Salvar Alterações
+                          </Button>
+                        </Grid>
                       </Grid>
                     </AvForm>
                   </Paper>

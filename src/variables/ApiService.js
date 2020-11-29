@@ -69,6 +69,7 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
   PesquisaAtleticas: (nomeAtletica) => {
     return api
       .get("/api/AtleticaNome/" + nomeAtletica)
@@ -79,6 +80,7 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
   AtualizarAtletica: (atleticaId, atleticaDados) => {
     return api
       .put(`/api/Atletica/${atleticaId}`, atleticaDados)
