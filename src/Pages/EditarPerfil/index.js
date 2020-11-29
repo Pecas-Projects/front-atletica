@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Paper, Button, Typography, Popover } from "@material-ui/core";
+import { Grid, Paper, Button, Typography, TextField } from "@material-ui/core";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import cep from "cep-promise";
@@ -8,9 +8,16 @@ import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
 import Alert from "@material-ui/lab/Alert";
-import { getUserId } from "../../utils/storage";
+import { getUserId, resetUsername } from "../../utils/storage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import "./styles.css";
+
+function sleep(delay = 0) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay);
+  });
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,16 +78,13 @@ export default function EditarPerfil(props) {
 
   const { username } = props.match.params.username;
 
-  const [loading, setLoading] = useState(true);
+  const [loadingPage, setLoadingPage] = useState(true);
   const [atletica, setAtletica] = useState();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
   const [cepcp, setCepcp] = useState("");
   const [street, setStreet] = useState("");
   const [neighbourhood, setNeighbourhood] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [number, setNumber] = useState("");
   const [complemento, setComplemento] = useState("");
   const [pin, setPin] = useState();
   const [descricao, setDescricao] = useState("");
@@ -89,6 +93,50 @@ export default function EditarPerfil(props) {
   const [pathPerfil, setPathPerfil] = useState();
   const [imagemCapa, setImagemCapa] = useState(null);
   const [pathCapa, setPathCapa] = useState();
+  const [nome, setNome] = useState("");
+  const [atleticaUsername, setAtleticaUsername] = useState("");
+  const [typePin, setTypePin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [cursosIds, setCursosIds] = useState();
+  const [avisoPin, setAvisoPin] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [options, setOptions] = React.useState([]);
+  const loading = open && options.length === 0;
+
+  React.useEffect(() => {
+    let active = true;
+
+    if (!loading) {
+      return undefined;
+    }
+
+    (async () => {
+      const response = await ApiService.GetTodosCurso();
+      await sleep(1e3); // For demo purposes.
+
+      if (active) {
+        setOptions(response.data);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [loading]);
+
+  React.useEffect(() => {
+    if (!open) {
+      setOptions([]);
+    }
+  }, [open]);
+
+  const handleChangeCursos = (e) => {
+    setCursosIds(e);
+  };
+
+  const changeTypePin = () => {
+    setTypePin(!typePin);
+  };
 
   const handleCepChange = (e) => {
     e.preventDefault();
@@ -109,11 +157,6 @@ export default function EditarPerfil(props) {
     setComplemento(e.target.value);
   };
 
-  const handleChangeNumber = (e) => {
-    e.preventDefault();
-    setNumber(e.target.value);
-  };
-
   const handleChangeDescricao = (e) => {
     e.preventDefault();
     setDescricao(e.target.value);
@@ -123,13 +166,36 @@ export default function EditarPerfil(props) {
     e.preventDefault();
     setLink(e.target.value);
   };
-
-  const handleClickPIN = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleChangeNome = (e) => {
+    e.preventDefault();
+    setNome(e.target.value);
+  };
+  const handleChangeEmail = (e) => {
+    e.preventDefault();
+    setEmail(e.target.value);
+  };
+  const handleChangeAtleticaUsername = (e) => {
+    e.preventDefault();
+    setAtleticaUsername(e.target.value);
   };
 
-  const handleClosePIN = () => {
-    setAnchorEl(null);
+  const handleClickPIN = async (e) => {
+    e.preventDefault();
+    await ApiService.ResetPin(atletica.atleticaId);
+    setAvisoPin(true);
+  };
+
+  const changeUsername = (e) => {
+    e.preventDefault();
+    {
+      /*
+    
+    
+        CHAMAR FUNÇÃO QUE VERIFICA O USERNAME
+
+    
+    */
+    }
   };
 
   function showAdicionarImagemPerfil() {
@@ -159,20 +225,33 @@ export default function EditarPerfil(props) {
   const buscaAtleticaPorUsername = async (username) => {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
         setAtletica(res.data);
+        setAtleticaUsername(res.data.username);
+        setEmail(res.data.email);
+        setNome(res.data.nome);
         setDescricao(res.data.descricao);
         setLink(res.data.linkProsel);
         setCepcp(res.data.campus.cep);
+        setState(res.data.campus.estado);
+        setCity(res.data.campus.cidade);
+        setStreet(res.data.campus.rua);
+        setNeighbourhood(res.data.campus.bairro);
         setComplemento(res.data.complemento);
         setPin(res.data.pin);
+        setCursosIds(res.data.cursos);
         if (res.data.atleticaImagens.length > 0) {
           res.data.atleticaImagens.map((img) => {
-            if (img.tipo === "P") setImagemPerfil(img);
-            else setImagemCapa(img);
+            if (img.tipo === "P") {
+              setImagemPerfil(img);
+              setPathPerfil(img.imagem.path);
+            } else {
+              setImagemCapa(img);
+              setPathCapa(img.imagem.path);
+            }
           });
         }
-        setLoading(false);
+        setLoadingPage(false);
       })
       .catch((err) => console.log(err));
   };
@@ -213,7 +292,6 @@ export default function EditarPerfil(props) {
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(imagemCapa);
     let imgs;
     if (imagemCapa !== null && imagemPerfil !== null) {
       imgs = [
@@ -235,12 +313,16 @@ export default function EditarPerfil(props) {
       ];
     }
 
+    let idsCursos = cursosIds.map(function (curso) {
+      return curso.cursoId;
+    });
+
     let atleticaDados = {
-      nome: atletica.nome,
+      nome: nome,
       email: atletica.email,
-      username: atletica.username,
+      username: atleticaUsername,
       descricao: descricao,
-      senha: "123456",
+      senha: "*",
       campus: {
         nome: atletica.campus.nome,
         cidade: city,
@@ -253,10 +335,14 @@ export default function EditarPerfil(props) {
         },
       },
       imagens: imgs,
+      cursosIds: idsCursos,
     };
 
     ApiService.AtualizarAtletica(getUserId(), atleticaDados)
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+        resetUsername(res.data.username);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -278,7 +364,7 @@ export default function EditarPerfil(props) {
         
         */}
 
-          {loading ? (
+          {loadingPage ? (
             <h2>Loading...</h2>
           ) : (
             <>
@@ -293,43 +379,88 @@ export default function EditarPerfil(props) {
                       <Grid item xs={6}>
                         <Grid container justify="flex-end">
                           <Button
-                            onClick={handleClickPIN}
+                            onClick={(e) => handleClickPIN(e)}
                             color="secondary"
                             variant="outlined"
                           >
-                            PIN
+                            Reset PIN
                           </Button>
-
-                          <Popover
-                            open={open}
-                            anchorEl={anchorEl}
-                            onClose={handleClosePIN}
-                            anchorOrigin={{
-                              vertical: "bottom",
-                              horizontal: "center",
-                            }}
-                            transformOrigin={{
-                              vertical: "top",
-                              horizontal: "center",
-                            }}
-                          >
-                            <Typography style={{ padding: 10 }}>
-                              O PIN para cadastrar um membro na sua atlética é:{" "}
-                              {pin}
-                            </Typography>
-                          </Popover>
                         </Grid>
                       </Grid>
                     </Grid>
-
+                    {avisoPin && (
+                      <Alert
+                        svariant="outlined"
+                        severity="info"
+                        style={{ marginTop: 20 }}
+                      >
+                        Para ver o seu novo PIN acesse novamente sua conta
+                      </Alert>
+                    )}
                     <br />
-
-                    <p className="MySubtitle">Descrição</p>
-                    <p className="MySubtitle2">
-                      Fale um pouco sobre sua atlética
-                    </p>
-
                     <AvForm onSubmit={onFormSubmit}>
+                      <p className="MySubtitle">PIN</p>
+                      <p className="MySubtitle2">
+                        Codigo para os membros entrarem em sua atletica, esta em
+                        constante mudança por questões de segurança
+                      </p>
+                      <Grid container direction="row">
+                        <Grid item>
+                          <AvField
+                            name="Nome da Atletica"
+                            type={typePin ? "password" : "text"}
+                            disabled
+                            value={pin}
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Button onClick={changeTypePin}>Mostrar</Button>
+                        </Grid>
+                      </Grid>
+
+                      <p className="MySubtitle">Nome da sua atletica</p>
+                      <AvField
+                        name="Nome da Atletica"
+                        type="text"
+                        errorMessage="Nome muito grande"
+                        onChange={handleChangeNome}
+                        validate={{
+                          maxLength: { value: 700 },
+                        }}
+                        value={nome}
+                      />
+
+                      <p className="MySubtitle">Username</p>
+                      <p className="MySubtitle2">
+                        Identificador da sua atletica dentro do nosso sistema,
+                        para mudar este campo é aconcelhado chegar sua
+                        disponibilidade
+                      </p>
+                      <form onSubmit={changeUsername}>
+                        <AvField
+                          name="username"
+                          type="text"
+                          onChange={handleChangeAtleticaUsername}
+                          value={atleticaUsername}
+                        />
+                        <Button type="submit" color="secondary">
+                          Validar
+                        </Button>
+                      </form>
+
+                      <p className="MySubtitle">Email</p>
+                      <AvField
+                        name="email"
+                        type="text"
+                        onChange={handleChangeEmail}
+                        value={email}
+                      />
+
+                      <p className="MySubtitle">Descrição</p>
+                      <p className="MySubtitle2">
+                        Fale um pouco sobre sua atlética
+                      </p>
+
                       <AvField
                         name="descricao"
                         type="textarea"
@@ -340,15 +471,12 @@ export default function EditarPerfil(props) {
                         }}
                         value={descricao}
                       />
-
                       <br />
-
                       <p className="MySubtitle">Link do processo seletivo</p>
                       <p className="MySubtitle2">
                         Disponibilize no perfil o link para o processo seletivo
                         da sua atlética
                       </p>
-
                       <AvField
                         value={link}
                         name="link"
@@ -357,29 +485,52 @@ export default function EditarPerfil(props) {
                       />
                       <br />
 
-                      {/* <Autocomplete
+                      <Autocomplete
+                        id="asynchronous-demo"
                         multiple
-                        id="tags-standard"
-                        options={}
-                        getOptionLabel={(option) => option.title}
-                        defaultValue={[top100Films[13]]}
+                        fullWidth
+                        open={open}
+                        onOpen={() => {
+                          setOpen(true);
+                        }}
+                        onClose={() => {
+                          setOpen(false);
+                        }}
+                        getOptionSelected={(option, value) =>
+                          option.cursoId == value.cursoId
+                        }
+                        getOptionLabel={(option) => option.nome}
+                        options={options}
+                        loading={loading}
+                        defaultValue={atletica.cursos}
+                        onChange={(event, values) => handleChangeCursos(values)}
                         renderInput={(params) => (
-                        <TextField
+                          <TextField
                             {...params}
-                            variant="standard"
-                            label="Multiple values"
-                            placeholder="Favorites"
-                        />
+                            label="Cursos"
+                            variant="outlined"
+                            InputProps={{
+                              ...params.InputProps,
+                              endAdornment: (
+                                <React.Fragment>
+                                  {loading ? (
+                                    <CircularProgress
+                                      color="inherit"
+                                      size={20}
+                                    />
+                                  ) : null}
+                                  {params.InputProps.endAdornment}
+                                </React.Fragment>
+                              ),
+                            }}
+                          />
                         )}
-                    /> */}
-
+                      />
                       <br />
-
                       <p className="MySubtitle">Endereço</p>
                       <p className="MySubtitle2">
                         O campus que sua atlética está sediada
                       </p>
-
                       <Grid container spacing={1}>
                         <Grid item xs={6}>
                           <AvField
@@ -390,7 +541,6 @@ export default function EditarPerfil(props) {
                             name="cep"
                             label="CEP"
                             type="text"
-                            placeholder="00000000"
                             validate={{
                               required: {
                                 value: true,
@@ -407,26 +557,6 @@ export default function EditarPerfil(props) {
                               maxLength: {
                                 value: 8,
                                 errorMessage: "CEP inválido",
-                              },
-                            }}
-                          />
-                        </Grid>
-
-                        <Grid item xs={6}>
-                          <AvField
-                            style={{ width: "90%" }}
-                            value={number}
-                            onChange={handleChangeNumber}
-                            name="num"
-                            label="Número"
-                            validate={{
-                              required: {
-                                value: true,
-                                errorMessage: "Campo obrigatório",
-                              },
-                              pattern: {
-                                value: "[0-9]",
-                                errorMessage: "Senha inválida",
                               },
                             }}
                           />
@@ -671,25 +801,6 @@ export default function EditarPerfil(props) {
                               maxLength: {
                                 value: 8,
                                 errorMessage: "CEP inválido",
-                              },
-                            }}
-                          />
-                        </Grid>
-
-                        <Grid item xs={12}>
-                          <AvField
-                            value={number}
-                            onChange={handleChangeNumber}
-                            name="num"
-                            label="Número"
-                            validate={{
-                              required: {
-                                value: true,
-                                errorMessage: "Campo obrigatório",
-                              },
-                              pattern: {
-                                value: "[0-9]",
-                                errorMessage: "Senha inválida",
                               },
                             }}
                           />
