@@ -243,7 +243,17 @@ const ApiService = {
     return api
       .get("/api/ProdutoCategoria")
       .then((response) => {
-        console.log(response)
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      })
+  },
+
+  CriarProduto: (produto) => {
+    return api 
+      .post("api/Produto", produto)
+      .then((response) => {
         return Promise.resolve(response);
       })
       .catch((error) => {
