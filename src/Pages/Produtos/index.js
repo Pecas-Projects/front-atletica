@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Produtos() {
+export default function Produtos(props) {
   const products = [
     {
       imagem: productImage,
