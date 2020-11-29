@@ -5,9 +5,27 @@ import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
 
+import { getUserId } from "../../../utils/storage";
+
 export default function FormularioPostMobile() {
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
+  const [post, setPost] = useState({
+    Titulo: "",
+    Descricao: "",
+    AtleticaId: parseInt(getUserId()),
+    ImagemId: null
+  });
+
+  const handleTitleChange = (event) => {
+    event.preventDefault();
+    setPost({...post, Titulo: event.target.value})
+  };
+
+  const handleTextoChange = (event) => {
+    event.preventDefault();
+    setPost({...post, Descricao: event.target.value})
+  };
 
   function showAdicionarImagem() {
     if (imagem === null) {
@@ -62,6 +80,7 @@ export default function FormularioPostMobile() {
                   maxLength: { value: 45, errorMessage: "Título inválido" },
                 }}
                 style={{ color: "E2E2E2" }}
+                onChange={handleTitleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -76,6 +95,7 @@ export default function FormularioPostMobile() {
                   },
                   minLength: { value: 2, errorMessage: "Texto inválido" },
                 }}
+                onChange={handleTextoChange}
               />
             </Grid>
 
