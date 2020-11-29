@@ -238,7 +238,7 @@ const ApiService = {
         return Promise.reject(error);
       })
   },
-
+  
   BuscarTodasCategorias: () => {
     return api
       .get("/api/ProdutoCategoria")
@@ -258,6 +258,16 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
+  },
+             
+  BuscarProdutosAtletica: (atleticaId) => {
+    return api
+      .get(`/api/AtleticaProduto/${atleticaId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
       })
   },
 
