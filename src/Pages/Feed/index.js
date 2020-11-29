@@ -40,20 +40,30 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-export default function Feed() {
+export default function Feed(props) {
 
     const classes = useStyles();
     const [posts, setPosts] = useState([])
-    const userId = getUserId();
-
+    const [userId, setUserId] = useState();
+    const username = props.match.params.username;
 
     useEffect(() => {
+        buscaAtletica();
         if (userId !== undefined && userId !== null)
             getAllPosts();
-    }, []);
+    }, [userId]);
+
+    async function buscaAtletica(){
+        await ApiService.PesquisaAtleticaPorUsername(username)
+            .then((res) => {
+                setUserId(res.data.atleticaId)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     async function getAllPosts() {
-
         await ApiService.BuscarTodosPosts(userId)
             .then((res) => {
                 setPosts(res.data)
