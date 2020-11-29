@@ -11,6 +11,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import ApiService from "../../variables/ApiService";
+import { atleticaUsername } from '../../utils/storage'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,13 +85,12 @@ export default function Login() {
         senha: login.Senha,
       };
 
-      ApiService.LoginAtletica(loginData)
+      await ApiService.LoginAtletica(loginData)
         .then(() =>
-          window.location.href = "/Perfil"
+          window.location.href = "/Perfil/" + atleticaUsername()
         ).catch((err) =>
           console.log(err)
         );
-
     } else {
       let loginM = {
         senha: login.Senha,
@@ -99,12 +99,9 @@ export default function Login() {
         },
       };
 
-      ApiService.LoginMembro(loginM)
+      await ApiService.LoginMembro(loginM)
         .then()
-        .catch((err) =>
-          console.log(err)
-        );
-
+        .catch((err) => console.log(err));
     }
   };
 
@@ -236,7 +233,7 @@ export default function Login() {
               <Paper className={classes.paperAMobile}>
                 <h1 className="MyTitle">Login</h1>
 
-                <AvForm>
+                <AvForm onSubmit={(e) => OnFormSubmit(e)}>
                   <AvField
                     style={{ marginBottom: 30 }}
                     onChange={handleEmail}
@@ -286,11 +283,12 @@ export default function Login() {
 
                   <Grid container style={{ marginTop: 10 }}>
                     <Button
+                      type="submit"
                       style={{ width: "100%" }}
                       variant="contained"
                       color="secondary"
                     >
-                      entrar
+                      Entrar
                     </Button>
                   </Grid>
                 </AvForm>

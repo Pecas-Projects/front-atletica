@@ -15,6 +15,36 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+  BuscarTodosCursos: () => {
+    return api
+      .get("/api/Cursos")
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  BuscarAtleticaModalidades: (atleticaId) => {
+    return api
+      .get("/api/AtleticaModalidade/" + atleticaId)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  CriarSolicitacaoAtleta: (atleticaId, atleta) => {
+    return api
+      .post("/api/SolicitacaoAtleta/" + atleticaId, atleta)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 
   PesquisaAtleticas: (nomeAtletica) => {
     return api
@@ -65,7 +95,6 @@ const ApiService = {
   },
   CadastroMembro: (Membro, PIN) => {
     return api
-      // .post(`/api​/Registro​/Membro​/${PIN}`, Membro)
       .post(`/api/Registro/Membro/${PIN}`, Membro)
       .then((res) => {
         return Promise.resolve(res);
@@ -74,7 +103,120 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-  }
+  },
+
+  GetModalidadeId: (modalidadeId)=>{
+    return api
+      .get(`​/api/modalidade/${modalidadeId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesJogo: (atleticaId)=>{
+    return api
+      .get(`/api/SolicitacaoJogo/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesAtleta: (atleticaId)=>{
+    return api
+      .get(`/api/SolicitacaoAtleta/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  ReprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  ReprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+
+  PesquisaAtleticaPorUsername: (username) => {
+    return api
+      .get("/api/Atletica/BuscaPorUsername/" + username)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  UploadImagem: (data) => {
+    return api
+      .post(`/api/Imagem/Upload`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
+  },
+
+  EnviarPost: (dados) => {
+    return api
+      .post("/api/Publicacao", dados)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
+  },
 
 };
 
