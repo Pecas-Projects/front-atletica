@@ -105,7 +105,10 @@ export default function FormularioProduto() {
     } else return <div><br /><br /></div>;
   }
 
-  
+  function submit(){
+    envioImagem();
+  }
+
   return (
     <>
       <Grid container justify="center" style={{ marginBottom: 25 }}>
