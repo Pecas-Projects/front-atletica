@@ -50,10 +50,10 @@ export default function Post(props) {
         date += "/" + post.dataHora.substring(5, 7)
         date += "/" +  post.dataHora.substring(0, 4)        
         return date;
-    }
+    }   
 
     return (
-        <Grid container justify='center'>
+        <Grid container justify='center' style={{ marginBottom: 20 }}>
             <Card className={classes.root}>
                 <CardHeader
                     title={post.titulo}
