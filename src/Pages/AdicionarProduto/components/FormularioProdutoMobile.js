@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
@@ -56,7 +55,6 @@ export default function FormularioProdutoMobile() {
 
     await ApiService.UploadImagem(file)
       .then((res) => {
-        console.log(res)
         setProduto({ ...produto, ImagemId: res.data.imagemId })
       })
       .catch((error) => {
@@ -94,6 +92,10 @@ export default function FormularioProdutoMobile() {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+  function submit(){
+    envioImagem();
   }
 
   return (
@@ -192,6 +194,7 @@ export default function FormularioProdutoMobile() {
                 background: "#DB4922",
               }}
               fullWidth={true}
+              onClick={submit}
             >
               Postar
             </Button>
