@@ -238,6 +238,18 @@ const ApiService = {
         return Promise.reject(error);
       })
   },
+  
+  BuscarProdutosAtletica: (atleticaId) => {
+    return api
+      .get(`/api/AtleticaProduto/${atleticaId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
 };
 
 export default ApiService;
