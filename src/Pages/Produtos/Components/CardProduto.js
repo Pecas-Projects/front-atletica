@@ -23,7 +23,7 @@ export default function CardProduto(props) {
 
           <CardContent>
             <Typography gutterBottom style={{ color: "white", fontSize: 18 }}>
-              {item.titulo}
+              {item.nome}
             </Typography>
 
             <Typography variant="body2" color="textSecondary" component="p">
