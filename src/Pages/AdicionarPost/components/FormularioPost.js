@@ -65,7 +65,7 @@ export default function FormularioPost() {
   }
 
   useEffect(() => {
-    if(post.imagemId !== null)
+    if(post.ImagemId !== null)
       criarPost();
   }, [post]);
 
