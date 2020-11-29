@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
@@ -64,9 +64,13 @@ export default function FormularioPostMobile() {
   }
 
   useEffect(() => {
-    if(post.imagemId !== null)
+    if(post.ImagemId !== null)
       criarPost();
   }, [post]);
+
+  async function submit() {
+    envioImagem();
+  }
 
   return (
     <>
@@ -133,6 +137,7 @@ export default function FormularioPostMobile() {
                 background: "#DB4922",
               }}
               fullWidth={true}
+              onClick={submit}
             >
               Postar
             </Button>
