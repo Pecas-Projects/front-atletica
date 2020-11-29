@@ -23,7 +23,40 @@ export default function FormularioProdutoMobile() {
       produtoCategoriaId: 3,
       nome: "Tirante"
     }
-  ]
+  ];
+  const [produto, setProduto] = useState({
+    Nome: "",
+    Descricao: "",
+    Preco: "",
+    ProdutoCategoriaId: undefined,
+    Estoque: false,
+    AtleticaId: getAtleticaId(),
+    ImagemId: null
+  });
+
+  const handleCategoriaChange = (e) => {
+    setProduto({...produto, ProdutoCategoriaId: e.target.value})
+  }
+
+  const handleNomeChange = (e) => {
+    e.preventDefault();
+    setProduto({...produto, Nome: e.target.value})
+  }
+
+  const handleDescricaoChange = (e) => {
+    e.preventDefault();
+    setProduto({...produto, Descricao: e.target.value})
+  }
+
+  const handlePrecoChange = (e) => {
+    e.preventDefault();
+    setProduto({...produto, Preco: e.target.value})
+  }
+
+  const handleEstoqueChange = (e) => {
+    e.preventDefault();
+    setProduto({...produto, Estoque: !produto.Estoque})
+  };
 
   function showAdicionarImagem() {
     if (imagem === null) {
@@ -81,6 +114,7 @@ export default function FormularioProdutoMobile() {
                   maxLength: { value: 45, errorMessage: "Nome inválido" },
                 }}
                 style={{ color: "E2E2E2" }}
+                onChange={handleNomeChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -96,10 +130,11 @@ export default function FormularioProdutoMobile() {
                   minLength: { value: 2, errorMessage: "Nome inválido" },
                   maxLength: { value: 45, errorMessage: "Nome inválido" },
                 }}
+                onChange={handleDescricaoChange}
               />
             </Grid>
             <Grid item xs={12}>
-              <AvField name="preço" label="Preço" type="number" />
+              <AvField name="preço" label="Preço" type="number" onChange={handlePrecoChange} />
             </Grid>
             <Grid item xs={12}>
             <TextField
@@ -109,6 +144,7 @@ export default function FormularioProdutoMobile() {
                       label="Categoria"
                       style={{ marginTop: 5, marginLeft: 5 }}
                       value={categoria}
+                      onChange={handleCategoriaChange}
                     >
                       {categorias.map((option) => (
                         <MenuItem value={option.produtoCategoriaId} key={option.nome}>
