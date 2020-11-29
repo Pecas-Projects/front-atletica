@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
@@ -24,7 +24,7 @@ export default function FormularioProduto() {
 
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
-  const [categoria, setCategoria] = useState('');
+  const [categoria, setCategoria] = useState();
   const [categorias, setCategorias] = useState([]);
   const [produto, setProduto] = useState({
     Nome: "",
@@ -60,6 +60,20 @@ export default function FormularioProduto() {
     setProduto({...produto, Estoque: !produto.Estoque})
   };
 
+  useEffect(() => {
+    buscarTodasCategorias();
+  },[]);
+
+  async function buscarTodasCategorias(){
+    ApiService.BuscarTodasCategorias()
+      .then((response) => {
+        console.log(response.data)
+        setCategorias(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
   function showAdicionarImagem() {
     if (imagem === null) {
@@ -147,8 +161,8 @@ export default function FormularioProduto() {
                       onChange={handleCategoriaChange}
                     >
                       {categorias.map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
+                        <MenuItem value={option.produtoCategoriaId} key={option.nome}>
+                          {option.nome}
                         </MenuItem>
                       ))}
                     </TextField>
