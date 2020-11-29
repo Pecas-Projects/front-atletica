@@ -7,7 +7,6 @@ import BotaoUploadImagem from "../../../Components/BotaoUploadImagem";
 import ApiService from "../../../variables/ApiService";
 import { getUserId } from "../../../utils/storage";
 
-import api from "../../../services/api";
 
 export default function FormularioPost() {
   const [imagem, setImagem] = useState(null);
