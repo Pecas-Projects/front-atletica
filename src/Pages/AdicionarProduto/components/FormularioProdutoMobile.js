@@ -80,7 +80,17 @@ export default function FormularioProdutoMobile() {
         console.log(error)
       })
   }
-  
+
+  async function criarProduto(){
+    ApiService.CriarProduto(produto)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })  
+  }
+
   return (
     <>
       <Grid container style={{ marginBottom: 25 }}>
