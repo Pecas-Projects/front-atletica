@@ -53,6 +53,21 @@ export default function FormularioPostMobile() {
       });
   }
 
+  async function criarPost(){
+    await ApiService.EnviarPost(post)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+  }
+
+  useEffect(() => {
+    if(post.imagemId !== null)
+      criarPost();
+  }, [post]);
+
   return (
     <>
       <Grid container style={{ marginBottom: 25 }}>
