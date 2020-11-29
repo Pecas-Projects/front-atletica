@@ -64,10 +64,23 @@ export default function FormularioProduto() {
     buscarTodasCategorias();
   },[]);
 
+  async function envioImagem(){
+    let file = new FormData();
+    file.append('value', imagem);
+
+    await ApiService.UploadImagem(file)
+      .then((res) => {
+        console.log(res)
+        setProduto({...produto, ImagemId: res.data.imagemId})
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
   async function buscarTodasCategorias(){
     ApiService.BuscarTodasCategorias()
       .then((response) => {
-        console.log(response.data)
         setCategorias(response.data)
       })
       .catch((error) => {
