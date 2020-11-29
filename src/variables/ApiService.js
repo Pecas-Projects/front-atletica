@@ -195,6 +195,28 @@ const ApiService = {
       });
   },
 
+  BuscarRankingModalidade: (modalidadeId) => {
+    return api
+      .get(`/api/RankingModalidade/${modalidadeId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarModalidades: () => {
+    return api
+      .get(`/api/Modalidade`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+    },
+
   UploadImagem: (data) => {
     return api
       .post(`/api/Imagem/Upload`, data)
@@ -218,7 +240,6 @@ const ApiService = {
         return error;
       })
   },
-
 };
 
 export default ApiService;
