@@ -53,7 +53,7 @@ function CardAtletica(props) {
               <CardContent style={{ padding: "10%" }}>
                 <Avatar
                   alt="Remy Sharp"
-                  src={fotoPerfil}
+                  src={ item.atletica.logoAtletica !== null ? item.atletica.logoAtletica.imagem.path : ""}
                   className={classes.large}
                 />
               </CardContent>

@@ -55,7 +55,7 @@ function AtleticaMobile(props) {
                 >
                   <Avatar
                     alt="Remy Sharp"
-                    src={fotoPerfil}
+                    src={ item.atletica.logoAtletica !== null ? item.atletica.logoAtletica.imagem.path : ""}
                     className={classes.large}
                   />
                 </CardContent>
