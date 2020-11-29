@@ -24,6 +24,7 @@ export default function FormularioProdutoMobile() {
       nome: "Tirante"
     }
   ];
+
   const [produto, setProduto] = useState({
     Nome: "",
     Descricao: "",
@@ -70,6 +71,16 @@ export default function FormularioProdutoMobile() {
       );
   }
 
+  async function buscarTodasCategorias(){
+    ApiService.BuscarTodasCategorias()
+      .then((response) => {
+        setCategorias(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+  
   return (
     <>
       <Grid container style={{ marginBottom: 25 }}>
