@@ -75,7 +75,6 @@ export default function CardModalidade(props) {
     const [openExcluido, setOpenExcluido] = useState(false)
     const [horaTreino, setHoraTreino] = useState(false)
     const [diaTreino, setDiaTreino] = useState(false)
-    const [array, setArray] = useState(item.atletas)
     const [atletas, setAtletas] = useState()
     const [atletasAdd, setAtletasAdd] = useState()
 
@@ -130,30 +129,45 @@ export default function CardModalidade(props) {
 
     const DeleteAtleta = (index) => {
 
-        let newArray = [...array];
+        let newArray = [...atletas];
         newArray.splice(index, 1);
-        setArray(newArray);
-
+        setAtletas(newArray);
 
     };
 
-    // const AddAtleta = () => {
-    //     item.atletas.Add()
-    // }
+    const DeleteAtletaADD = (index) => {
+
+        let newArray = [...atletasAdd];
+        newArray.splice(index, 1);
+        setAtletasAdd(newArray);
+
+    };
 
     const Deletar = () => {
 
-        DeleteModalidade(index);
+        ApiService.DeletarAtleticaModalidade(item.atleticaModalidadeId)
+            .then(res => {
+                console.log(res)
 
-        if (expanded === true) setExpanded(false);
-        if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
-        if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
-        if (expandedModalidade === true) setExpandedModalidade(false);
-        if (expendedEditar === true) setexpandedEdtitar(false);
+                DeleteModalidade(index);
 
-        setOpenExcluir(false)
-        setOpenExcluido(true)
+                if (expanded === true) setExpanded(false);
+                if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
+                if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
+                if (expandedModalidade === true) setExpandedModalidade(false);
+                if (expendedEditar === true) setexpandedEdtitar(false);
+
+                setOpenExcluir(false)
+                setOpenExcluido(true)
+
+            })
+
     };
+
+    // const onFormSubmit = () =>{
+
+    //     let 
+    // }
 
     const handleCloseSalvo = (event, reason) => {
         if (reason === 'clickaway') {
@@ -373,16 +387,21 @@ export default function CardModalidade(props) {
                     <div className='scroll'>
                         <Grid container spacing={2} style={{ marginTop: 20, maxHeight: 200 }}>
 
-                            {atletas !== undefined ? (
+                            {atletasAdd !== undefined ? (
                                 <>
                                     {
-                                        atletas.map((atleta) =>
-                                            <CardAtletaAdd atleta={atleta} />
+                                        atletasAdd.map((atleta, index) =>
+                                            <CardAtletaAdd
+                                                atleta={atleta}
+                                                index={index}
+                                                AtleticaModalidadeId={item.atleticaModalidadeId}
+                                                DeleteAtleta={DeleteAtletaADD} />
                                         )}
                                 </>
 
                             ) : (
                                     <>
+                                        <p>foda</p>
                                     </>
                                 )}
 
