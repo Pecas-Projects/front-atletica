@@ -80,7 +80,7 @@ export default function FormularioProduto() {
   }
 
   async function buscarTodasCategorias(){
-    ApiService.BuscarTodasCategorias()
+    await ApiService.BuscarTodasCategorias()
       .then((response) => {
         setCategorias(response.data)
       })
@@ -90,7 +90,7 @@ export default function FormularioProduto() {
   }
 
   async function criarProduto(){
-    ApiService.CriarProduto(produto)
+    await ApiService.CriarProduto(produto)
       .then((response) => {
         console.log(response)
       })
