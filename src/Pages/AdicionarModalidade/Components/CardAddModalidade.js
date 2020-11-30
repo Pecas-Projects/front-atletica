@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Paper, Button, TextField, MenuItem, Snackbar } from "@material-ui/core";
+import { Grid, Paper, Button, TextField, MenuItem, Snackbar, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { makeStyles } from "@material-ui/core/styles";
@@ -73,6 +73,7 @@ export default function CardAddModalidade() {
     const [genero, setGenero] = useState('')
     const [openCriado, setOpenCriado] = useState(false)
     const [openErro, setOpenErro] = useState(false)
+    const [criarModalidade, setCriarModalidade] = useState(false)
     const [horaTreino, setHoraTreino] = useState(false)
     const [diaTreino, setDiaTreino] = useState(false)
 
@@ -188,7 +189,9 @@ export default function CardAddModalidade() {
                                 </Grid>
                             </div>
 
-                            {modalidade === "Outro" ? (
+                            <Button >Nova modalidade</Button>
+
+                            {/* {modalidade === "Outro" ? (
 
                                 <Grid item xs={12}>
 
@@ -207,7 +210,7 @@ export default function CardAddModalidade() {
                             ) : (
                                     <>
                                     </>
-                                )}
+                                )} */}
 
 
 
@@ -289,6 +292,36 @@ export default function CardAddModalidade() {
                     </Grid>
                 </AvForm>
             </Paper>
+
+            <div>
+
+                <Dialog
+                    open={criarModalidade}
+                    onClose={handleCloseAdicionar}
+
+                >
+                    <DialogTitle id="alert-dialog-excluir">{"Cadastrar nova modalidade"}</DialogTitle>
+
+                    <DialogContent>
+                        <DialogContentText>
+                            Para cadastrar uma nova modalidade no sistema digite seu nome e selecione o gênero
+                        </DialogContentText>
+                        <form>
+                            <TextField fullWidth label="Nome" />
+                        </form>
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={handleOpenAdd} color="primary">
+                            Adicionar
+        </Button>
+                        <Button variant='outlined' onClick={handleCloseAdicionar} color="primary" autoFocus>
+                            Cancelar
+        </Button>
+                    </DialogActions>
+                </Dialog>
+
+            </div>
 
         </>
 
