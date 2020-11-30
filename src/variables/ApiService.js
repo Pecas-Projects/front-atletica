@@ -93,7 +93,7 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
-  
+
   CadastroMembro: (Membro, PIN) => {
     return api
       .post(`/api/Registro/Membro/${PIN}`, Membro)
@@ -106,7 +106,7 @@ const ApiService = {
       });
   },
 
-  GetModalidadeId: (modalidadeId)=>{
+  GetModalidadeId: (modalidadeId) => {
     return api
       .get(`​/api/modalidade/${modalidadeId}`)
       .then((res) => {
@@ -117,7 +117,7 @@ const ApiService = {
       });
   },
 
-  GetSolicitacoesJogo: (atleticaId)=>{
+  GetSolicitacoesJogo: (atleticaId) => {
     return api
       .get(`/api/SolicitacaoJogo/${atleticaId}`)
       .then((res) => {
@@ -128,7 +128,7 @@ const ApiService = {
       });
   },
 
-  GetSolicitacoesAtleta: (atleticaId)=>{
+  GetSolicitacoesAtleta: (atleticaId) => {
     return api
       .get(`/api/SolicitacaoAtleta/${atleticaId}`)
       .then((res) => {
@@ -139,7 +139,7 @@ const ApiService = {
       });
   },
 
-  AprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
+  AprovarSolicitacaoAtleta: (solicitacaoAtletaId) => {
     return api
       .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/aprovado`)
       .then((res) => {
@@ -150,7 +150,7 @@ const ApiService = {
       });
   },
 
-  ReprovarSolicitacaoAtleta: (solicitacaoAtletaId)=>{
+  ReprovarSolicitacaoAtleta: (solicitacaoAtletaId) => {
     return api
       .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/reprovado`)
       .then((res) => {
@@ -161,7 +161,7 @@ const ApiService = {
       });
   },
 
-  AprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+  AprovarSolicitacaoJogo: (solicitacaoJogoId) => {
     return api
       .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/aprovado`)
       .then((res) => {
@@ -172,7 +172,7 @@ const ApiService = {
       });
   },
 
-  ReprovarSolicitacaoJogo: (solicitacaoJogoId)=>{
+  ReprovarSolicitacaoJogo: (solicitacaoJogoId) => {
     return api
       .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/reprovado`)
       .then((res) => {
@@ -215,7 +215,7 @@ const ApiService = {
       .catch((error) => {
         return Promise.reject(error);
       });
-    },
+  },
 
   UploadImagem: (data) => {
     return api
@@ -238,7 +238,7 @@ const ApiService = {
         return Promise.reject(error);
       })
   },
-  
+
   BuscarTodasCategorias: () => {
     return api
       .get("/api/ProdutoCategoria")
@@ -251,15 +251,16 @@ const ApiService = {
   },
 
   CriarProduto: (produto) => {
-    return api 
+    return api
       .post("api/Produto", produto)
       .then((response) => {
         return Promise.resolve(response);
       })
       .catch((error) => {
         return Promise.reject(error);
+      })
   },
-             
+
   BuscarProdutosAtletica: (atleticaId) => {
     return api
       .get(`/api/AtleticaProduto/${atleticaId}`)
