@@ -3,12 +3,15 @@ import { Grid, Paper, Typography, Snackbar, Dialog, DialogActions, DialogTitle, 
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import MuiAlert from '@material-ui/lab/Alert';
+import ApiService from "../../../variables/ApiService"
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 export default function CardAtletaAdd(props) {
+
+    const { atleta, AtleticaModalidadeId, DeleteAtletaAdd, index } = props;
 
     const [openAdd, setOpenAdd] = useState(false)
     const [openAdicionar, setOpenAdicionar] = useState(false)
@@ -23,8 +26,15 @@ export default function CardAtletaAdd(props) {
     };
 
     const handleOpenAdd = () => {
-        setOpenAdicionar(false)
-        setOpenAdd(true)
+
+        ApiService.AdicionarAtletaModalidade(atleta.atletaId, AtleticaModalidadeId)
+            .then(res => {
+                console.log(res)
+                setOpenAdicionar(false)
+                setOpenAdd(true)
+                DeleteAtletaAdd(index)
+            })
+
     }
 
     const handleOpenAdicionar = () => {
@@ -53,7 +63,7 @@ export default function CardAtletaAdd(props) {
 
                             <Typography style={{ fontSize: 14 }}>
 
-                                {props.atleta}
+                                {atleta.nome}
                             </Typography>
 
                         </Grid>
