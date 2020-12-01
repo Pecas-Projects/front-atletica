@@ -272,6 +272,17 @@ const ApiService = {
       })
   },
 
+  BuscarJogosModalidade: (atleticaId, modalidadeId) => {
+    return api
+      .get(`/api/JogosModalidade/${atleticaId}/${modalidadeId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
 };
 
 export default ApiService;
