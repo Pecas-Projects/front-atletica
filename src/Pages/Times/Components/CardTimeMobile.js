@@ -28,7 +28,6 @@ export default function CardTime(props) {
 
   function apresentaFoto() {
     if (time.imagemModalidade !== null && time.imagemModalidade !== undefined) {
-      console.log(time.imagemModalidade.path)
       return (
         <CardMedia
           className={classes.imagem}
