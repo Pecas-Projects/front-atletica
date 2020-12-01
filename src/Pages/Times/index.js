@@ -61,53 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const times = [
-  {
-    imagem: imagemTime,
-    nome: "Futbol Masculino",
-    coordenador: "Zeca da Silva",
-    treinos: [
-      {
-        dia: "Segunda-Feira",
-        hora: "17:00",
-      },
-      {
-        dia: "Quarta-Feira",
-        hora: "17:00",
-      },
-    ],
-  },
-  {
-    imagem: imagemTime,
-    nome: "Futbol Masculino",
-    coordenador: "Zeca da Silva",
-    treinos: [
-      {
-        dia: "Segunda-Feira",
-        hora: "17:00",
-      },
-      {
-        dia: "Quarta-Feira",
-        hora: "17:00",
-      },
-    ],
-  },
-  {
-    imagem: imagemTime,
-    nome: "Futbol Masculino",
-    coordenador: "Zeca da Silva",
-    treinos: [
-      {
-        dia: "Segunda-Feira",
-        hora: "17:00",
-      },
-      {
-        dia: "Quarta-Feira",
-        hora: "17:00",
-      },
-    ],
-  },
-];
 
 export default function Times(props) {
   const classes = useStyles();
@@ -134,6 +87,7 @@ export default function Times(props) {
   async function buscarTimes() {
     await ApiService.ModalidadesAtletica(userId)
       .then((res) => {
+        console.log(res.data)
         setTimes(res.data)
       })
       .catch((err) => {
@@ -147,16 +101,6 @@ export default function Times(props) {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
-        {/*
-        
-        
-        
-        DESKTOP
-        
-        
-        
-        */}
 
         <div className={classes.sectionDesktop}>
               <Grid container justify="center">
@@ -177,6 +121,7 @@ export default function Times(props) {
                   </Grid>
               </Grid>
         </div>
+        
       </main>
     </div>
   );
