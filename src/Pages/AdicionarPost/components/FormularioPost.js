@@ -5,7 +5,7 @@ import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem";
 import ApiService from "../../../variables/ApiService";
-import { getUserId } from "../../../utils/storage";
+import { getAtleticaId } from "../../../utils/storage";
 
 
 export default function FormularioPost() {
@@ -14,7 +14,7 @@ export default function FormularioPost() {
   const [post, setPost] = useState({
     Titulo: "",
     Descricao: "",
-    AtleticaId: parseInt(getUserId()),
+    AtleticaId: parseInt(getAtleticaId()),
     ImagemId: null
   });
 
