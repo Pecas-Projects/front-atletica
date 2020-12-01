@@ -47,7 +47,7 @@ export default function Time(props) {
                     spacing={2}
                 >
                     <Grid item xs={12}>
-                        <Divider />
+                        <Divider style={{ marginTop: 20 }} />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography style={{ textAlign: 'center' }}>{"Time " + time.timeId}</Typography>
@@ -95,7 +95,7 @@ export default function Time(props) {
                                     justify="center"
                                 >
                                     <Button
-                                        style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20, marginBottom: 20 }}
+                                        style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }}
                                         variant="contained"
                                     >
                                         Salvar
@@ -115,7 +115,7 @@ export default function Time(props) {
                     spacing={1}
                 >
                     <Grid item xs={12}>
-                        <Divider />
+                        <Divider style={{ marginTop: 20 }} />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography style={{ textAlign: 'center' }}>{"Time " + time.timeId}</Typography>
@@ -163,7 +163,7 @@ export default function Time(props) {
                                     justify="center"
                                 >
                                     <Button
-                                        style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20, marginBottom: 20 }}
+                                        style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }}
                                         variant="contained"
                                     >
                                         Salvar
