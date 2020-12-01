@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
@@ -113,6 +113,12 @@ export default function Times(props) {
   const classes = useStyles();
   const username = props.match.params.username;
   const [userId, setUserId] = useState();
+
+  useEffect(() => {
+    buscaAtletica();
+    // if(userId !== undefined && userId !== null)
+    //   buscarTimes();
+  }, [userId]);
 
   async function buscaAtletica() {
     await ApiService.PesquisaAtleticaPorUsername(username)
