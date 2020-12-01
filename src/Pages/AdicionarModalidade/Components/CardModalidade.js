@@ -81,11 +81,16 @@ export default function CardModalidade(props) {
 
     useEffect(() => {
 
+
         ApiService.BuscarAtletaModalidade(item.atleticaModalidadeId)
             .then(res => {
                 console.log(res)
                 setAtletas(res.data)
             })
+            .catch(error => {
+                console.log(error)
+            })
+
 
 
     }, [])
@@ -98,8 +103,7 @@ export default function CardModalidade(props) {
 
     useEffect(() => {
 
-
-        ApiService.BuscarAddAtletas(getAtleticaId(), item.modalidadeId)
+        ApiService.BuscarAddAtletas(JSON.parse(getAtleticaId()), item.modalidadeId)
             .then(res => {
                 console.log(res)
                 setAtletasAdd(res.data)
@@ -401,7 +405,7 @@ export default function CardModalidade(props) {
 
                             ) : (
                                     <>
-                                        <p>foda</p>
+
                                     </>
                                 )}
 
