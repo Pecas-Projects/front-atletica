@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Grid } from '@material-ui/core';
 import Jogo from './Jogo'
+import ApiService from '../../../variables/ApiService';
+import { getAtleticaId } from '../../../utils/storage'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,121 +46,26 @@ const useStyles = makeStyles((theme) => ({
 export default function Categoria(props) {
     const { categoria } = props;
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false);
+    const [jogos, setJogos] = useState([])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    const jogos = [
-        {
-            jogoId: 2,
-            dataHora: "2020-11-12T18:29:40.871",
-            times: [
-                {
-                    timeId: 1,
-                    atleticaId: 1,
-                    nome: "Davi Fezes",
-                    pontos: 42,
-                    registrouEscalacao: true,
-                    atletas: [
-                        {
-                            nome: "Davi Costa",
-                            atletaAtleticaModalidadeTimeEscaladoId: 2,
-                            timeEscaladoId: 1,
-                            atletaAtleticaModalidadeId: 1,
-                            funcaoId: 1,
-                            numero: 17,
-                            infracoes: 51,
-                            pontos: 21
-                        },
-                        {
-                            nome: "Bia braba",
-                            atletaAtleticaModalidadeTimeEscaladoId: 3,
-                            timeEscaladoId: 1,
-                            atletaAtleticaModalidadeId: 2,
-                            funcaoId: 1,
-                            numero: 17,
-                            infracoes: 51,
-                            pontos: 21
-                        }
-                    ]
-                },
-                {
-                    timeId: 2,
-                    atleticaId: 1,
-                    nome: "Davi Fezes",
-                    pontos: 42,
-                    registrouEscalacao: true,
-                    atletas: [
-                        {
-                            nome: "Maria DBA",
-                            atletaAtleticaModalidadeTimeEscaladoId: 4,
-                            timeEscaladoId: 2,
-                            atletaAtleticaModalidadeId: 4,
-                            funcaoId: 1,
-                            numero: 17,
-                            infracoes: 51,
-                            pontos: 21
-                        },
-                        {
-                            nome: "Guilgerme Vago",
-                            atletaAtleticaModalidadeTimeEscaladoId: 5,
-                            timeEscaladoId: 2,
-                            atletaAtleticaModalidadeId: 2,
-                            funcaoId: 1,
-                            numero: 17,
-                            infracoes: 51,
-                            pontos: 21
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            jogoId: 3,
-            dataHora: "2020-11-12T18:29:40.871",
-            times: [
-                {
-                    timeId: 3,
-                    atleticaId: 2,
-                    nome: "Davi",
-                    pontos: 15,
-                    registrouEscalacao: true,
-                    atletas: []
-                },
-                {
-                    timeId: 4,
-                    atleticaId: 1,
-                    nome: "Davi Fezes",
-                    pontos: 42,
-                    registrouEscalacao: false,
-                    atletas: [
-                        {
-                            nome: "Atori Bribo",
-                            atletaAtleticaModalidadeTimeEscaladoId: 10,
-                            timeEscaladoId: 4,
-                            atletaAtleticaModalidadeId: 1,
-                            funcaoId: 1,
-                            numero: 17,
-                            infracoes: 51,
-                            pontos: 21
-                        },
-                        {
-                            nome: "Nanda Troll",
-                            atletaAtleticaModalidadeTimeEscaladoId: 11,
-                            timeEscaladoId: 4,
-                            atletaAtleticaModalidadeId: 2,
-                            funcaoId: 1,
-                            numero: 17,
-                            infracoes: 51,
-                            pontos: 21
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+    const buscaJogosModalidade = async () => {
+        await ApiService.BuscarJogosModalidade(getAtleticaId(), categoria.modalidadeId)
+            .then(res =>
+                setJogos(res.data)
+            )
+            .catch(err =>
+                console.log(err)
+            )
+    }
+
+    useEffect(() => {
+        buscaJogosModalidade()
+    }, []);
 
     return (
         <Grid item container justify='center'>
