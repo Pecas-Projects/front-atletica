@@ -113,11 +113,12 @@ export default function Times(props) {
   const classes = useStyles();
   const username = props.match.params.username;
   const [userId, setUserId] = useState();
+  const [times, setTimes] = useState([]);
 
   useEffect(() => {
     buscaAtletica();
-    // if(userId !== undefined && userId !== null)
-    //   buscarTimes();
+    if(userId !== undefined && userId !== null)
+      buscarTimes();
   }, [userId]);
 
   async function buscaAtletica() {
@@ -128,6 +129,16 @@ export default function Times(props) {
         .catch((err) => {
             console.log(err)
         })
+  }
+
+  async function buscarTimes() {
+    await ApiService.ModalidadesAtletica(userId)
+      .then((res) => {
+        setTimes(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
