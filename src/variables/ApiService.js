@@ -91,6 +91,18 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
+      })
+  },
+
+  ModalidadesAtletica: (atleticaId) => {
+    return api
+      .get(`/api/AtleticaModalidade/${atleticaId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
       });
   },
 
@@ -272,7 +284,95 @@ const ApiService = {
       })
   },
 
-};
+  CadastrarModalidade: (atleticaId, AtleticaModalidade) => {
+    return api
+      .post(`/api/AtleticaModalidade/${atleticaId}`, AtleticaModalidade)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
+  },
+
+  BuscarAtletaModalidade: (atleticaModalidadeId) => {
+    return api
+      .get(`/api/AtletaModalidade/${atleticaModalidadeId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarAddAtletas: (atleticaId, modalidadeId) => {
+    return api
+      .get(`/api/AtletaForaModalidade/${atleticaId}/${modalidadeId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
+  },
+
+  AdicionarAtletaModalidade: (atletaId, atleticaModalidadeId) => {
+    return api
+      .post(`/api/AtletaModalidade/${atletaId}/${atleticaModalidadeId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
+  },
+
+  DeletarAtletaModalidade: (atletaAtleticaModalidadeId) => {
+    return api
+      .delete(`/api/AtletaModalidade/${atletaAtleticaModalidadeId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
+  },
+
+  DeletarAtleticaModalidade: (atleticaModalidadeId) => {
+    return api
+      .delete(`/api/AtleticaModalidade/${atleticaModalidadeId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+
+  },
+
+  AtualizarAtleticaModalidade: (atleticaModalidadeId, AtleticaModalidade) => {
+    return api
+      .put(`/api/AtleticaModalidade/${atleticaModalidadeId}`, AtleticaModalidade)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  }
+}
 
 export default ApiService;
 
