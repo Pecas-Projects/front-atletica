@@ -258,8 +258,9 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
+      })
   },
-             
+
   BuscarProdutosAtletica: (atleticaId) => {
     return api
       .get(`/api/AtleticaProduto/${atleticaId}`)
