@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import "./styles.css"
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 import Post from "./Components/Post"
 import ApiService from "../../variables/ApiService";
-import { getUserId } from "../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,6 +18,12 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(0, 1),
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
+    },
+    paperA: {
+        width: "85%",
+        marginTop: 20,
+        padding: "2%",
+        backgroundColor: "#BBB8CC",
     },
     content: {
         flexGrow: 1,
@@ -53,7 +58,7 @@ export default function Feed(props) {
             getAllPosts();
     }, [userId]);
 
-    async function buscaAtletica(){
+    async function buscaAtletica() {
         await ApiService.PesquisaAtleticaPorUsername(username)
             .then((res) => {
                 setUserId(res.data.atleticaId)
@@ -74,18 +79,24 @@ export default function Feed(props) {
     }
 
     function apresentaPosts() {
-        if (posts !== undefined && posts !== null) 
+        if (posts !== undefined && posts !== null && posts.length !== 0)
             return (
                 posts.map((item) => (
                     <Post post={item} />
                 ))
 
             );
-        
-        else 
+
+        else
             return (
-                <div></div>
-            );    
+                <Paper className={classes.paperA}>
+                    <Grid container justify="center" >
+                        <Grid item>
+                            <Typography variant="h6" align="center" style={{ color: 'white' }}>Essa atlética não possui publicações!</Typography>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            );
     }
 
     return (
@@ -96,17 +107,6 @@ export default function Feed(props) {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
 
-                {/*
-    
-    
-    
-                 DESKTOP
-    
-    
-    
-                */}
-
-
                 <div className={classes.sectionDesktop}>
 
                     <Grid container  >
@@ -116,7 +116,6 @@ export default function Feed(props) {
                         <Grid item xs={8} >
 
                             <Grid container justify='center'>
-
 
                                 {apresentaPosts()}
 
@@ -129,23 +128,8 @@ export default function Feed(props) {
 
                 </div>
 
-                {/* 
-
-
-
-
-            MOBILE
-
-
-
-
-                */}
-
                 <div className={classes.sectionMobile}>
-
-
                     <Grid container  >
-
                         <Grid item xs={12} >
                             {apresentaPosts()}
                         </Grid>
