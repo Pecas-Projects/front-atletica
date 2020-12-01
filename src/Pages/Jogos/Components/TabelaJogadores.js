@@ -29,9 +29,9 @@ export default function TabelaJogadores(props) {
                 }}
                 style={{ backgroundColor: "#BBB8CC" }}
                 columns={[
-                    { title: 'Jogadores', field: 'Nome',  },
-                    { title: 'Pontos', field: 'Pontos', type: 'numeric' },
-                    { title: 'Infrações', field: 'Infracoes', type: 'numeric' },
+                    { title: 'Jogadores', field: 'nome',  },
+                    { title: 'Pontos', field: 'pontos', type: 'numeric' },
+                    { title: 'Infrações', field: 'infracoes', type: 'numeric' },
                 ]}
                 options={{
                     showTitle: false,

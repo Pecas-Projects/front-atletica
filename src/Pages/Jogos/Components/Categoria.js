@@ -52,131 +52,112 @@ export default function Categoria(props) {
 
     const jogos = [
         {
-            Data: "15/12/2020",
-            TimeAtletica: "Time A",
-            TimeAdversario: "Time B",
-            PontosAtletica: 5,
-            PontosAdversario: 4,
-            Jogadores: [
+            jogoId: 2,
+            dataHora: "2020-11-12T18:29:40.871",
+            times: [
                 {
-                    Id: 1,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
+                    timeId: 1,
+                    atleticaId: 1,
+                    nome: "Davi Fezes",
+                    pontos: 42,
+                    registrouEscalacao: true,
+                    atletas: [
+                        {
+                            nome: "Davi Costa",
+                            atletaAtleticaModalidadeTimeEscaladoId: 2,
+                            timeEscaladoId: 1,
+                            atletaAtleticaModalidadeId: 1,
+                            funcaoId: 1,
+                            numero: 17,
+                            infracoes: 51,
+                            pontos: 21
+                        },
+                        {
+                            nome: "Bia braba",
+                            atletaAtleticaModalidadeTimeEscaladoId: 3,
+                            timeEscaladoId: 1,
+                            atletaAtleticaModalidadeId: 2,
+                            funcaoId: 1,
+                            numero: 17,
+                            infracoes: 51,
+                            pontos: 21
+                        }
+                    ]
                 },
                 {
-                    Id: 2,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 3,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 4,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 5,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 6,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 7,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 8,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 9,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
+                    timeId: 2,
+                    atleticaId: 1,
+                    nome: "Davi Fezes",
+                    pontos: 42,
+                    registrouEscalacao: true,
+                    atletas: [
+                        {
+                            nome: "Maria DBA",
+                            atletaAtleticaModalidadeTimeEscaladoId: 4,
+                            timeEscaladoId: 2,
+                            atletaAtleticaModalidadeId: 4,
+                            funcaoId: 1,
+                            numero: 17,
+                            infracoes: 51,
+                            pontos: 21
+                        },
+                        {
+                            nome: "Guilgerme Vago",
+                            atletaAtleticaModalidadeTimeEscaladoId: 5,
+                            timeEscaladoId: 2,
+                            atletaAtleticaModalidadeId: 2,
+                            funcaoId: 1,
+                            numero: 17,
+                            infracoes: 51,
+                            pontos: 21
+                        }
+                    ]
                 }
             ]
         },
         {
-            Data: "15/12/2020",
-            TimeAtletica: "Time A",
-            TimeAdversario: "Time B",
-            PontosAtletica: 5,
-            PontosAdversario: 4,
-            Jogadores: [
+            jogoId: 3,
+            dataHora: "2020-11-12T18:29:40.871",
+            times: [
                 {
-                    Id: 1,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
+                    timeId: 3,
+                    atleticaId: 2,
+                    nome: "Davi",
+                    pontos: 15,
+                    registrouEscalacao: true,
+                    atletas: []
                 },
                 {
-                    Id: 2,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 3,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 4,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 5,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 6,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 7,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 8,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 9,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
+                    timeId: 4,
+                    atleticaId: 1,
+                    nome: "Davi Fezes",
+                    pontos: 42,
+                    registrouEscalacao: false,
+                    atletas: [
+                        {
+                            nome: "Atori Bribo",
+                            atletaAtleticaModalidadeTimeEscaladoId: 10,
+                            timeEscaladoId: 4,
+                            atletaAtleticaModalidadeId: 1,
+                            funcaoId: 1,
+                            numero: 17,
+                            infracoes: 51,
+                            pontos: 21
+                        },
+                        {
+                            nome: "Nanda Troll",
+                            atletaAtleticaModalidadeTimeEscaladoId: 11,
+                            timeEscaladoId: 4,
+                            atletaAtleticaModalidadeId: 2,
+                            funcaoId: 1,
+                            numero: 17,
+                            infracoes: 51,
+                            pontos: 21
+                        }
+                    ]
                 }
             ]
-        },
+        }
     ]
 
     return (
