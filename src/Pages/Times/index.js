@@ -108,8 +108,9 @@ const times = [
   },
 ];
 
-export default function Times() {
+export default function Times(props) {
   const classes = useStyles();
+  const username = props.match.params.username;
 
   return (
     <div className={classes.root}>
