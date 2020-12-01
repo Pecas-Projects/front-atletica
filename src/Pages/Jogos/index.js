@@ -10,6 +10,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import ApiService from '../../variables/ApiService'
+import { getAtleticaId } from '../../utils/storage'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -59,7 +60,7 @@ export default function Jogos() {
     }
 
     const buscaAtleticaModalidades = async () => {
-        await ApiService.BuscarAtleticaModalidades(1)
+        await ApiService.BuscarAtleticaModalidades(getAtleticaId())
             .then(res =>
                 setModalidades(res.data)
             )
