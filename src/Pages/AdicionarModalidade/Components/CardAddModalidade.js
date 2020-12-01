@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Paper, Button, TextField, MenuItem, Snackbar, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
@@ -10,11 +10,25 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import "../styles.css"
+import ApiService from "../../../variables/ApiService";
+import storage, { getAtleticaId } from "../../../utils/storage"
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+function acertaNome(nome, genero) {
+
+    var modalidade;
+
+    if (genero === 'M') modalidade = nome + " Masculino";
+    if (genero === 'F') modalidade = nome + " Feminino";
+    if (genero === 'O') modalidade = nome;
+
+    return modalidade;
+}
+
+const Dias = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"]
 
 const useStyles = makeStyles((theme) => ({
 
@@ -36,30 +50,20 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const membros = [
-    {
-        value: 'Beatriz Calazans',
-    },
-    {
-        value: 'Fernanda Lisboa',
-    },
-    {
-        value: 'Maria Antônia',
-    },
-    {
-        value: 'Ana Paula',
-    },
-    {
-        value: 'Davi Costa',
-    },
-]
-
-const modalidades = [
-    "Futebol", "Vôlei", "Basquete", "Atletismo", "Futsal", "Vôlei de Praia", "Natação", "Outro"
-]
 
 const generos = [
-    "Feminino", "Masculino", "Misto"
+    {
+        nome: "Feminino",
+        value: 'F'
+    },
+    {
+        nome: "Masculino",
+        value: 'M'
+    },
+    {
+        nome: "Outro",
+        value: "O"
+    }
 ]
 
 export default function CardAddModalidade() {
@@ -74,8 +78,12 @@ export default function CardAddModalidade() {
     const [openCriado, setOpenCriado] = useState(false)
     const [openErro, setOpenErro] = useState(false)
     const [criarModalidade, setCriarModalidade] = useState(false)
-    const [horaTreino, setHoraTreino] = useState(false)
-    const [diaTreino, setDiaTreino] = useState(false)
+    const [horaTreino, setHoraTreino] = useState('')
+    const [diaTreino, setDiaTreino] = useState('')
+    const [modalidades, setModalidades] = useState()
+    const [membros, setMembros] = useState()
+    const [nomeModalidade, setNomeModaliade] = useState('')
+    const [openNovaModalidade, setOpenNovaModalidade] = useState(false)
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -88,6 +96,58 @@ export default function CardAddModalidade() {
                 </div>
             );
     }
+
+    useEffect(() => {
+
+        ApiService.BuscarModalidades()
+            .then(res => {
+                console.log(res)
+                setModalidades(res.data)
+            })
+
+    }, [])
+
+    useEffect(() => {
+
+        ApiService.BuscarMembros(getAtleticaId())
+            .then(res => {
+                console.log(res)
+                setMembros(res.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }, [])
+
+    const onModalidadeSubmit = () => {
+
+        if (nomeModalidade !== '' && genero !== '') {
+            let _modalidade = {
+                nome: nomeModalidade,
+                genero: genero
+            }
+
+            ApiService.CadastrarModalidade(_modalidade)
+                .then(res => {
+                    console.log(res)
+                    setOpenNovaModalidade(true)
+                    setTimeout(function () { window.location.href = '/modalidades?' }, 3000)
+
+                })
+                .catch(error => {
+                    console.log(error)
+                    setOpenErro(true)
+                })
+
+        }
+        else {
+            setOpenErro(true)
+        }
+
+
+    }
+
 
     const handleMembroChange = (e) => {
         setCoordenador(e.target.value)
@@ -109,6 +169,10 @@ export default function CardAddModalidade() {
         setDiaTreino(e.target.value)
     }
 
+    const handleNomeModalidadeChange = (e) => {
+        setNomeModaliade(e.target.value)
+    }
+
     const handleClickCriado = () => {
         setOpenCriado(true);
     };
@@ -119,6 +183,14 @@ export default function CardAddModalidade() {
         }
 
         setOpenCriado(false);
+    };
+
+    const handleCloseNovaModalidadeCriada = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenNovaModalidade(false);
     };
 
     const handleClickErro = () => {
@@ -133,18 +205,32 @@ export default function CardAddModalidade() {
         setOpenErro(false);
     };
 
+    const handleNovaModalidade = () => {
+        setCriarModalidade(true)
+    };
+
+    const handleCloseNovaModalidade = () => {
+        setCriarModalidade(false)
+    };
+
     return (
 
         <>
             <Snackbar open={openCriado} autoHideDuration={4000} onClose={handleCloseCriado}>
                 <Alert onClose={handleCloseCriado} severity="success">
+                    Modalidade adicionada com sucesso!
+                </Alert>
+            </Snackbar>
+
+            <Snackbar open={openNovaModalidade} autoHideDuration={4000} onClose={handleCloseNovaModalidadeCriada}>
+                <Alert onClose={handleCloseNovaModalidadeCriada} severity="success">
                     Modalidade criada com sucesso!
                 </Alert>
             </Snackbar>
 
             <Snackbar open={openErro} autoHideDuration={4000} onClose={handleCloseErro}>
                 <Alert onClose={handleCloseErro} severity="error">
-                    Ocorreu um erro na criação da modalidade, revise os dados e tente novamente
+                    Ocorreu um erro, revise os dados e tente novamente
                 </Alert>
             </Snackbar>
 
@@ -177,40 +263,33 @@ export default function CardAddModalidade() {
 
                                 <Grid item xs={12} style={{ maxHeight: 250 }}>
 
-                                    <FormControl component="fieldset" style={{ marginLeft: 90 }}>
-                                        <FormLabel component="legend">Escolha a modalidade</FormLabel>
-                                        <RadioGroup aria-label="modalidade" name="Modalidade" value={modalidade} onChange={handleModalidadeChange}>
-                                            {modalidades.map((item) =>
-                                                <FormControlLabel value={item} control={<Radio />} label={item} />
-                                            )}
-                                        </RadioGroup>
-                                    </FormControl>
+                                    {modalidades !== undefined ? (
+
+                                        <FormControl component="fieldset" style={{ marginLeft: 90 }}>
+                                            <FormLabel component="legend">Escolha a modalidade</FormLabel>
+                                            <RadioGroup aria-label="modalidade" name="Modalidade" value={modalidade} onChange={handleModalidadeChange}>
+                                                {modalidades.map((item) =>
+                                                    <FormControlLabel value={item.modalidadeId} control={<Radio />}
+                                                        label={acertaNome(item.nome, item.genero)} />
+                                                )}
+                                            </RadioGroup>
+                                        </FormControl>
+
+                                    ) : (
+                                            <>
+                                            </>
+                                        )}
+
+
 
                                 </Grid>
                             </div>
 
-                            <Button >Nova modalidade</Button>
+                            <Grid container justify='center'>
 
-                            {/* {modalidade === "Outro" ? (
+                                <Button onClick={handleNovaModalidade} >Nova modalidade</Button>
 
-                                <Grid item xs={12}>
-
-                                    <Grid container justify='center'>
-
-                                        <AvField style={{ width: "100%", marginLeft: 30 }} name="name" type="text" validate={{
-                                            pattern: { value: '[A-Za-z]', errorMessage: 'Utilize apenas letras' },
-                                            maxLength: { value: 25, errorMessage: 'Nome muito grande' }
-                                        }} />
-
-                                    </Grid>
-
-
-                                </Grid>
-
-                            ) : (
-                                    <>
-                                    </>
-                                )} */}
+                            </Grid>
 
 
 
@@ -218,11 +297,12 @@ export default function CardAddModalidade() {
 
                         <Grid item xs={4} style={{ marginLeft: 50 }}>
 
+
+
                             <Grid item xs={12} style={{ marginTop: 10 }}>
 
 
-                                <AvField style={{ width: "100%" }} onChange={handleDiaChange} name="name" type="date" label="Dia do treino" validate={{
-                                }} />
+                                <AvField style={{ width: "100%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
 
 
                             </Grid>
@@ -230,7 +310,22 @@ export default function CardAddModalidade() {
                             <Grid item xs={12} style={{ marginTop: 10 }}>
 
 
-                                <AvField style={{ width: "100%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
+                                <TextField
+                                    id="standard-select-dia"
+                                    select
+                                    label="Dia do treino"
+                                    value={diaTreino}
+                                    onChange={handleDiaChange}
+                                    fullWidth
+
+                                >
+                                    {Dias.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+
 
 
                             </Grid>
@@ -247,11 +342,19 @@ export default function CardAddModalidade() {
                                         onChange={handleMembroChange}
                                         helperText="Selecione o membro que coordena essa modalidade"
                                     >
-                                        {membros.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.value}
-                                            </MenuItem>
-                                        ))}
+                                        {membros !== undefined ? (
+                                            <>
+                                                {membros.map((option) => (
+                                                    <MenuItem key={option.membroId} value={option.membroId}>
+                                                        {option.pessoa.nome + " " + option.pessoa.sobrenome}
+                                                    </MenuItem>
+                                                ))}
+                                            </>
+                                        ) : (
+                                                <>
+                                                </>
+                                            )}
+
                                     </TextField>
                                 </Grid>
                             </Grid>
@@ -259,21 +362,7 @@ export default function CardAddModalidade() {
 
                             <Grid item xs={12} >
 
-                                <TextField
-                                    id="standard-select-genero"
-                                    select
-                                    label="Gênero"
-                                    value={genero}
-                                    onChange={handleGeneroChange}
-                                    fullWidth
 
-                                >
-                                    {generos.map((option) => (
-                                        <MenuItem key={option} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
 
                             </Grid>
 
@@ -297,28 +386,49 @@ export default function CardAddModalidade() {
 
                 <Dialog
                     open={criarModalidade}
-                    onClose={handleCloseAdicionar}
+                    onClose={handleCloseNovaModalidade}
 
                 >
                     <DialogTitle id="alert-dialog-excluir">{"Cadastrar nova modalidade"}</DialogTitle>
 
-                    <DialogContent>
-                        <DialogContentText>
-                            Para cadastrar uma nova modalidade no sistema digite seu nome e selecione o gênero
+                    <AvForm onValidSubmit={onModalidadeSubmit}>
+                        <DialogContent>
+                            <DialogContentText>
+                                Para cadastrar uma nova modalidade no sistema digite seu nome e selecione o gênero
                         </DialogContentText>
-                        <form>
-                            <TextField fullWidth label="Nome" />
-                        </form>
-                    </DialogContent>
 
-                    <DialogActions>
-                        <Button onClick={handleOpenAdd} color="primary">
-                            Adicionar
+                            <AvField onChange={handleNomeModalidadeChange} name="nome" label="Nome" type="text" validate={{
+                                required: { value: true, errorMessage: 'Campo obrigatório' },
+
+                            }} />
+
+                            <TextField
+                                id="standard-select-genero"
+                                select
+                                label="Gênero"
+                                value={genero}
+                                onChange={handleGeneroChange}
+                                fullWidth
+
+                            >
+                                {generos.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.nome}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+
+                        </DialogContent>
+
+                        <DialogActions>
+                            <Button type='submit' color="primary">
+                                Salvar
         </Button>
-                        <Button variant='outlined' onClick={handleCloseAdicionar} color="primary" autoFocus>
-                            Cancelar
+                            <Button variant='outlined' onClick={handleCloseNovaModalidade} color="primary" autoFocus>
+                                Cancelar
         </Button>
-                    </DialogActions>
+                        </DialogActions>
+                    </AvForm>
                 </Dialog>
 
             </div>
