@@ -297,7 +297,6 @@ export default function CardAddModalidade() {
 
                 <Dialog
                     open={criarModalidade}
-                    onClose={handleCloseAdicionar}
 
                 >
                     <DialogTitle id="alert-dialog-excluir">{"Cadastrar nova modalidade"}</DialogTitle>
@@ -312,10 +311,10 @@ export default function CardAddModalidade() {
                     </DialogContent>
 
                     <DialogActions>
-                        <Button onClick={handleOpenAdd} color="primary">
+                        <Button color="primary">
                             Adicionar
         </Button>
-                        <Button variant='outlined' onClick={handleCloseAdicionar} color="primary" autoFocus>
+                        <Button variant='outlined' color="primary" autoFocus>
                             Cancelar
         </Button>
                     </DialogActions>
