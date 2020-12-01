@@ -166,6 +166,41 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
+  },
+
+  BuscarModalidades: () => {
+    return api
+      .get("api/Modalidade")
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarMembros: (atleticaId) => {
+    return api
+      .get(`/api/Membro/Atletica/${atleticaId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+  CadastrarModalidade: (modalidade) => {
+    return api
+      .post('/api/Modalidade', modalidade)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
   }
 }
 
