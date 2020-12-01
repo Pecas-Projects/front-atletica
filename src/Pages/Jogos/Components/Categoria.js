@@ -183,7 +183,7 @@ export default function Categoria(props) {
         <Grid item container justify='center'>
             <Card className={classes.root}>
                 <CardActions disableSpacing>
-                    <Typography className={classes.nomeCategoria}>{categoria.nome}</Typography>
+                    <Typography className={classes.nomeCategoria}>{categoria.modalidade}</Typography>
                     <IconButton
                         style={{ outline: 'none' }}
                         className={clsx(classes.expand, {
