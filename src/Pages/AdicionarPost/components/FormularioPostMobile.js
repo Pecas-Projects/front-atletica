@@ -5,7 +5,7 @@ import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
 import ApiService from "../../../variables/ApiService";
-import { getUserId } from "../../../utils/storage";
+import { getAtleticaId } from "../../../utils/storage";
 
 export default function FormularioPostMobile() {
   const [imagem, setImagem] = useState(null);
@@ -13,7 +13,7 @@ export default function FormularioPostMobile() {
   const [post, setPost] = useState({
     Titulo: "",
     Descricao: "",
-    AtleticaId: parseInt(getUserId()),
+    AtleticaId: parseInt(getAtleticaId()),
     ImagemId: null
   });
 
