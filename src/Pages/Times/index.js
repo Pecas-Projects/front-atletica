@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import CardTime from "./Components/CardTime";
 import CardTimeMobile from "./Components/CardTimeMobile";
 import imagemTime from "../../assets/imagem/imagemTime.png";
+import ApiService from "../../variables/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,6 +112,17 @@ const times = [
 export default function Times(props) {
   const classes = useStyles();
   const username = props.match.params.username;
+  const [userId, setUserId] = useState();
+
+  async function buscaAtletica() {
+    await ApiService.PesquisaAtleticaPorUsername(username)
+        .then((res) => {
+            setUserId(res.data.atleticaId)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+  }
 
   return (
     <div className={classes.root}>
