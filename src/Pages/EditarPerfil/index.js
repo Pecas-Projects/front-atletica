@@ -7,7 +7,7 @@ import cep from "cep-promise";
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
-import Alert from "@material-ui/lab/Alert";
+import Alert from "./Components/Alert";
 import { getUserId, resetUsername } from "../../utils/storage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -78,7 +78,8 @@ export default function EditarPerfil(props) {
 
   const { username } = props.match.params.username;
 
-  const [verificacao, setVerificacao] = useState();
+  const [pinMsg, setPinMsg] = useState("");
+  const [pinStatus, setPinStatus] = useState();
   const [verificacaoMsg, setVerificacaoMsg] = useState("");
   const [statusVerificacao, setStatusVerificacao] = useState("");
   const [mostrarVerificacao, setMostrarVerificacao] = useState(false);
@@ -195,7 +196,16 @@ export default function EditarPerfil(props) {
 
   const handleClickPIN = async (e) => {
     e.preventDefault();
-    await ApiService.ResetPin(atletica.atleticaId);
+    await ApiService.ResetPin(atletica.atleticaId)
+      .then((res) => {
+        setPin(res.data.pin);
+        setPinMsg("PIN atualizado com sucesso");
+        setPinStatus("success");
+      })
+      .catch(() => {
+        setPinMsg("Erro ao resetar o PIN tente novamente mais tarde");
+        setPinStatus("error");
+      });
     setAvisoPin(true);
   };
 
@@ -206,39 +216,17 @@ export default function EditarPerfil(props) {
       setStatusVerificacao("info");
       setMostrarVerificacao(true);
     } else {
-      // await ApiService.VerificaUsername(atleticaUsername)
-      //   .then((res) => console.log(res))
-      //   .catch((err) => console.log(err));
-      //setVerificacao(ApiService.VerificaUsername(atleticaUsername));
-      // console.log(response);
-      // if (response.status !== undefined) {
-      //   setVerificacaoMsg("Username disponivel");
-      //   setStatusVerificacao("success");
-      //   setMostrarVerificacao(true);
-      // } else {
-      //   setVerificacaoMsg("Username em uso");
-      //   setStatusVerificacao("error");
-      //   setMostrarVerificacao(true);
-      // }
-      //console.log(response);
-      // if (response.status == 200) {
-      //   setVerificacaoMsg("Username disponivel");
-      //   setStatusVerificacao("success");
-      //   setMostrarVerificacao(true);
-      // } else {
-      //   setVerificacaoMsg("Username em uso");
-      //   setStatusVerificacao("error");
-      //   setMostrarVerificacao(true);
-      // }
-    }
-    {
-      /*
-    
-    
-        CHAMAR FUNÇÃO QUE VERIFICA O USERNAME
-
-    
-    */
+      await ApiService.VerificaUsername(atleticaUsername)
+        .then(() => {
+          setVerificacaoMsg("Username disponivel");
+          setStatusVerificacao("success");
+          setMostrarVerificacao(true);
+        })
+        .catch(() => {
+          setVerificacaoMsg("Username em uso");
+          setStatusVerificacao("error");
+          setMostrarVerificacao(true);
+        });
     }
   };
 
@@ -269,7 +257,6 @@ export default function EditarPerfil(props) {
   const buscaAtleticaPorUsername = async (username) => {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
-        console.log(res);
         setAtletica(res.data);
         setAtleticaUsername(res.data.username);
         setEmail(res.data.email);
@@ -366,7 +353,7 @@ export default function EditarPerfil(props) {
 
     let atleticaDados = {
       nome: nome,
-      email: atletica.email,
+      email: email,
       username: atleticaUsername,
       descricao: descricao,
       senha: "*",
@@ -435,15 +422,7 @@ export default function EditarPerfil(props) {
                         </Grid>
                       </Grid>
                     </Grid>
-                    {avisoPin && (
-                      <Alert
-                        svariant="outlined"
-                        severity="info"
-                        style={{ marginTop: 20 }}
-                      >
-                        Para ver o seu novo PIN acesse novamente sua conta
-                      </Alert>
-                    )}
+                    {avisoPin && <Alert status={pinStatus} mensagem={pinMsg} />}
                     <br />
                     <AvForm onSubmit={onFormSubmit}>
                       <p className="MySubtitle">PIN</p>
@@ -497,11 +476,14 @@ export default function EditarPerfil(props) {
                         Validar
                       </Button>
                       {mostrarVerificacao && (
-                        <Alert severity={statusVerificacao}>
-                          {verificacaoMsg}
-                        </Alert>
+                        <Alert
+                          status={statusVerificacao}
+                          mensagem={verificacaoMsg}
+                        />
                       )}
-                      <p className="MySubtitle">Email</p>
+                      <p className="MySubtitle" style={{ marginTop: 15 }}>
+                        Email
+                      </p>
                       <AvField
                         name="email"
                         type="text"
@@ -700,10 +682,12 @@ export default function EditarPerfil(props) {
                         <p className="MySubtitle2">
                           Adicione imagens de perfil e capa da sua atlética
                         </p>
-                        <Alert svariant="outlined" severity="info">
-                          Para salvar as mudanças feitas nas imagens clique no
-                          botão abaixo!
-                        </Alert>
+                        <Alert
+                          mensagem="Para salvar as mudanças feitas nas imagens clique no
+                          botão abaixo!"
+                          status="info"
+                        />
+
                         <Button
                           variant="contained"
                           color="secondary"
