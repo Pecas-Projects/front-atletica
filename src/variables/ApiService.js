@@ -183,6 +183,16 @@ const ApiService = {
       });
   },
 
+  CriarSolicitacaoJogo: (atleticaId, data) => {
+    return api
+      .post(`/api/SolicitacaoJogo/${atleticaId}`, data)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 
   PesquisaAtleticaPorUsername: (username) => {
     return api
