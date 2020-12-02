@@ -35,10 +35,13 @@ export default function AddJogo() {
     const [atleticaId, setAtleticaId] = useState(null)
     const [modalidades, setModalidades] = useState([])
     const [modalidadeId, setModalidadeId] = useState(null)
+    const [categorias, setCategorias] = useState([])
+    const [categoriaId, setCategoriaId] = useState(null)
 
     useEffect(() => {
         buscaAtleticas()
         buscaModalidades()
+        buscaCategorias()
     }, []);
 
     const handleSubmitClick = () => {
@@ -72,6 +75,18 @@ export default function AddJogo() {
                 setModalidades(res.data)
                 if (res.data !== null && res.data.length > 0)
                     setModalidadeId(res.data[0].modalidadeId)
+            })
+            .catch(err =>
+                console.log(err)
+            )
+    }
+
+    const buscaCategorias = async () => {
+        await ApiService.BuscarCategoriasJogos()
+            .then(res => {
+                setCategorias(res.data)
+                if (res.data !== null && res.data.length > 0)
+                    setCategoriaId(res.data[0].jogoCategoriaId)
             })
             .catch(err =>
                 console.log(err)
@@ -134,9 +149,23 @@ export default function AddJogo() {
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <AvField name="categoria" label="Categoria" type="select">
-                                        <option>Treino</option>
-                                        <option>Campeonato</option>
+                                    <AvField
+                                        name="categoria"
+                                        label="Categoria"
+                                        type="select"
+                                        onChange={(e) => setCategoriaId(e.target.value)}
+                                        value={categoriaId}
+                                    >
+                                        {
+                                            categorias.map((cat) =>
+                                                <option
+                                                    key={cat.jogoCategoriaId}
+                                                    value={cat.jogoCategoriaId}
+                                                >
+                                                    {cat.nome}
+                                                </option>
+                                            )
+                                        }
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={4}>
@@ -237,9 +266,23 @@ export default function AddJogo() {
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AvField name="categoria" label="Categoria" type="select">
-                                        <option>Treino</option>
-                                        <option>Campeonato</option>
+                                    <AvField
+                                        name="categoria"
+                                        label="Categoria"
+                                        type="select"
+                                        onChange={(e) => setCategoriaId(e.target.value)}
+                                        value={categoriaId}
+                                    >
+                                        {
+                                            categorias.map((cat) =>
+                                                <option
+                                                    key={cat.jogoCategoriaId}
+                                                    value={cat.jogoCategoriaId}
+                                                >
+                                                    {cat.nome}
+                                                </option>
+                                            )
+                                        }
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={12}>
