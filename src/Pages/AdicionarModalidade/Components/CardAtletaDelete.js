@@ -3,6 +3,7 @@ import { Grid, Paper, Typography, Dialog, DialogActions, DialogTitle, Button, Sn
 import IconButton from '@material-ui/core/IconButton';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import MuiAlert from '@material-ui/lab/Alert';
+import ApiService from "../../../variables/ApiService"
 
 
 function Alert(props) {
@@ -18,9 +19,14 @@ export default function CardAtletaDelete(props) {
 
     const Deletar = () => {
 
-        DeleteAtleta(index)
-        setOpenExcluir(false)
-        setOpenExcluido(true)
+        ApiService.DeletarAtletaModalidade(atleta.atletaAtleticaModalidadeId)
+            .then(res => {
+                console.log(res)
+                DeleteAtleta(index)
+                setOpenExcluir(false)
+                setOpenExcluido(true)
+            })
+
     };
 
     const handleExcluir = () => {
@@ -56,7 +62,7 @@ export default function CardAtletaDelete(props) {
                         <Grid item xs={8}>
 
                             <Typography style={{ fontSize: 14 }}>
-                                {atleta}
+                                {atleta.nome}
                             </Typography>
 
                         </Grid>

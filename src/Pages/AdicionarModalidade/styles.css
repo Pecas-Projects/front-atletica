@@ -1,32 +1,32 @@
-.MyTitle {
+.MyTitleModalidade {
   font-size: 24px;
   font-family: "Roboto Condensed";
 }
 
-.MySubtitle {
+.MySubtitleM {
   font-size: 18px;
   font-family: "Roboto Condensed";
 }
 
-.MySubtitle2 {
+.MySubtitle2M {
   font-size: 14px;
   font-family: "Roboto";
   color: dimgray;
   margin-top: -15px;
 }
 
-.relativeCard {
+.relative {
   position: relative;
 }
 
-.absoluteCard {
+.absoluteCardM {
   position: absolute;
-  right: 20px;
+  right: 250px;
 }
 
-.absoluteCard2 {
+.absoluteCard2M {
   position: absolute;
-  right: 70px;
+  right: 180px;
 }
 
 .scroll {

@@ -23,7 +23,7 @@
   position: relative;
 }
 
-.absolute {
+.absoluteNavBar {
   position: absolute;
   bottom: 10px;
 }
