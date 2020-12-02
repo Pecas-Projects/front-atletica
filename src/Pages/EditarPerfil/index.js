@@ -78,6 +78,10 @@ export default function EditarPerfil(props) {
 
   const { username } = props.match.params.username;
 
+  const [verificacao, setVerificacao] = useState();
+  const [verificacaoMsg, setVerificacaoMsg] = useState("");
+  const [statusVerificacao, setStatusVerificacao] = useState("");
+  const [mostrarVerificacao, setMostrarVerificacao] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
   const [atletica, setAtletica] = useState();
   const [cepcp, setCepcp] = useState("");
@@ -97,6 +101,8 @@ export default function EditarPerfil(props) {
   const [atleticaUsername, setAtleticaUsername] = useState("");
   const [typePin, setTypePin] = useState(true);
   const [email, setEmail] = useState("");
+  const [nomeCampus, setNomeCampus] = useState("");
+  const [nomeFaculdade, setNomeFaculdade] = useState("");
   const [cursosIds, setCursosIds] = useState();
   const [avisoPin, setAvisoPin] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -174,6 +180,14 @@ export default function EditarPerfil(props) {
     e.preventDefault();
     setEmail(e.target.value);
   };
+  const handleChangeCampus = (e) => {
+    e.preventDefault();
+    setNomeCampus(e.target.value);
+  };
+  const handleChangeFaculdade = (e) => {
+    e.preventDefault();
+    setNomeFaculdade(e.target.value);
+  };
   const handleChangeAtleticaUsername = (e) => {
     e.preventDefault();
     setAtleticaUsername(e.target.value);
@@ -185,8 +199,38 @@ export default function EditarPerfil(props) {
     setAvisoPin(true);
   };
 
-  const changeUsername = (e) => {
+  const changeUsername = async (e) => {
     e.preventDefault();
+    if (atletica.username === atleticaUsername) {
+      setVerificacaoMsg("Esta já é seu username");
+      setStatusVerificacao("info");
+      setMostrarVerificacao(true);
+    } else {
+      // await ApiService.VerificaUsername(atleticaUsername)
+      //   .then((res) => console.log(res))
+      //   .catch((err) => console.log(err));
+      //setVerificacao(ApiService.VerificaUsername(atleticaUsername));
+      // console.log(response);
+      // if (response.status !== undefined) {
+      //   setVerificacaoMsg("Username disponivel");
+      //   setStatusVerificacao("success");
+      //   setMostrarVerificacao(true);
+      // } else {
+      //   setVerificacaoMsg("Username em uso");
+      //   setStatusVerificacao("error");
+      //   setMostrarVerificacao(true);
+      // }
+      //console.log(response);
+      // if (response.status == 200) {
+      //   setVerificacaoMsg("Username disponivel");
+      //   setStatusVerificacao("success");
+      //   setMostrarVerificacao(true);
+      // } else {
+      //   setVerificacaoMsg("Username em uso");
+      //   setStatusVerificacao("error");
+      //   setMostrarVerificacao(true);
+      // }
+    }
     {
       /*
     
@@ -239,6 +283,8 @@ export default function EditarPerfil(props) {
         setNeighbourhood(res.data.campus.bairro);
         setComplemento(res.data.complemento);
         setPin(res.data.pin);
+        setNomeCampus(res.data.campus.nome);
+        setNomeFaculdade(res.data.campus.faculdade.nome);
         setCursosIds(res.data.cursos);
         if (res.data.atleticaImagens.length > 0) {
           res.data.atleticaImagens.map((img) => {
@@ -292,6 +338,7 @@ export default function EditarPerfil(props) {
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
+
     let imgs;
     if (imagemCapa !== null && imagemPerfil !== null) {
       imgs = [
@@ -324,14 +371,14 @@ export default function EditarPerfil(props) {
       descricao: descricao,
       senha: "*",
       campus: {
-        nome: atletica.campus.nome,
+        nome: nomeCampus,
         cidade: city,
         bairro: neighbourhood,
         rua: street,
         estado: state,
         cep: cepcp,
         faculdade: {
-          nome: atletica.campus.faculdade.nome,
+          nome: nomeFaculdade,
         },
       },
       imagens: imgs,
@@ -436,18 +483,24 @@ export default function EditarPerfil(props) {
                         para mudar este campo é aconcelhado chegar sua
                         disponibilidade
                       </p>
-                      <form onSubmit={changeUsername}>
-                        <AvField
-                          name="username"
-                          type="text"
-                          onChange={handleChangeAtleticaUsername}
-                          value={atleticaUsername}
-                        />
-                        <Button type="submit" color="secondary">
-                          Validar
-                        </Button>
-                      </form>
-
+                      <AvField
+                        name="username"
+                        type="text"
+                        onChange={handleChangeAtleticaUsername}
+                        value={atleticaUsername}
+                      />
+                      <Button
+                        type="submit"
+                        color="secondary"
+                        onClick={changeUsername}
+                      >
+                        Validar
+                      </Button>
+                      {mostrarVerificacao && (
+                        <Alert severity={statusVerificacao}>
+                          {verificacaoMsg}
+                        </Alert>
+                      )}
                       <p className="MySubtitle">Email</p>
                       <AvField
                         name="email"
@@ -532,6 +585,27 @@ export default function EditarPerfil(props) {
                         O campus que sua atlética está sediada
                       </p>
                       <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={nomeCampus}
+                            onChange={handleChangeCampus}
+                            name="campus"
+                            label="Campus"
+                            type="text"
+                          />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={nomeFaculdade}
+                            onChange={handleChangeFaculdade}
+                            name="faculdade"
+                            label="Faculdade"
+                            type="text"
+                          />
+                        </Grid>
                         <Grid item xs={6}>
                           <AvField
                             style={{ width: "90%" }}
