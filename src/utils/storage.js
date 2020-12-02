@@ -1,19 +1,21 @@
-export const login = (token, userType, userId, username) => {
+export const loginMembro = (token, userType, userId, atleticaId) => {
   localStorage.setItem("TOKEN", token);
   localStorage.setItem("USER_TYPE", userType);
   localStorage.setItem("USER_ID", userId);
-  if (userType === "A") {
-    localStorage.setItem("USERNAME", username);
-  }
+  localStorage.setItem("ATLETICA_ID", atleticaId);
+};
+
+export const loginAtletica = (token, userType, atleticaId) => {
+  localStorage.setItem("TOKEN", token);
+  localStorage.setItem("USER_TYPE", userType);
+  localStorage.setItem("ATLETICA_ID", atleticaId);
 };
 
 export const logout = () => {
-  if (localStorage.getItem("USER_TYPE") === "A") {
-    localStorage.removeItem("USERNAME");
-  }
   localStorage.removeItem("TOKEN");
   localStorage.removeItem("USER_TYPE");
   localStorage.removeItem("USER_ID");
+  localStorage.removeItem("ATLETICA_ID");
 };
 
 export const isLogin = () => {
@@ -47,4 +49,8 @@ export const getUsername = () => {
 export const resetUsername = (username) => {
   localStorage.removeItem("USERNAME");
   localStorage.setItem("USERNAME", username);
+};
+
+export const getAtleticaId = () => {
+  return localStorage.getItem("ATLETICA_ID");
 };

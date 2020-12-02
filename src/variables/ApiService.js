@@ -1,21 +1,46 @@
 import api from "../services/api";
-import { login } from "../utils/storage";
+import { login, loginAtletica, loginMembro } from "../utils/storage";
 
 const ApiService = {
   LoginAtletica: (crecencial) => {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        login(
-          res.data.token,
-          "A",
-          res.data.atletica.atleticaId,
-          res.data.atletica.username
-        );
+        loginAtletica(res.data.token, "A", res.data.atletica.atleticaId);
         return res;
       })
       .catch((error) => {
         console.error(error);
+        return Promise.reject(error);
+      });
+  },
+  BuscarTodosCursos: () => {
+    return api
+      .get("/api/Cursos")
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  BuscarAtleticaModalidades: (atleticaId) => {
+    return api
+      .get("/api/AtleticaModalidade/" + atleticaId)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+  CriarSolicitacaoAtleta: (atleticaId, atleta) => {
+    return api
+      .post("/api/SolicitacaoAtleta/" + atleticaId, atleta)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
         return Promise.reject(error);
       });
   },
@@ -70,9 +95,20 @@ const ApiService = {
       });
   },
 
-  PesquisaAtleticas: (nomeAtletica) => {
+  BuscarTodosPosts: (atleticaId) => {
     return api
-      .get("/api/AtleticaNome/" + nomeAtletica)
+      .get("api/PublicacaoAtletica/" + atleticaId)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  CadastroMembro: (Membro, PIN) => {
+    return api
+      .post(`/api/Registro/Membro/${PIN}`, Membro)
       .then((res) => {
         return Promise.resolve(res);
       })
@@ -91,6 +127,83 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+  GetModalidadeId: (modalidadeId) => {
+    return api
+      .get(`​/api/modalidade/${modalidadeId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesJogo: (atleticaId) => {
+    return api
+      .get(`/api/SolicitacaoJogo/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  GetSolicitacoesAtleta: (atleticaId) => {
+    return api
+      .get(`/api/SolicitacaoAtleta/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacaoAtleta: (solicitacaoAtletaId) => {
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  ReprovarSolicitacaoAtleta: (solicitacaoAtletaId) => {
+    return api
+      .delete(`/api/SolicitacaoAtleta/${solicitacaoAtletaId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  AprovarSolicitacaoJogo: (solicitacaoJogoId) => {
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/aprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  ReprovarSolicitacaoJogo: (solicitacaoJogoId) => {
+    return api
+      .delete(`/api/SolicitacaoJogo/${solicitacaoJogoId}/reprovado`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
   UploadImagem: (data) => {
     return api
       .post(`/api/Imagem/Upload`, data)
@@ -102,7 +215,6 @@ const ApiService = {
         return error;
       });
   },
-
   GetTodosCurso: () => {
     return api
       .get("api/Cursos")
@@ -135,6 +247,71 @@ const ApiService = {
       })
       .catch((error) => {
         // console.log(error);
+        return Promise.reject(error);
+      });
+  },
+  BuscarRankingModalidade: (modalidadeId) => {
+    return api
+      .get(`/api/RankingModalidade/${modalidadeId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarModalidades: () => {
+    return api
+      .get(`/api/Modalidade`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  EnviarPost: (dados) => {
+    return api
+      .post("/api/Publicacao", dados)
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarTodasCategorias: () => {
+    return api
+      .get("/api/ProdutoCategoria")
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  CriarProduto: (produto) => {
+    return api
+      .post("api/Produto", produto)
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarProdutosAtletica: (atleticaId) => {
+    return api
+      .get(`/api/AtleticaProduto/${atleticaId}`)
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
         return Promise.reject(error);
       });
   },

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem"
+import ApiService from "../../../variables/ApiService";
+import { getAtleticaId } from "../../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -22,39 +24,89 @@ export default function FormularioProduto() {
 
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
-  const [estoque, setEstoque] = useState(false)
-  const [categoria, setCategoria] = useState('')
-  const [descricao, setDescricao] = useState('')
-  const [preco, setPreco] = useState('')
-  const [nome, setNome] = useState('')
+  const [categorias, setCategorias] = useState([]);
+  const [produto, setProduto] = useState({
+    Nome: "",
+    Descricao: "",
+    Preco: "",
+    ProdutoCategoriaId: undefined,
+    Estoque: false,
+    AtleticaId: getAtleticaId(),
+    ImagemId: null
+  });
 
   const handleCategoriaChange = (e) => {
-    setCategoria(e.target.value)
+    setProduto({...produto, ProdutoCategoriaId: e.target.value})
   }
 
   const handleNomeChange = (e) => {
-    setNome(e.target.value)
+    e.preventDefault();
+    setProduto({...produto, Nome: e.target.value})
   }
 
   const handleDescricaoChange = (e) => {
-    setDescricao(e.target.value)
+    e.preventDefault();
+    setProduto({...produto, Descricao: e.target.value})
   }
 
   const handlePrecoChange = (e) => {
-    setPreco(e.target.value)
+    e.preventDefault();
+    setProduto({...produto, Preco: e.target.value})
   }
 
-  const handleEstoquChange = () => {
-    setEstoque(estoque => !estoque)
+  const handleEstoqueChange = (e) => {
+    e.preventDefault();
+    setProduto({...produto, Estoque: !produto.Estoque})
+  };
+
+  useEffect(() => {
+    buscarTodasCategorias();
+    if(produto.ImagemId !== null && produto.ImagemId !== undefined)
+      criarProduto();
+  },[produto.ImagemId]);
+
+  async function envioImagem(){
+    let file = new FormData();
+    file.append('value', imagem);
+
+    await ApiService.UploadImagem(file)
+      .then((res) => {
+        console.log(res)
+        setProduto({...produto, ImagemId: res.data.imagemId})
+      })
+      .catch((error) => {
+        console.log(error)
+      });
   }
 
+  async function buscarTodasCategorias(){
+    await ApiService.BuscarTodasCategorias()
+      .then((response) => {
+        setCategorias(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
-  const categorias = ["categoria 1", "categoria 2", "categoria 3"];
+  async function criarProduto(){
+    await ApiService.CriarProduto(produto)
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })  
+  }
 
   function showAdicionarImagem() {
     if (imagem === null) {
       return <p>Adicione uma Imagem</p>
     } else return <div><br /><br /></div>;
+  }
+
+  function submit(){
+    envioImagem();
   }
 
   return (
@@ -102,6 +154,7 @@ export default function FormularioProduto() {
                     maxLength: { value: 45, errorMessage: "Nome inválido" },
                   }}
                   style={{ color: "E2E2E2" }}
+                  onChange={handleNomeChange}
                 />
                 <AvField
                   name="descrição"
@@ -115,12 +168,13 @@ export default function FormularioProduto() {
                     minLength: { value: 2, errorMessage: "Nome inválido" },
                     maxLength: { value: 45, errorMessage: "Nome inválido" },
                   }}
+                  onChange={handleDescricaoChange}
                 />
 
                 <Grid container spacing={2}>
 
                   <Grid item xs={4}>
-                    <AvField name="preço" label="Preço" type="number" />
+                    <AvField name="preço" label="Preço" type="number" onChange={handlePrecoChange}/>
                   </Grid>
 
                   <Grid item xs={4}>
@@ -131,12 +185,12 @@ export default function FormularioProduto() {
                       select
                       label="Categoria"
                       style={{ marginTop: 5, marginLeft: 5 }}
-                      value={categoria}
+                      value={produto.ProdutoCategoriaId}
                       onChange={handleCategoriaChange}
                     >
                       {categorias.map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
+                        <MenuItem value={option.produtoCategoriaId} key={option.nome}>
+                          {option.nome}
                         </MenuItem>
                       ))}
                     </TextField>
@@ -149,7 +203,7 @@ export default function FormularioProduto() {
                       style={{ marginTop: 25, marginLeft: 10 }}
                       control={<Switch name="estoque" />}
                       label="Em estoque"
-                      onChange={handleEstoquChange}
+                      onChange={handleEstoqueChange}
                     />
 
                   </Grid>
@@ -169,6 +223,7 @@ export default function FormularioProduto() {
                     color='secondary'
                     variant='contained'
                     style={{ width: 300 }}
+                    onClick={submit}
                   >
                     Postar
                       </Button>

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto"
-import productImage from "../../assets/imagem/productImage.svg"
 import "./styles.css"
+import ApiService from "../../variables/ApiService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,43 +60,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Produtos() {
-  const products = [
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-
-    },
-
-    {
-      imagem: productImage,
-      titulo: "Camisa da Atlética",
-      descricao: "Tamanhos disponíveis: P-M-G",
-      preco: "24,00",
-    },
-  ];
-
+export default function Produtos(props) {
   const classes = useStyles();
+  const username = props.match.params.username;
+  const [atleticaId, setAtleticaId] = useState();
+  const [produtos, setProdutos] = useState([]);
+
+  useEffect(() => {
+    buscaAtletica();
+    if (atleticaId !== undefined && atleticaId !== null)
+      buscarProdutos();
+  }, [atleticaId]);
+
+  async function buscaAtletica() {
+    await ApiService.PesquisaAtleticaPorUsername(username)
+      .then((res) => {
+        setAtleticaId(res.data.atleticaId)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  async function buscarProdutos() {
+    await ApiService.BuscarProdutosAtletica(atleticaId)
+      .then((res) => {
+        setProdutos(res.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
   return (
     <div className={classes.root}>
@@ -105,23 +99,17 @@ export default function Produtos() {
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
-        {/*
-        
-        
-        
-        DESKTOP
-        
-        
-        
-        */}
-
         <div className={classes.sectionDesktop}>
           <Grid container justify="center">
             <Paper className={classes.paperA}>
-              <h4 className="MyTitle">Nossos Produtos</h4>
-
+              {
+                produtos !== undefined && produtos !== null && produtos.length !== 0 ?
+                  <h4 className="MyTitle">Nossos Produtos</h4>
+                  :
+                  <h4 className="MyTitle">Essa atlética não possui produtos cadastrados!</h4>
+              }
               <Grid container spacing={1} style={{ marginTop: 20 }}>
-                {products.map((item) => (
+                {produtos.map((item) => (
                   <CardProduto item={item} />
                 ))}
               </Grid>
@@ -132,13 +120,19 @@ export default function Produtos() {
         <div className={classes.sectionMobile}>
           <Grid item xs={1}></Grid>
           <Grid container spacing={1} style={{ marginTop: 20 }}>
-            <h4 className="MyTitle">Nossos Produtos</h4>
-            {products.map((item) => (
+            {
+              produtos !== undefined && produtos !== null && produtos.length !== 0 ?
+                <h4 className="MyTitle" style={{ color: 'black' }}>Nossos Produtos</h4>
+                :
+                <h4 className="MyTitle" style={{ color: 'black' }}>Essa atlética não possui produtos cadastrados!</h4>
+            }
+            {produtos.map((item) => (
               <CardProduto item={item} />
             ))}
           </Grid>
           <Grid item xs={1}></Grid>
         </div>
+
       </main>
     </div>
   );
