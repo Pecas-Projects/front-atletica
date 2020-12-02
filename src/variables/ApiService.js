@@ -116,7 +116,7 @@ const ApiService = {
   },
 
   ResetPin: (atleticaId) => {
-    api
+    return api
       .put(`/api/Atletica/ResetPin/${atleticaId}`)
       .then((response) => {
         return response;
@@ -128,7 +128,7 @@ const ApiService = {
   },
 
   VerificaUsername: (username) => {
-    api
+    return api
       .post(`/api/Atletica/VericiacaoUsername/${username}`)
       .then((response) => {
         return Promise.resolve(response);
