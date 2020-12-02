@@ -1,5 +1,5 @@
 import api from "../services/api";
-import { login, loginAtletica, loginMembro } from "../utils/storage";
+import { loginAtletica, loginMembro } from "../utils/storage";
 
 const ApiService = {
   LoginAtletica: (crecencial) => {
@@ -49,7 +49,7 @@ const ApiService = {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
-        login(res.data.token, "A", res.data.atletica.membroId, null);
+        loginMembro(res.data.token, "M", res.data.atletica.membroId, null);
         return res;
       })
       .catch((error) => {
