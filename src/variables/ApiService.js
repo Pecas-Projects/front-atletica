@@ -126,6 +126,18 @@ const ApiService = {
         return error;
       });
   },
+
+  VerificaUsername: (username) => {
+    api
+      .post(`/api/Atletica/VericiacaoUsername/${username}`)
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        // console.log(error);
+        return Promise.reject(error);
+      });
+  },
 };
 
 export default ApiService;
