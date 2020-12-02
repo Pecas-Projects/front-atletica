@@ -4,6 +4,7 @@ import { FormGroup, Label, Input } from 'reactstrap';
 import { AvField, AvForm } from "availity-reactstrap-validation"
 import { makeStyles } from '@material-ui/core/styles';
 import ApiService from '../../../variables/ApiService'
+import { getAtleticaId } from '../../../utils/storage'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,9 +33,12 @@ export default function AddJogo() {
     const [time, setTime] = useState("");
     const [atleticas, setAtleticas] = useState([])
     const [atleticaId, setAtleticaId] = useState(null)
+    const [modalidades, setModalidades] = useState([])
+    const [modalidadeId, setModalidadeId] = useState(null)
 
     useEffect(() => {
         buscaAtleticas()
+        buscaModalidades()
     }, []);
 
     const handleSubmitClick = () => {
@@ -56,6 +60,18 @@ export default function AddJogo() {
                 setAtleticas(res.data)
                 if (res.data != null && res.data.length > 0)
                     setAtleticaId(res.data[0].atleticaId)
+            })
+            .catch(err =>
+                console.log(err)
+            )
+    }
+
+    const buscaModalidades = async () => {
+        await ApiService.BuscarAtleticaModalidades(getAtleticaId())
+            .then(res => {
+                setModalidades(res.data)
+                if (res.data !== null && res.data.length > 0)
+                    setModalidadeId(res.data[0].modalidadeId)
             })
             .catch(err =>
                 console.log(err)
@@ -98,9 +114,23 @@ export default function AddJogo() {
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <AvField name="modalidade" label="Modalidade" type="select">
-                                        <option>Futebol Masculino</option>
-                                        <option>Handball Feminino</option>
+                                    <AvField
+                                        name="modalidade"
+                                        label="Modalidade"
+                                        type="select"
+                                        onChange={(e) => setModalidadeId(e.target.value)}
+                                        value={modalidadeId}
+                                    >
+                                        {
+                                            modalidades.map((modalidade) =>
+                                                <option
+                                                    key={modalidade.modalidadeId}
+                                                    value={modalidade.modalidadeId}
+                                                >
+                                                    {modalidade.modalidade}
+                                                </option>
+                                            )
+                                        }
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={4}>
@@ -173,9 +203,23 @@ export default function AddJogo() {
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AvField name="modalidade" label="Modalidade" type="select">
-                                        <option>Futebol Masculino</option>
-                                        <option>Handball Feminino</option>
+                                    <AvField
+                                        name="modalidade"
+                                        label="Modalidade"
+                                        type="select"
+                                        onChange={(e) => setModalidadeId(e.target.value)}
+                                        value={modalidadeId}
+                                    >
+                                        {
+                                            modalidades.map((modalidade) =>
+                                                <option
+                                                    key={modalidade.modalidadeId}
+                                                    value={modalidade.modalidadeId}
+                                                >
+                                                    {modalidade.modalidade}
+                                                </option>
+                                            )
+                                        }
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={12}>
