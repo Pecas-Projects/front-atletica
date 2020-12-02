@@ -7,10 +7,12 @@ import cep from "cep-promise";
 import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
-import Alert from "./Components/Alert";
+import AlertComponents from "./Components/Alert";
 import { getUserId, resetUsername } from "../../utils/storage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import "./styles.css";
 
 function sleep(delay = 0) {
@@ -19,9 +21,17 @@ function sleep(delay = 0) {
   });
 }
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
   },
   toolbar: {
     display: "flex",
@@ -78,6 +88,10 @@ export default function EditarPerfil(props) {
 
   const { username } = props.match.params.username;
 
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [notification, setNotification] = useState(false);
+  const [updateStatus, setUpdateStatus] = useState("");
+  const [updateMsg, setUpdateMsg] = useState("");
   const [pinMsg, setPinMsg] = useState("");
   const [pinStatus, setPinStatus] = useState();
   const [verificacaoMsg, setVerificacaoMsg] = useState("");
@@ -104,6 +118,7 @@ export default function EditarPerfil(props) {
   const [email, setEmail] = useState("");
   const [nomeCampus, setNomeCampus] = useState("");
   const [nomeFaculdade, setNomeFaculdade] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [cursosIds, setCursosIds] = useState();
   const [avisoPin, setAvisoPin] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -137,6 +152,14 @@ export default function EditarPerfil(props) {
     }
   }, [open]);
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const handleChangeCursos = (e) => {
     setCursosIds(e);
   };
@@ -162,6 +185,11 @@ export default function EditarPerfil(props) {
   const handleComplementoChange = (e) => {
     e.preventDefault();
     setComplemento(e.target.value);
+  };
+
+  const handleTelegoneChange = (e) => {
+    e.preventDefault();
+    setTelefone(e.target.value);
   };
 
   const handleChangeDescricao = (e) => {
@@ -257,6 +285,7 @@ export default function EditarPerfil(props) {
   const buscaAtleticaPorUsername = async (username) => {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
+        console.log(res.data);
         setAtletica(res.data);
         setAtleticaUsername(res.data.username);
         setEmail(res.data.email);
@@ -268,8 +297,9 @@ export default function EditarPerfil(props) {
         setCity(res.data.campus.cidade);
         setStreet(res.data.campus.rua);
         setNeighbourhood(res.data.campus.bairro);
-        setComplemento(res.data.complemento);
+        setComplemento(res.data.campus.complemento);
         setPin(res.data.pin);
+        setTelefone(res.data.telefone);
         setNomeCampus(res.data.campus.nome);
         setNomeFaculdade(res.data.campus.faculdade.nome);
         setCursosIds(res.data.cursos);
@@ -286,66 +316,80 @@ export default function EditarPerfil(props) {
         }
         setLoadingPage(false);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setUpdateMsg("Erro ao carregar as informações");
+        setUpdateStatus("error");
+      });
   };
 
   useEffect(() => {
     buscaAtleticaPorUsername(props.match.params.username);
   }, []);
 
-  const UploadImagens = async () => {
-    if (imagemPerfil !== null) {
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingUpdate(true);
+    if (imagemPerfil !== null && imagemPerfil.imagemId === undefined) {
       let file = new FormData();
       file.append("value", imagemPerfil);
 
       await ApiService.UploadImagem(file)
         .then((res) => {
-          //console.log(res.data);
+          console.log(res.data);
           setImagemPerfil(res.data);
+          if (imagemCapa !== null && imagemCapa.imagemId === undefined) {
+            UploadCapa();
+          } else {
+            UpdateInfo(res.data, null);
+          }
         })
         .catch((error) => {
           console.log(error);
+          setLoadingUpdate(false);
         });
+    } else if (imagemCapa !== null && imagemCapa.imagemId === undefined) {
+      UploadCapa();
+    } else {
+      UpdateInfo(null, null);
     }
+  };
 
+  const UploadCapa = async () => {
     if (imagemCapa !== null) {
       let file = new FormData();
       file.append("value", imagemCapa);
 
       await ApiService.UploadImagem(file)
         .then((res) => {
-          // console.log(res);
           setImagemCapa(res.data);
+          console.log(res.data);
+          UpdateInfo(null, res.data);
         })
         .catch((error) => {
           console.log(error);
+          setLoadingUpdate(false);
         });
     }
   };
 
-  const onFormSubmit = async (e) => {
-    e.preventDefault();
+  const UpdateInfo = async (imgPerfil, imgCapa) => {
+    let capa = { tipo: "C", imagemId: 0 };
+    let perfil = { tipo: "P", imagemId: 0 };
 
-    let imgs;
-    if (imagemCapa !== null && imagemPerfil !== null) {
-      imgs = [
-        {
-          tipo: "C",
-          imagemId: imagemCapa.imagemId,
-        },
-        {
-          tipo: "P",
-          imagemId: imagemPerfil.imagemId,
-        },
-      ];
-    } else {
-      imgs = [
-        {
-          tipo: "P",
-          imagemId: imagemPerfil.imagemId,
-        },
-      ];
-    }
+    if (imgPerfil !== null) perfil.imagemId = imgPerfil.imagemId;
+    else if (imagemPerfil.imagemId !== undefined)
+      perfil.imagemId = imagemPerfil.imagemId;
+    else perfil = null;
+
+    if (imgCapa !== null) capa.imagemId = imgCapa.imagemId;
+    else if (imagemCapa.imagemId !== undefined)
+      capa.imagemId = imagemCapa.imagemId;
+    else perfil = null;
+
+    let imgs = null;
+    if (capa !== null && perfil !== null) imgs = [capa, perfil];
+    else if (capa === null && perfil !== null) imgs = [perfil];
+    else if (capa !== null && perfil === null) imgs = [capa];
 
     let idsCursos = cursosIds.map(function (curso) {
       return curso.cursoId;
@@ -357,6 +401,8 @@ export default function EditarPerfil(props) {
       username: atleticaUsername,
       descricao: descricao,
       senha: "*",
+      telefone: telefone,
+      linkProsel: link,
       campus: {
         nome: nomeCampus,
         cidade: city,
@@ -364,6 +410,7 @@ export default function EditarPerfil(props) {
         rua: street,
         estado: state,
         cep: cepcp,
+        complemento: complemento,
         faculdade: {
           nome: nomeFaculdade,
         },
@@ -372,12 +419,23 @@ export default function EditarPerfil(props) {
       cursosIds: idsCursos,
     };
 
+    console.log(atleticaDados);
+
     ApiService.AtualizarAtletica(getUserId(), atleticaDados)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         resetUsername(res.data.username);
+        setUpdateMsg("Suas informações foram atualizadas com sucesso!");
+        setUpdateStatus("success");
+        setNotification(true);
+        setLoadingUpdate(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setUpdateMsg("Erro ao atualizar as informações");
+        setUpdateStatus("error");
+        setNotification(true);
+        setLoadingUpdate(false);
+      });
   };
 
   return (
@@ -399,9 +457,18 @@ export default function EditarPerfil(props) {
         */}
 
           {loadingPage ? (
-            <h2>Loading...</h2>
+            <h2 style={{ textAlign: "center" }}>Carregando...</h2>
           ) : (
             <>
+              <Snackbar
+                open={notification}
+                autoHideDuration={4000}
+                onClose={handleClose}
+              >
+                <Alert onClose={handleClose} severity={updateStatus}>
+                  {updateMsg}
+                </Alert>
+              </Snackbar>
               <div className={classes.sectionDesktop}>
                 <Grid container justify="center">
                   <Paper className={classes.paperA}>
@@ -422,7 +489,9 @@ export default function EditarPerfil(props) {
                         </Grid>
                       </Grid>
                     </Grid>
-                    {avisoPin && <Alert status={pinStatus} mensagem={pinMsg} />}
+                    {avisoPin && (
+                      <AlertComponents status={pinStatus} mensagem={pinMsg} />
+                    )}
                     <br />
                     <AvForm onSubmit={onFormSubmit}>
                       <p className="MySubtitle">PIN</p>
@@ -476,20 +545,35 @@ export default function EditarPerfil(props) {
                         Validar
                       </Button>
                       {mostrarVerificacao && (
-                        <Alert
+                        <AlertComponents
                           status={statusVerificacao}
                           mensagem={verificacaoMsg}
                         />
                       )}
-                      <p className="MySubtitle" style={{ marginTop: 15 }}>
-                        Email
-                      </p>
-                      <AvField
-                        name="email"
-                        type="text"
-                        onChange={handleChangeEmail}
-                        value={email}
-                      />
+                      <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                          <p className="MySubtitle" style={{ marginTop: 15 }}>
+                            Email
+                          </p>
+                          <AvField
+                            name="email"
+                            type="text"
+                            onChange={handleChangeEmail}
+                            value={email}
+                          />
+                        </Grid>
+                        <Grid item xs={6}>
+                          <p className="MySubtitle" style={{ marginTop: 15 }}>
+                            Telefone
+                          </p>
+                          <AvField
+                            name="Telefone"
+                            type="text"
+                            onChange={handleTelegoneChange}
+                            value={telefone}
+                          />
+                        </Grid>
+                      </Grid>
 
                       <p className="MySubtitle">Descrição</p>
                       <p className="MySubtitle2">
@@ -682,25 +766,15 @@ export default function EditarPerfil(props) {
                         <p className="MySubtitle2">
                           Adicione imagens de perfil e capa da sua atlética
                         </p>
-                        <Alert
-                          mensagem="Para salvar as mudanças feitas nas imagens clique no
-                          botão abaixo!"
-                          status="info"
-                        />
 
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          style={{ marginTop: 20 }}
-                          onClick={UploadImagens}
-                        >
-                          Salvar Imagens
-                        </Button>
                         {imagemPerfil === null && imagemCapa === null ? (
-                          <Grid item xs={4} style={{ marginTop: 30 }}>
+                          <Grid item xs={4} style={{ marginTop: 20 }}>
                             {showAdicionarImagemPerfil()}
                             <Paper
-                              style={{ backgroundColor: "#636363", width: 250 }}
+                              style={{
+                                backgroundColor: "#636363",
+                                width: 250,
+                              }}
                             >
                               <Grid
                                 container
@@ -771,14 +845,22 @@ export default function EditarPerfil(props) {
                           </Grid>
                         )}
                         <Grid container justify="center">
-                          <Button
-                            type="submit"
-                            style={{ marginTop: 60, width: 400 }}
-                            variant="contained"
-                            color="secondary"
-                          >
-                            Salvar Alterações
-                          </Button>
+                          {loadingUpdate ? (
+                            <>
+                              <CircularProgress style={{ marginTop: 60 }} />
+                              <CircularProgress style={{ marginTop: 60 }} />
+                              <CircularProgress style={{ marginTop: 60 }} />
+                            </>
+                          ) : (
+                            <Button
+                              type="submit"
+                              style={{ marginTop: 60, width: 400 }}
+                              variant="contained"
+                              color="secondary"
+                            >
+                              Salvar Alterações
+                            </Button>
+                          )}
                         </Grid>
                       </Grid>
                     </AvForm>
@@ -798,7 +880,7 @@ export default function EditarPerfil(props) {
                         
                         
                         
-        */}
+                      */}
 
           <div className={classes.sectionMobile}>
             <Grid container justify="center">
