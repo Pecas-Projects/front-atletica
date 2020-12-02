@@ -4,6 +4,8 @@ import { Grid, Paper, Typography } from "@material-ui/core";
 
 export default function CardAtleta(props) {
 
+    const { atleta } = props;
+
     return (
         <>
             <Grid item xs={12} sm={3}>
@@ -13,7 +15,7 @@ export default function CardAtleta(props) {
 
                     <Typography style={{ fontSize: 14 }}>
 
-                        {props.atleta}
+                        {atleta.nome}
                     </Typography>
 
 
