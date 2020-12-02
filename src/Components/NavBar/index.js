@@ -328,7 +328,7 @@ export default function MiniDrawer() {
                     </ListItem>
                   </Link>
 
-                  <Link to="/Feed">
+                  <Link to={"/Feed/" + atleticaUsername()}>
                     <ListItem button>
                       <ListItemIcon>
                         <img src={Feed} alt="feed" />
@@ -528,7 +528,7 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
 
-                <Link to="/Feed">
+                <Link to={"/Feed/" + atleticaUsername()}>
                   <ListItem button>
                     <ListItemIcon>
                       <img src={Feed} alt="feed" />
