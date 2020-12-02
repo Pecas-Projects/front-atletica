@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Grid, Button, CardHeader, CardContent } from '@material-ui/core';
 import { FormGroup, Label, Input } from 'reactstrap';
 import { AvField, AvForm } from "availity-reactstrap-validation"
 import { makeStyles } from '@material-ui/core/styles';
+import ApiService from '../../../variables/ApiService'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,6 +30,12 @@ export default function AddJogo() {
     const [emptyTime, setEmptyTime] = useState(false);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [atleticas, setAtleticas] = useState([])
+    const [atleticaId, setAtleticaId] = useState(null)
+
+    useEffect(() => {
+        buscaAtleticas()
+    }, []);
 
     const handleSubmitClick = () => {
 
@@ -42,6 +49,18 @@ export default function AddJogo() {
         else
             setEmptyTime(false)
     };
+
+    const buscaAtleticas = async () => {
+        await ApiService.BuscarTodasAtleticas()
+            .then(res => {
+                setAtleticas(res.data)
+                if (res.data != null && res.data.length > 0)
+                    setAtleticaId(res.data[0].atleticaId)
+            })
+            .catch(err =>
+                console.log(err)
+            )
+    }
 
     return (
         <>
@@ -59,9 +78,23 @@ export default function AddJogo() {
                         <AvForm>
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>
-                                    <AvField name="adversario" label="Adversário" type="select">
-                                        <option>Cimatlética</option>
-                                        <option>Manada</option>
+                                    <AvField
+                                        name="adversario"
+                                        label="Adversário"
+                                        type="select"
+                                        onChange={(e) => setAtleticaId(e.target.value)}
+                                        value={atleticaId}
+                                    >
+                                        {
+                                            atleticas.map((atletica) =>
+                                                <option
+                                                    key={atletica.atleticaId}
+                                                    value={atletica.atleticaId}
+                                                >
+                                                    {atletica.nome}
+                                                </option>
+                                            )
+                                        }
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={6}>
