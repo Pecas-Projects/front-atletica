@@ -283,6 +283,17 @@ const ApiService = {
       })
   },
 
+  BuscarTodasAtleticas: () => {
+    return api
+      .get("/api/Atletica")
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
 };
 
 export default ApiService;
