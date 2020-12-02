@@ -31,6 +31,7 @@ export default function AddJogo() {
     const [emptyTime, setEmptyTime] = useState(false);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [local, setLocal] = useState("");
     const [atleticas, setAtleticas] = useState([])
     const [atleticaId, setAtleticaId] = useState(null)
     const [modalidades, setModalidades] = useState([])
@@ -46,16 +47,38 @@ export default function AddJogo() {
 
     const handleSubmitClick = () => {
 
-        if (date == "")
+        if (date === "")
             setEmptyDate(true)
         else
             setEmptyDate(false)
 
-        if (time == "")
+        if (time === "")
             setEmptyTime(true)
         else
             setEmptyTime(false)
+
+        if (time !== "" && date !== "")
+            enviaJogo()
     };
+
+    const enviaJogo = async () => {
+
+        const data = {
+            dataHora: date + "T" + time,
+            local: local,
+            atleticaConvidadaId: atleticaId,
+            jogoCategoriaId: categoriaId,
+            modalidadeId: modalidadeId
+        }
+
+        await ApiService.CriarSolicitacaoJogo(getAtleticaId(), data)
+            .then(res =>
+                console.log(res)
+            )
+            .catch(err =>
+                console.log(err)
+            )
+    }
 
     const buscaAtleticas = async () => {
         await ApiService.BuscarTodasAtleticas()
@@ -198,10 +221,16 @@ export default function AddJogo() {
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AvField name="local" label="Local" type="text" validate={{
-                                        required: { value: true, errorMessage: "Campo obrigatório" },
-                                        maxLength: "45",
-                                    }} />
+                                    <AvField
+                                        name="local"
+                                        label="Local"
+                                        type="text"
+                                        onChange={(e) => setLocal(e.target.value)}
+                                        validate={{
+                                            required: { value: true, errorMessage: 'Este campo é obrigatório' },
+                                            maxLength: { value: 45 }
+                                        }}
+                                    />
                                 </Grid>
                                 <Grid item xs={8} />
                                 <Grid item xs={4}>
@@ -315,10 +344,16 @@ export default function AddJogo() {
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AvField name="local" label="Local" type="text" validate={{
-                                        required: { value: true, errorMessage: "Campo obrigatório" },
-                                        maxLength: "45",
-                                    }} />
+                                    <AvField
+                                        name="local"
+                                        label="Local"
+                                        type="text"
+                                        onChange={(e) => setLocal(e.target.value)}
+                                        validate={{
+                                            required: { value: true, errorMessage: 'Este campo é obrigatório' },
+                                            maxLength: { value: 45 }
+                                        }}
+                                    />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button onClick={handleSubmitClick} type='submit' style={{ width: '100%' }} variant="contained" color="secondary">Enviar solicitação</Button>
