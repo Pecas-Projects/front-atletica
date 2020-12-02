@@ -18,7 +18,7 @@ import Home from "../../assets/imagem/home.svg";
 import Feed from "../../assets/imagem/today (1).svg";
 import Bell from "../../assets/icons/bellIcon.svg";
 import Ranking from "../../assets/icons/ranking.svg";
-import { isLogin, getUserType } from "../../utils/storage";
+import { isLogin, getUserType, getUsername } from "../../utils/storage";
 import Trofeu from "../../assets/imagem/trophy.svg";
 import Bag from "../../assets/imagem/shopping-bag.svg";
 import Jogo from "../../assets/icons/jogoIcon.svg";
@@ -276,7 +276,7 @@ export default function MiniDrawer() {
                 </div>
 
                 <div className="userButtom">
-                  <Link to="/EditarPerfil">
+                  <Link to={`/EditarPerfil/${getUsername()}`}>
                     <IconButton>
                       <PermIdentityIcon
                         fontSize="large"
@@ -644,7 +644,7 @@ export default function MiniDrawer() {
 
             <div className="absoluteMobile">
               {getUserType() === "A" && (
-                <Link to="/EditarPerfil">
+                <Link to={`/EditarPerfil/${getUsername()}`}>
                   <ListItem button>
                     <ListItemIcon>
                       <PermIdentityIcon style={{ color: "white" }} />
