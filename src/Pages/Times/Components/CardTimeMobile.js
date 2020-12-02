@@ -30,10 +30,11 @@ export default function CardTime(props) {
     if (time.imagemModalidade !== null && time.imagemModalidade !== undefined) {
       return (
         <CardMedia
-          className={classes.imagem}
-          image={time.imagemModalidade.path}
-          title={time.modalidade}
-        />
+            className={classes.imagem}
+            image={time.imagemModalidade.path}
+            title={time.modalidade}
+            style={{ marginLeft: 10, marginRight: 10 }}
+          />
       );
     }
     else {
@@ -78,12 +79,7 @@ export default function CardTime(props) {
       <Grid container justify="center" style={{ marginBottom: 25 }}>
         <Card color="primary" style={{ backgroundColor: "#D2CFE5" }}>
           <CardHeader title={time.modalidade} subheader={coordenador} />
-          <CardMedia
-            className={classes.imagem}
-            image={time.imagemModalidade.path}
-            title={time.modalidade}
-            style={{ marginLeft: 10, marginRight: 10 }}
-          />
+          {apresentaFoto()}
           <CardContent className={classes.info}>
             {apresentaTreinos()}
           </CardContent>
