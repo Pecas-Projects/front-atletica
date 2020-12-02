@@ -58,7 +58,7 @@ export default function AddJogo() {
         await ApiService.BuscarTodasAtleticas()
             .then(res => {
                 setAtleticas(res.data)
-                if (res.data != null && res.data.length > 0)
+                if (res.data !== null && res.data.length > 0)
                     setAtleticaId(res.data[0].atleticaId)
             })
             .catch(err =>
@@ -197,9 +197,23 @@ export default function AddJogo() {
                         <AvForm>
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <AvField name="adversario" label="Adversário" type="select">
-                                        <option>Cimatlética</option>
-                                        <option>Manada</option>
+                                    <AvField
+                                        name="adversario"
+                                        label="Adversário"
+                                        type="select"
+                                        onChange={(e) => setAtleticaId(e.target.value)}
+                                        value={atleticaId}
+                                    >
+                                        {
+                                            atleticas.map((atletica) =>
+                                                <option
+                                                    key={atletica.atleticaId}
+                                                    value={atletica.atleticaId}
+                                                >
+                                                    {atletica.nome}
+                                                </option>
+                                            )
+                                        }
                                     </AvField>
                                 </Grid>
                                 <Grid item xs={12}>
