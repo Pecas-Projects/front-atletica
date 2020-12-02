@@ -294,6 +294,17 @@ const ApiService = {
       })
   },
 
+  BuscarCategoriasJogos: () => {
+    return api
+      .get("/api/CategoriasJogos")
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
 };
 
 export default ApiService;
