@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import CardTime from "./Components/CardTime";
 import CardTimeMobile from "./Components/CardTimeMobile";
-import imagemTime from "../../assets/imagem/imagemTime.png";
 import ApiService from "../../variables/ApiService";
 
 const useStyles = makeStyles((theme) => ({
@@ -70,18 +69,18 @@ export default function Times(props) {
 
   useEffect(() => {
     buscaAtletica();
-    if(userId !== undefined && userId !== null)
+    if (userId !== undefined && userId !== null)
       buscarTimes();
   }, [userId]);
 
   async function buscaAtletica() {
     await ApiService.PesquisaAtleticaPorUsername(username)
-        .then((res) => {
-            setUserId(res.data.atleticaId)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+      .then((res) => {
+        setUserId(res.data.atleticaId)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   async function buscarTimes() {
@@ -103,25 +102,50 @@ export default function Times(props) {
         <div className={classes.toolbar} />
 
         <div className={classes.sectionDesktop}>
-              <Grid container justify="center">
-                  <Grid container spacing={1} style={{ marginTop: 20 }}>
-                    {times.map((time) => (
+          <Grid container justify="center">
+            {
+              times.length !== 0 && times !== undefined && times !== null ?
+                <Grid container spacing={1} style={{ marginTop: 20 }}>
+                  {
+                    times.map((time) => (
                       <CardTime time={time} />
-                    ))}
+                    ))
+                  }
+                </Grid>
+                :
+                <Paper className={classes.paperA}>
+                  <Grid container justify="center" >
+                    <Grid item>
+                      <Typography variant="h6" align="center" style={{ color: 'white' }}>
+                        Essa atlética não possui times cadastrados!</Typography>
+                    </Grid>
                   </Grid>
-              </Grid>
+                </Paper>
+            }
+          </Grid>
         </div>
 
         <div className={classes.sectionMobile}>
-              <Grid container justify="center">
-                  <Grid container spacing={1} style={{ marginTop: 20 }}>
-                    {times.map((time) => (
-                      <CardTimeMobile time={time}  />
-                    ))}
+          <Grid container justify="center">
+            {
+              times.length !== 0 && times !== undefined && times !== null ?
+                <Grid container spacing={1} style={{ marginTop: 20 }}>
+                  {times.map((time) => (
+                    <CardTimeMobile time={time} />
+                  ))}
+                </Grid>
+                :
+                <Paper className={classes.paperA}>
+                  <Grid container justify="center" >
+                    <Grid item>
+                      <Typography variant="h6" align="center" style={{ color: 'white' }}>Essa atlética não possui publicações!</Typography>
+                    </Grid>
                   </Grid>
-              </Grid>
+                </Paper>
+            }
+          </Grid>
         </div>
-        
+
       </main>
     </div>
   );
