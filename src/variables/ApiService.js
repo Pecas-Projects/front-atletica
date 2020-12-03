@@ -34,6 +34,18 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
+  PesquisaAtleticas: (nomeAtletica) => {
+    return api
+      .get("/api/AtleticaNome/" + nomeAtletica)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
   CriarSolicitacaoAtleta: (atleticaId, atleta) => {
     return api
       .post("/api/SolicitacaoAtleta/" + atleticaId, atleta)
