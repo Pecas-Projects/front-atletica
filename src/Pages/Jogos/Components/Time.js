@@ -5,6 +5,7 @@ import { Grid, Divider, IconButton, Button } from '@material-ui/core';
 import { Add } from '@material-ui/icons'
 import TabelaJogadores from './TabelaJogadores'
 import { FormGroup, Label, Input } from 'reactstrap';
+import ApiService from '../../../variables/ApiService'
 
 const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
@@ -70,6 +71,16 @@ export default function Time(props) {
         }
 
         setAtletasTime([...atletasTime, data])
+    }
+
+    const criarTime = async () => {
+        await ApiService.AdicionarAtletasTime(time.timeId, atletasTime)
+            .then(res =>
+                console.log(res)
+            )
+            .catch(err =>
+                console.log(err)
+            )
     }
 
     return (
@@ -185,6 +196,7 @@ export default function Time(props) {
                                     <Button
                                         style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }}
                                         variant="contained"
+                                        onClick={criarTime}
                                     >
                                         Salvar
                             </Button>
@@ -302,6 +314,7 @@ export default function Time(props) {
                                     <Button
                                         style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }}
                                         variant="contained"
+                                        onClick={criarTime}
                                     >
                                         Salvar
                             </Button>
