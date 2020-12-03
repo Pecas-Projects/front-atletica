@@ -69,7 +69,7 @@ export default function Login() {
   const [login, setLogin] = useState({
     Email: " ",
     Senha: " ",
-    Type: " ",
+    Type: "Atletica",
   });
   const [esqueceuSenha, setEsqueceuSenha] = useState(false);
 
@@ -220,6 +220,7 @@ export default function Login() {
                           <EsqueceuSenha
                             aberto={esqueceuSenha}
                             setAberto={setEsqueceuSenha}
+                            login={login}
                           />
 
                           <Grid item xs={12} style={{ marginTop: 20 }}>
@@ -336,6 +337,7 @@ export default function Login() {
                     <EsqueceuSenha
                       aberto={esqueceuSenha}
                       setAberto={setEsqueceuSenha}
+                      login={login}
                     />
 
                     <Grid item xs={12} style={{ marginTop: 20 }}>
