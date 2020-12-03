@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Paper } from '@material-ui/core';
+import { Paper, IconButton } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
@@ -29,7 +29,21 @@ export default function TabelaJogadores(props) {
                 }}
                 style={{ backgroundColor: "#BBB8CC" }}
                 columns={[
-                    { title: 'Jogadores', field: 'nome',  },
+                    {
+                        title: '',
+                        field: 'icon',
+                        render: (rowData) => (
+                            <IconButton
+                                style={{ outline: 'none' }}
+                                color="primary"
+                                aria-label="add"
+                            // onClick={adicionarTabela}
+                            >
+                                <Clear />
+                            </IconButton>
+                        )
+                    },
+                    { title: 'Jogadores', field: 'nome', },
                     { title: 'Pontos', field: 'pontos', type: 'numeric' },
                     { title: 'Infrações', field: 'infracoes', type: 'numeric' },
                 ]}
