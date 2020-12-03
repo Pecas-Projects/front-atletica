@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Grid, Divider, IconButton, Button } from '@material-ui/core';
+import { Grid, Divider, IconButton, Button, Snackbar } from '@material-ui/core';
 import { Add } from '@material-ui/icons'
 import TabelaJogadores from './TabelaJogadores'
 import { FormGroup, Label, Input } from 'reactstrap';
 import ApiService from '../../../variables/ApiService'
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
@@ -47,6 +52,9 @@ export default function Time(props) {
     const [funcao, setFuncao] = useState("")
     const [infracoes, setInfracoes] = useState("")
     const [numero, setNumero] = useState("")
+    const [msgAlerta, setMsgAlerta] = useState("Ocorreu um erro, verifique os dados inseridos.")
+    const [openAdd, setOpenAdd] = useState(false)
+    const [tipoAlerta, setTipoAlerta] = useState('success')
 
 
     useEffect(() => {
@@ -54,6 +62,18 @@ export default function Time(props) {
         if (atletasModalidade !== null && atletasModalidade.length > 0)
             setAtleta(JSON.stringify(atletasModalidade[0]))
     }, []);
+
+    const handleCloseAdd = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAdd(false);
+    };
+
+    const handleOpenAdd = () => {
+        setOpenAdd(true)
+    }
 
     const adicionarTabela = () => {
 
@@ -75,16 +95,26 @@ export default function Time(props) {
 
     const criarTime = async () => {
         await ApiService.AdicionarAtletasTime(time.timeId, atletasTime)
-            .then(res =>
-                console.log(res)
-            )
-            .catch(err =>
+            .then(res => {
+                setMsgAlerta("Sua escalação foi registrada com sucesso!")
+                setTipoAlerta('success')
+                handleOpenAdd(true)
+            })
+            .catch(err => {
                 console.log(err)
-            )
+                setMsgAlerta("Ocorreu um erro, verifique os dados inseridos.")
+                setTipoAlerta('error')
+                handleOpenAdd(true)
+            })
     }
 
     return (
         <>
+            <Snackbar open={openAdd} autoHideDuration={4000} onClose={handleCloseAdd}>
+                <Alert onClose={handleCloseAdd} severity={tipoAlerta}>
+                    {msgAlerta}
+                </Alert>
+            </Snackbar>
             {/* DESKTOP */}
             <div className={classes.sectionDesktop}>
 
