@@ -33,21 +33,44 @@ const useStyles = makeStyles((theme) => ({
 export default function Time(props) {
     const { time, atletasModalidade } = props;
     const classes = useStyles();
-    const [atleta, setAtleta] = useState({
+    const [atleta, setAtleta] = useState(`{
         atletaAtleticaModalidadeId: null,
         atleticaModalidadeId: null,
         atletaId: null,
         pessoaId: null,
         nome: "",
         sobrenome: ""
-    })
+    }`)
     const [atletasTime, setAtletasTime] = useState([])
+    const [pontos, setPontos] = useState("")
+    const [funcao, setFuncao] = useState("")
+    const [infracoes, setInfracoes] = useState("")
+    const [numero, setNumero] = useState("")
+
 
     useEffect(() => {
         setAtletasTime(time.atletas)
         if (atletasModalidade !== null && atletasModalidade.length > 0)
-            setAtleta(atletasModalidade[0])
+            setAtleta(JSON.stringify(atletasModalidade[0]))
     }, []);
+
+    const adicionarTabela = () => {
+
+        const atletaJSON = JSON.parse(atleta)
+
+        const data = {
+            atletaAtleticaModalidadeId: atletaJSON.atletaAtleticaModalidadeId,
+            funcao: {
+                nome: funcao
+            },
+            numero: numero,
+            pontos: pontos,
+            infracoes: infracoes,
+            nome: atletaJSON.nome + " " + atletaJSON.sobrenome
+        }
+
+        setAtletasTime([...atletasTime, data])
+    }
 
     return (
         <>
@@ -78,15 +101,14 @@ export default function Time(props) {
                                             name="select"
                                             id="exampleSelect"
                                             onChange={(e) => setAtleta(e.target.value)}
-                                            value={atleta}
                                         >
                                             {
-                                                atletasModalidade.map((atleta) =>
+                                                atletasModalidade.map((atl) =>
                                                     <option
-                                                        key={atleta.atletaAtleticaModalidadeId}
-                                                        value={JSON.stringify(atleta)}
+                                                        key={atl.atletaAtleticaModalidadeId}
+                                                        value={JSON.stringify(atl)}
                                                     >
-                                                        {atleta.nome + " " + atleta.sobrenome}
+                                                        {atl.nome + " " + atl.sobrenome}
                                                     </option>
                                                 )
                                             }
@@ -96,30 +118,55 @@ export default function Time(props) {
                                 <Grid item xs={6}>
                                     <FormGroup>
                                         <Label for="funcao">Função</Label>
-                                        <Input type="text" id="funcao" />
+                                        <Input
+                                            type="text"
+                                            id="funcao"
+                                            onChange={(e) => setFuncao(e.target.value)}
+                                            value={funcao}
+                                        />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <FormGroup>
                                         <Label for="numero">Número</Label>
-                                        <Input type="text" id="numero" />
+                                        <Input
+                                            type="number"
+                                            id="numero"
+                                            onChange={(e) => setNumero(e.target.value)}
+                                            value={numero}
+                                        />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <FormGroup>
                                         <Label for="pontos">Pontos</Label>
-                                        <Input type="number" id="pontos" />
+                                        <Input
+                                            type="number"
+                                            id="pontos"
+                                            onChange={(e) => setPontos(e.target.value)}
+                                            value={pontos}
+                                        />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={3}>
                                     <FormGroup>
                                         <Label for="infracoes">Infrações</Label>
-                                        <Input type="number" id="infracoes">
+                                        <Input
+                                            type="number"
+                                            id="infracoes"
+                                            onChange={(e) => setInfracoes(e.target.value)}
+                                            value={infracoes}
+                                        >
                                         </Input>
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={1}>
-                                    <IconButton style={{ backgroundColor: "#F68D2E", outline: 'none' }} color="primary" aria-label="add">
+                                    <IconButton
+                                        style={{ backgroundColor: "#F68D2E", outline: 'none' }}
+                                        color="primary"
+                                        aria-label="add"
+                                        onClick={adicionarTabela}
+                                    >
                                         <Add />
                                     </IconButton>
                                 </Grid>
@@ -172,15 +219,14 @@ export default function Time(props) {
                                             name="select"
                                             id="exampleSelect"
                                             onChange={(e) => setAtleta(e.target.value)}
-                                            value={atleta}
                                         >
                                             {
-                                                atletasModalidade.map((atleta) =>
+                                                atletasModalidade.map((atl) =>
                                                     <option
-                                                        key={atleta.atletaAtleticaModalidadeId}
-                                                        value={JSON.stringify(atleta)}
+                                                        key={atl.atletaAtleticaModalidadeId}
+                                                        value={JSON.stringify(atl)}
                                                     >
-                                                        {atleta.nome + " " + atleta.sobrenome}
+                                                        {atl.nome + " " + atl.sobrenome}
                                                     </option>
                                                 )
                                             }
@@ -190,30 +236,54 @@ export default function Time(props) {
                                 <Grid item xs={8}>
                                     <FormGroup>
                                         <Label for="funcao">Função</Label>
-                                        <Input type="text" id="funcao" />
+                                        <Input
+                                            type="text"
+                                            id="funcao"
+                                            onChange={(e) => setFuncao(e.target.value)}
+                                            value={funcao}
+                                        />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <FormGroup>
                                         <Label for="numero">Número</Label>
-                                        <Input type="text" id="numero" />
+                                        <Input
+                                            type="number"
+                                            id="numero"
+                                            onChange={(e) => setNumero(e.target.value)}
+                                            value={numero}
+                                        />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={5} style={{ width: '100%' }}>
                                     <FormGroup>
                                         <Label for="pontos">Pontos</Label>
-                                        <Input type="number" id="pontos" />
+                                        <Input
+                                            type="number"
+                                            id="pontos"
+                                            onChange={(e) => setPontos(e.target.value)}
+                                            value={pontos}
+                                        />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={5} style={{ width: '100%' }}>
                                     <FormGroup>
                                         <Label for="infracoes">Infrações</Label>
-                                        <Input type="number" id="infracoes">
-                                        </Input>
+                                        <Input
+                                            type="number"
+                                            id="infracoes"
+                                            onChange={(e) => setInfracoes(e.target.value)}
+                                            value={infracoes}
+                                        />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={2}>
-                                    <IconButton style={{ backgroundColor: "#F68D2E", outline: 'none' }} color="primary" aria-label="add">
+                                    <IconButton
+                                        style={{ backgroundColor: "#F68D2E", outline: 'none' }}
+                                        color="primary"
+                                        aria-label="add"
+                                        onClick={adicionarTabela}
+                                    >
                                         <Add />
                                     </IconButton>
                                 </Grid>
