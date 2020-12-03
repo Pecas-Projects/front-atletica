@@ -84,9 +84,9 @@ export default function Time(props) {
             funcao: {
                 nome: funcao
             },
-            numero: numero,
-            pontos: pontos,
-            infracoes: infracoes,
+            numero: numero ? numero : 0,
+            pontos: pontos ? pontos : 0,
+            infracoes: infracoes ? infracoes : 0,
             nome: atletaJSON.nome + " " + atletaJSON.sobrenome
         }
 
