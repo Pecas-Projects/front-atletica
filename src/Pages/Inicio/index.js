@@ -6,6 +6,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import IconList from "./components/iconsList";
 import AvatarList from "./components/avatarList";
@@ -48,16 +49,21 @@ export default function PaginaInicial() {
                   </b>
                 </Typography>
                 <div style={{ paddingTop: 80 }}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    disableElevation
-                  >
-                    <span>Fazer cadastro</span>
-                  </Button>
-                  <Button variant="outlined" style={{ marginLeft: 20 }}>
-                    Fazer Login
-                  </Button>
+                  <Link to="/cadastro">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      disableElevation
+                    >
+                      <span>Fazer cadastro</span>
+                    </Button>
+                  </Link>
+
+                  <Link to="/login">
+                    <Button variant="outlined" style={{ marginLeft: 20 }}>
+                      Fazer Login
+                    </Button>
+                  </Link>
                 </div>
               </Grid>
             </Grid>
