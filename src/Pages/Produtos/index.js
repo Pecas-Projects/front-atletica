@@ -5,6 +5,7 @@ import { Grid, Paper } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto"
 import "./styles.css"
 import ApiService from "../../variables/ApiService";
+import { getAtleticaId } from "../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +65,7 @@ export default function Produtos(props) {
   const classes = useStyles();
   const username = props.match.params.username;
   const [atleticaId, setAtleticaId] = useState();
+  const atleticaLoginId = getAtleticaId();
   const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
@@ -110,7 +112,7 @@ export default function Produtos(props) {
               }
               <Grid container spacing={1} style={{ marginTop: 20 }}>
                 {produtos.map((item) => (
-                  <CardProduto item={item} />
+                  <CardProduto item={item} atletica={atleticaLoginId} />
                 ))}
               </Grid>
             </Paper>
