@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { Grid, Divider, IconButton, Button } from '@material-ui/core';
@@ -31,8 +31,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Time(props) {
-    const { time } = props;
+    const { time, atletasModalidade } = props;
     const classes = useStyles();
+    const [atleta, setAtleta] = useState({
+        atletaAtleticaModalidadeId: null,
+        atleticaModalidadeId: null,
+        atletaId: null,
+        pessoaId: null,
+        nome: "",
+        sobrenome: ""
+    })
+    const [atletasTime, setAtletasTime] = useState([])
+
+    useEffect(() => {
+        setAtletasTime(time.atletas)
+        if (atletasModalidade !== null && atletasModalidade.length > 0)
+            setAtleta(atletasModalidade[0])
+    }, []);
 
     return (
         <>
@@ -58,9 +73,23 @@ export default function Time(props) {
                                 <Grid item xs={6}>
                                     <FormGroup>
                                         <Label for="exampleSelect">Jogador</Label>
-                                        <Input type="select" name="select" id="exampleSelect">
-                                            <option>Juninho</option>
-                                            <option>Atari</option>
+                                        <Input
+                                            type="select"
+                                            name="select"
+                                            id="exampleSelect"
+                                            onChange={(e) => setAtleta(e.target.value)}
+                                            value={atleta}
+                                        >
+                                            {
+                                                atletasModalidade.map((atleta) =>
+                                                    <option
+                                                        key={atleta.atletaAtleticaModalidadeId}
+                                                        value={JSON.stringify(atleta)}
+                                                    >
+                                                        {atleta.nome + " " + atleta.sobrenome}
+                                                    </option>
+                                                )
+                                            }
                                         </Input>
                                     </FormGroup>
                                 </Grid>
@@ -85,7 +114,7 @@ export default function Time(props) {
                             </>
                     }
                     <Grid item xs={12}>
-                        <TabelaJogadores jogadores={time.atletas} />
+                        <TabelaJogadores jogadores={atletasTime} />
                     </Grid>
                     {
                         time.registrouEscalacao ? null :
@@ -126,9 +155,23 @@ export default function Time(props) {
                                 <Grid item xs={12} style={{ width: '100%' }}>
                                     <FormGroup>
                                         <Label for="exampleSelect">Jogador</Label>
-                                        <Input type="select" name="select" id="exampleSelect">
-                                            <option>Juninho</option>
-                                            <option>Atari</option>
+                                        <Input
+                                            type="select"
+                                            name="select"
+                                            id="exampleSelect"
+                                            onChange={(e) => setAtleta(e.target.value)}
+                                            value={atleta}
+                                        >
+                                            {
+                                                atletasModalidade.map((atleta) =>
+                                                    <option
+                                                        key={atleta.atletaAtleticaModalidadeId}
+                                                        value={JSON.stringify(atleta)}
+                                                    >
+                                                        {atleta.nome + " " + atleta.sobrenome}
+                                                    </option>
+                                                )
+                                            }
                                         </Input>
                                     </FormGroup>
                                 </Grid>
@@ -153,7 +196,7 @@ export default function Time(props) {
                             </>
                     }
                     <Grid item xs={12}>
-                        <TabelaJogadores jogadores={time.atletas} />
+                        <TabelaJogadores jogadores={atletasTime} />
                     </Grid>
                     {
                         time.registrouEscalacao ? null :

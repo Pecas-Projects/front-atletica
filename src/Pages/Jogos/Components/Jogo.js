@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Jogo(props) {
 
-    const { jogo } = props;
+    const { jogo, atletas } = props;
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     const [textoTimes, setTextoTimes] = useState("");
@@ -79,7 +79,7 @@ export default function Jogo(props) {
         if (jogo !== null)
             return jogo.times.map((time) => (
                 time.atleticaId != atleticaId ? null :
-                    <Time time={time} />
+                    <Time time={time} atletasModalidade={atletas} />
             ))
     }
 

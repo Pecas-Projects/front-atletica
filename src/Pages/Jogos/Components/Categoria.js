@@ -13,7 +13,6 @@ import Jogo from './Jogo'
 import ApiService from '../../../variables/ApiService';
 import { getAtleticaId } from '../../../utils/storage'
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
@@ -48,6 +47,7 @@ export default function Categoria(props) {
     const classes = useStyles();
     const [expanded, setExpanded] = useState(false);
     const [jogos, setJogos] = useState([])
+    const [atletas, setAtletas] = useState([])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -63,8 +63,19 @@ export default function Categoria(props) {
             )
     }
 
+    const buscaAtletasModalidade = async () => {
+        await ApiService.BuscarAtletasModalidade(categoria.atleticaModalidadeId)
+            .then(res =>
+                setAtletas(res.data)
+            )
+            .catch(err =>
+                console.log(err)
+            )
+    }
+
     useEffect(() => {
         buscaJogosModalidade()
+        buscaAtletasModalidade()
     }, []);
 
     return (
@@ -87,7 +98,7 @@ export default function Categoria(props) {
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
                         {jogos.map((item) => (
-                            <Jogo jogo={item} />
+                            <Jogo jogo={item} atletas={atletas}/>
                         ))}
                     </CardContent>
                 </Collapse>
