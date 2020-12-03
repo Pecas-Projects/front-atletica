@@ -28,6 +28,31 @@ function acertaNome(nome, genero) {
     return modalidade;
 }
 
+function acertaHora(data) {
+    var dataCerta = data + ':00'
+    return dataCerta;
+}
+
+function exibirHora(hora) {
+    var horaCerta = hora.slice(0, 5)
+    return horaCerta;
+}
+
+function acertaDia(dia) {
+
+    var diaCerto
+
+    if (dia === "Domingo") diaCerto = "Dom"
+    else if (dia === "Segunda-feira") diaCerto = "Seg"
+    else if (dia === "Terça-feira") diaCerto = "Ter"
+    else if (dia === "Quarta-feira") diaCerto = "Qua"
+    else if (dia === "Quinta-feira") diaCerto = "Qui"
+    else if (dia === "Sexta-feira") diaCerto = "Sex"
+    else if (dia === "Sábado") diaCerto = "Sab"
+
+    return diaCerto;
+}
+
 const Dias = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"]
 
 const useStyles = makeStyles((theme) => ({
@@ -79,7 +104,7 @@ export default function CardAddModalidade() {
     const [openErro, setOpenErro] = useState(false)
     const [criarModalidade, setCriarModalidade] = useState(false)
     const [horaTreino, setHoraTreino] = useState('')
-    const [diaTreino, setDiaTreino] = useState('')
+    const [diaTreino, setDiaTreino] = useState()
     const [agendaTreinos, setAgendaTreinos] = useState([])
     const [modalidades, setModalidades] = useState()
     const [membros, setMembros] = useState()
@@ -132,7 +157,7 @@ export default function CardAddModalidade() {
             let AtleticaModalidade = {
                 agendaTreinos: agendaTreinos,
                 coordenadorId: coordenador,
-                modalidadeId: modalidade,
+                modalidadeId: parseInt(modalidade),
                 imagemId: imagemId
 
             }
@@ -207,8 +232,8 @@ export default function CardAddModalidade() {
         if (diaTreino !== null && horaTreino !== null) {
 
             let treino = {
-                diaTreino: diaTreino,
-                horaTreino: horaTreino
+                diaSemana: acertaDia(diaTreino),
+                horaInicio: acertaHora(horaTreino)
             }
 
             agendaTreinos.push(treino)
@@ -221,9 +246,6 @@ export default function CardAddModalidade() {
 
 
     }
-
-
-
 
     const handleMembroChange = (e) => {
         setCoordenador(e.target.value)
@@ -245,6 +267,7 @@ export default function CardAddModalidade() {
 
     const handleDiaChange = (e) => {
         setDiaTreino(e.target.value)
+
     }
 
     const handleNomeModalidadeChange = (e) => {
@@ -344,32 +367,48 @@ export default function CardAddModalidade() {
                             </Paper>
                         </Grid>
 
-                        <Grid item xs={4} style={{ marginTop: 20, marginLeft: -50 }}>
+                        <Grid item xs={4} >
+
+                            <Grid item xs={12} style={{ marginTop: 50 }}>
+
+                                <Grid container justify='center'>
+                                    <Button fullWidth color='primary' variant='outlined' onClick={handleNovaModalidade}>Nova modalidade</Button>
+                                </Grid>
+
+
+                            </Grid>
+
+
+
 
                             {modalidades !== undefined ? (
 
-                                <div className='scroll'>
+                                <Grid item xs={12} style={{ marginTop: 50 }}>
 
-                                    <Grid item xs={12} style={{ maxHeight: 250 }}>
+                                    <TextField
+                                        fullWidth
+                                        id="standard-select-modalidade"
+                                        select
+                                        label="Modalidade"
+                                        value={modalidade}
+                                        onChange={handleModalidadeChange}
 
-                                        <FormControl component="fieldset" style={{ marginLeft: 90 }}>
-                                            <FormLabel component="legend">Escolha a modalidade</FormLabel>
-                                            <RadioGroup aria-label="modalidade" name="Modalidade" value={modalidade} onChange={handleModalidadeChange}>
-                                                {modalidades.map((item) =>
-                                                    <FormControlLabel value={item.modalidadeId} control={<Radio />}
-                                                        label={acertaNome(item.nome, item.genero)} />
-                                                )}
-                                            </RadioGroup>
-                                        </FormControl>
+                                    >
+
+                                        {modalidades.map((item) =>
+                                            <MenuItem value={item.modalidadeId}
+                                                label={acertaNome(item.nome, item.genero)} />
+                                        )}
+                                    </TextField>
 
 
-                                    </Grid>
-                                </div>
+
+                                </Grid>
+
                             ) : (
                                     <>
                                     </>
                                 )}
-
 
 
 
@@ -379,16 +418,9 @@ export default function CardAddModalidade() {
 
 
 
-                            <Grid item xs={12} style={{ marginTop: 10 }}>
-
-                                <Grid container justify='center'>
-                                    <Button fullWidth color='primary' variant='outlined' onClick={handleNovaModalidade}>Nova modalidade</Button>
-                                </Grid>
 
 
-                            </Grid>
-
-                            <Grid item xs={12} style={{ marginTop: 10 }}>
+                            <Grid item xs={12} style={{ marginTop: 50 }}>
 
                                 <Grid container justify='center'>
                                     <Button fullWidth color='secondary' variant='outlined' onClick={handleOpenAgenda}>Novo Treino </Button>
@@ -401,7 +433,7 @@ export default function CardAddModalidade() {
                                 <>
                                     <Typography style={{ marginTop: 7 }}>Treinos</Typography>
                                     {agendaTreinos.map((treino) => (
-                                        <Typography style={{ color: "gray" }}>{treino.diaTreino} {treino.horaTreino}</Typography>
+                                        <Typography style={{ color: "gray" }}>{treino.diaSemana} {exibirHora(treino.horaInicio)}h</Typography>
                                     ))}
 
                                 </>
@@ -413,7 +445,7 @@ export default function CardAddModalidade() {
                             {membros !== undefined ? (
                                 <>
 
-                                    <Grid item xs={12}>
+                                    <Grid item xs={12} style={{ marginTop: 50 }}>
                                         <Grid container justify='flex-end'>
                                             <TextField
                                                 fullWidth
@@ -443,14 +475,13 @@ export default function CardAddModalidade() {
 
 
 
+                        </Grid>
 
-                            <Grid item xs={12} style={{ marginTop: 40 }}>
+                        <Grid item xs={12} style={{ marginTop: 40 }}>
 
-                                <Grid container justify="flex-end">
+                            <Grid container justify="flex-end">
 
-                                    <Button onClick={envioImagem} style={{ width: "100%" }} variant='contained' color='secondary' >Salvar</Button>
-
-                                </Grid>
+                                <Button onClick={envioImagem} style={{ width: "100%" }} variant='contained' color='secondary' >Salvar</Button>
 
                             </Grid>
 
