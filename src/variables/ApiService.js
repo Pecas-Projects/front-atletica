@@ -79,7 +79,7 @@ const ApiService = {
 
   },
 
-  CadastrarModalidade: (atleticaId, AtleticaModalidade) => {
+  CadastrarAtleticaModalidade: (atleticaId, AtleticaModalidade) => {
     return api
       .post(`/api/AtleticaModalidade/${atleticaId}`, AtleticaModalidade)
       .then((res) => {
@@ -201,6 +201,17 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
+  },
+  UploadImagem: (data) => {
+    return api
+      .post(`/api/Imagem/Upload`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
   }
 }
 
