@@ -2,13 +2,12 @@ import api from "../services/api";
 import { login, loginAtletica, loginMembro } from "../utils/storage";
 
 const ApiService = {
-
   LoginAtletica: (crecencial) => {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        loginAtletica(res.data.token, 'A', res.data.atletica.atleticaId)
-        return res
+        loginAtletica(res.data.token, "A", res.data.atletica.atleticaId);
+        return res;
       })
       .catch((error) => {
         console.error(error);
@@ -57,12 +56,16 @@ const ApiService = {
       });
   },
 
-
   LoginMembro: (credencial) => {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
-        loginMembro(res.data.token, 'A', res.data.atletica.membroId, res.data.atletica.pessoa.atleticaId)
+        loginMembro(
+          res.data.token,
+          "A",
+          res.data.atletica.membroId,
+          res.data.atletica.pessoa.atleticaId
+        );
         return res;
       })
       .catch((error) => {
@@ -91,7 +94,7 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
-      })
+      });
   },
 
   ModalidadesAtletica: (atleticaId) => {
@@ -195,7 +198,6 @@ const ApiService = {
       });
   },
 
-
   PesquisaAtleticaPorUsername: (username) => {
     return api
       .get("/api/Atletica/BuscaPorUsername/" + username)
@@ -237,7 +239,7 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
-      })
+      });
   },
 
   EnviarPost: (dados) => {
@@ -248,7 +250,7 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
-      })
+      });
   },
 
   BuscarTodasCategorias: () => {
@@ -259,7 +261,7 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
-      })
+      });
   },
 
   CriarProduto: (produto) => {
@@ -270,18 +272,18 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
-      })
+      });
   },
 
   BuscarProdutosAtletica: (atleticaId) => {
     return api
       .get(`/api/AtleticaProduto/${atleticaId}`)
       .then((response) => {
-        return Promise.resolve(response)
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   CadastrarModalidade: (atleticaId, AtleticaModalidade) => {
@@ -294,7 +296,6 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-
   },
 
   BuscarAtletaModalidade: (atleticaModalidadeId) => {
@@ -319,7 +320,6 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-
   },
 
   AdicionarAtletaModalidade: (atletaId, atleticaModalidadeId) => {
@@ -332,7 +332,6 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-
   },
 
   DeletarAtletaModalidade: (atletaAtleticaModalidadeId) => {
@@ -345,7 +344,6 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-
   },
 
   DeletarAtleticaModalidade: (atleticaModalidadeId) => {
@@ -358,12 +356,14 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-
   },
 
   AtualizarAtleticaModalidade: (atleticaModalidadeId, AtleticaModalidade) => {
     return api
-      .put(`/api/AtleticaModalidade/${atleticaModalidadeId}`, AtleticaModalidade)
+      .put(
+        `/api/AtleticaModalidade/${atleticaModalidadeId}`,
+        AtleticaModalidade
+      )
       .then((res) => {
         return res;
       })
@@ -371,8 +371,18 @@ const ApiService = {
         console.error(error);
         return Promise.reject(error);
       });
-  }
-}
+  },
+
+  ReseteSenha: (email) => {
+    return api
+      .post("/api/ReseteSenha/Atletica", email)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+};
 
 export default ApiService;
-
