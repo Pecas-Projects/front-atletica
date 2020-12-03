@@ -93,20 +93,32 @@ export default function Time(props) {
                                         </Input>
                                     </FormGroup>
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={6}>
+                                    <FormGroup>
+                                        <Label for="funcao">Função</Label>
+                                        <Input type="text" id="funcao" />
+                                    </FormGroup>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <FormGroup>
+                                        <Label for="numero">Número</Label>
+                                        <Input type="text" id="numero" />
+                                    </FormGroup>
+                                </Grid>
+                                <Grid item xs={4}>
                                     <FormGroup>
                                         <Label for="pontos">Pontos</Label>
                                         <Input type="number" id="pontos" />
                                     </FormGroup>
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={3}>
                                     <FormGroup>
                                         <Label for="infracoes">Infrações</Label>
                                         <Input type="number" id="infracoes">
                                         </Input>
                                     </FormGroup>
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs={1}>
                                     <IconButton style={{ backgroundColor: "#F68D2E", outline: 'none' }} color="primary" aria-label="add">
                                         <Add />
                                     </IconButton>
@@ -173,6 +185,18 @@ export default function Time(props) {
                                                 )
                                             }
                                         </Input>
+                                    </FormGroup>
+                                </Grid>
+                                <Grid item xs={8}>
+                                    <FormGroup>
+                                        <Label for="funcao">Função</Label>
+                                        <Input type="text" id="funcao" />
+                                    </FormGroup>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <FormGroup>
+                                        <Label for="numero">Número</Label>
+                                        <Input type="text" id="numero" />
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={5} style={{ width: '100%' }}>
