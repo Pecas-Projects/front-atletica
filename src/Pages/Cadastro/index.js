@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Paper, Fade, TextField, Checkbox, FormGroup } from "@material-ui/core";
@@ -19,9 +19,17 @@ import BotaoUploadImagem from "../../Components/BotaoUploadImagem"
 import { Input } from 'reactstrap';
 import ProfileUndraw from '../../assets/imagem/undraw_profile.svg'
 import ApiService from "../../variables/ApiService"
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 // import fotoPublicacao from "../../assets/imagem/image 6.svg"
 
+function sleep(delay = 0) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, delay);
+    });
+  }
+  
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -83,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Cadastro() {
 
-    const cursos = ["curso1", "curso2", "curso3", "curso4", "engenharia", "medicina", "Biologia", "matemática"];
+    const [cursos, setCursos] = useState([]);
     const generos = [
         "Feminino", "Masculino", "Outro"
     ]
@@ -104,13 +112,22 @@ export default function Cadastro() {
     const [city, setCity] = useState('');
     const [number, setNumber] = useState('');
     const [nomeCampus, setNomeCampus] = useState('');
+    const [complemento, setComplemento] = useState('');
     const [senhaAtletica, setSenhaAtletica] = useState('')
+
+    const [cursosIds, setCursosIds] = useState([]);
+    const [open, setOpen] = React.useState(false);
+    const loading = open && cursos.length === 0;
+
+    const [cursosMembro, setCursosMembro] = useState([]);
+    const [imagemId, setImagemId] = useState();
 
 
     const [atletica, setAtletica] = useState({
         Nome: "",
         Email: "",
-        faculdade: "Faculdade Braba",
+        faculdade: "",
+        Username: "",
         cursos: []
     });
 
@@ -122,12 +139,17 @@ export default function Cadastro() {
         Senha: "",
         Pin: "",
         Curso: "",
-        Genero: ""
-    })
+        Genero: "",
+        ImagemId: null
+    });
 
 
     const handleAtleticaNome = (event) => {
         setAtletica({ ...atletica, Nome: event.target.value });
+    };
+
+    const handleAtleticaUsername = (event) => {
+        setAtletica({ ...atletica, Username: event.target.value });
     };
 
     const handleAtleticaEmail = (event) => {
@@ -142,22 +164,31 @@ export default function Cadastro() {
         setAtletica({ ...atletica, faculdade: event.target.value });
     };
 
-    const handleAtleticaCursos = (e) => {
-
-        if (atletica.cursos.indexOf(e.target.name) === -1) {
-
-            atletica.cursos.push(e.target.name)
-        }
-        else {
-
-            var aux = atletica.cursos.filter(function (nome) { return nome !== e.target.name })
-
-            atletica.cursos = aux;
-        }
-
-        console.log(atletica.cursos)
+    const handleAtleticaComplemento = (event) => {
+        setComplemento({ ...atletica, Complemento: event.target.value });
     };
 
+    // const handleAtleticaCursos = (e) => {
+
+    //     if (atletica.cursos.indexOf(e.target.name) === -1) {
+
+    //         atletica.cursos.push(e.target.name)
+    //     }
+    //     else {
+
+    //         var aux = atletica.cursos.filter(function (nome) { return nome !== e.target.name })
+
+    //         atletica.cursos = aux;
+    //     }
+
+    //     console.log(atletica.cursos)
+    // };
+
+    const handleChangeAtleticaCursos = (event) => {
+        setAtletica({ ...atletica, cursos: event.target.value });
+        
+      };
+    
 
     const handleMembroNome = (event) => {
         setMembro({ ...membro, Nome: event.target.value });
@@ -184,7 +215,7 @@ export default function Cadastro() {
     };
 
     const handleMembroCurso = (event) => {
-        setMembro({ ...membro, Curso: event.target.value });
+        //setMembro({ ...membro, Curso: event.target.value });
     };
 
     const handleMembroGenero = (event) => {
@@ -226,82 +257,147 @@ export default function Cadastro() {
         setNumber(e.target.value);
     };
 
-    function showAdicionarImagemPerfil() {
+    const handleChangeCursos = (e) => {
+        //setCursosIds(e);
+      };
+
+    function showAdicionarImagemMembro() {
         if (imagemPerfil === null) {
             return <p>Adicione sua foto de perfil</p>
         } else return <div><br /><br /></div>;
     }
 
+    async function getCursosMembro() {
+    await ApiService.GetTodosCurso().then((res) => {
+        console.log(res);
+        setCursosMembro(res.data);
+      });
+    }
 
-    const onFormSubmit = async (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        getCursosMembro()
+      }, []);
 
-        let Atletica = {
-            Nome: atletica.Nome,
-            Email: atletica.Email,
-            senha: senhaAtletica,
-            Descricao: " ",
-            CursosIds: [1],
-            Campus: {
-                Cidade: city,
-                Bairro: neighbourhood,
-                Rua: street,
-                Estado: state,
-                CEP: cepcp,
-                Nome: "Cimatreco",
-                Faculdade: {
-                    Nome: "Seiani Cimatec"
+    useEffect(() => {
+        if (!open) {
+          setCursos([]);
+        }
+      }, [open]);
+
+    useEffect(() => {
+        let active = true;
+    
+        if (!loading) {
+          return undefined;
+        }
+    
+        (async () => {
+          const response = await ApiService.GetTodosCurso();
+          await sleep(1e3); // For demo purposes.
+    
+          if (active) {
+            setCursos(response.data);
+          }
+        })();
+    
+        return () => {
+          active = false;
+        };
+      }, [loading]);
+
+      async function envioImagem(){
+        let file = new FormData();
+        file.append('value', imagemPerfil);
+    
+        await ApiService.UploadImagem(file)
+          .then((res) => {
+            console.log(res)
+            setImagemId(res.data.imagemId)
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      }
+
+      
+        const onFormSubmit = async (e) => {
+            e.preventDefault();
+    
+            let Atletica = {
+                Nome: atletica.Nome,
+                Email: atletica.Email,
+                senha: senhaAtletica,
+                Descricao: " ",
+                CursosIds: atletica.cursosIds,
+                Campus: {
+                    Cidade: city,
+                    Bairro: neighbourhood,
+                    Rua: street,
+                    Estado: state,
+                    CEP: cepcp,
+                    Nome: nomeCampus,
+                    Complemento: complemento,
+                    Faculdade: {
+                        Nome: atletica.faculdade
+                    }
+    
                 }
-
             }
+    
+            console.log(Atletica)
+            console.log(typeof (Atletica))
+    
+    
+             await ApiService.CadastroAtletica(Atletica)
+    
+                .then(res => {
+                    console.log("01")
+                    console.log(res)
+                })
+                .catch(error => {
+                    console.log("02")
+                    console.log(error)
+                })
+    
+        }
+      
+      useEffect(()=>{
+
+        const onFormSubmitMembro = async () => {
+            //e.preventDefault();
+            console.log("entar1")
+    
+            let Membro = {
+                senha: membro.Senha,
+                pessoa: {
+                    nome: membro.Nome,
+                    sobrenome: membro.Sobrenome,
+                    email: membro.Email,
+                    whatsapp: membro.Telefone,
+                    tipo: "M",
+                    genero: membro.Genero,
+                    cursoId: membro.cursoId
+                }
+            }
+    
+            console.log(Membro)
+    
+            await ApiService.CadastroMembro(Membro, membro.Pin)
+                .then(res => {
+                    console.log("01")
+                    console.log(res)
+                })
+                .catch(error => {
+                    console.log("02")
+                    console.log(error)
+                })
+        }
+        if(imagemId !== null){
+            onFormSubmitMembro();
         }
 
-        console.log(Atletica)
-        console.log(typeof (Atletica))
-
-
-        ApiService.CadastroAtletica(Atletica)
-
-            .then(res => {
-                console.log("01")
-                console.log(res)
-            })
-            .catch(error => {
-                console.log("02")
-                console.log(error)
-            })
-
-    }
-
-    const onFormSubmitMembro = async (e) => {
-        e.preventDefault();
-        console.log("entar1")
-
-        let Membro = {
-            senha: membro.Senha,
-            pessoa: {
-                nome: membro.Nome,
-                sobrenome: membro.Sobrenome,
-                email: membro.Email,
-                whatsapp: membro.Telefone,
-                tipo: "M",
-                genero: membro.Genero,
-                cursoId: 1
-            }
-        }
-
-        console.log(Membro)
-
-        ApiService.CadastroMembro(Membro, membro.Pin)
-            .then(res => {
-                console.log("01")
-                console.log(res)
-            })
-            .catch(error => {
-                console.log("02")
-                console.log(error)
-            })
-    }
+      },[imagemId]);
+    
 
     return (
 
@@ -364,7 +460,7 @@ export default function Cadastro() {
 
                                                 <Fade in={showMembro}>
 
-                                                    <AvForm onValidSubmit={onFormSubmitMembro}>
+                                                    <AvForm>
 
                                                         <AvField onChange={handleMembroEmail} name="email" label="E-mail" type="text" validate={{
                                                             required: { value: true, errorMessage: "Campo obrigatório" },
@@ -400,6 +496,24 @@ export default function Cadastro() {
                                                         }} />
 
                                                         <TextField
+                                                            id="standard-select-curso"
+                                                            select
+                                                            fullWidth
+                                                            label="Curso"
+                                                            value={membro.cursoId}
+                                                            onChange={handleMembroCurso}
+                                                            style={{ marginTop: 15, marginBottom: 20 }}
+
+                                                        >
+                                                            {cursosMembro.map((option) => (
+                                                                <MenuItem key={option.nome} value={option.cursoId}>
+                                                                    {option.nome}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
+
+
+                                                        {/* <TextField
                                                             id="standard-select-currency"
                                                             select
                                                             fullWidth
@@ -413,7 +527,7 @@ export default function Cadastro() {
                                                                     {option}
                                                                 </MenuItem>
                                                             ))}
-                                                        </TextField>
+                                                        </TextField> */}
 
                                                         <TextField
                                                             id="standard-select-genero"
@@ -434,7 +548,7 @@ export default function Cadastro() {
 
                                                         <Grid container spacing={1}>
                                                             <Grid item xs={6}>
-                                                                {showAdicionarImagemPerfil()}
+                                                                {showAdicionarImagemMembro()}
                                                                 <Paper style={{ backgroundColor: "#636363", width: 250 }}>
                                                                     <Grid
                                                                         container
@@ -494,7 +608,8 @@ export default function Cadastro() {
 
 
                                                         <Grid item xs={12}>
-                                                            <Button type='submit' fullWidth style={{ marginTop: 20 }} variant="contained" color="secondary">cadastrar</Button>
+                                                            <Button type='submit' fullWidth style={{ marginTop: 20 }} 
+                                                            variant="contained" color="secondary" onClick={envioImagem}>cadastrar</Button>
                                                         </Grid>
 
                                                         {/* </Grid> */}
@@ -522,7 +637,14 @@ export default function Cadastro() {
 
                                                             }} />
 
-                                                            <TextField
+                                                            <AvField onChange={handleAtleticaUsername} name="Username" label="Username" type="text" validate={{
+                                                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                                                minLength: { value: 2, errorMessage: "Nome muito pequeno" },
+                                                                maxLength: { value: 20, errorMessage: "Nome muito grande" }
+
+                                                            }} />
+
+                                                            {/* <TextField
                                                                 fullWidth
                                                                 id="standard-select-coordenador"
                                                                 select
@@ -531,17 +653,61 @@ export default function Cadastro() {
                                                                 // value={coordenador}
                                                                 onChange={handleAtleticaFaculdade}
                                                             >
-                                                                {/* {membros.map((option) => (
+                                                                {membros.map((option) => (
                                                                     <MenuItem key={option.value} value={option.value}>
                                                                         {option.value}
                                                                     </MenuItem>
-                                                                ))} */}
-                                                            </TextField>
+                                                                ))}
+                                                            </TextField> */}
+                                                            <AvField label="Faculdade" name="faculdade" type="text" onChange={handleAtleticaFaculdade}
+                                                        validate={{ maxLength: { value: 255, errorMessage: "Muito grande" }}} />
 
                                                             <p className='subtitle2'>Cursos presentes na sua atlética</p>
 
+                                                            <Autocomplete
+                                                                id="asynchronous-demo"
+                                                                multiple
+                                                                fullWidth
+                                                                open={open}
+                                                                onOpen={() => {
+                                                                setOpen(true);
+                                                                }}
+                                                                onClose={() => {
+                                                                setOpen(false);
+                                                                }}
+                                                                getOptionSelected={(option, value) =>
+                                                                option.cursoId == value.cursoId
+                                                                }
+                                                                getOptionLabel={(option) => option.nome}
+                                                                options={cursos}
+                                                                loading={loading}
+                                                                onChange={(event, values) => handleChangeCursos(values)}
+                                                                renderInput={(params) => (
+                                                                <TextField
+                                                                    style={{marginBottom: 15}}
+                                                                    {...params}
+                                                                    label="Cursos"
+                                                                    variant="outlined"
+                                                                    InputProps={{
+                                                                    ...params.InputProps,
+                                                                    endAdornment: (
+                                                                        <React.Fragment>
+                                                                        {loading ? (
+                                                                            <CircularProgress
+                                                                            color="inherit"
+                                                                            size={20}
+                                                                            />
+                                                                        ) : null}
+                                                                        {params.InputProps.endAdornment}
+                                                                        </React.Fragment>
+                                                                    ),
+                                                                    }}
+                                                                />
+                                                                )}
+                                                            />
+                                                            
 
-                                                            <div className='scroll'>
+                                                            {/* <div className='scroll'>
 
                                                                 <FormControl component="fieldset" className={classes.formControl}>
 
@@ -558,7 +724,7 @@ export default function Cadastro() {
                                                                 </FormControl>
 
 
-                                                            </div>
+                                                            </div> */}
 
                                                             <p className="MySubtitle">Endereço</p>
                                                             <p className="MySubtitle2">O campus que sua atlética está sediada</p>
@@ -603,14 +769,25 @@ export default function Cadastro() {
 
                                                                 </Grid>
 
-                                                                <Grid item xs={12} style={{ marginBottom: 20 }}>
+                                                                <Grid item xs={12}>
 
-                                                                    <AvField value={nomeCampus} label="Nome do Campus" name="complemento" type="text" onChange={handleNomeCampusChange}
+                                                                    <AvField value={complemento} label="Complemento" name="complemento" type="text" onChange={handleAtleticaComplemento}
                                                                         validate={{
                                                                             maxLength: { value: 255, errorMessage: "Muito grande" }
                                                                         }} />
 
                                                                 </Grid>
+                                                                
+                                                                <Grid item xs={12} style={{ marginBottom: 20 }}>
+
+                                                                    <AvField value={nomeCampus} label="Nome do Campus" name="campus" type="text" onChange={handleNomeCampusChange}
+                                                                        validate={{
+                                                                            maxLength: { value: 255, errorMessage: "Muito grande" }
+                                                                        }} />
+
+                                                                </Grid>
+
+                                                                
 
                                                             </Grid>
 
@@ -739,13 +916,30 @@ export default function Cadastro() {
                                                     }} />
 
                                                 <TextField
+                                                            id="standard-select-curso"
+                                                            select
+                                                            fullWidth
+                                                            label="Curso"
+                                                            value={membro.cursoId}
+                                                            onChange={handleMembroCurso}
+                                                            style={{ marginTop: 15, marginBottom: 20 }}
+
+                                                        >
+                                                            {cursosMembro.map((option) => (
+                                                                <MenuItem key={option.nome} value={option.cursoId}>
+                                                                    {option.nome}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </TextField>
+
+                                                {/* <TextField
                                                     id="standard-select-currency"
                                                     select
                                                     fullWidth
                                                     label="Curso"
                                                     value={membro.Curso}
                                                     onChange={handleMembroCurso}
-                                                // style={{ width: "90%", marginTop: 15 }}
+                                                style={{ width: "90%", marginTop: 15 }}
 
 
                                                 >
@@ -754,7 +948,7 @@ export default function Cadastro() {
                                                             {option}
                                                         </MenuItem>
                                                     ))}
-                                                </TextField>
+                                                </TextField> */}
 
                                                 <TextField
                                                     id="standard-select-genero"
@@ -839,7 +1033,7 @@ export default function Cadastro() {
 
                                                     }} />
 
-                                                    <TextField
+                                                    {/* <TextField
                                                         fullWidth
                                                         id="standard-select-coordenador"
                                                         select
@@ -848,17 +1042,66 @@ export default function Cadastro() {
                                                         // value={coordenador}
                                                         onChange={handleAtleticaFaculdade}
                                                     >
-                                                        {/* {membros.map((option) => (
+                                                        {membros.map((option) => (
                                                                     <MenuItem key={option.value} value={option.value}>
                                                                         {option.value}
                                                                     </MenuItem>
-                                                                ))} */}
-                                                    </TextField>
+                                                                ))}
+                                                    </TextField> */}
+
+                                                   
+
+                                                    <AvField value={nomeCampus} label="Faculdade" name="faculdade" type="text" onChange={handleAtleticaFaculdade}
+                                                        validate={{ maxLength: { value: 255, errorMessage: "Muito grande" }}}/>
+
 
                                                     <p className='subtitle2'>Cursos presentes na sua atlética</p>
 
+                                                    <Autocomplete
+                                                                id="asynchronous-demo"
+                                                                multiple
+                                                                fullWidth
+                                                                open={open}
+                                                                onOpen={() => {
+                                                                setOpen(true);
+                                                                }}
+                                                                onClose={() => {
+                                                                setOpen(false);
+                                                                }}
+                                                                getOptionSelected={(option, value) =>
+                                                                option.cursoId == value.cursoId
+                                                                }
+                                                                getOptionLabel={(option) => option.nome}
+                                                                options={cursos}
+                                                                loading={loading}
+                                                                onChange={(event, values) => handleChangeCursos(values)}
+                                                                renderInput={(params) => (
+                                                                <TextField
+                                                                    style={{marginBottom: 15}}
+                                                                    {...params}
+                                                                    label="Cursos"
+                                                                    variant="outlined"
+                                                                    InputProps={{
+                                                                    ...params.InputProps,
+                                                                    endAdornment: (
+                                                                        <React.Fragment>
+                                                                        {loading ? (
+                                                                            <CircularProgress
+                                                                            color="inherit"
+                                                                            size={20}
+                                                                            />
+                                                                        ) : null}
+                                                                        {params.InputProps.endAdornment}
+                                                                        </React.Fragment>
+                                                                    ),
+                                                                    }}
+                                                                />
+                                                                )}
+                                                            />
+                                                    
 
-                                                    <div className='scroll'>
+
+                                                    {/* <div className='scroll'>
 
                                                         <FormControl component="fieldset" className={classes.formControl}>
 
@@ -875,7 +1118,7 @@ export default function Cadastro() {
                                                         </FormControl>
 
 
-                                                    </div>
+                                                    </div> */}
 
                                                     <Grid item xs={12} >
 
@@ -907,6 +1150,13 @@ export default function Cadastro() {
 
                                                         <AvField value={neighbourhood} name="bairro" label="Bairro" type="text" />
 
+                                                    </Grid>
+
+                                                    <Grid item xs={12}>
+                                                    <AvField value={complemento} label="Complemento" name="complemento" type="text" onChange={handleAtleticaComplemento}
+                                                                        validate={{
+                                                                            maxLength: { value: 255, errorMessage: "Muito grande" }
+                                                                        }} />
                                                     </Grid>
 
                                                     <Grid item xs={12}>
