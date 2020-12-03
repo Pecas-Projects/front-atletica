@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper, Button, TextField, MenuItem, Snackbar, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText } from "@material-ui/core";
+import { Grid, Paper, Button, TextField, MenuItem, Snackbar, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText, Typography } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { makeStyles } from "@material-ui/core/styles";
@@ -73,17 +73,22 @@ export default function CardAddModalidade() {
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
     const [coordenador, setCoordenador] = useState('')
-    const [modalidade, setModalidade] = useState('')
+    const [modalidade, setModalidade] = useState()
     const [genero, setGenero] = useState('')
     const [openCriado, setOpenCriado] = useState(false)
     const [openErro, setOpenErro] = useState(false)
     const [criarModalidade, setCriarModalidade] = useState(false)
     const [horaTreino, setHoraTreino] = useState('')
     const [diaTreino, setDiaTreino] = useState('')
+    const [agendaTreinos, setAgendaTreinos] = useState([])
     const [modalidades, setModalidades] = useState()
     const [membros, setMembros] = useState()
     const [nomeModalidade, setNomeModaliade] = useState('')
     const [openNovaModalidade, setOpenNovaModalidade] = useState(false)
+    const [openAgenda, setopenAgenda] = useState(false)
+    const [imagemId, setImagemId] = useState()
+    const [enviar, setEnviar] = useState(false)
+
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -120,6 +125,55 @@ export default function CardAddModalidade() {
 
     }, [])
 
+    useEffect(() => {
+
+        async function criarAtleticaModalidade() {
+
+            let AtleticaModalidade = {
+                agendaTreinos: agendaTreinos,
+                coordenadorId: coordenador,
+                modalidadeId: modalidade,
+                imagemId: imagemId
+
+            }
+            console.log(AtleticaModalidade)
+
+            await ApiService.CadastrarAtleticaModalidade(getAtleticaId(), AtleticaModalidade)
+                .then(res => {
+                    console.log(res)
+                    setOpenCriado(true)
+                    setTimeout(function () { window.location.href = '/modalidades' }, 3000)
+                })
+                .catch(error => {
+                    setOpenErro(true)
+                    console.log(error)
+                })
+
+        }
+
+        if (enviar === true) {
+            criarAtleticaModalidade()
+        }
+    }, [enviar])
+
+
+    async function envioImagem() {
+
+        let file = new FormData();
+        file.append('value', imagem);
+
+        await ApiService.UploadImagem(file)
+            .then((res) => {
+                console.log(res)
+                setImagemId(res.data.imagemId)
+                setEnviar(true)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+
+    }
+
     const onModalidadeSubmit = () => {
 
         if (nomeModalidade !== '' && genero !== '') {
@@ -132,7 +186,7 @@ export default function CardAddModalidade() {
                 .then(res => {
                     console.log(res)
                     setOpenNovaModalidade(true)
-                    setTimeout(function () { window.location.href = '/modalidades?' }, 3000)
+                    setTimeout(function () { window.location.href = '/modalidades' }, 3000)
 
                 })
                 .catch(error => {
@@ -148,9 +202,32 @@ export default function CardAddModalidade() {
 
     }
 
+    const criarTreino = () => {
+
+        if (diaTreino !== null && horaTreino !== null) {
+
+            let treino = {
+                diaTreino: diaTreino,
+                horaTreino: horaTreino
+            }
+
+            agendaTreinos.push(treino)
+
+            setopenAgenda(false)
+        }
+        else {
+            setOpenErro(true)
+        }
+
+
+    }
+
+
+
 
     const handleMembroChange = (e) => {
         setCoordenador(e.target.value)
+        console.log(e.target.value)
     }
 
     const handleGeneroChange = (e) => {
@@ -159,6 +236,7 @@ export default function CardAddModalidade() {
 
     const handleModalidadeChange = (e) => {
         setModalidade(e.target.value)
+        console.log(modalidade)
     }
 
     const handleHorarioChange = (e) => {
@@ -193,6 +271,7 @@ export default function CardAddModalidade() {
         setOpenNovaModalidade(false);
     };
 
+
     const handleClickErro = () => {
         setOpenErro(true);
     };
@@ -211,6 +290,14 @@ export default function CardAddModalidade() {
 
     const handleCloseNovaModalidade = () => {
         setCriarModalidade(false)
+    };
+
+    const handleOpenAgenda = () => {
+        setopenAgenda(true)
+    };
+
+    const handleCloseAgenda = () => {
+        setopenAgenda(false)
     };
 
     return (
@@ -235,7 +322,7 @@ export default function CardAddModalidade() {
             </Snackbar>
 
             <Paper className={classes.paperA}>
-                <AvForm>
+                <AvForm >
                     <Grid container spacing={2}>
                         <Grid item xs={3}>
                             {showAdicionarImagem()}
@@ -259,11 +346,11 @@ export default function CardAddModalidade() {
 
                         <Grid item xs={4} style={{ marginTop: 20, marginLeft: -50 }}>
 
-                            <div className='scroll'>
+                            {modalidades !== undefined ? (
 
-                                <Grid item xs={12} style={{ maxHeight: 250 }}>
+                                <div className='scroll'>
 
-                                    {modalidades !== undefined ? (
+                                    <Grid item xs={12} style={{ maxHeight: 250 }}>
 
                                         <FormControl component="fieldset" style={{ marginLeft: 90 }}>
                                             <FormLabel component="legend">Escolha a modalidade</FormLabel>
@@ -275,21 +362,14 @@ export default function CardAddModalidade() {
                                             </RadioGroup>
                                         </FormControl>
 
-                                    ) : (
-                                            <>
-                                            </>
-                                        )}
 
+                                    </Grid>
+                                </div>
+                            ) : (
+                                    <>
+                                    </>
+                                )}
 
-
-                                </Grid>
-                            </div>
-
-                            <Grid container justify='center'>
-
-                                <Button onClick={handleNovaModalidade} >Nova modalidade</Button>
-
-                            </Grid>
 
 
 
@@ -301,77 +381,74 @@ export default function CardAddModalidade() {
 
                             <Grid item xs={12} style={{ marginTop: 10 }}>
 
-
-                                <AvField style={{ width: "100%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
+                                <Grid container justify='center'>
+                                    <Button fullWidth color='primary' variant='outlined' onClick={handleNovaModalidade}>Nova modalidade</Button>
+                                </Grid>
 
 
                             </Grid>
 
                             <Grid item xs={12} style={{ marginTop: 10 }}>
 
-
-                                <TextField
-                                    id="standard-select-dia"
-                                    select
-                                    label="Dia do treino"
-                                    value={diaTreino}
-                                    onChange={handleDiaChange}
-                                    fullWidth
-
-                                >
-                                    {Dias.map((option) => (
-                                        <MenuItem key={option} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-
+                                <Grid container justify='center'>
+                                    <Button fullWidth color='secondary' variant='outlined' onClick={handleOpenAgenda}>Novo Treino </Button>
+                                </Grid>
 
 
                             </Grid>
 
+                            {agendaTreinos.length !== 0 ? (
+                                <>
+                                    <Typography style={{ marginTop: 7 }}>Treinos</Typography>
+                                    {agendaTreinos.map((treino) => (
+                                        <Typography style={{ color: "gray" }}>{treino.diaTreino} {treino.horaTreino}</Typography>
+                                    ))}
 
-                            <Grid item xs={12}>
-                                <Grid container justify='flex-end'>
-                                    <TextField
-                                        fullWidth
-                                        id="standard-select-coordenador"
-                                        select
-                                        label="Coordenador"
-                                        value={coordenador}
-                                        onChange={handleMembroChange}
-                                        helperText="Selecione o membro que coordena essa modalidade"
-                                    >
-                                        {membros !== undefined ? (
-                                            <>
+                                </>
+                            ) : (
+                                    <>
+                                    </>
+                                )}
+
+                            {membros !== undefined ? (
+                                <>
+
+                                    <Grid item xs={12}>
+                                        <Grid container justify='flex-end'>
+                                            <TextField
+                                                fullWidth
+                                                id="standard-select-coordenador"
+                                                select
+                                                label="Coordenador"
+                                                value={coordenador}
+                                                onChange={handleMembroChange}
+                                                helperText="Selecione o membro que coordena essa modalidade"
+                                            >
+
                                                 {membros.map((option) => (
-                                                    <MenuItem key={option.membroId} value={option.membroId}>
+                                                    <MenuItem value={option.membroId}>
                                                         {option.pessoa.nome + " " + option.pessoa.sobrenome}
                                                     </MenuItem>
                                                 ))}
-                                            </>
-                                        ) : (
-                                                <>
-                                                </>
-                                            )}
-
-                                    </TextField>
-                                </Grid>
-                            </Grid>
 
 
-                            <Grid item xs={12} >
+                                            </TextField>
+                                        </Grid>
+                                    </Grid>
+                                </>
+                            ) : (
+                                    <>
+                                    </>
+                                )}
 
 
-
-                            </Grid>
 
 
                             <Grid item xs={12} style={{ marginTop: 40 }}>
 
                                 <Grid container justify="flex-end">
 
-                                    <Button onClick={handleClickErro} style={{ width: "100%" }} variant='contained' color='secondary' >Salvar</Button>
+                                    <Button onClick={envioImagem} style={{ width: "100%" }} variant='contained' color='secondary' >Salvar</Button>
 
                                 </Grid>
 
@@ -432,6 +509,55 @@ export default function CardAddModalidade() {
                 </Dialog>
 
             </div>
+
+            <div>
+
+                <Dialog
+                    open={openAgenda}
+                    onClose={handleCloseAgenda}
+
+                >
+                    <DialogTitle id="alert-dialog-excluir">{"Cadastrar novo treino"}</DialogTitle>
+
+                    <AvForm onValidSubmit={criarTreino}>
+                        <DialogContent>
+                            <DialogContentText>
+                                Selecione um dia da semana e um horário para adicionar a agenda de trinos dessa modalidade
+        </DialogContentText>
+
+                            <AvField style={{ width: "100%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
+
+
+                            <TextField
+                                id="standard-select-dia"
+                                select
+                                label="Dia do treino"
+                                value={diaTreino}
+                                onChange={handleDiaChange}
+                                fullWidth
+
+                            >
+                                {Dias.map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </DialogContent>
+
+                        <DialogActions>
+                            <Button type='submit' color="primary">
+                                Salvar
+</Button>
+                            <Button variant='outlined' onClick={handleCloseAgenda} color="primary" autoFocus>
+                                Cancelar
+</Button>
+                        </DialogActions>
+                    </AvForm>
+                </Dialog>
+
+            </div>
+
 
         </>
 
