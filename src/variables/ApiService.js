@@ -315,6 +315,17 @@ const ApiService = {
       })
   },
 
+  BuscarAtletasModalidade: (atleticaModalidadeId) => {
+    return api
+      .get(`/api/AtletaModalidade/${atleticaModalidadeId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
 };
 
 export default ApiService;
