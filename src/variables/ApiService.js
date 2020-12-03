@@ -326,6 +326,17 @@ const ApiService = {
       })
   },
 
+  AdicionarAtletasTime: (timeId, atletas) => {
+    return api
+      .post(`/api/AtletaTime/${timeId}`, atletas)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
 };
 
 export default ApiService;
