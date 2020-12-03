@@ -66,13 +66,19 @@ export default function Produtos(props) {
   const username = props.match.params.username;
   const [atleticaId, setAtleticaId] = useState();
   const atleticaLoginId = getAtleticaId();
+  const [logada, setLogada] = useState(false)
   const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
     buscaAtletica();
-    if (atleticaId !== undefined && atleticaId !== null)
+    if (atleticaId !== undefined && atleticaId !== null){
       buscarProdutos();
-  }, [atleticaId]);
+      if(atleticaLoginId === atleticaId){
+        setLogada(true)
+      }
+    }
+      
+  }, [atleticaId, atleticaLoginId]);
 
   async function buscaAtletica() {
     await ApiService.PesquisaAtleticaPorUsername(username)
@@ -112,7 +118,7 @@ export default function Produtos(props) {
               }
               <Grid container spacing={1} style={{ marginTop: 20 }}>
                 {produtos.map((item) => (
-                  <CardProduto item={item} atletica={atleticaLoginId} />
+                  <CardProduto item={item} atletica={logada} />
                 ))}
               </Grid>
             </Paper>
