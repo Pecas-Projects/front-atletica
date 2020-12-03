@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Grid, Button, CardHeader, CardContent } from '@material-ui/core';
+import { Card, Grid, Button, CardHeader, CardContent, Snackbar } from '@material-ui/core';
 import { FormGroup, Label, Input } from 'reactstrap';
 import { AvField, AvForm } from "availity-reactstrap-validation"
 import { makeStyles } from '@material-ui/core/styles';
 import ApiService from '../../../variables/ApiService'
 import { getAtleticaId } from '../../../utils/storage'
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,12 +43,27 @@ export default function AddJogo() {
     const [modalidadeId, setModalidadeId] = useState(null)
     const [categorias, setCategorias] = useState([])
     const [categoriaId, setCategoriaId] = useState(null)
+    const [msgAlerta, setMsgAlerta] = useState("Ocorreu um erro, verifique os dados inseridos.")
+    const [openAdd, setOpenAdd] = useState(false)
+    const [tipoAlerta, setTipoAlerta] = useState('success')
 
     useEffect(() => {
         buscaAtleticas()
         buscaModalidades()
         buscaCategorias()
     }, []);
+
+    const handleCloseAdd = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenAdd(false);
+    };
+
+    const handleOpenAdd = () => {
+        setOpenAdd(true)
+    }
 
     const handleSubmitClick = () => {
 
@@ -72,12 +92,22 @@ export default function AddJogo() {
         }
 
         await ApiService.CriarSolicitacaoJogo(getAtleticaId(), data)
-            .then(res =>
-                console.log(res)
-            )
-            .catch(err =>
+            .then(res => {
+                setMsgAlerta("Sua solicitação foi enviada com sucesso! Aguarde a confirmação da atlética.")
+                setTipoAlerta('success')
+                handleOpenAdd(true)
+            })
+            .catch(err => {
                 console.log(err)
-            )
+                setTipoAlerta('error')
+
+                if (err.response !== null && err.response.data === "A atletica convidada não tem essa modalidade cadastrada")
+                    setMsgAlerta(err.response.data)
+                else
+                    setMsgAlerta("Ocorreu um erro, verifique os dados inseridos.")
+
+                handleOpenAdd(true)
+            })
     }
 
     const buscaAtleticas = async () => {
@@ -118,6 +148,11 @@ export default function AddJogo() {
 
     return (
         <>
+            <Snackbar open={openAdd} autoHideDuration={4000} onClose={handleCloseAdd}>
+                <Alert onClose={handleCloseAdd} severity={tipoAlerta}>
+                    {msgAlerta}
+                </Alert>
+            </Snackbar>
             {/* DESKTOP */}
             <div className={classes.sectionDesktop}>
                 <Card className={classes.root}>
