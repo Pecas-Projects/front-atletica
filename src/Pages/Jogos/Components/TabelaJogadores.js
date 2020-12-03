@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { Paper, IconButton } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import FirstPage from '@material-ui/icons/FirstPage';
@@ -19,7 +19,43 @@ const tableIcons = {
 }
 
 export default function TabelaJogadores(props) {
-    const { jogadores } = props;
+    const { jogadores, editavel } = props;
+    const [colunas, setColunas] = useState([
+        { title: 'Jogadores', field: 'nome', },
+        { title: 'Pontos', field: 'pontos', type: 'numeric' },
+        { title: 'Infrações', field: 'infracoes', type: 'numeric' }
+    ])
+
+    useEffect(() => {
+
+        if (editavel === true)
+            setColunas([
+                {
+                    title: '',
+                    field: 'icon',
+                    render: (rowData) => (
+                        <IconButton
+                            style={{ outline: 'none' }}
+                            color="primary"
+                            aria-label="add"
+                            // onClick={teste}
+                        >
+                            <Clear />
+                        </IconButton>
+                    )
+                },
+                { title: 'Jogadores', field: 'nome', },
+                { title: 'Pontos', field: 'pontos', type: 'numeric' },
+                { title: 'Infrações', field: 'infracoes', type: 'numeric' }
+            ])
+        else
+            setColunas([
+                { title: 'Jogadores', field: 'nome', },
+                { title: 'Pontos', field: 'pontos', type: 'numeric' },
+                { title: 'Infrações', field: 'infracoes', type: 'numeric' }
+            ])
+
+    }, [editavel]);
 
     return (
         <div style={{ maxWidth: '100%' }}>
@@ -28,25 +64,7 @@ export default function TabelaJogadores(props) {
                     Container: props => <Paper {...props} elevation={0} />
                 }}
                 style={{ backgroundColor: "#BBB8CC" }}
-                columns={[
-                    {
-                        title: '',
-                        field: 'icon',
-                        render: (rowData) => (
-                            <IconButton
-                                style={{ outline: 'none' }}
-                                color="primary"
-                                aria-label="add"
-                            // onClick={adicionarTabela}
-                            >
-                                <Clear />
-                            </IconButton>
-                        )
-                    },
-                    { title: 'Jogadores', field: 'nome', },
-                    { title: 'Pontos', field: 'pontos', type: 'numeric' },
-                    { title: 'Infrações', field: 'infracoes', type: 'numeric' },
-                ]}
+                columns={colunas}
                 options={{
                     showTitle: false,
                     header: true,

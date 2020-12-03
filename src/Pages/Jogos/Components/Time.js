@@ -55,12 +55,15 @@ export default function Time(props) {
     const [msgAlerta, setMsgAlerta] = useState("Ocorreu um erro, verifique os dados inseridos.")
     const [openAdd, setOpenAdd] = useState(false)
     const [tipoAlerta, setTipoAlerta] = useState('success')
-
+    const [editavel, setEditavel] = useState(false)
 
     useEffect(() => {
+
+        setEditavel(!time.registrouEscalacao)
         setAtletasTime(time.atletas)
         if (atletasModalidade !== null && atletasModalidade.length > 0)
             setAtleta(JSON.stringify(atletasModalidade[0]))
+
     }, []);
 
     const handleCloseAdd = (event, reason) => {
@@ -132,7 +135,7 @@ export default function Time(props) {
                         <Typography style={{ textAlign: 'center' }}>{"Time " + time.timeId}</Typography>
                     </Grid>
                     {
-                        time.registrouEscalacao ? null :
+                        !editavel ? null :
                             <>
                                 <Grid item xs={6}>
                                     <FormGroup>
@@ -214,10 +217,10 @@ export default function Time(props) {
                             </>
                     }
                     <Grid item xs={12}>
-                        <TabelaJogadores jogadores={atletasTime} />
+                        <TabelaJogadores jogadores={atletasTime} editavel={editavel} />
                     </Grid>
                     {
-                        time.registrouEscalacao ? null :
+                        !editavel ? null :
                             <Grid item xs={12}>
                                 <Grid
                                     container
@@ -251,7 +254,7 @@ export default function Time(props) {
                         <Typography style={{ textAlign: 'center' }}>{"Time " + time.timeId}</Typography>
                     </Grid>
                     {
-                        time.registrouEscalacao ? null :
+                        !editavel ? null :
                             <>
                                 <Grid item xs={12} style={{ width: '100%' }}>
                                     <FormGroup>
@@ -332,10 +335,10 @@ export default function Time(props) {
                             </>
                     }
                     <Grid item xs={12}>
-                        <TabelaJogadores jogadores={atletasTime} />
+                        <TabelaJogadores jogadores={atletasTime} editavel={editavel} />
                     </Grid>
                     {
-                        time.registrouEscalacao ? null :
+                        !editavel ? null :
                             <Grid item xs={12}>
                                 <Grid
                                     container
