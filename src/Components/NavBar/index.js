@@ -317,7 +317,7 @@ export default function MiniDrawer() {
                 </IconButton>
               </div>
 
-              <Grid style={{ marginTop: 80 }}>
+              {/* <Grid style={{ marginTop: 80 }}>
 
                 <List >
 
@@ -337,127 +337,127 @@ export default function MiniDrawer() {
 
                   <ListItem button >
                     <ListItemIcon>
-                      {/* <img src={Calendario} alt="calendario" /> */}
+                      <img src={Calendario} alt="calendario" />
                     </ListItemIcon>
-                    <ListItemText className="item" primary="Calendário" />
+            <ListItemText className="item" primary="Calendário" />
                   </ListItem>
 
-                  <ListItem button >
+          <ListItem button >
+            <ListItemIcon>
+              <img src={Trofeu} alt="times" />
+            </ListItemIcon>
+            <ListItemText className="item" primary="Times" />
+          </ListItem>
+
+          <ListItem button >
+            <ListItemIcon>
+              <img src={Bag} alt="produtos" />
+            </ListItemIcon>
+            <ListItemText className="item" primary="Produtos" />
+          </ListItem>
+                </List>
+
+              </Grid> */}
+
+
+              {/* <div className="absoluteNavBar"> */}
+
+              <List style={{ marginTop: 30 }}>
+                <Link to={"/Perfil/" + atleticaUsername()}>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <img src={Home} alt="home" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Home" />
+                  </ListItem>
+                </Link>
+
+                <Link to={"/Feed/" + atleticaUsername()}>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <img src={Feed} alt="feed" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Feed" />
+                  </ListItem>
+                </Link>
+                <Link to="/Times">
+                  <ListItem button>
                     <ListItemIcon>
                       <img src={Trofeu} alt="times" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Times" />
                   </ListItem>
+                </Link>
 
-                  <ListItem button >
+                <Link to="/Produtos">
+                  <ListItem button>
                     <ListItemIcon>
                       <img src={Bag} alt="produtos" />
                     </ListItemIcon>
                     <ListItemText className="item" primary="Produtos" />
                   </ListItem>
-                </List>
-
-              </Grid>
-
-
-              <div className="absoluteNavBar">
-
-                <List>
-                  <Link to={"/Perfil/" + atleticaUsername()}>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <img src={Home} alt="home" />
-                      </ListItemIcon>
-                      <ListItemText className="item" primary="Home" />
-                    </ListItem>
-                  </Link>
-
-                  <Link to={"/Feed/" + atleticaUsername()}>
-                    <ListItem button>
-                      <ListItemIcon>
-                        <img src={Feed} alt="feed" />
-                      </ListItemIcon>
-                      <ListItemText className="item" primary="Feed" />
-                    </ListItem>
-                  </Link>
-                  <Link to="/Times">
-                    <ListItem button>
-                      <ListItemIcon>
-                        <img src={Trofeu} alt="times" />
-                      </ListItemIcon>
-                      <ListItemText className="item" primary="Times" />
-                    </ListItem>
-                  </Link>
-
-                  <Link to="/Produtos">
-                    <ListItem button>
-                      <ListItemIcon>
-                        <img src={Bag} alt="produtos" />
-                      </ListItemIcon>
-                      <ListItemText className="item" primary="Produtos" />
-                    </ListItem>
-                  </Link>
-                  {isLogin() && (
-                    <>
-                      <Link to="/Notificacoes">
-                        <ListItem button>
-                          <ListItemIcon>
-                            <img src={Bell} alt="Notificação" />
-                          </ListItemIcon>
-                          <ListItemText
-                            className="item"
-                            primary="Notificações"
-                          />
-                        </ListItem>
-                      </Link>
-                      <Link to="/Ranking">
-                        <ListItem button>
-                          <ListItemIcon>
-                            <img src={Ranking} alt="Ranking" />
-                          </ListItemIcon>
-                          <ListItemText className="item" primary="Ranking" />
-                        </ListItem>
-                      </Link>
-                      <Link to="/Jogos">
-                        <ListItem button>
-                          <ListItemIcon>
-                            <img src={Jogo} alt="Jogo" />
-                          </ListItemIcon>
-                          <ListItemText className="item" primary="Jogos" />
-                        </ListItem>
-                      </Link>
-                      <Link to="/Modalidades">
-                        <ListItem button>
-                          <ListItemIcon>
-                            <img src={Modalidade} alt="Modalidade" />
-                          </ListItemIcon>
-                          <ListItemText className="item" primary="Modalidade" />
-                        </ListItem>
-                      </Link>
-                    </>
-                  )}
-                </List>
-
-
-                {getUserType() === "A" && (
-                  <div className="absolute">
-                    <List>
-                      <ListItem button onClick={handleClickOpenLogout}>
+                </Link>
+                {isLogin() && (
+                  <>
+                    <Link to="/Notificacoes">
+                      <ListItem button>
                         <ListItemIcon>
-                          <img src={LogOut} alt="logout" />
+                          <img src={Bell} alt="Notificação" />
                         </ListItemIcon>
-                        <ListItemText className="item" primary="Logout" />
+                        <ListItemText
+                          className="item"
+                          primary="Notificações"
+                        />
                       </ListItem>
-                    </List>
-                  </div>
+                    </Link>
+                    <Link to="/Ranking">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Ranking} alt="Ranking" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Ranking" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Jogos">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Jogo} alt="Jogo" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Jogos" />
+                      </ListItem>
+                    </Link>
+                    <Link to="/Modalidades">
+                      <ListItem button>
+                        <ListItemIcon>
+                          <img src={Modalidade} alt="Modalidade" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Modalidade" />
+                      </ListItem>
+                    </Link>
+                  </>
                 )}
-              </div>
+              </List>
+
+
+              {getUserType() === "A" && (
+                <div className="absoluteNavBar">
+                  <List>
+                    <ListItem button onClick={handleClickOpenLogout}>
+                      <ListItemIcon>
+                        <img src={LogOut} alt="logout" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Logout" />
+                    </ListItem>
+                  </List>
+                </div>
+              )}
+              {/* </div> */}
             </Drawer>
-          </div>
-        </div>
+          </div >
+        </div >
 
 
-      </div>
+      </div >
 
 
 
@@ -471,7 +471,7 @@ export default function MiniDrawer() {
       
       */}
 
-      <div className={classes.sectionMobile}>
+      < div className={classes.sectionMobile} >
         <CssBaseline />
 
         <div className="parent">
@@ -665,7 +665,7 @@ export default function MiniDrawer() {
             </div>
           </Drawer>
         </div>
-      </div>
+      </  div>
       <LogoutModel open={openLogout} handleClose={handleCloseLogout} />
     </>
   );
