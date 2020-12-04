@@ -234,6 +234,17 @@ const ApiService = {
       });
   },
 
+  CriarSolicitacaoJogo: (atleticaId, data) => {
+    return api
+      .post(`/api/SolicitacaoJogo/${atleticaId}`, data)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
   UploadImagem: (data) => {
     return api
       .post(`/api/Imagem/Upload`, data)
@@ -358,6 +369,61 @@ const ApiService = {
       });
   },
 
+  BuscarJogosModalidade: (atleticaId, modalidadeId) => {
+    return api
+      .get(`/api/JogosModalidade/${atleticaId}/${modalidadeId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
+  BuscarTodasAtleticas: () => {
+    return api
+      .get("/api/Atletica")
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
+  BuscarCategoriasJogos: () => {
+    return api
+      .get("/api/CategoriasJogos")
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
+  BuscarAtletasModalidade: (atleticaModalidadeId) => {
+    return api
+      .get(`/api/AtletaModalidade/${atleticaModalidadeId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
+  AdicionarAtletasTime: (timeId, atletas) => {
+    return api
+      .post(`/api/AtletaTime/${timeId}`, atletas)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
   BuscarAtletaModalidade: (atleticaModalidadeId) => {
     return api
       .get(`/api/AtletaModalidade/${atleticaModalidadeId}`)
@@ -457,6 +523,7 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
 };
 
 export default ApiService;

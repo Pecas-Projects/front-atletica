@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
@@ -9,7 +9,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+import ApiService from '../../variables/ApiService'
+import { getAtleticaId } from '../../utils/storage'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -46,30 +47,26 @@ const useStyles = makeStyles((theme) => ({
 export default function Jogos() {
 
     const [opcao, setOpcao] = useState('Ver')
+    const [modalidades, setModalidades] = useState([])
 
-    const categorias = [
-        {
-            id: 1,
-            nome: "Futebol Masculino"
-        },
-        {
-            id: 2,
-            nome: "Vôlei Feminino"
-        },
-        {
-            id: 3,
-            nome: "Handball Masculino"
-        },
-        {
-            id: 4,
-            nome: "Tênis de Mesa Masculino"
-        }
-    ]
+    useEffect(() => {
+        buscaAtleticaModalidades()
+    }, []);
 
     const classes = useStyles();
 
     const handleFormChange = (e) => {
         setOpcao(e.target.value)
+    }
+
+    const buscaAtleticaModalidades = async () => {
+        await ApiService.BuscarAtleticaModalidades(getAtleticaId())
+            .then(res =>
+                setModalidades(res.data)
+            )
+            .catch(err =>
+                console.log(err)
+            )
     }
 
     return (
@@ -96,7 +93,7 @@ export default function Jogos() {
                                 {
                                     opcao == "Ver" ?
                                         <Grid container justify='center'>
-                                            {categorias.map((item) => (
+                                            {modalidades.map((item) => (
                                                 <Categoria categoria={item} />
                                             ))}
                                         </Grid>
@@ -112,18 +109,18 @@ export default function Jogos() {
                         <Grid container  >
                             <Grid item xs={12} >
                                 <Grid container alignItems="center">
-                                <FormControl component="fieldset">
-                                    <RadioGroup row aria-label="gender" name="gender1" value={opcao} onChange={handleFormChange} >
-                                        <FormControlLabel value="Ver" control={<Radio />} label="Ver jogos" />
-                                        <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar jogo" />
-                                    </RadioGroup>
-                                </FormControl>
+                                    <FormControl component="fieldset">
+                                        <RadioGroup row aria-label="gender" name="gender1" value={opcao} onChange={handleFormChange} >
+                                            <FormControlLabel value="Ver" control={<Radio />} label="Ver jogos" />
+                                            <FormControlLabel value="Adicionar" control={<Radio />} label="Adicionar jogo" />
+                                        </RadioGroup>
+                                    </FormControl>
                                 </Grid>
                             </Grid>
                             <Grid item xs={12} >
                                 {
                                     opcao == "Ver" ?
-                                        categorias.map((item) => (
+                                        modalidades.map((item) => (
                                             <Categoria categoria={item} />
                                         ))
                                         :
