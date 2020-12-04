@@ -4,11 +4,6 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { makeStyles } from "@material-ui/core/styles";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem"
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import "../styles.css"
 import ApiService from "../../../variables/ApiService";
 import storage, { getAtleticaId } from "../../../utils/storage"
@@ -136,6 +131,10 @@ export default function CardAddModalidade() {
             })
 
     }, [])
+
+    useEffect(() => {
+        console.log(modalidades)
+    }, [modalidades])
 
     useEffect(() => {
 
@@ -367,124 +366,132 @@ export default function CardAddModalidade() {
                             </Paper>
                         </Grid>
 
-                        <Grid item xs={4} >
+                        <Grid item xs={8} style={{ marginLeft: 40 }}>
 
-                            <Grid item xs={12} style={{ marginTop: 50 }}>
+                            <Grid container style={{ marginLeft: 30 }} >
 
-                                <Grid container justify='center'>
-                                    <Button fullWidth color='primary' variant='outlined' onClick={handleNovaModalidade}>Nova modalidade</Button>
-                                </Grid>
+                                <Grid item xs={5} style={{ marginRight: 20 }}>
 
+                                    <Grid item xs={12} >
 
-                            </Grid>
-
-
-
-
-                            {modalidades !== undefined ? (
-
-                                <Grid item xs={12} style={{ marginTop: 50 }}>
-
-                                    <TextField
-                                        fullWidth
-                                        id="standard-select-modalidade"
-                                        select
-                                        label="Modalidade"
-                                        value={modalidade}
-                                        onChange={handleModalidadeChange}
-
-                                    >
-
-                                        {modalidades.map((item) =>
-                                            <MenuItem value={item.modalidadeId}
-                                                label={acertaNome(item.nome, item.genero)} />
-                                        )}
-                                    </TextField>
+                                        <Grid container justify='center'>
+                                            <Button fullWidth color='primary' variant='outlined' onClick={handleNovaModalidade}>Nova modalidade</Button>
+                                        </Grid>
 
 
-
-                                </Grid>
-
-                            ) : (
-                                    <>
-                                    </>
-                                )}
-
-
-
-                        </Grid>
-
-                        <Grid item xs={4} style={{ marginLeft: 50 }}>
+                                    </Grid>
 
 
 
 
+                                    {modalidades !== undefined ? (
 
-                            <Grid item xs={12} style={{ marginTop: 50 }}>
+                                        <Grid item xs={12} style={{ marginTop: 50 }}>
 
-                                <Grid container justify='center'>
-                                    <Button fullWidth color='secondary' variant='outlined' onClick={handleOpenAgenda}>Novo Treino </Button>
-                                </Grid>
-
-
-                            </Grid>
-
-                            {agendaTreinos.length !== 0 ? (
-                                <>
-                                    <Typography style={{ marginTop: 7 }}>Treinos</Typography>
-                                    {agendaTreinos.map((treino) => (
-                                        <Typography style={{ color: "gray" }}>{treino.diaSemana} {exibirHora(treino.horaInicio)}h</Typography>
-                                    ))}
-
-                                </>
-                            ) : (
-                                    <>
-                                    </>
-                                )}
-
-                            {membros !== undefined ? (
-                                <>
-
-                                    <Grid item xs={12} style={{ marginTop: 50 }}>
-                                        <Grid container justify='flex-end'>
                                             <TextField
                                                 fullWidth
-                                                id="standard-select-coordenador"
+                                                id="standard-select-modalidade"
                                                 select
-                                                label="Coordenador"
-                                                value={coordenador}
-                                                onChange={handleMembroChange}
-                                                helperText="Selecione o membro que coordena essa modalidade"
+                                                label="Modalidade"
+                                                value={modalidade}
+                                                onChange={handleModalidadeChange}
+                                                helperText="Selecione a modalidade que deseja adicionar a sua atletica, caso ela não esteja cadastrada clique em Nova Modalidade"
+
                                             >
 
-                                                {membros.map((option) => (
-                                                    <MenuItem value={option.membroId}>
-                                                        {option.pessoa.nome + " " + option.pessoa.sobrenome}
+                                                {modalidades.map((item) =>
+                                                    <MenuItem value={item.modalidadeId}>
+                                                        {acertaNome(item.nome, item.genero)}
                                                     </MenuItem>
-                                                ))}
 
-
+                                                )}
                                             </TextField>
+
+
+
                                         </Grid>
+
+                                    ) : (
+                                            <>
+                                            </>
+                                        )}
+
+
+
+                                </Grid>
+
+                                <Grid item xs={5} style={{}}>
+
+
+
+                                    <Grid item xs={12} style={{}}>
+
+                                        <Grid container justify='center'>
+                                            <Button fullWidth color='secondary' variant='outlined' onClick={handleOpenAgenda}>Novo Treino </Button>
+                                        </Grid>
+
+
                                     </Grid>
-                                </>
-                            ) : (
-                                    <>
-                                    </>
-                                )}
+
+                                    {agendaTreinos.length !== 0 ? (
+                                        <>
+                                            <Typography style={{ marginTop: 7 }}>Treinos</Typography>
+                                            {agendaTreinos.map((treino) => (
+                                                <Typography style={{ color: "gray" }}>{treino.diaSemana} {exibirHora(treino.horaInicio)}h</Typography>
+                                            ))}
+
+                                        </>
+                                    ) : (
+                                            <>
+                                            </>
+                                        )}
+
+                                    {membros !== undefined ? (
+                                        <>
+
+                                            <Grid item xs={12} style={{ marginTop: 50 }}>
+                                                <Grid container justify='flex-end'>
+                                                    <TextField
+                                                        fullWidth
+                                                        id="standard-select-coordenador"
+                                                        select
+                                                        label="Coordenador"
+                                                        value={coordenador}
+                                                        onChange={handleMembroChange}
+                                                        helperText="Selecione o membro que coordena essa modalidade"
+                                                    >
+
+                                                        {membros.map((option) => (
+                                                            <MenuItem value={option.membroId}>
+                                                                {option.pessoa.nome + " " + option.pessoa.sobrenome}
+                                                            </MenuItem>
+                                                        ))}
+
+
+                                                    </TextField>
+                                                </Grid>
+                                            </Grid>
+                                        </>
+                                    ) : (
+                                            <>
+                                            </>
+                                        )}
 
 
 
-                        </Grid>
-
-                        <Grid item xs={12} style={{ marginTop: 40 }}>
-
-                            <Grid container justify="flex-end">
-
-                                <Button onClick={envioImagem} style={{ width: "100%" }} variant='contained' color='secondary' >Salvar</Button>
-
+                                </Grid>
                             </Grid>
 
+
+                            <Grid item xs={12} style={{ marginTop: 40 }}>
+
+                                <Grid container justify="flex-end">
+
+                                    <Button onClick={envioImagem} style={{ width: "100%" }} variant='contained' color='secondary' >Salvar</Button>
+
+                                </Grid>
+
+                            </Grid>
                         </Grid>
                     </Grid>
                 </AvForm>
