@@ -111,6 +111,11 @@ export default function Time(props) {
             })
     }
 
+    const removeAtletaTime = (index) => {
+        atletasTime.splice(index, 1)
+        setAtletasTime([...atletasTime])
+    }
+
     return (
         <>
             <Snackbar open={openAdd} autoHideDuration={4000} onClose={handleCloseAdd}>
@@ -217,7 +222,11 @@ export default function Time(props) {
                             </>
                     }
                     <Grid item xs={12}>
-                        <TabelaJogadores jogadores={atletasTime} editavel={editavel} />
+                        <TabelaJogadores
+                            jogadores={atletasTime}
+                            editavel={editavel}
+                            removeAtleta={(index) => removeAtletaTime(index)}
+                        />
                     </Grid>
                     {
                         !editavel ? null :
@@ -335,7 +344,11 @@ export default function Time(props) {
                             </>
                     }
                     <Grid item xs={12}>
-                        <TabelaJogadores jogadores={atletasTime} editavel={editavel} />
+                        <TabelaJogadores
+                            jogadores={atletasTime}
+                            editavel={editavel}
+                            removeAtleta={(index) => removeAtletaTime(index)}
+                        />
                     </Grid>
                     {
                         !editavel ? null :
