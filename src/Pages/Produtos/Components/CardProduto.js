@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import ApiService from "../../../variables/ApiService";
 import "../styles.css";
 
 
@@ -24,8 +25,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CardProduto(props) {
   const classes = useStyles();
-  const { item } = props;
-  const { atletica } = props;
+  const { item, atletica, index, DeleteProduto } = props;
+
+  const removeProduto = () => {
+    ApiService.DeletarProdutoAtletica(parseInt(item.produtoId))
+      .then((res) => {
+        console.log(res);
+        DeleteProduto(index);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  };
 
   function apresentaIcones() {
     if (atletica !== null) {
@@ -34,7 +45,7 @@ export default function CardProduto(props) {
             <IconButton aria-label="Editar Produto" className={classes.margin}>
               <EditIcon fontSize="small" />
             </IconButton>
-            <IconButton aria-label="Editar Produto" className={classes.margin}>
+            <IconButton aria-label="Editar Produto" className={classes.margin} onClick={removeProduto}>
               <DeleteIcon fontSize="small" />
             </IconButton>
         </>
