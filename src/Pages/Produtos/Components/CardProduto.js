@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -26,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
 export default function CardProduto(props) {
   const classes = useStyles();
   const { item, atletica, index, DeleteProduto } = props;
+  
+  const editarLink = props => <Link to={"/EditarProduto/" + item.produtoId} {...props} />
 
   const removeProduto = () => {
     ApiService.DeletarProdutoAtletica(parseInt(item.produtoId))
@@ -42,7 +45,7 @@ export default function CardProduto(props) {
     if (atletica !== null) {
       return (
         <>
-            <IconButton aria-label="Editar Produto" className={classes.margin}>
+            <IconButton aria-label="Editar Produto" className={classes.margin} component={editarLink}>
               <EditIcon fontSize="small" />
             </IconButton>
             <IconButton aria-label="Editar Produto" className={classes.margin} onClick={removeProduto}>
