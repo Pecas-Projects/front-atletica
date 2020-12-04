@@ -32,6 +32,9 @@ import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import LogoutModel from "../../Components/ModalLogout";
 import ApiService from "../../variables/ApiService";
 import { atleticaUsername } from '../../utils/storage'
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import AvatarIcon from "../../assets/icons/user.svg";
 
 const drawerWidth = 200;
 
@@ -167,15 +170,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MiniDrawer() {
+  const menuId = "primary-search-account-menu";
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
   const [atleticas, setAtleticas] = useState([]);
   const [openLogout, setOpenLogout] = useState(false);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleClickOpen = () => {
+    setOpenLogout(true);
+  };
 
   const handleClickOpenLogout = () => {
     setOpenLogout(true);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
   };
 
   const handleCloseLogout = () => {
@@ -192,6 +212,10 @@ export default function MiniDrawer() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
   const pesquisaAtleticas = async (text) => {
@@ -274,16 +298,35 @@ export default function MiniDrawer() {
                     )}
                   />
                 </div>
-
                 <div className="userButtom">
-                  <Link to={`/EditarPerfil/${getUsername()}`}>
-                    <IconButton>
-                      <PermIdentityIcon
-                        fontSize="large"
-                        style={{ color: "white" }}
-                      />
-                    </IconButton>
-                  </Link>
+                  <IconButton
+                    style={{ outline: 'none' }}
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <img src={AvatarIcon} style={{ width: 30 }} />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    id="primary-search-account-menu"
+                    keepMounted
+                    transformOrigin={{ vertical: "top", horizontal: "right" }}
+                    open={isMenuOpen}
+                    onClose={handleMenuClose}
+                  >
+                    <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
+                      <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
+                    </Link>
+                    <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + atleticaUsername()}>
+                      <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
+                    </Link>
+                    <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
+                  </Menu>
                 </div>
               </Toolbar>
             </AppBar>

@@ -247,6 +247,7 @@ export default function ElevateAppBar(props) {
                   <div className={classes.grow} />
                   <div className={classes.sectionDesktop}>
                     <IconButton
+                      style={{ outline: 'none' }}
                       edge="end"
                       aria-label="account of current user"
                       aria-controls={menuId}
@@ -259,6 +260,7 @@ export default function ElevateAppBar(props) {
                   </div>
                   <div className={classes.sectionMobile}>
                     <IconButton
+                      style={{ outline: 'none' }}
                       aria-label="show more"
                       aria-controls={mobileMenuId}
                       aria-haspopup="true"
@@ -270,30 +272,30 @@ export default function ElevateAppBar(props) {
                   </div>
                 </>
               ) : (
-                <>
-                  <div className={classes.grow} />
-                  <div className={classes.sectionDesktop}>
-                    <Grid container direction="row" spacing={3}>
-                      <Grid item>
-                        <Link to="/login">
-                          <Button style={{ color: "white" }}>Login</Button>
-                        </Link>
+                  <>
+                    <div className={classes.grow} />
+                    <div className={classes.sectionDesktop}>
+                      <Grid container direction="row" spacing={3}>
+                        <Grid item>
+                          <Link to="/login">
+                            <Button style={{ color: "white" }}>Login</Button>
+                          </Link>
+                        </Grid>
+                        <Grid item>
+                          <Link to="/cadastro">
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              disableElevation
+                            >
+                              <span>Cadastre-se</span>
+                            </Button>
+                          </Link>
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <Link to="/cadastro">
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            disableElevation
-                          >
-                            <span>Cadastre-se</span>
-                          </Button>
-                        </Link>
-                      </Grid>
-                    </Grid>
-                  </div>
-                </>
-              )}
+                    </div>
+                  </>
+                )}
             </Toolbar>
           </AppBar>
           {renderMobileMenu}
