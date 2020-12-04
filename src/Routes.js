@@ -17,6 +17,7 @@ import Ranking from "./Pages/Ranking";
 import Jogos from "./Pages/Jogos";
 import Modalidades from "./Pages/AdicionarModalidade";
 import Page404 from "./Pages/404";
+import EditarProduto from"./Pages/EditarProduto";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
@@ -48,6 +49,7 @@ const Routes = () => (
       path="/AdicionarProduto"
       component={AdicionarProduto}
     />{" "}
+    <PrivateRoute exact path="/EditarProduto/:produtoId" component={EditarProduto} />
     <PrivateRoute exact path="/AdicionarPost" component={AdicionarPost} />
     {/* <PrivateRoute exact path="/AdicionarEvento" component={AdicionarEvento} /> */}
     <PrivateRoute exact path="/Notificacoes" component={Notificacoes} />
