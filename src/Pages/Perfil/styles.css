@@ -65,6 +65,7 @@
   height: 200px;
   border-radius: 50%;
   margin: auto;
+  object-fit: cover;
 }
 
 .imagePerfilMobile {
@@ -72,12 +73,14 @@
   height: 100px;
   border-radius: 50%;
   margin: auto;
+  object-fit: cover;
 }
 
 .imageCapa {
   width: 100%;
   border-radius: 6px;
-  /* height: 300px; */
+  height: 300px;
+  object-fit: cover;
 }
 
 .scroll {

@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import AddFile from "../../../assets/imagem/file-add.svg";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
+import ApiService from "../../../variables/ApiService";
+import { getAtleticaId } from "../../../utils/storage";
 
 export default function FormularioPostMobile() {
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
+  const [post, setPost] = useState({
+    Titulo: "",
+    Descricao: "",
+    AtleticaId: parseInt(getAtleticaId()),
+    ImagemId: null
+  });
+
+  const handleTitleChange = (event) => {
+    event.preventDefault();
+    setPost({...post, Titulo: event.target.value})
+  };
+
+  const handleTextoChange = (event) => {
+    event.preventDefault();
+    setPost({...post, Descricao: event.target.value})
+  };
 
   function showAdicionarImagem() {
     if (imagem === null) {
@@ -19,6 +37,39 @@ export default function FormularioPostMobile() {
           <br />
         </div>
       );
+  }
+
+  async function envioImagem(){
+    let file = new FormData();
+    file.append('value', imagem);
+
+    await ApiService.UploadImagem(file)
+      .then((res) => {
+        console.log(res)
+        setPost({...post, ImagemId: res.data.imagemId})
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
+  async function criarPost(){
+    await ApiService.EnviarPost(post)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+  }
+
+  useEffect(() => {
+    if(post.ImagemId !== null)
+      criarPost();
+  }, [post]);
+
+  async function submit() {
+    envioImagem();
   }
 
   return (
@@ -62,6 +113,7 @@ export default function FormularioPostMobile() {
                   maxLength: { value: 45, errorMessage: "Título inválido" },
                 }}
                 style={{ color: "E2E2E2" }}
+                onChange={handleTitleChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -76,6 +128,7 @@ export default function FormularioPostMobile() {
                   },
                   minLength: { value: 2, errorMessage: "Texto inválido" },
                 }}
+                onChange={handleTextoChange}
               />
             </Grid>
 
@@ -84,6 +137,7 @@ export default function FormularioPostMobile() {
                 background: "#DB4922",
               }}
               fullWidth={true}
+              onClick={submit}
             >
               Postar
             </Button>

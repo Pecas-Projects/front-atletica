@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { Grid, Paper, IconButton } from '@material-ui/core';
+import { Grid, Paper, IconButton, Collapse } from '@material-ui/core';
 import { Add } from '@material-ui/icons'
-import TabelaJogadores from './TabelaJogadores'
-import { FormGroup, Label, Input } from 'reactstrap';
+import Time from './Time'
+import { getAtleticaId } from '../../../utils/storage'
+import clsx from 'clsx';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
@@ -31,16 +33,54 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Jogo(props) {
-    const { jogo } = props;
-    const classes = useStyles();
 
-    function checaResultado() {
-        if (jogo.PontosAtletica > jogo.PontosAdversario)
-            return "Vitória"
-        else if (jogo.PontosAtletica < jogo.PontosAdversario)
-            return "Derrota"
-        else
-            return "Empate"
+    const { jogo, atletas } = props;
+    const classes = useStyles();
+    const [expanded, setExpanded] = useState(false);
+    const [textoTimes, setTextoTimes] = useState("");
+    const [textoPlacar, setTextoPlacar] = useState("");
+
+    useEffect(() => {
+        calculaTexto()
+    }, []);
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
+
+    const calculaTexto = () => {
+
+        let txtTime = ""
+        let arrayTxtTimes = []
+        let txtPlacar = ""
+        let arrayTxtPlacar = []
+
+        if (jogo != null) {
+            jogo.times.forEach(time => {
+                txtTime = "Time " + time.timeId + " (" + time.nome + ")"
+                arrayTxtTimes.push(txtTime)
+                txtPlacar = time.pontos
+                arrayTxtPlacar.push(txtPlacar)
+            });
+            setTextoTimes(arrayTxtTimes.join(" X "))
+            setTextoPlacar(arrayTxtPlacar.join(" X "))
+        }
+    }
+
+    const formataDataHora = () => {
+        let date = jogo.dataHora.substring(8, 10)
+        date += "/" + jogo.dataHora.substring(5, 7)
+        date += "/" + jogo.dataHora.substring(0, 4)
+        return date;
+    }
+
+    const exibeTimes = () => {
+        let atleticaId = getAtleticaId();
+        if (jogo !== null)
+            return jogo.times.map((time) => (
+                time.atleticaId != atleticaId ? null :
+                    <Time time={time} atletasModalidade={atletas} />
+            ))
     }
 
     return (
@@ -56,52 +96,44 @@ export default function Jogo(props) {
                 >
                     <Grid item xs={4}>
                         <Typography >
-                            {jogo.TimeAtletica + " X " + jogo.TimeAdversario}
+                            {textoTimes}
                         </Typography>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <Grid container justify="center">
                             <Paper style={{ backgroundColor: "#F68D2E", paddingBottom: 2, paddingTop: 2, paddingLeft: 10, paddingRight: 10, alignContent: 'center' }}>
                                 <Typography style={{ textAlign: 'center' }}>
-                                    {jogo.PontosAtletica + " X " + jogo.PontosAdversario + " / " + checaResultado()}
+                                    {textoPlacar}
                                 </Typography>
                             </Paper>
                         </Grid>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                         <Grid container justify="flex-end">
                             <Typography>
-                                {jogo.Data}
+                                {formataDataHora()}
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item xs={7}>
-                        <FormGroup>
-                            <Label for="exampleSelect">Jogador</Label>
-                            <Input type="select" name="select" id="exampleSelect">
-                                <option>Juninho</option>
-                                <option>Atari</option>
-                            </Input>
-                        </FormGroup>
-                    </Grid>
                     <Grid item xs={2}>
-                        <FormGroup>
-                            <Label for="pontos">Pontos</Label>
-                            <Input type="number" id="pontos" />
-                        </FormGroup>
+                        <Grid container justify='flex-end'>
+                            <IconButton
+                                style={{ outline: 'none' }}
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: expanded,
+                                })}
+                                onClick={handleExpandClick}
+                                aria-expanded={expanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </Grid>
+
                     </Grid>
-                    <Grid item xs={2}>
-                        <FormGroup>
-                            <Label for="infracoes">Infrações</Label>
-                            <Input type="number" id="infracoes">
-                            </Input>
-                        </FormGroup>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <IconButton style={{ backgroundColor: "#F68D2E", outline: 'none' }} color="primary" aria-label="add">
-                            <Add />
-                        </IconButton>
-                    </Grid>
+                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                        {exibeTimes()}
+                    </Collapse>
                 </Grid>
             </div>
             {/* CELULAR */}
@@ -113,58 +145,43 @@ export default function Jogo(props) {
                     alignItems="center"
                     spacing={1}
                 >
-                    <Grid item xs={12}>
+                    <Grid item xs={10}>
                         <Typography style={{ textAlign: 'center' }} >
-                            {jogo.TimeAtletica + " X " + jogo.TimeAdversario}
+                            {textoTimes}
                         </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
                         <Grid container justify="center">
                             <Paper style={{ backgroundColor: "#F68D2E", paddingBottom: 2, paddingTop: 2, paddingLeft: 10, paddingRight: 10, alignContent: 'center' }}>
                                 <Typography style={{ textAlign: 'center' }}>
-                                    {jogo.PontosAtletica + " X " + jogo.PontosAdversario + " / " + checaResultado()}
+                                    {textoPlacar}
                                 </Typography>
                             </Paper>
 
                         </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
                         <Grid container justify="center">
                             <Typography>
-                                {jogo.Data}
+                                {formataDataHora()}
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} style={{ width: '100%' }}>
-                        <FormGroup>
-                            <Label for="exampleSelect">Jogador</Label>
-                            <Input type="select" name="select" id="exampleSelect">
-                                <option>Juninho</option>
-                                <option>Atari</option>
-                            </Input>
-                        </FormGroup>
-                    </Grid>
-                    <Grid item xs={5} style={{ width: '100%' }}>
-                        <FormGroup>
-                            <Label for="pontos">Pontos</Label>
-                            <Input type="number" id="pontos" />
-                        </FormGroup>
-                    </Grid>
-                    <Grid item xs={5} style={{ width: '100%' }}>
-                        <FormGroup>
-                            <Label for="infracoes">Infrações</Label>
-                            <Input type="number" id="infracoes">
-                            </Input>
-                        </FormGroup>
-                    </Grid>
                     <Grid item xs={2}>
-                        <IconButton style={{ backgroundColor: "#F68D2E", outline: 'none' }} color="primary" aria-label="add">
-                            <Add />
+                        <IconButton
+                            style={{ outline: 'none' }}
+                            className={clsx(classes.expand, {
+                                [classes.expandOpen]: expanded,
+                            })}
+                            onClick={handleExpandClick}
+                            aria-expanded={expanded}
+                            aria-label="show more"
+                        >
+                            <ExpandMoreIcon />
                         </IconButton>
                     </Grid>
+                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                        {exibeTimes()}
+                    </Collapse>
                 </Grid>
+
             </div>
-            <TabelaJogadores jogadores={jogo.Jogadores} />
         </Paper>
     );
 }

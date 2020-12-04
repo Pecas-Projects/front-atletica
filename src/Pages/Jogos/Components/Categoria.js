@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -10,7 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Grid } from '@material-ui/core';
 import Jogo from './Jogo'
-
+import ApiService from '../../../variables/ApiService';
+import { getAtleticaId } from '../../../utils/storage'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,146 +45,44 @@ const useStyles = makeStyles((theme) => ({
 export default function Categoria(props) {
     const { categoria } = props;
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false);
+    const [jogos, setJogos] = useState([])
+    const [atletas, setAtletas] = useState([])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    const jogos = [
-        {
-            Data: "15/12/2020",
-            TimeAtletica: "Time A",
-            TimeAdversario: "Time B",
-            PontosAtletica: 5,
-            PontosAdversario: 4,
-            Jogadores: [
-                {
-                    Id: 1,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 2,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 3,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 4,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 5,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 6,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 7,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 8,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 9,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                }
-            ]
-        },
-        {
-            Data: "15/12/2020",
-            TimeAtletica: "Time A",
-            TimeAdversario: "Time B",
-            PontosAtletica: 5,
-            PontosAdversario: 4,
-            Jogadores: [
-                {
-                    Id: 1,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 2,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 3,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 4,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 5,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 6,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 7,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 8,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                },
-                {
-                    Id: 9,
-                    Nome: "Bia",
-                    Pontos: 15,
-                    Infracoes: 0
-                }
-            ]
-        },
-    ]
+    const buscaJogosModalidade = async () => {
+        await ApiService.BuscarJogosModalidade(getAtleticaId(), categoria.modalidadeId)
+            .then(res =>
+                setJogos(res.data)
+            )
+            .catch(err =>
+                console.log(err)
+            )
+    }
+
+    const buscaAtletasModalidade = async () => {
+        await ApiService.BuscarAtletasModalidade(categoria.atleticaModalidadeId)
+            .then(res =>
+                setAtletas(res.data)
+            )
+            .catch(err =>
+                console.log(err)
+            )
+    }
+
+    useEffect(() => {
+        buscaJogosModalidade()
+        buscaAtletasModalidade()
+    }, []);
 
     return (
         <Grid item container justify='center'>
             <Card className={classes.root}>
                 <CardActions disableSpacing>
-                    <Typography className={classes.nomeCategoria}>{categoria.nome}</Typography>
+                    <Typography className={classes.nomeCategoria}>{categoria.modalidade}</Typography>
                     <IconButton
                         style={{ outline: 'none' }}
                         className={clsx(classes.expand, {
@@ -199,7 +98,7 @@ export default function Categoria(props) {
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
                         {jogos.map((item) => (
-                            <Jogo jogo={item} />
+                            <Jogo jogo={item} atletas={atletas}/>
                         ))}
                     </CardContent>
                 </Collapse>

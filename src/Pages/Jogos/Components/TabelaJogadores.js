@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Paper } from '@material-ui/core';
+import { Paper, IconButton } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import FirstPage from '@material-ui/icons/FirstPage';
 import LastPage from '@material-ui/icons/LastPage';
@@ -19,7 +19,7 @@ const tableIcons = {
 }
 
 export default function TabelaJogadores(props) {
-    const { jogadores } = props;
+    const { jogadores, editavel, removeAtleta } = props;
 
     return (
         <div style={{ maxWidth: '100%' }}>
@@ -28,11 +28,34 @@ export default function TabelaJogadores(props) {
                     Container: props => <Paper {...props} elevation={0} />
                 }}
                 style={{ backgroundColor: "#BBB8CC" }}
-                columns={[
-                    { title: 'Jogadores', field: 'Nome',  },
-                    { title: 'Pontos', field: 'Pontos', type: 'numeric' },
-                    { title: 'Infrações', field: 'Infracoes', type: 'numeric' },
-                ]}
+                columns={
+                    editavel === true ?
+                        [
+                            {
+                                title: '',
+                                field: 'icon',
+                                render: (rowData) => (
+                                    <IconButton
+                                        style={{ outline: 'none' }}
+                                        color="primary"
+                                        aria-label="add"
+                                        onClick={() => removeAtleta(jogadores)}
+                                    >
+                                        <Clear />
+                                    </IconButton>
+                                )
+                            },
+                            { title: 'Jogadores', field: 'nome', },
+                            { title: 'Pontos', field: 'pontos', type: 'numeric' },
+                            { title: 'Infrações', field: 'infracoes', type: 'numeric' }
+                        ]
+                        :
+                        [
+                            { title: 'Jogadores', field: 'nome', },
+                            { title: 'Pontos', field: 'pontos', type: 'numeric' },
+                            { title: 'Infrações', field: 'infracoes', type: 'numeric' }
+                        ]
+                }
                 options={{
                     showTitle: false,
                     header: true,
