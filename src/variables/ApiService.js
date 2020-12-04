@@ -272,6 +272,17 @@ const ApiService = {
       })
   },
 
+  DeletarProdutoAtletica: (produtoId) => {
+    return api
+      .delete(`/api/Produto/${produtoId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
 };
 
 export default ApiService;
