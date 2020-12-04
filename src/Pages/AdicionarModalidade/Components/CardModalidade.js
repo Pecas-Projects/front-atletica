@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import "../styles.css"
 import CardAtletaAdd from "./CardAtletaAdd";
 import ApiService from "../../../variables/ApiService"
-import storage, { getAtleticaId } from "../../../utils/storage"
+import { getAtleticaId } from "../../../utils/storage"
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -40,16 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function acertaNome(nome, genero) {
 
-    var modalidade;
-
-    if (genero === 'M') modalidade = nome + " Masculino";
-    if (genero === 'F') modalidade = nome + " Feminino";
-    if (genero === 'O') modalidade = nome;
-
-    return modalidade;
-}
 
 function acertaHora(data) {
     var dataCerta = data + ':00'
@@ -92,7 +83,7 @@ export default function CardModalidade(props) {
     const [expandedModalidade, setExpandedModalidade] = useState(false);
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
-    const [coordenador, setCorrdenador] = useState()
+    const [coordenador, setCorrdenador] = useState(item.coordenadorId)
     const [openSalvo, setOpenSalvo] = useState(false)
     const [openExcluir, setOpenExcluir] = useState(false)
     const [openExcluido, setOpenExcluido] = useState(false)
@@ -163,101 +154,33 @@ export default function CardModalidade(props) {
     useEffect(() => {
 
         async function AtualizarAtleticaModalidade() {
+            console.log(coordenador)
+            console.log(agendaTreinos)
+            console.log(item.agendaTreinos)
+            console.log(imagemId)
 
-            if (coordenador !== undefined || agendaTreinos !== item.agendaTreinos || imagemId !== undefined) {
-
-                if (coordenador === undefined && agendaTreinos !== item.agendaTreinos && imagemId !== undefined) {
-
-                    var AtleticaModalidade = {
-                        modalidadeId: item.modalidadeId,
-                        agendaTreinos: agendaTreinos,
-                        imagemId: imagemId
-
-                    }
-                }
-                else if (coordenador !== undefined && agendaTreinos === item.agendaTreinos && imagemId !== undefined) {
-
-                    var AtleticaModalidade = {
-                        modalidadeId: item.modalidadeId,
-                        coordenadorId: coordenador,
-                        imagemId: imagemId
-
-                    }
-
-                }
-                else if (coordenador !== undefined && agendaTreinos !== item.agendaTreinos && imagemId === undefined) {
-
-                    var AtleticaModalidade = {
-                        modalidadeId: item.modalidadeId,
-                        coordenadorId: coordenador,
-                        agendaTreinos: agendaTreinos
-
-                    }
-
-                }
-                else if (coordenador !== undefined && agendaTreinos === item.agendaTreinos && imagemId === undefined) {
-
-                    var AtleticaModalidade = {
-                        modalidadeId: item.modalidadeId,
-                        coordenadorId: coordenador,
-
-                    }
-
-                }
-                else if (coordenador === undefined && agendaTreinos !== item.agendaTreinos && imagemId === undefined) {
-
-
-                    var AtleticaModalidade = {
-                        modalidadeId: item.modalidadeId,
-                        agendaTreinos: agendaTreinos,
-
-                    }
-
-                }
-                else if (coordenador === undefined && agendaTreinos === item.agendaTreinos && imagemId !== undefined) {
-
-                    var AtleticaModalidade = {
-                        modalidadeId: item.modalidadeId,
-                        imagemId: imagemId,
-
-                    }
-
-                }
-                else if (coordenador !== undefined && agendaTreinos !== item.agendaTreinos && imagemId !== undefined) {
-
-                    var AtleticaModalidade = {
-                        modalidadeId: item.modalidadeId,
-                        coordenadorId: coordenador,
-                        imagemId: imagemId,
-                        agendaTreinos: agendaTreinos
-
-                    }
-
-                }
-
-
-                console.log(AtleticaModalidade)
-
-                await ApiService.AtualizarAtleticaModalidade(item.atleticaModalidadeId, AtleticaModalidade)
-                    .then(res => {
-                        console.log(res)
-                        setOpenSalvo(true)
-                        setTimeout(function () { window.location.href = '/modalidades' }, 3000)
-                    })
-                    .catch(error => {
-                        setOpenErro(true)
-                        console.log(error)
-                    })
-
+            var AtleticaModalidade = {
+                modalidadeId: item.modalidadeId,
+                coordenadorId: coordenador,
+                imagemId: imagemId,
+                agendaTreinos: agendaTreinos
             }
 
+            console.log(AtleticaModalidade)
 
-            else {
-                setOpenErro(true)
-            }
-
+            await ApiService.AtualizarAtleticaModalidade(item.atleticaModalidadeId, AtleticaModalidade)
+                .then(res => {
+                    console.log(res)
+                    setOpenSalvo(true)
+                    setTimeout(function () { window.location.href = '/modalidades' }, 3000)
+                })
+                .catch(error => {
+                    setOpenErro(true)
+                    console.log(error)
+                })
 
         }
+
 
         if (enviar === true) {
             AtualizarAtleticaModalidade()
@@ -296,6 +219,8 @@ export default function CardModalidade(props) {
 
         if (imagem === null) {
             setEnviar(true)
+            if (item.imagemModalidade !== null)
+                setImagemId(item.imagemModalidade.imagemId)
         }
         else {
 
@@ -606,7 +531,7 @@ export default function CardModalidade(props) {
                                                 atleta={atleta}
                                                 index={index}
                                                 AtleticaModalidadeId={item.atleticaModalidadeId}
-                                                DeleteAtleta={DeleteAtletaADD} />
+                                                DeleteAtletaAdd={DeleteAtletaADD} />
                                         )}
                                 </>
 
@@ -649,7 +574,7 @@ export default function CardModalidade(props) {
 
                             <Grid item xs={8}>
 
-                                <Grid item xs={8} style={{ marginTop: 10 }}>
+                                <Grid item xs={8} style={{ marginTop: 10, marginTop: 80 }}>
 
                                     <Grid container justify='center'>
                                         <Button fullWidth color='secondary' variant='outlined' onClick={handleOpenAgenda}>Novo Treino </Button>
@@ -676,10 +601,11 @@ export default function CardModalidade(props) {
                                 {membros !== undefined ? (
                                     <>
 
-                                        <Grid item xs={8}>
-                                            <Grid container justify='flex-end'>
+                                        <Grid item xs={8} xs={{ marginTop: 10 }}>
+                                            <Grid container >
                                                 <TextField
-                                                    fullWidth
+                                                    style={{ width: "70%" }}
+
                                                     id="standard-select-coordenador"
                                                     select
                                                     label="Coordenador"
