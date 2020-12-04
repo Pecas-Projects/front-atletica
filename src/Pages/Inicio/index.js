@@ -181,7 +181,11 @@ export default function PaginaInicial() {
               justify="flex-start"
               style={{ color: "black", paddingLeft: 60, paddingTop: 70 }}
             >
-              <img src={Basquete} alt="Imagem de um moço jogando basquete" />
+              <img
+                src={Basquete}
+                alt="Imagem de um moço jogando basquete"
+                style={{ width: 500 }}
+              />
             </Grid>
           </Grid>
 
@@ -233,11 +237,12 @@ export default function PaginaInicial() {
               md={5}
               container
               justify="flex-start"
-              style={{ color: "black", paddingLeft: 60, paddingTop: 70 }}
+              style={{ color: "black", paddingLeft: 60 }}
             >
               <img
                 src={Controle}
                 alt="Imagem de um moço segurando o controle"
+                style={{ width: 500 }}
               />
             </Grid>
 
