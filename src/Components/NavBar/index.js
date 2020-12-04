@@ -18,7 +18,7 @@ import Home from "../../assets/imagem/home.svg";
 import Feed from "../../assets/imagem/today (1).svg";
 import Bell from "../../assets/icons/bellIcon.svg";
 import Ranking from "../../assets/icons/ranking.svg";
-import { isLogin, getUserType } from "../../utils/storage";
+import { isLogin, getUserType, getUsername } from "../../utils/storage";
 import Trofeu from "../../assets/imagem/trophy.svg";
 import Bag from "../../assets/imagem/shopping-bag.svg";
 import Jogo from "../../assets/icons/jogoIcon.svg";
@@ -276,7 +276,7 @@ export default function MiniDrawer() {
                 </div>
 
                 <div className="userButtom">
-                  <Link to="/EditarPerfil">
+                  <Link to={`/EditarPerfil/${getUsername()}`}>
                     <IconButton>
                       <PermIdentityIcon
                         fontSize="large"
@@ -318,6 +318,50 @@ export default function MiniDrawer() {
               </div>
 
               <Grid style={{ marginTop: 80 }}>
+
+                <List >
+
+                  <ListItem button >
+                    <ListItemIcon >
+                      <img src={Home} alt="home" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Home" />
+                  </ListItem>
+
+                  <ListItem button >
+                    <ListItemIcon>
+                      <img src={Feed} alt="feed" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Feed" />
+                  </ListItem>
+
+                  <ListItem button >
+                    <ListItemIcon>
+                      {/* <img src={Calendario} alt="calendario" /> */}
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Calendário" />
+                  </ListItem>
+
+                  <ListItem button >
+                    <ListItemIcon>
+                      <img src={Trofeu} alt="times" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Times" />
+                  </ListItem>
+
+                  <ListItem button >
+                    <ListItemIcon>
+                      <img src={Bag} alt="produtos" />
+                    </ListItemIcon>
+                    <ListItemText className="item" primary="Produtos" />
+                  </ListItem>
+                </List>
+
+              </Grid>
+
+
+              <div className="absoluteNavBar">
+
                 <List>
                   <Link to={"/Perfil/" + atleticaUsername()}>
                     <ListItem button>
@@ -393,24 +437,29 @@ export default function MiniDrawer() {
                     </>
                   )}
                 </List>
-              </Grid>
 
-              {getUserType() === "A" && (
-                <div className="absolute">
-                  <List>
-                    <ListItem button onClick={handleClickOpenLogout}>
-                      <ListItemIcon>
-                        <img src={LogOut} alt="logout" />
-                      </ListItemIcon>
-                      <ListItemText className="item" primary="Logout" />
-                    </ListItem>
-                  </List>
-                </div>
-              )}
+
+                {getUserType() === "A" && (
+                  <div className="absolute">
+                    <List>
+                      <ListItem button onClick={handleClickOpenLogout}>
+                        <ListItemIcon>
+                          <img src={LogOut} alt="logout" />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Logout" />
+                      </ListItem>
+                    </List>
+                  </div>
+                )}
+              </div>
             </Drawer>
           </div>
         </div>
+
+
       </div>
+
+
 
       {/*
       
@@ -595,7 +644,7 @@ export default function MiniDrawer() {
 
             <div className="absoluteMobile">
               {getUserType() === "A" && (
-                <Link to="/EditarPerfil">
+                <Link to={`/EditarPerfil/${getUsername()}`}>
                   <ListItem button>
                     <ListItemIcon>
                       <PermIdentityIcon style={{ color: "white" }} />

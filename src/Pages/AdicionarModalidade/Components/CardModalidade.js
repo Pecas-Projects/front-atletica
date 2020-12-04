@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Paper, Button, TextField, MenuItem, Dialog, DialogActions, DialogTitle, Snackbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
@@ -13,6 +13,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import clsx from 'clsx';
 import "../styles.css"
 import CardAtletaAdd from "./CardAtletaAdd";
+import ApiService from "../../../variables/ApiService"
+import storage, { getAtleticaId } from "../../../utils/storage"
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -73,7 +75,45 @@ export default function CardModalidade(props) {
     const [openExcluido, setOpenExcluido] = useState(false)
     const [horaTreino, setHoraTreino] = useState(false)
     const [diaTreino, setDiaTreino] = useState(false)
-    const [array, setArray] = useState(item.atletas)
+    const [atletas, setAtletas] = useState()
+    const [atletasAdd, setAtletasAdd] = useState()
+
+
+    useEffect(() => {
+
+        ApiService.BuscarAtletaModalidade(item.atleticaModalidadeId)
+            .then(res => {
+                console.log(res)
+                setAtletas(res.data)
+            })
+
+
+    }, [])
+
+    useEffect(() => {
+        if (atletas !== undefined) {
+            console.log(atletas)
+        }
+    }, [atletas])
+
+    useEffect(() => {
+
+
+        ApiService.BuscarAddAtletas(getAtleticaId(), item.modalidadeId)
+            .then(res => {
+                console.log(res)
+                setAtletasAdd(res.data)
+            })
+
+
+    }, [])
+
+    useEffect(() => {
+        if (atletasAdd !== undefined) {
+            console.log(atletasAdd)
+        }
+    }, [atletasAdd])
+
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -89,30 +129,45 @@ export default function CardModalidade(props) {
 
     const DeleteAtleta = (index) => {
 
-        let newArray = [...array];
+        let newArray = [...atletas];
         newArray.splice(index, 1);
-        setArray(newArray);
-
+        setAtletas(newArray);
 
     };
 
-    // const AddAtleta = () => {
-    //     item.atletas.Add()
-    // }
+    const DeleteAtletaADD = (index) => {
+
+        let newArray = [...atletasAdd];
+        newArray.splice(index, 1);
+        setAtletasAdd(newArray);
+
+    };
 
     const Deletar = () => {
 
-        DeleteModalidade(index);
+        ApiService.DeletarAtleticaModalidade(item.atleticaModalidadeId)
+            .then(res => {
+                console.log(res)
 
-        if (expanded === true) setExpanded(false);
-        if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
-        if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
-        if (expandedModalidade === true) setExpandedModalidade(false);
-        if (expendedEditar === true) setexpandedEdtitar(false);
+                DeleteModalidade(index);
 
-        setOpenExcluir(false)
-        setOpenExcluido(true)
+                if (expanded === true) setExpanded(false);
+                if (expandedAtletaAdd === true) setexpandedAtletaAdd(false);
+                if (expandedAtletaDelete === true) setexpandedAtletaDelete(false);
+                if (expandedModalidade === true) setExpandedModalidade(false);
+                if (expendedEditar === true) setexpandedEdtitar(false);
+
+                setOpenExcluir(false)
+                setOpenExcluido(true)
+
+            })
+
     };
+
+    // const onFormSubmit = () =>{
+
+    //     let 
+    // }
 
     const handleCloseSalvo = (event, reason) => {
         if (reason === 'clickaway') {
@@ -209,21 +264,21 @@ export default function CardModalidade(props) {
 
             <Paper className={classes.paperA} >
 
-                <div className="relativeCard">
+                <div className="relativeCardM">
 
                     <Grid container>
 
                         <Grid item xs={8}>
 
-                            <h4 className="MySubtitle">{item.nome}</h4>
+                            <h4 className="MySubtitleM">{item.modalidade}</h4>
                             <br />
-                            <p className="MySubtitle2">Coordenador: {item.coordenador}</p>
+                            <p className="MySubtitle2M">Coordenador: {item.coordenador}</p>
 
                         </Grid>
 
                         <Grid item xs={2}>
 
-                            <div className="absoluteCard2">
+                            <div className="absoluteCardM">
 
                                 <IconButton style={{ marginTop: -10 }} onClick={handleExpandEditarClick}>
                                     <EditIcon />
@@ -235,7 +290,7 @@ export default function CardModalidade(props) {
 
                         <Grid item xs={2}>
 
-                            <div className="absoluteCard">
+                            <div className="absoluteCard2M">
 
                                 <IconButton
                                     style={{ marginTop: -10 }}
@@ -261,9 +316,19 @@ export default function CardModalidade(props) {
 
                         <Grid container spacing={2} style={{ maxHeight: 200 }}>
 
-                            {item.atletas.map((atleta) =>
-                                <CardAtleta atleta={atleta} />
-                            )}
+                            {atletas !== undefined ? (
+                                <>
+                                    {atletas.map((atleta) =>
+                                        <CardAtleta atleta={atleta} />
+                                    )}
+                                </>
+
+                            ) : (
+                                    <>
+                                    </>
+                                )}
+
+
 
                         </Grid>
                     </div>
@@ -295,12 +360,23 @@ export default function CardModalidade(props) {
                     <div className="scroll">
                         <Grid container spacing={2} style={{ marginTop: 20, maxHeight: 200 }}>
 
-                            {item.atletas.map((atleta, index) =>
-                                <CardAtletaDelete
-                                    atleta={atleta}
-                                    index={index}
-                                    DeleteAtleta={DeleteAtleta} />
-                            )}
+                            {atletas !== undefined ? (
+                                <>
+                                    {atletas.map((atleta, index) =>
+                                        <CardAtletaDelete
+                                            atleta={atleta}
+                                            index={index}
+                                            DeleteAtleta={DeleteAtleta} />
+                                    )}
+
+                                </>
+
+                            ) : (
+                                    <>
+                                    </>
+                                )}
+
+
 
                         </Grid>
                     </div>
@@ -311,9 +387,24 @@ export default function CardModalidade(props) {
                     <div className='scroll'>
                         <Grid container spacing={2} style={{ marginTop: 20, maxHeight: 200 }}>
 
-                            {item.atletas.map((atleta) =>
-                                <CardAtletaAdd atleta={atleta} />
-                            )}
+                            {atletasAdd !== undefined ? (
+                                <>
+                                    {
+                                        atletasAdd.map((atleta, index) =>
+                                            <CardAtletaAdd
+                                                atleta={atleta}
+                                                index={index}
+                                                AtleticaModalidadeId={item.atleticaModalidadeId}
+                                                DeleteAtleta={DeleteAtletaADD} />
+                                        )}
+                                </>
+
+                            ) : (
+                                    <>
+                                        <p>foda</p>
+                                    </>
+                                )}
+
 
                         </Grid>
                     </div>

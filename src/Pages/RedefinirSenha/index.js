@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, Paper, Snackbar, Typography } from "@material-ui/core";
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import "./styles.css";
-import ImageLogin from "../../assets/imagem/undraw_Login.svg";
+import ImagePassword from "../../assets/imagem/undraw_my_password.svg";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -13,7 +13,6 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import ApiService from "../../variables/ApiService";
 import { atleticaUsername } from "../../utils/storage";
-import EsqueceuSenha from "./components/esqueceuSenhaDialog";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -62,27 +61,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+export default function Login(props) {
   const [logado, setLogado] = useState(false);
   const [erroLogin, setErroLogin] = useState(false);
   const classes = useStyles();
-  const [login, setLogin] = useState({
-    Email: " ",
+  const [senha, setSenha] = useState({
     Senha: " ",
-    Type: "Atletica",
+    ConfirmarSenha: " ",
   });
-  const [esqueceuSenha, setEsqueceuSenha] = useState(false);
 
-  const handleEmail = (e) => {
-    setLogin({ ...login, Email: e.target.value });
+  const handleConfirmaSenha = (e) => {
+    setSenha({ ...senha, Senha: e.target.value });
   };
 
   const handleSenha = (e) => {
-    setLogin({ ...login, Senha: e.target.value });
-  };
-
-  const handleType = (e) => {
-    setLogin({ ...login, Type: e.target.value });
+    setSenha({ ...senha, ConfirmarSenha: e.target.value });
   };
 
   const handleCloseLogado = (event, reason) => {
@@ -105,34 +98,14 @@ export default function Login() {
     setErroLogin(false);
   };
 
-  const handleEsqueceuSenha = () => {
-    setEsqueceuSenha(true);
-  };
-
   const OnFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (login.Type === "Atletica") {
-      let loginData = {
-        credencial: login.Email,
-        senha: login.Senha,
-      };
+    let value = { senha: senha.Senha };
 
-      await ApiService.LoginAtletica(loginData)
-        .then(() => (window.location.href = "/Perfil/" + atleticaUsername()))
-        .catch((err) => console.log(err));
-    } else {
-      let loginM = {
-        senha: login.Senha,
-        email: {
-          email: login.Email,
-        },
-      };
-
-      await ApiService.LoginMembro(loginM)
-        .then()
-        .catch((err) => console.log(err));
-    }
+    await ApiService.MudarSenha(value, props.match.params.token)
+      .then(() => setLogado(true))
+      .catch(() => setErroLogin(true));
   };
 
   return (
@@ -143,7 +116,7 @@ export default function Login() {
         onClose={handleCloseLogado}
       >
         <Alert onClose={handleCloseLogado} severity="success">
-          Usuário logado com sucesso!
+          Senha redefinida com sucesso!
         </Alert>
       </Snackbar>
 
@@ -153,7 +126,7 @@ export default function Login() {
         onClose={handleCloseErro}
       >
         <Alert onClose={handleCloseErro} severity="error">
-          E-mail ou senha incorreto!
+          As senhas devem ser iguais ou seu link expirou!
         </Alert>
       </Snackbar>
 
@@ -178,27 +151,15 @@ export default function Login() {
               <Grid item xs={12}>
                 <Grid container justify="center">
                   <Paper className={classes.paperA}>
-                    <h1 className="MyTitleLogin">LOGIN</h1>
+                    <h1 className="MyTitleLogin">REDEFINIR SENHA</h1>
 
                     <Grid container spacing={1}>
                       <Grid item xs={6} style={{ marginTop: 40 }}>
                         <AvForm onSubmit={(e) => OnFormSubmit(e)}>
                           <AvField
-                            onChange={handleEmail}
-                            style={{ width: "80%", marginBottom: 30 }}
-                            name="email"
-                            label="E-mail"
-                            type="text"
-                            errorMessage="Campo obrigatório"
-                            validate={{
-                              required: { value: true },
-                            }}
-                          />
-
-                          <AvField
                             onChange={handleSenha}
                             style={{ width: "80%" }}
-                            name="senha"
+                            name="Nova senha"
                             label="Senha"
                             type="password"
                             errorMessage="Campo obrigatório"
@@ -207,52 +168,22 @@ export default function Login() {
                             }}
                           />
 
-                          <Button
-                            color="primary"
-                            size="small"
-                            variant="outlined"
-                            onClick={handleEsqueceuSenha}
-                            style={{ fontSize: 12 }}
-                          >
-                            Esqueci Minha senha
-                          </Button>
-
-                          <EsqueceuSenha
-                            aberto={esqueceuSenha}
-                            setAberto={setEsqueceuSenha}
-                            login={login}
+                          <AvField
+                            onChange={handleConfirmaSenha}
+                            style={{ width: "80%" }}
+                            name="Confirmar senha"
+                            label="Confirmar Senha"
+                            type="password"
+                            errorMessage="Campo obrigatório"
+                            validate={{
+                              required: { value: true },
+                            }}
                           />
 
-                          <Grid item xs={12} style={{ marginTop: 20 }}>
-                            <FormControl component="fieldset">
-                              <FormLabel component="legend">
-                                Entrar como:
-                              </FormLabel>
-                              <RadioGroup
-                                row
-                                aria-label="gender"
-                                name="gender1"
-                                value={login.Type}
-                                onChange={handleType}
-                              >
-                                <FormControlLabel
-                                  value="Atletica"
-                                  control={<Radio />}
-                                  label="Atlética"
-                                />
-                                <FormControlLabel
-                                  value="Membro"
-                                  control={<Radio />}
-                                  label="Membro"
-                                />
-                              </RadioGroup>
-                            </FormControl>
-                          </Grid>
-
-                          <Grid item xs={8}>
+                          <Grid item xs={9}>
                             <Grid
                               container
-                              justify="flex-end"
+                              justify="center"
                               style={{ marginTop: 20 }}
                             >
                               <Button
@@ -261,7 +192,7 @@ export default function Login() {
                                 variant="contained"
                                 color="secondary"
                               >
-                                entrar{" "}
+                                Confirmar
                               </Button>
                             </Grid>
                           </Grid>
@@ -270,9 +201,9 @@ export default function Login() {
 
                       <Grid item xs={6}>
                         <img
-                          style={{ width: "100%" }}
-                          src={ImageLogin}
-                          alt="undraw_login"
+                          style={{ width: "80%" }}
+                          src={ImagePassword}
+                          alt="undraw my password"
                         />
                       </Grid>
                     </Grid>
@@ -298,24 +229,12 @@ export default function Login() {
             <Grid container>
               <Grid item xs={12}>
                 <Paper className={classes.paperAMobile}>
-                  <h1 className="MyTitleLogin">Login</h1>
+                  <h1 className="MyTitleLogin">REDEFINIR SENHA</h1>
 
                   <AvForm onValidSubmit={OnFormSubmit}>
                     <AvField
-                      style={{ marginBottom: 30 }}
-                      onChange={handleEmail}
-                      name="email"
-                      label="E-mail"
-                      type="text"
-                      errorMessage="Campo obrigatório"
-                      validate={{
-                        required: { value: true },
-                      }}
-                    />
-
-                    <AvField
                       onChange={handleSenha}
-                      name="senha"
+                      name="Nova senha"
                       label="Senha"
                       type="password"
                       errorMessage="Campo obrigatório"
@@ -324,54 +243,26 @@ export default function Login() {
                       }}
                     />
 
-                    <Button
-                      color="primary"
-                      size="small"
-                      variant="outlined"
-                      onClick={handleEsqueceuSenha}
-                      style={{ fontSize: 12 }}
-                    >
-                      Esqueci Minha senha
-                    </Button>
-
-                    <EsqueceuSenha
-                      aberto={esqueceuSenha}
-                      setAberto={setEsqueceuSenha}
-                      login={login}
+                    <AvField
+                      onChange={handleSenha}
+                      name="Confirmar senha"
+                      label="Confirmar Senha"
+                      type="password"
+                      errorMessage="Campo obrigatório"
+                      validate={{
+                        required: { value: true },
+                      }}
                     />
 
-                    <Grid item xs={12} style={{ marginTop: 20 }}>
-                      <FormControl component="fieldset">
-                        <FormLabel component="legend">Entrar como:</FormLabel>
-                        <RadioGroup
-                          row
-                          aria-label="type"
-                          name="type1"
-                          value={login.Type}
-                          onChange={handleType}
-                        >
-                          <FormControlLabel
-                            value="Atletica"
-                            control={<Radio />}
-                            label="Atlética"
-                          />
-                          <FormControlLabel
-                            value="Membro"
-                            control={<Radio />}
-                            label="Membro"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                    </Grid>
-
-                    <Grid container style={{ marginTop: 10 }}>
+                    <Grid container justify="center" style={{ marginTop: 10 }}>
                       <Button
                         type="submit"
                         style={{ width: "100%" }}
                         variant="contained"
                         color="secondary"
+                        fullWidth
                       >
-                        entrar
+                        Confirmar
                       </Button>
                     </Grid>
                   </AvForm>

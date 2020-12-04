@@ -17,6 +17,7 @@ import Ranking from "./Pages/Ranking";
 import Jogos from "./Pages/Jogos";
 import Modalidades from "./Pages/AdicionarModalidade";
 import Page404 from "./Pages/404";
+import RedefinirSenha from "./Pages/RedefinirSenha";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
@@ -39,9 +40,10 @@ const Routes = () => (
     <Route exact path="/" component={PaginaInicio} />
     <Route exact path="/Perfil" component={Perfil} />
     <Route exact path="/Produtos/:username" component={Produtos} />
-    <Route exact path="/Times" component={Times} />
+    <Route exact path="/Times/:username" component={Times} />
     <Route exact path="/Feed/:username" component={Feed} />
     <Route exact path="/login" component={Login} />
+    <Route exact path="/RedefinirSenha/:token" component={RedefinirSenha} />
     <Route exact path="/Cadastro" component={Cadastro} />
     <PrivateRoute
       exact
@@ -51,7 +53,11 @@ const Routes = () => (
     <PrivateRoute exact path="/AdicionarPost" component={AdicionarPost} />
     {/* <PrivateRoute exact path="/AdicionarEvento" component={AdicionarEvento} /> */}
     <PrivateRoute exact path="/Notificacoes" component={Notificacoes} />
-    <PrivateRoute exact path="/EditarPerfil" component={EditarPerfil} />
+    <PrivateRoute
+      exact
+      path="/EditarPerfil/:username"
+      component={EditarPerfil}
+    />
     <PrivateRoute exact path="/Ranking" component={Ranking} />
     <PrivateRoute exact path="/Jogos" component={Jogos} />
     <PrivateRoute exact path="/Modalidades" component={Modalidades} />
