@@ -102,6 +102,7 @@ export default function Time(props) {
                 setMsgAlerta("Sua escalação foi registrada com sucesso!")
                 setTipoAlerta('success')
                 handleOpenAdd(true)
+                setEditavel(false)
             })
             .catch(err => {
                 console.log(err)
