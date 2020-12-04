@@ -62,12 +62,6 @@ const ApiService = {
     return api
       .post("/api/Registro/Atletica", Atletica)
       .then((res) => {
-        loginMembro(
-          res.data.token,
-          "A",
-          res.data.atletica.membroId,
-          res.data.atletica.pessoa.atleticaId
-        );
         return res;
       })
       .catch((error) => {

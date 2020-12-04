@@ -111,7 +111,9 @@ export default function Cadastro() {
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [number, setNumber] = useState('');
+
     const [nomeCampus, setNomeCampus] = useState('');
+    const [nomeFaculdade, setNomeFaculdade] = useState('');
     const [complemento, setComplemento] = useState('');
     const [senhaAtletica, setSenhaAtletica] = useState('')
 
@@ -120,11 +122,14 @@ export default function Cadastro() {
     const loading = open && cursos.length === 0;
 
     const [cursosMembro, setCursosMembro] = useState([]);
+    const [cursoMembroId, setCursoIdMembro] = useState([]);
     const [imagemId, setImagemId] = useState();
+
+    const [nomeAtletica, setNomeAtletica]= useState('');
 
 
     const [atletica, setAtletica] = useState({
-        Nome: "",
+        //Nome: "",
         Email: "",
         faculdade: "",
         Username: "",
@@ -145,10 +150,12 @@ export default function Cadastro() {
 
 
     const handleAtleticaNome = (event) => {
-        setAtletica({ ...atletica, Nome: event.target.value });
+        //setAtletica({ ...atletica, Nome: event.target.value });
+        setNomeAtletica(event.target.value);
     };
 
     const handleAtleticaUsername = (event) => {
+        console.log(event.target.value)
         setAtletica({ ...atletica, Username: event.target.value });
     };
 
@@ -160,12 +167,13 @@ export default function Cadastro() {
         setSenhaAtletica(event.target.value)
     };
 
-    const handleAtleticaFaculdade = (event) => {
-        setAtletica({ ...atletica, faculdade: event.target.value });
-    };
+    // const handleAtleticaFaculdade = (event) => {
+    //     setAtletica({ ...atletica, faculdade: event.target.value });
+    // };
 
     const handleAtleticaComplemento = (event) => {
-        setComplemento({ ...atletica, Complemento: event.target.value });
+        //setComplemento({ ...atletica, Complemento: event.target.value });
+        setComplemento(event.target.value)
     };
 
     // const handleAtleticaCursos = (e) => {
@@ -185,8 +193,13 @@ export default function Cadastro() {
     // };
 
     const handleChangeAtleticaCursos = (event) => {
-        setAtletica({ ...atletica, cursos: event.target.value });
-        
+        var cursosAux = []
+
+            event.map(function (curso) {
+                cursosAux.push(curso.cursoId)
+              });
+            //setAtletica({ ...atletica, cursos: cursosAux });
+            setCursosIds(cursosAux);
       };
     
 
@@ -216,6 +229,8 @@ export default function Cadastro() {
 
     const handleMembroCurso = (event) => {
         //setMembro({ ...membro, Curso: event.target.value });
+        console.log(event.target.value)
+        setCursoIdMembro(event.target.value)
     };
 
     const handleMembroGenero = (event) => {
@@ -249,6 +264,7 @@ export default function Cadastro() {
 
     const handleNomeCampusChange = (e) => {
         e.preventDefault();
+        console.log(e.target.value)
         setNomeCampus(e.target.value);
     };
 
@@ -257,9 +273,11 @@ export default function Cadastro() {
         setNumber(e.target.value);
     };
 
-    const handleChangeCursos = (e) => {
-        //setCursosIds(e);
-      };
+    const handleNomeFaculdadeChange = (e) => {
+        e.preventDefault();
+        setNomeFaculdade(e.target.value);
+    };
+
 
     function showAdicionarImagemMembro() {
         if (imagemPerfil === null) {
@@ -324,11 +342,12 @@ export default function Cadastro() {
             e.preventDefault();
     
             let Atletica = {
-                Nome: atletica.Nome,
+                Nome: nomeAtletica,
                 Email: atletica.Email,
                 senha: senhaAtletica,
+                Username: atletica.Username,
                 Descricao: " ",
-                CursosIds: atletica.cursosIds,
+                CursosIds: cursosIds,
                 Campus: {
                     Cidade: city,
                     Bairro: neighbourhood,
@@ -338,7 +357,7 @@ export default function Cadastro() {
                     Nome: nomeCampus,
                     Complemento: complemento,
                     Faculdade: {
-                        Nome: atletica.faculdade
+                        Nome: nomeFaculdade
                     }
     
                 }
@@ -357,6 +376,7 @@ export default function Cadastro() {
                 .catch(error => {
                     console.log("02")
                     console.log(error)
+                    console.log(Atletica)
                 })
     
         }
@@ -376,8 +396,9 @@ export default function Cadastro() {
                     whatsapp: membro.Telefone,
                     tipo: "M",
                     genero: membro.Genero,
-                    cursoId: membro.cursoId
-                }
+                    cursoId: cursoMembroId
+                },
+                ImagemId: imagemId
             }
     
             console.log(Membro)
@@ -659,7 +680,7 @@ export default function Cadastro() {
                                                                     </MenuItem>
                                                                 ))}
                                                             </TextField> */}
-                                                            <AvField label="Faculdade" name="faculdade" type="text" onChange={handleAtleticaFaculdade}
+                                                            <AvField label="Faculdade" name="faculdade" type="text" onChange={handleNomeFaculdadeChange}
                                                         validate={{ maxLength: { value: 255, errorMessage: "Muito grande" }}} />
 
                                                             <p className='subtitle2'>Cursos presentes na sua atlética</p>
@@ -681,7 +702,7 @@ export default function Cadastro() {
                                                                 getOptionLabel={(option) => option.nome}
                                                                 options={cursos}
                                                                 loading={loading}
-                                                                onChange={(event, values) => handleChangeCursos(values)}
+                                                                onChange={(event, values) => handleChangeAtleticaCursos(values)}
                                                                 renderInput={(params) => (
                                                                 <TextField
                                                                     style={{marginBottom: 15}}
@@ -1051,7 +1072,7 @@ export default function Cadastro() {
 
                                                    
 
-                                                    <AvField value={nomeCampus} label="Faculdade" name="faculdade" type="text" onChange={handleAtleticaFaculdade}
+                                                    <AvField value={nomeFaculdade} label="Faculdade" name="faculdade" type="text" onChange={handleNomeFaculdadeChange}
                                                         validate={{ maxLength: { value: 255, errorMessage: "Muito grande" }}}/>
 
 
@@ -1074,7 +1095,7 @@ export default function Cadastro() {
                                                                 getOptionLabel={(option) => option.nome}
                                                                 options={cursos}
                                                                 loading={loading}
-                                                                onChange={(event, values) => handleChangeCursos(values)}
+                                                                onChange={(event, values) => handleChangeAtleticaCursos(values)}
                                                                 renderInput={(params) => (
                                                                 <TextField
                                                                     style={{marginBottom: 15}}
