@@ -431,6 +431,32 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
+  ReseteSenha: (value) => {
+    return api
+      .post("/api/ReseteSenha", value)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
+  MudarSenha: (senha, token) => {
+    return api
+      .post("/api/MudancaSenha", senha, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 };
 
 export default ApiService;
