@@ -1,14 +1,16 @@
-export const loginMembro = (token, userType, userId, atleticaId) => {
+export const loginMembro = (token, userType, userId, atleticaId, username) => {
   localStorage.setItem("TOKEN", token);
   localStorage.setItem("USER_TYPE", userType);
   localStorage.setItem("USER_ID", userId);
   localStorage.setItem("ATLETICA_ID", atleticaId);
+  localStorage.setItem("ATLETICA_USERNAME", username);
 };
 
-export const loginAtletica = (token, userType, atleticaId) => {
+export const loginAtletica = (token, userType, atleticaId, username) => {
   localStorage.setItem("TOKEN", token);
   localStorage.setItem("USER_TYPE", userType);
   localStorage.setItem("ATLETICA_ID", atleticaId);
+  localStorage.setItem("ATLETICA_USERNAME", username);
 };
 
 export const logout = () => {

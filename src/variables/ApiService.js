@@ -6,7 +6,7 @@ const ApiService = {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        loginAtletica(res.data.token, "A", res.data.atletica.atleticaId);
+        loginAtletica(res.data.token, "A", res.data.atletica.atleticaId, res.data.atletica.username);
         return res;
       })
       .catch((error) => {
@@ -61,7 +61,7 @@ const ApiService = {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
-        loginMembro(res.data.token, "M", res.data.atletica.membroId, null);
+        loginMembro(res.data.token, "M", res.data.atletica.membroId, res.data.atletica.pessoa.atleticaId, res.data.atletica.pessoa.atletica.username);
         return res;
       })
       .catch((error) => {
