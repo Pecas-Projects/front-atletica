@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AdicionarProduto() {
+export default function EditarProduto() {
     const classes = useStyles();
 
     return (
