@@ -38,7 +38,6 @@ const Routes = () => (
   <Switch>
     <Route exact path="/Perfil/:username" component={Perfil} />
     <Route exact path="/" component={PaginaInicio} />
-    <Route exact path="/Perfil" component={Perfil} />
     <Route exact path="/Produtos/:username" component={Produtos} />
     <Route exact path="/Times/:username" component={Times} />
     <Route exact path="/Feed/:username" component={Feed} />
