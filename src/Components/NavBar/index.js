@@ -31,7 +31,6 @@ import { Autocomplete } from "@material-ui/lab";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import LogoutModel from "../../Components/ModalLogout";
 import ApiService from "../../variables/ApiService";
-import Calendario from "../../assets/imagem/calendar-today.svg"
 
 const drawerWidth = 200;
 
@@ -313,50 +312,6 @@ export default function MiniDrawer() {
               </div>
 
               <Grid style={{ marginTop: 80 }}>
-
-                <List >
-
-                  <ListItem button >
-                    <ListItemIcon >
-                      <img src={Home} alt="home" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Home" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Feed} alt="feed" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Feed" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Calendario} alt="calendario" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Calendário" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Trofeu} alt="times" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Times" />
-                  </ListItem>
-
-                  <ListItem button >
-                    <ListItemIcon>
-                      <img src={Bag} alt="produtos" />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Produtos" />
-                  </ListItem>
-                </List>
-
-              </Grid>
-
-
-              <div className="absoluteNavBar">
-
                 <List>
                   <Link to="perfil">
                     <ListItem button>
@@ -432,29 +387,24 @@ export default function MiniDrawer() {
                     </>
                   )}
                 </List>
+              </Grid>
 
-
-                {getUserType() === "A" && (
-                  <div className="absolute">
-                    <List>
-                      <ListItem button onClick={handleClickOpenLogout}>
-                        <ListItemIcon>
-                          <img src={LogOut} alt="logout" />
-                        </ListItemIcon>
-                        <ListItemText className="item" primary="Logout" />
-                      </ListItem>
-                    </List>
-                  </div>
-                )}
-              </div>
+              {getUserType() === "A" && (
+                <div className="absolute">
+                  <List>
+                    <ListItem button onClick={handleClickOpenLogout}>
+                      <ListItemIcon>
+                        <img src={LogOut} alt="logout" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Logout" />
+                    </ListItem>
+                  </List>
+                </div>
+              )}
             </Drawer>
           </div>
         </div>
-
-
       </div>
-
-
 
       {/*
       
