@@ -61,26 +61,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+export default function Login(props) {
   const [logado, setLogado] = useState(false);
   const [erroLogin, setErroLogin] = useState(false);
   const classes = useStyles();
-  const [login, setLogin] = useState({
-    Email: " ",
+  const [senha, setSenha] = useState({
     Senha: " ",
-    Type: " ",
+    ConfirmarSenha: " ",
   });
 
   const handleConfirmaSenha = (e) => {
-    setLogin({ ...login, Email: e.target.value });
+    setSenha({ ...senha, Senha: e.target.value });
   };
 
   const handleSenha = (e) => {
-    setLogin({ ...login, Senha: e.target.value });
-  };
-
-  const handleType = (e) => {
-    setLogin({ ...login, Type: e.target.value });
+    setSenha({ ...senha, ConfirmarSenha: e.target.value });
   };
 
   const handleCloseLogado = (event, reason) => {
@@ -103,31 +98,14 @@ export default function Login() {
     setErroLogin(false);
   };
 
-
   const OnFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (login.Type === "Atletica") {
-      let loginData = {
-        credencial: login.Email,
-        senha: login.Senha,
-      };
+    let value = { senha: senha.Senha };
 
-      await ApiService.LoginAtletica(loginData)
-        .then(() => (window.location.href = "/Perfil/" + atleticaUsername()))
-        .catch((err) => console.log(err));
-    } else {
-      let loginM = {
-        senha: login.Senha,
-        email: {
-          email: login.Email,
-        },
-      };
-
-      await ApiService.LoginMembro(loginM)
-        .then()
-        .catch((err) => console.log(err));
-    }
+    await ApiService.MudarSenha(value, props.match.params.token)
+      .then(() => setLogado(true))
+      .catch(() => setErroLogin(true));
   };
 
   return (
@@ -148,7 +126,7 @@ export default function Login() {
         onClose={handleCloseErro}
       >
         <Alert onClose={handleCloseErro} severity="error">
-          As senhas devem ser iguais!
+          As senhas devem ser iguais ou seu link expirou!
         </Alert>
       </Snackbar>
 
