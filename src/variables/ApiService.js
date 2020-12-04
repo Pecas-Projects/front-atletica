@@ -283,6 +283,17 @@ const ApiService = {
       })
   },
 
+  BuscarProdutoId: (produtoId) => {
+    return api
+      .get(`api/Produto/${produtoId}`)
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      })
+  }
+
 };
 
 export default ApiService;
