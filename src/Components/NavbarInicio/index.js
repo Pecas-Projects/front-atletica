@@ -174,7 +174,7 @@ export default function ElevateAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil" + atleticaUsername()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
         <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
       </Link>
       <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
@@ -192,7 +192,7 @@ export default function ElevateAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil" + atleticaUsername()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
         <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
       </Link>
       <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
