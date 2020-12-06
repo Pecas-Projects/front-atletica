@@ -18,7 +18,7 @@ import Home from "../../assets/imagem/home.svg";
 import Feed from "../../assets/imagem/today (1).svg";
 import Bell from "../../assets/icons/bellIcon.svg";
 import Ranking from "../../assets/icons/ranking.svg";
-import { isLogin, getUserType, getUsername } from "../../utils/storage";
+import { isLogin, getUserType } from "../../utils/storage";
 import Trofeu from "../../assets/imagem/trophy.svg";
 import Bag from "../../assets/imagem/shopping-bag.svg";
 import Jogo from "../../assets/icons/jogoIcon.svg";
@@ -31,7 +31,7 @@ import { Autocomplete } from "@material-ui/lab";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import LogoutModel from "../../Components/ModalLogout";
 import ApiService from "../../variables/ApiService";
-import { atleticaUsername } from '../../utils/storage'
+import { atleticaUsername, atleticaUsernamePesquisada } from '../../utils/storage'
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import AvatarIcon from "../../assets/icons/user.svg";
@@ -226,6 +226,12 @@ export default function MiniDrawer() {
     else setAtleticas([]);
   };
 
+  const acessarPerfil = () => {
+    const username = atleticaUsername()
+    atleticaUsernamePesquisada(username)
+    return username
+  }
+
   return (
     <>
       {/*
@@ -275,7 +281,7 @@ export default function MiniDrawer() {
                       input: classes.inputInput,
                     }}
                     onChange={(event, newValue) => {
-                      atleticaUsername(newValue.username)
+                      atleticaUsernamePesquisada(newValue.username)
                       window.location.href = "/Perfil/" + newValue.username
                     }}
                     renderInput={(params) => (
@@ -319,10 +325,10 @@ export default function MiniDrawer() {
                     open={isMenuOpen}
                     onClose={handleMenuClose}
                   >
-                    <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
+                    <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()} onClick={acessarPerfil}>
                       <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
                     </Link>
-                    <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + atleticaUsername()}>
+                    <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + atleticaUsername()} onClick={acessarPerfil}>
                       <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
                     </Link>
                     <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
@@ -406,7 +412,7 @@ export default function MiniDrawer() {
               {/* <div className="absoluteNavBar"> */}
 
               <List style={{ marginTop: 30 }}>
-                <Link to={"/Perfil/" + atleticaUsername()}>
+                <Link to={"/Perfil/" + atleticaUsernamePesquisada()}>
                   <ListItem button>
                     <ListItemIcon>
                       <img src={Home} alt="home" />
@@ -415,7 +421,7 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
 
-                <Link to={"/Feed/" + atleticaUsername()}>
+                <Link to={"/Feed/" + atleticaUsernamePesquisada()}>
                   <ListItem button>
                     <ListItemIcon>
                       <img src={Feed} alt="feed" />
@@ -561,7 +567,7 @@ export default function MiniDrawer() {
                           input: classes.inputInput,
                         }}
                         onChange={(event, newValue) => {
-                          atleticaUsername(newValue.username)
+                          atleticaUsernamePesquisada(newValue.username)
                           window.location.href = "/Perfil/" + newValue.username
                         }}
                         renderInput={(params) => (
@@ -611,7 +617,7 @@ export default function MiniDrawer() {
 
             <Grid style={{ marginTop: 30 }}>
               <List>
-                <Link to={"/Perfil/" + atleticaUsername()}>
+                <Link to={"/Perfil/" + atleticaUsernamePesquisada()}>
                   <ListItem button className="listItem">
                     <ListItemIcon>
                       <img src={Home} alt="home" />
@@ -620,7 +626,7 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
 
-                <Link to={"/Feed/" + atleticaUsername()}>
+                <Link to={"/Feed/" + atleticaUsernamePesquisada()}>
                   <ListItem button>
                     <ListItemIcon>
                       <img src={Feed} alt="feed" />
@@ -687,7 +693,7 @@ export default function MiniDrawer() {
 
             <div className="absoluteMobile">
               {getUserType() === "A" && (
-                <Link to={`/EditarPerfil/${getUsername()}`}>
+                <Link to={`/EditarPerfil/${atleticaUsername()}`} onClick={acessarPerfil}>
                   <ListItem button>
                     <ListItemIcon>
                       <PermIdentityIcon style={{ color: "white" }} />

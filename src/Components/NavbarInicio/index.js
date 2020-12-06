@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import AvatarIcon from "../../assets/icons/user.svg";
 import ApiService from '../../variables/ApiService'
-import { atleticaUsername } from '../../utils/storage'
+import { atleticaUsername, atleticaUsernamePesquisada } from '../../utils/storage'
 import LogoutModel from "../ModalLogout";
 
 const useStyles = makeStyles((theme) => ({
@@ -155,6 +155,12 @@ export default function ElevateAppBar(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const acessarPerfil = () => {
+    const username = atleticaUsername()
+    atleticaUsernamePesquisada(username)
+    return username
+  }
+
   const pesquisaAtleticas = async (text) => {
     if (text)
       await ApiService.PesquisaAtleticas(text)
@@ -174,8 +180,11 @@ export default function ElevateAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + acessarPerfil()}>
         <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
+      </Link>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + acessarPerfil()}>
+        <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
       </Link>
       <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
     </Menu>
@@ -192,8 +201,11 @@ export default function ElevateAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + acessarPerfil()}>
         <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
+      </Link>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + acessarPerfil()}>
+        <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
       </Link>
       <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
     </Menu>
@@ -219,7 +231,7 @@ export default function ElevateAppBar(props) {
                     input: classes.inputInput,
                   }}
                   onChange={(event, newValue) => {
-                    atleticaUsername(newValue.username)
+                    atleticaUsernamePesquisada(newValue.username)
                     window.location.href = "/Perfil/" + newValue.username
                   }}
                   renderInput={(params) => (

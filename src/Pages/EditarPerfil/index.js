@@ -8,7 +8,7 @@ import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
 import AlertComponents from "./Components/Alert";
-import { getUserId, resetUsername } from "../../utils/storage";
+import { getUserId } from "../../utils/storage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -424,7 +424,7 @@ export default function EditarPerfil(props) {
     ApiService.AtualizarAtletica(getUserId(), atleticaDados)
       .then((res) => {
         // console.log(res.data);
-        resetUsername(res.data.username);
+        atleticaUsername(res.data.username);
         setUpdateMsg("Suas informações foram atualizadas com sucesso!");
         setUpdateStatus("success");
         setNotification(true);
