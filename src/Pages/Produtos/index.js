@@ -5,6 +5,7 @@ import { Grid, Paper } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto"
 import "./styles.css"
 import ApiService from "../../variables/ApiService";
+import { getAtleticaId } from "../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,13 +65,25 @@ export default function Produtos(props) {
   const classes = useStyles();
   const username = props.match.params.username;
   const [atleticaId, setAtleticaId] = useState();
+  const atleticaLoginId = getAtleticaId();
+  const [logada, setLogada] = useState(false)
   const [produtos, setProdutos] = useState([]);
+
+  const DeleteProduto = (index) => {
+    let newArray = [...produtos];
+    newArray.splice(index, 1);
+    setProdutos(newArray)
+  };
 
   useEffect(() => {
     buscaAtletica();
-    if (atleticaId !== undefined && atleticaId !== null)
+    if (atleticaId !== undefined && atleticaId !== null){
       buscarProdutos();
-  }, [atleticaId]);
+      if(atleticaLoginId === atleticaId){
+        setLogada(true)
+      }
+    }
+  }, [atleticaId, atleticaLoginId]);
 
   async function buscaAtletica() {
     await ApiService.PesquisaAtleticaPorUsername(username)
@@ -85,6 +98,7 @@ export default function Produtos(props) {
   async function buscarProdutos() {
     await ApiService.BuscarProdutosAtletica(atleticaId)
       .then((res) => {
+        console.log(res.data)
         setProdutos(res.data)
       })
       .catch((error) => {
@@ -109,8 +123,8 @@ export default function Produtos(props) {
                   <h4 className="MyTitle">Essa atlética não possui produtos cadastrados!</h4>
               }
               <Grid container spacing={1} style={{ marginTop: 20 }}>
-                {produtos.map((item) => (
-                  <CardProduto item={item} />
+                {produtos.map((item, index) => (
+                  <CardProduto item={item} atletica={logada} index={index} DeleteProduto={DeleteProduto} />
                 ))}
               </Grid>
             </Paper>
@@ -126,8 +140,8 @@ export default function Produtos(props) {
                 :
                 <h4 className="MyTitle" style={{ color: 'black' }}>Essa atlética não possui produtos cadastrados!</h4>
             }
-            {produtos.map((item) => (
-              <CardProduto item={item} />
+            {produtos.map((item, index) => (
+              <CardProduto item={item} atletica={logada} index={index} DeleteProduto={DeleteProduto} />
             ))}
           </Grid>
           <Grid item xs={1}></Grid>
