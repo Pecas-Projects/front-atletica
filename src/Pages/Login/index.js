@@ -130,7 +130,7 @@ export default function Login() {
       };
 
       await ApiService.LoginMembro(loginM)
-        .then()
+        .then(() => window.location.href = "/Perfil/" + atleticaUsername())
         .catch((err) => console.log(err));
     }
   };
