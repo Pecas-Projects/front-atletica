@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem"
+import ApiService from "../../../variables/ApiService";
+import { getAtleticaId } from "../../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -16,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function FormularioProduto() {
+export default function FormularioProduto(props) {
 
     const classes = useStyles();
 
@@ -27,6 +29,16 @@ export default function FormularioProduto() {
     const [descricao, setDescricao] = useState('')
     const [preco, setPreco] = useState('')
     const [nome, setNome] = useState('')
+    const [produto, setProduto] = useState({
+        ProdutoId: props.produtoId,
+        Nome: "",
+        Descricao: "",
+        Preco: "",
+        ProdutoCategoriaId: undefined,
+        Estoque: false,
+        AtleticaId: getAtleticaId(),
+        ImagemId: null
+    });
 
     const handleCategoriaChange = (e) => {
         setCategoria(e.target.value)
@@ -44,12 +56,13 @@ export default function FormularioProduto() {
         setPreco(e.target.value)
     }
 
-    const handleEstoquChange = () => {
+    const handleEstoqueChange = () => {
         setEstoque(estoque => !estoque)
     }
 
 
     const categorias = ["categoria 1", "categoria 2", "categoria 3"];
+
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -117,13 +130,13 @@ export default function FormularioProduto() {
                                             select
                                             label="Categoria"
                                             style={{ marginTop: 5, marginLeft: 5 }}
-                                            value={categoria}
+                                            value={produto.ProdutoCategoriaId}
                                             onChange={handleCategoriaChange}
                                             disabled
                                         >
                                             {categorias.map((option) => (
-                                                <MenuItem key={option} value={option}>
-                                                    {option}
+                                                <MenuItem value={option.produtoCategoriaId} key={option.nome}>
+                                                    {option.nome}
                                                 </MenuItem>
                                             ))}
                                         </TextField>
@@ -136,7 +149,7 @@ export default function FormularioProduto() {
                                             style={{ marginTop: 25, marginLeft: 10 }}
                                             control={<Switch name="estoque" />}
                                             label="Em estoque"
-                                            onChange={handleEstoquChange}
+                                            onChange={handleEstoqueChange}
                                         />
 
                                     </Grid>
