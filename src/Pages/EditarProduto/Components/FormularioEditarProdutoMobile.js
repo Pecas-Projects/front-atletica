@@ -33,7 +33,7 @@ export default function FormularioProdutoMobile(props) {
         Estoque: false,
         AtleticaId: getAtleticaId(),
         ImagemId: null
-      });
+    });
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -50,33 +50,16 @@ export default function FormularioProdutoMobile(props) {
     return (
         <>
 
-            <Grid container style={{ marginBottom: 25 }}>
-                <h4 className="MyTitle">Adicionar Produto</h4>
+            <Grid container style={{ marginBottom: 15 }}>
+                <h4 className="MyTitle">Editar Produto</h4>
                 <Typography
                     variant="h8"
-                    style={{ color: "#454256", paddingBottom: 50 }}
+                    style={{ color: "#454256"  }}
                 >
-                    Adicione um produto a aba produtos da sua atlética
-        </Typography>
+                    Edite um produto da aba produtos da sua atlética
+                </Typography>
+
                 <AvForm>
-                    <Grid container justify="center">
-                        {showAdicionarImagem()}
-                        <Paper style={{ backgroundColor: "#636363" }}>
-                            <Grid
-                                container
-                                justify="center"
-                                alignContent="center"
-                                style={{ height: 250, width: 250 }}
-                            >
-                                <BotaoUploadImagemMobile
-                                    setPath={setPath}
-                                    setImagem={setImagem}
-                                    imagem={imagem}
-                                    path={path}
-                                />
-                            </Grid>
-                        </Paper>
-                    </Grid>
                     <Grid container style={{ paddingTop: 50 }}>
                         <Grid item xs={12}>
                             <AvField
@@ -84,7 +67,6 @@ export default function FormularioProdutoMobile(props) {
                                 name="nome"
                                 label="Nome do Produto"
                                 type="text"
-
                                 style={{ color: "E2E2E2" }}
                             />
                         </Grid>
@@ -105,14 +87,24 @@ export default function FormularioProdutoMobile(props) {
                                 <option>Roupa</option>
                             </AvField>
                         </Grid>
+                        <Grid container justify="center" style={{marginTop: 10}}>
+                            <Grid item>
+                                <Typography>
+                                    Para que seja possivel o upload de imagem, acesse
+                                    nosso sistema pelo computador
+                          </Typography>
+                            </Grid>
+                        
                         <Button
                             style={{
+                                marginTop: 30,
                                 background: "#DB4922",
                             }}
                             fullWidth={true}
                         >
                             Postar
-            </Button>
+                        </Button>
+                        </Grid>
                     </Grid>
                 </AvForm>
             </Grid>
