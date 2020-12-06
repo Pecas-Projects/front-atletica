@@ -34,18 +34,6 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
-
-  PesquisaAtleticas: (nomeAtletica) => {
-    return api
-      .get("/api/AtleticaNome/" + nomeAtletica)
-      .then((res) => {
-        return Promise.resolve(res);
-      })
-      .catch((error) => {
-        return Promise.reject(error);
-      });
-  },
-
   CriarSolicitacaoAtleta: (atleticaId, atleta) => {
     return api
       .post("/api/SolicitacaoAtleta/" + atleticaId, atleta)
@@ -74,12 +62,6 @@ const ApiService = {
     return api
       .post("/api/Registro/Atletica", Atletica)
       .then((res) => {
-        loginMembro(
-          res.data.token,
-          "A",
-          res.data.atletica.membroId,
-          res.data.atletica.pessoa.atleticaId
-        );
         return res;
       })
       .catch((error) => {
