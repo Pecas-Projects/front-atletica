@@ -37,8 +37,17 @@ export default function FormularioProduto(props) {
         ProdutoCategoriaId: undefined,
         Estoque: false,
         AtleticaId: getAtleticaId(),
-        ImagemId: null
+        ImagemId: null,
+        Imagem: {
+            Extensao: "",
+            Path: "",
+            ImagemId: null
+        }
     });
+
+    const defaultValues = {
+        
+    }
 
     const handleCategoriaChange = (e) => {
         setCategoria(e.target.value)
@@ -63,6 +72,20 @@ export default function FormularioProduto(props) {
 
     const categorias = ["categoria 1", "categoria 2", "categoria 3"];
 
+    useEffect(() => {
+        buscarProduto();
+    }, []);
+
+    async function buscarProduto() {
+        await ApiService.BuscarProdutoId(produto.ProdutoId)
+            .then((res) => {
+                console.log(res.data)
+                setProduto(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -83,7 +106,7 @@ export default function FormularioProduto(props) {
                         Edite um produto da aba produtos da sua atlética
             </Typography>
 
-                    <AvForm>
+                    <AvForm model={defaultValues}>
                         <Grid container spacing={1} style={{ paddingTop: 20 }}>
                             <Grid item xs={4}>
 
@@ -119,7 +142,7 @@ export default function FormularioProduto(props) {
                                 <Grid container spacing={2}>
 
                                     <Grid item xs={4}>
-                                        <AvField name="preço" label="Preço" type="number" />
+                                        <AvField name="preço" label="Preço" type="number" value={produto.Preco} />
                                     </Grid>
 
                                     <Grid item xs={4}>
