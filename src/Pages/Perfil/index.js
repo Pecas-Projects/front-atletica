@@ -18,6 +18,7 @@ import PerfilBackground from '../../assets/imagem/fundo_pagina.png'
 import FotoPerfil from "../../assets/imagem/fotoPerfil.png"
 import "./styles.css"
 import MuiAlert from '@material-ui/lab/Alert';
+import { getAtleticaId } from "../../utils/storage";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -178,9 +179,11 @@ export default function Perfil(props) {
   }
 
   const buscarModalidades = async () => {
-    await ApiService.BuscarAtleticaModalidades(atletica.atleticaId)
-      .then(res =>
+    await ApiService.ModalidadesAtletica(getAtleticaId())
+      .then(res => {
         setModalidades(res.data)
+        console.log(res)
+      }
       )
       .catch(err =>
         console.log(err)
