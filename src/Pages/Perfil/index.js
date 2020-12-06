@@ -114,8 +114,8 @@ export default function Perfil(props) {
 
   const classes = useStyles();
 
-const capaPadrao = "https://cdn11.bigcommerce.com/s-z50x8yyfzt/stencil/4986d880-a35b-0138-2c32-0242ac11000c/e/be244520-c8c1-0138-eb8d-0242ac110012/icons/icon-no-image.svg"
-const perfilPadrao = "https://barcarena.pa.gov.br/portal/img/perfil/padrao.jpg"
+  const capaPadrao = "https://cdn11.bigcommerce.com/s-z50x8yyfzt/stencil/4986d880-a35b-0138-2c32-0242ac11000c/e/be244520-c8c1-0138-eb8d-0242ac110012/icons/icon-no-image.svg"
+  const perfilPadrao = "https://barcarena.pa.gov.br/portal/img/perfil/padrao.jpg"
 
   const [capa, setCapa] = useState(capaPadrao)
   const [perfil, setPerfil] = useState(perfilPadrao)
@@ -290,7 +290,7 @@ const perfilPadrao = "https://barcarena.pa.gov.br/portal/img/perfil/padrao.jpg"
             else if (img.tipo === "P")
               setPerfil(img.imagem.path)
           });
-        else{
+        else {
           setPerfil(perfilPadrao)
           setCapa(capaPadrao)
         }
@@ -581,9 +581,9 @@ const perfilPadrao = "https://barcarena.pa.gov.br/portal/img/perfil/padrao.jpg"
                               <p className="subtitle2">PROCESSO SELETIVO</p>
 
                               <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
-
-                              <Button color="primary" style={{ width: 300, marginTop: 10 }} variant="outlined"> Participar</Button>
-
+                              <a target="_blank" href={atletica.linkProsel}>
+                                <Button color="primary" style={{ width: 300, marginTop: 10 }} variant="outlined"> Participar</Button>
+                              </a>
 
                             </Grid>
 
@@ -859,9 +859,9 @@ MOBILE
                             <p className="subtitle2">PROCESSO SELETIVO</p>
 
                             <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
-
-                            <Button color="primary" style={{ width: "100%", marginTop: 10 }} variant='outlined'> Participar</Button>
-
+                            <a target="_blank" href={atletica.linkProsel}>
+                              <Button color="primary" style={{ width: "100%", marginTop: 10 }} variant='outlined'> Participar</Button>
+                            </a>
                           </Grid>
 
                         )}
