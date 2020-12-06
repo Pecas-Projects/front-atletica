@@ -1,29 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, Switch, FormControlLabel, IconButton, TextField, MenuItem } from "@material-ui/core";
-import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
+import { Grid, Typography, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
 import ApiService from "../../../variables/ApiService";
 import { getAtleticaId } from "../../../utils/storage";
 
-const useStyles = makeStyles((theme) => ({
-
-    paperAMobile: {
-        width: "100%",
-        marginTop: -10,
-        padding: "5%",
-        backgroundColor: "#BBB8CC",
-    }
-
-}));
 
 
 export default function FormularioProdutoMobile(props) {
 
-    const classes = useStyles();
 
-    const [imagem, setImagem] = useState(null);
-    const [path, setPath] = useState();
     const [categorias, setCategorias] = useState([]);
     const [produto, setProduto] = useState({
         produtoId: props.produtoId,
@@ -59,7 +44,6 @@ export default function FormularioProdutoMobile(props) {
     async function buscarProduto() {
         await ApiService.BuscarProdutoId(produto.produtoId)
             .then((res) => {
-                console.log(res.data)
                 setProduto(res.data)
             })
             .catch((err) => {
@@ -75,18 +59,6 @@ export default function FormularioProdutoMobile(props) {
             .catch((error) => {
                 console.log(error)
             })
-    }
-
-    function showAdicionarImagem() {
-        if (imagem === null) {
-            return <p>Adicione uma Imagem</p>;
-        } else
-            return (
-                <div>
-                    <br />
-                    <br />
-                </div>
-            );
     }
 
     async function atualizarProduto(){
