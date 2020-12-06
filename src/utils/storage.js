@@ -4,6 +4,7 @@ export const loginMembro = (token, userType, userId, atleticaId, username) => {
   localStorage.setItem("USER_ID", userId);
   localStorage.setItem("ATLETICA_ID", atleticaId);
   localStorage.setItem("ATLETICA_USERNAME", username);
+  localStorage.setItem("ATLETICA_USERNAME_PESQUISADA", username);
 };
 
 export const loginAtletica = (token, userType, atleticaId, username) => {
@@ -11,6 +12,7 @@ export const loginAtletica = (token, userType, atleticaId, username) => {
   localStorage.setItem("USER_TYPE", userType);
   localStorage.setItem("ATLETICA_ID", atleticaId);
   localStorage.setItem("ATLETICA_USERNAME", username);
+  localStorage.setItem("ATLETICA_USERNAME_PESQUISADA", username);
 };
 
 export const logout = () => {
