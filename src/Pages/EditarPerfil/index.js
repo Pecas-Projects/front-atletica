@@ -86,8 +86,6 @@ const useStyles = makeStyles((theme) => ({
 export default function EditarPerfil(props) {
   const classes = useStyles();
 
-  const { username } = props.match.params.username;
-
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [notification, setNotification] = useState(false);
   const [updateStatus, setUpdateStatus] = useState("");
@@ -282,8 +280,8 @@ export default function EditarPerfil(props) {
       );
   }
 
-  const buscaAtleticaPorUsername = async (username) => {
-    await ApiService.PesquisaAtleticaPorUsername(username)
+  const buscaAtleticaPorId = async (id) => {
+    await ApiService.PesquisaAtleticaPorId(id)
       .then((res) => {
         console.log(res.data);
         setAtletica(res.data);
@@ -328,7 +326,7 @@ export default function EditarPerfil(props) {
   };
 
   useEffect(() => {
-    buscaAtleticaPorUsername(props.match.params.username);
+    buscaAtleticaPorId(getAtleticaId());
   }, []);
 
   const onFormSubmit = async (e) => {
@@ -442,7 +440,7 @@ export default function EditarPerfil(props) {
         setUpdateStatus("success");
         setNotification(true);
         setLoadingUpdate(false);
-        setTimeout(function () { window.location.href = '/editarperfil/' + getUsername() }, 3000)
+        setTimeout(function () { window.location.href = '/EditarPerfi' }, 3000)
       })
       .catch((err) => {
         setUpdateMsg("Erro ao atualizar as informações");

@@ -1,5 +1,5 @@
 import React from "react";
-import { isLogin } from "./utils/storage";
+import { isLogin, getUserType } from "./utils/storage";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Perfil from "./Pages/Perfil";
 import PaginaInicio from "./Pages/Inicio";
@@ -27,8 +27,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         isLogin() ? (
           <Component {...props} path={rest.path} />
         ) : (
-          <Redirect to="/login" />
-        )
+            <Redirect to="/login" />
+          )
       }
     />
   );
@@ -52,11 +52,14 @@ const Routes = () => (
     <PrivateRoute exact path="/AdicionarPost" component={AdicionarPost} />
     {/* <PrivateRoute exact path="/AdicionarEvento" component={AdicionarEvento} /> */}
     <PrivateRoute exact path="/Notificacoes" component={Notificacoes} />
-    <PrivateRoute
-      exact
-      path="/EditarPerfil/:username"
-      component={EditarPerfil}
-    />
+    { getUserType() === "A" ?
+      <PrivateRoute
+        exact
+        path="/EditarPerfil"
+        component={EditarPerfil}
+      />
+      : null
+    }
     <PrivateRoute exact path="/Ranking" component={Ranking} />
     <PrivateRoute exact path="/Jogos" component={Jogos} />
     <PrivateRoute exact path="/Modalidades" component={Modalidades} />
