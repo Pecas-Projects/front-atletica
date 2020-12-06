@@ -19,8 +19,8 @@ export default function Page404() {
       <Navbar />
       <Grid container justify="center">
         <Paper className={classes.paperA}>
-          <h3 className="MyTitle">Erro 404</h3>
-          <p className="MySubtitle">
+          <h3 className="MyTitle404">Erro 404</h3>
+          <p className="MySubtitle404">
             Essa página não existe ou esta indisponível
           </p>
         </Paper>
