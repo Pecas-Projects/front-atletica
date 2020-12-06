@@ -24,6 +24,7 @@ export default function FormularioProduto(props) {
 
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
+    const [imgId, setImgId] = useState(null);
     const [categorias, setCategorias] = useState([]);
     const [produto, setProduto] = useState({
         produtoId: props.produtoId,
@@ -34,11 +35,7 @@ export default function FormularioProduto(props) {
         estoque: false,
         atleticaId: getAtleticaId(),
         imagemId: null,
-        imagem: {
-            extensao: "",
-            path: "",
-            imagemId: null
-        }
+        imagem: {}
     });
 
     const defaultValues = {
@@ -46,18 +43,6 @@ export default function FormularioProduto(props) {
         descricao: produto.descricao,
         preco: produto.preco,
     };
-
-    const handleCategoriaChange = (e) => {
-        setProduto({...produto, produtoCategoriaId: e.target.value})
-    }
-
-    const handleNomeChange = (e) => {
-        setProduto({...produto, nome: e.target.value})
-    }
-
-    const handleDescricaoChange = (e) => {
-        setProduto({...produto, descricao: e.target.value})
-    }
 
     const handlePrecoChange = (e) => {
         setProduto({...produto, preco: e.target.value})
@@ -102,12 +87,33 @@ export default function FormularioProduto(props) {
     
         await ApiService.UploadImagem(file)
           .then((res) => {
-            console.log(res)
-            setProduto({...produto, ImagemId: res.data.imagemId})
+            setProduto({...produto, imagemId: res.data.imagemId})
+            setImgId(res.data.imagemId)
           })
           .catch((error) => {
             console.log(error)
           });
+    }
+
+    async function atualizarProduto(){
+        
+        let produtoDados = {
+            Nome: produto.nome,
+            Descricao: produto.descricao,
+            Preco: produto.preco,
+            Estoque: produto.estoque,
+            ProdutoCategoriaId: produto.produtoCategoriaId,
+            ImagemId: produto.imagemId,
+            AtleticaId: produto.atleticaId
+        };
+
+        await ApiService.AtualizarProduto(produto.produtoId, produtoDados)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     function showAdicionarImagem() {
@@ -119,8 +125,17 @@ export default function FormularioProduto(props) {
     function submit(){
         if(produto.imagem.path !== path && path !== null && path !== undefined){
             envioImagem();
+        }   
+        else{
+            setImgId(produto.imagemId)
         }
     }
+
+    useEffect(() => {
+        if(produto.imagemId === imgId){
+            atualizarProduto();
+        }
+    }, [imgId]);
 
     return (
         <>
@@ -135,7 +150,7 @@ export default function FormularioProduto(props) {
 
                             <Typography variant="h8" style={{ color: "#454256" }}>
                                 Edite um produto da aba produtos da sua atlética
-                    </Typography>
+                            </Typography>
 
                             <AvForm model={defaultValues}>
                                 <Grid container spacing={1} style={{ paddingTop: 20 }}>
@@ -173,7 +188,7 @@ export default function FormularioProduto(props) {
                                         <Grid container spacing={2}>
 
                                             <Grid item xs={4}>
-                                                <AvField name="preco" label="Preço" type="number" value={produto.Preco} />
+                                                <AvField name="preco" label="Preço" type="number" value={produto.Preco} onChange={handlePrecoChange} />
                                             </Grid>
 
                                             <Grid item xs={4}>
@@ -222,6 +237,7 @@ export default function FormularioProduto(props) {
                                                 color='secondary'
                                                 variant='contained'
                                                 style={{ width: 300 }}
+                                                onClick={submit}
                                             >
                                                 Postar
                                             </Button>
