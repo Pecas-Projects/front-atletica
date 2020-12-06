@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper, Button, TextField, MenuItem, Dialog, DialogActions, DialogTitle, Snackbar } from "@material-ui/core";
+import {
+    Grid, Paper, Button, TextField, MenuItem, Dialog, DialogActions, DialogTitle, Snackbar, DialogContent,
+    DialogContentText, Typography
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -14,7 +17,7 @@ import clsx from 'clsx';
 import "../styles.css"
 import CardAtletaAdd from "./CardAtletaAdd";
 import ApiService from "../../../variables/ApiService"
-import storage, { getAtleticaId } from "../../../utils/storage"
+import { getAtleticaId } from "../../../utils/storage"
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -37,23 +40,34 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const membros = [
-    {
-        value: 'Beatriz Calazans',
-    },
-    {
-        value: 'Fernanda Lisboa',
-    },
-    {
-        value: 'Maria Antônia',
-    },
-    {
-        value: 'Ana Paula',
-    },
-    {
-        value: 'Davi Costa',
-    },
-]
+
+
+function acertaHora(data) {
+    var dataCerta = data + ':00'
+    return dataCerta;
+}
+
+function exibirHora(hora) {
+    var horaCerta = hora.slice(0, 5)
+    return horaCerta;
+}
+
+function acertaDia(dia) {
+
+    var diaCerto
+
+    if (dia === "Domingo") diaCerto = "Dom"
+    else if (dia === "Segunda-feira") diaCerto = "Seg"
+    else if (dia === "Terça-feira") diaCerto = "Ter"
+    else if (dia === "Quarta-feira") diaCerto = "Qua"
+    else if (dia === "Quinta-feira") diaCerto = "Qui"
+    else if (dia === "Sexta-feira") diaCerto = "Sex"
+    else if (dia === "Sábado") diaCerto = "Sab"
+
+    return diaCerto;
+}
+
+const Dias = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"]
 
 export default function CardModalidade(props) {
 
@@ -69,7 +83,7 @@ export default function CardModalidade(props) {
     const [expandedModalidade, setExpandedModalidade] = useState(false);
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
-    const [coordenador, setCorrdenador] = useState('')
+    const [coordenador, setCorrdenador] = useState(item.coordenadorId)
     const [openSalvo, setOpenSalvo] = useState(false)
     const [openExcluir, setOpenExcluir] = useState(false)
     const [openExcluido, setOpenExcluido] = useState(false)
@@ -77,15 +91,26 @@ export default function CardModalidade(props) {
     const [diaTreino, setDiaTreino] = useState(false)
     const [atletas, setAtletas] = useState()
     const [atletasAdd, setAtletasAdd] = useState()
+    const [openAgenda, setopenAgenda] = useState(false)
+    const [membros, setMembros] = useState()
+    const [enviar, setEnviar] = useState(false)
+    const [imagemId, setImagemId] = useState()
+    const [agendaTreinos, setAgendaTreinos] = useState(item.agendaTreinos)
+    const [openErro, setOpenErro] = useState(false)
 
 
     useEffect(() => {
+
 
         ApiService.BuscarAtletaModalidade(item.atleticaModalidadeId)
             .then(res => {
                 console.log(res)
                 setAtletas(res.data)
             })
+            .catch(error => {
+                console.log(error)
+            })
+
 
 
     }, [])
@@ -98,8 +123,7 @@ export default function CardModalidade(props) {
 
     useEffect(() => {
 
-
-        ApiService.BuscarAddAtletas(getAtleticaId(), item.modalidadeId)
+        ApiService.BuscarAddAtletas(JSON.parse(getAtleticaId()), item.modalidadeId)
             .then(res => {
                 console.log(res)
                 setAtletasAdd(res.data)
@@ -114,6 +138,54 @@ export default function CardModalidade(props) {
         }
     }, [atletasAdd])
 
+    useEffect(() => {
+
+        ApiService.BuscarMembros(getAtleticaId())
+            .then(res => {
+                console.log(res)
+                setMembros(res.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+    }, [])
+
+    useEffect(() => {
+
+        async function AtualizarAtleticaModalidade() {
+            console.log(coordenador)
+            console.log(agendaTreinos)
+            console.log(item.agendaTreinos)
+            console.log(imagemId)
+
+            var AtleticaModalidade = {
+                modalidadeId: item.modalidadeId,
+                coordenadorId: coordenador,
+                imagemId: imagemId,
+                agendaTreinos: agendaTreinos
+            }
+
+            console.log(AtleticaModalidade)
+
+            await ApiService.AtualizarAtleticaModalidade(item.atleticaModalidadeId, AtleticaModalidade)
+                .then(res => {
+                    console.log(res)
+                    setOpenSalvo(true)
+                    setTimeout(function () { window.location.href = '/modalidades' }, 3000)
+                })
+                .catch(error => {
+                    setOpenErro(true)
+                    console.log(error)
+                })
+
+        }
+
+
+        if (enviar === true) {
+            AtualizarAtleticaModalidade()
+        }
+    }, [enviar])
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -143,6 +215,33 @@ export default function CardModalidade(props) {
 
     };
 
+    async function envioImagem() {
+
+        if (imagem === null) {
+            setEnviar(true)
+            if (item.imagemModalidade !== null)
+                setImagemId(item.imagemModalidade.imagemId)
+        }
+        else {
+
+            let file = new FormData();
+            file.append('value', imagem);
+
+            await ApiService.UploadImagem(file)
+                .then((res) => {
+                    console.log(res)
+                    setImagemId(res.data.imagemId)
+                    setEnviar(true)
+                })
+                .catch((error) => {
+                    console.log(error)
+                });
+
+
+        }
+
+    }
+
     const Deletar = () => {
 
         ApiService.DeletarAtleticaModalidade(item.atleticaModalidadeId)
@@ -164,10 +263,25 @@ export default function CardModalidade(props) {
 
     };
 
-    // const onFormSubmit = () =>{
+    const criarTreino = () => {
 
-    //     let 
-    // }
+        if (diaTreino !== null && horaTreino !== null) {
+
+            let treino = {
+                diaSemana: acertaDia(diaTreino),
+                horaInicio: acertaHora(horaTreino)
+            }
+
+            agendaTreinos.push(treino)
+
+            setopenAgenda(false)
+        }
+        else {
+            setOpenErro(true)
+        }
+
+
+    }
 
     const handleCloseSalvo = (event, reason) => {
         if (reason === 'clickaway') {
@@ -244,6 +358,21 @@ export default function CardModalidade(props) {
     const handleDiaChange = (e) => {
         setDiaTreino(e.target.value)
     }
+    const handleOpenAgenda = () => {
+        setopenAgenda(true)
+    };
+
+    const handleCloseAgenda = () => {
+        setopenAgenda(false)
+    };
+
+    const handleCloseErro = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenErro(false);
+    };
 
 
     return (
@@ -259,6 +388,13 @@ export default function CardModalidade(props) {
             <Snackbar open={openExcluido} autoHideDuration={4000} onClose={handleCloseExcluido}>
                 <Alert onClose={handleCloseExcluido} severity="success">
                     Modalidade excluida com sucesso!
+                </Alert>
+            </Snackbar>
+
+
+            <Snackbar open={openErro} autoHideDuration={4000} onClose={handleCloseErro}>
+                <Alert onClose={handleCloseErro} severity="error">
+                    Ocorreu um erro, revise os dados e tente novamente
                 </Alert>
             </Snackbar>
 
@@ -395,13 +531,13 @@ export default function CardModalidade(props) {
                                                 atleta={atleta}
                                                 index={index}
                                                 AtleticaModalidadeId={item.atleticaModalidadeId}
-                                                DeleteAtleta={DeleteAtletaADD} />
+                                                DeleteAtletaAdd={DeleteAtletaADD} />
                                         )}
                                 </>
 
                             ) : (
                                     <>
-                                        <p>foda</p>
+
                                     </>
                                 )}
 
@@ -413,7 +549,7 @@ export default function CardModalidade(props) {
 
                 <Collapse in={expandedModalidade} timeout="auto" unmountOnExit>
 
-                    <AvForm>
+                    <AvForm >
                         <Grid container style={{ marginTop: 30 }}>
 
                             <Grid item xs={4}>
@@ -438,40 +574,62 @@ export default function CardModalidade(props) {
 
                             <Grid item xs={8}>
 
-                                <Grid item xs={12} style={{ marginTop: 10 }}>
+                                <Grid item xs={8} style={{ marginTop: 10, marginTop: 80 }}>
 
+                                    <Grid container justify='center'>
+                                        <Button fullWidth color='secondary' variant='outlined' onClick={handleOpenAgenda}>Novo Treino </Button>
+                                    </Grid>
 
-                                    <AvField style={{ width: "70%" }} onChange={handleDiaChange} name="name" type="date" label="Dia do treino" validate={{
-                                    }} />
-
-
-                                </Grid>
-
-                                <Grid item xs={12} style={{ marginTop: 10 }}>
-
-
-                                    <AvField style={{ width: "70%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
 
 
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <TextField
-                                        id="standard-select-coordenador"
-                                        select
-                                        label="Coordenador"
-                                        value={coordenador}
-                                        onChange={handleMembroChange}
-                                        helperText="Selecione o membro que coordena essa modalidade"
-                                        style={{ width: "70%" }}
-                                    >
-                                        {membros.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.value}
-                                            </MenuItem>
+                                {agendaTreinos.length !== 0 ? (
+                                    <>
+                                        <Typography style={{ marginTop: 7 }}>Treinos</Typography>
+                                        {agendaTreinos.map((treino) => (
+                                            <Typography style={{ color: "gray" }}>{treino.diaSemana} {exibirHora(treino.horaInicio)}h</Typography>
                                         ))}
-                                    </TextField>
-                                </Grid>
+
+                                    </>
+                                ) : (
+                                        <>
+                                        </>
+                                    )}
+
+
+                                {membros !== undefined ? (
+                                    <>
+
+                                        <Grid item xs={8} xs={{ marginTop: 10 }}>
+                                            <Grid container >
+                                                <TextField
+                                                    style={{ width: "70%" }}
+
+                                                    id="standard-select-coordenador"
+                                                    select
+                                                    label="Coordenador"
+                                                    value={coordenador}
+                                                    onChange={handleMembroChange}
+                                                    helperText="Selecione o membro que coordena essa modalidade"
+                                                >
+
+                                                    {membros.map((option) => (
+                                                        <MenuItem value={option.membroId}>
+                                                            {option.pessoa.nome + " " + option.pessoa.sobrenome}
+                                                        </MenuItem>
+                                                    ))}
+
+
+                                                </TextField>
+                                            </Grid>
+                                        </Grid>
+                                    </>
+                                ) : (
+                                        <>
+                                        </>
+                                    )}
+
 
                             </Grid>
 
@@ -487,7 +645,7 @@ export default function CardModalidade(props) {
 
                                     <Grid container justify='flex-end'>
 
-                                        <Button onClick={() => setOpenSalvo(true)} style={{ width: "85%", marginTop: 50 }} variant='contained' color='secondary'>Salvar Alterações</Button>
+                                        <Button onClick={envioImagem} style={{ width: "85%", marginTop: 50 }} variant='contained' color='secondary'>Salvar Alterações</Button>
 
                                     </Grid>
 
@@ -519,6 +677,54 @@ export default function CardModalidade(props) {
                             Cancelar
           </Button>
                     </DialogActions>
+                </Dialog>
+
+            </div>
+
+            <div>
+
+                <Dialog
+                    open={openAgenda}
+                    onClose={handleCloseAgenda}
+
+                >
+                    <DialogTitle id="alert-dialog-excluir">{"Cadastrar novo treino"}</DialogTitle>
+
+                    <AvForm onValidSubmit={criarTreino}>
+                        <DialogContent>
+                            <DialogContentText>
+                                Selecione um dia da semana e um horário para adicionar a agenda de trinos dessa modalidade
+</DialogContentText>
+
+                            <AvField style={{ width: "100%" }} onChange={handleHorarioChange} name="name" type="time" label="Horário do treino" validate={{}} />
+
+
+                            <TextField
+                                id="standard-select-dia"
+                                select
+                                label="Dia do treino"
+                                value={diaTreino}
+                                onChange={handleDiaChange}
+                                fullWidth
+
+                            >
+                                {Dias.map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </DialogContent>
+
+                        <DialogActions>
+                            <Button type='submit' color="primary">
+                                Salvar
+</Button>
+                            <Button variant='outlined' onClick={handleCloseAgenda} color="primary" autoFocus>
+                                Cancelar
+</Button>
+                        </DialogActions>
+                    </AvForm>
                 </Dialog>
 
             </div>
