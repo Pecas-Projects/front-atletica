@@ -157,7 +157,7 @@ export default function Produtos(props) {
                     <Typography
                       variant="h6"
                       align="center"
-                      style={{ color: "white" }}
+                      style={{ color: "black", marginBottom:20 }}
                     >
                       Nossos Produtos
                     </Typography>
