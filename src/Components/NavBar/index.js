@@ -322,9 +322,13 @@ export default function MiniDrawer() {
                     <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
                       <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
                     </Link>
-                    <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil"}>
-                      <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
-                    </Link>
+                    {
+                      getUserType() === "A" ?
+                        <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil"}>
+                          <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
+                        </Link>
+                        : null
+                    }
                     <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
                   </Menu>
                 </div>
