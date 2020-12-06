@@ -20,6 +20,7 @@ export const logout = () => {
   localStorage.removeItem("USER_TYPE");
   localStorage.removeItem("USER_ID");
   localStorage.removeItem("ATLETICA_ID");
+  localStorage.removeItem("ATLETICA_USERNAME");
 };
 
 export const isLogin = () => {
