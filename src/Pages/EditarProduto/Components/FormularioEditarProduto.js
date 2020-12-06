@@ -94,12 +94,32 @@ export default function FormularioProduto(props) {
           .catch((error) => {
             console.log(error)
           })
-      }
+    }
+
+    async function envioImagem(){
+        let file = new FormData();
+        file.append('value', imagem);
+    
+        await ApiService.UploadImagem(file)
+          .then((res) => {
+            console.log(res)
+            setProduto({...produto, ImagemId: res.data.imagemId})
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+    }
 
     function showAdicionarImagem() {
         if (imagem === null) {
             return <p>Adicione uma Imagem</p>
         } else return <div><br /><br /></div>;
+    }
+
+    function submit(){
+        if(produto.imagem.path !== path && path !== null && path !== undefined){
+            envioImagem();
+        }
     }
 
     return (
