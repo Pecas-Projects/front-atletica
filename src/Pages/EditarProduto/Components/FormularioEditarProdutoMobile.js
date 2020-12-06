@@ -89,6 +89,31 @@ export default function FormularioProdutoMobile(props) {
             );
     }
 
+    async function atualizarProduto(){
+        
+        let produtoDados = {
+            Nome: produto.nome,
+            Descricao: produto.descricao,
+            Preco: produto.preco,
+            Estoque: produto.estoque,
+            ProdutoCategoriaId: produto.produtoCategoriaId,
+            ImagemId: produto.imagemId,
+            AtleticaId: produto.atleticaId
+        };
+
+        await ApiService.AtualizarProduto(produto.produtoId, produtoDados)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
+    function submit(){
+        atualizarProduto();
+    }
+
     return (
         <>
 
@@ -169,6 +194,7 @@ export default function FormularioProdutoMobile(props) {
                                                 background: "#DB4922",
                                             }}
                                             fullWidth={true}
+                                            onClick={submit}
                                         >
                                             Postar
                                         </Button>
