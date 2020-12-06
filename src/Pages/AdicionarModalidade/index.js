@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Grid, Paper, Button } from "@material-ui/core";
+import { Grid, Paper, Button, CircularProgress } from "@material-ui/core";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import Radio from '@material-ui/core/Radio';
@@ -133,11 +133,16 @@ export default function AdicionarModalidade() {
         <>
             {loading ? (
                 <>
-                    <h1>loading</h1>
+                    <div style={{ marginTop: 250 }}>
+                        <Grid container justify="center">
+                            <CircularProgress size={100} color="primary" />
+                        </Grid>
+                    </div>
                 </>
 
             ) : (
                     <>
+
                         <div className={classes.root}>
                             <NavBar />
 
@@ -180,16 +185,31 @@ export default function AdicionarModalidade() {
 
                                                     {modalidades !== undefined ? (
                                                         <>
-                                                            {
-                                                                modalidades.map((item, index) =>
-                                                                    <CardModalidade
-                                                                        item={item}
-                                                                        index={index}
-                                                                        DeleteModalidade={DeleteModalidade} />
-                                                                )
-                                                            }
-                                                        </>
 
+
+                                                            {modalidades.length !== 0 ? (
+                                                                <>
+                                                                    {
+                                                                        modalidades.map((item, index) =>
+                                                                            <CardModalidade
+                                                                                item={item}
+                                                                                index={index}
+                                                                                DeleteModalidade={DeleteModalidade} />
+                                                                        )
+                                                                    }
+                                                                </>
+
+                                                            ) : (
+
+
+                                                                    <Paper className={classes.paperA}>
+                                                                        <p calassName='SubtitleM'>Essa atlética ainda não possui modalidades adicionadas</p>
+
+                                                                    </Paper>
+
+                                                                )}
+
+                                                        </>
                                                     ) : (
                                                             <>
                                                             </>

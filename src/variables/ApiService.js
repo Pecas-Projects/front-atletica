@@ -357,7 +357,7 @@ const ApiService = {
       });
   },
 
-  CadastrarModalidade: (atleticaId, AtleticaModalidade) => {
+  CadastrarAtleticaModalidade: (atleticaId, AtleticaModalidade) => {
     return api
       .post(`/api/AtleticaModalidade/${atleticaId}`, AtleticaModalidade)
       .then((res) => {
@@ -498,6 +498,53 @@ const ApiService = {
       });
   },
 
+  BuscarModalidades: () => {
+    return api
+      .get("api/Modalidade")
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+
+  BuscarMembros: (atleticaId) => {
+    return api
+      .get(`/api/Membro/Atletica/${atleticaId}`)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+  CadastrarModalidade: (modalidade) => {
+    return api
+      .post('/api/Modalidade', modalidade)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.error(error);
+        return Promise.reject(error);
+      });
+  },
+  UploadImagem: (data) => {
+    return api
+      .post(`/api/Imagem/Upload`, data)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error)
+        return error;
+      })
+  },
+
+
   ReseteSenha: (value) => {
     return api
       .post("/api/ReseteSenha", value)
@@ -523,6 +570,7 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
 
 };
 
