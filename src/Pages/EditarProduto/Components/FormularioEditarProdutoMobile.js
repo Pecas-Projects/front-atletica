@@ -24,6 +24,7 @@ export default function FormularioProdutoMobile(props) {
 
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
+    const [categorias, setCategorias] = useState([]);
     const [produto, setProduto] = useState({
         produtoId: props.produtoId,
         nome: "",
@@ -36,6 +37,7 @@ export default function FormularioProdutoMobile(props) {
     });
 
     useEffect(() => {
+        buscarTodasCategorias();
         buscarProduto();
     }, []);
 
@@ -44,11 +46,20 @@ export default function FormularioProdutoMobile(props) {
             .then((res) => {
                 console.log(res.data)
                 setProduto(res.data)
-                console.log(produto)
             })
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    async function buscarTodasCategorias(){
+        await ApiService.BuscarTodasCategorias()
+          .then((response) => {
+            setCategorias(response.data)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
     }
 
     function showAdicionarImagem() {
