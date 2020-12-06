@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, Switch, FormControlLabel, IconButton } from "@material-ui/core";
+import { Grid, Typography, Paper, Button, Switch, FormControlLabel, IconButton, TextField, MenuItem } from "@material-ui/core";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
 import ApiService from "../../../variables/ApiService";
 import { getAtleticaId } from "../../../utils/storage";
@@ -35,6 +35,12 @@ export default function FormularioProdutoMobile(props) {
         atleticaId: getAtleticaId(),
         imagemId: undefined
     });
+
+    const defaultValues = {
+        nome: produto.nome,
+        descricao: produto.descricao,
+        preco: produto.preco,
+    };
 
     useEffect(() => {
         buscarTodasCategorias();
@@ -91,7 +97,7 @@ export default function FormularioProdutoMobile(props) {
                                 Edite um produto da aba produtos da sua atlética
                             </Typography>
 
-                            <AvForm>
+                            <AvForm model={defaultValues}>
                                 <Grid container style={{ paddingTop: 50 }}>
                                     <Grid item xs={12}>
                                         <AvField
@@ -100,29 +106,42 @@ export default function FormularioProdutoMobile(props) {
                                             label="Nome do Produto"
                                             type="text"
                                             style={{ color: "E2E2E2" }}
+                                            disabled
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <AvField
                                             disabled
-                                            name="descrição"
+                                            name="descricao"
                                             label="Descrição"
                                             type="textarea"
-
+                                            disabled
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AvField name="preço" label="Preço" type="number" />
+                                        <AvField name="preco" label="Preço" type="number" />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <AvField name="categoria" label="Categoria" type="select">
-                                            <option>Roupa</option>
-                                        </AvField>
+                                        <TextField
+                                            fullWidth
+                                            id="standard-select-categoria"
+                                            select
+                                            label="Categoria"
+                                            style={{ marginTop: 5, marginLeft: 5 }}
+                                            value={produto.produtoCategoriaId}
+                                            disabled
+                                        >
+                                            {categorias.map((option) => (
+                                                <MenuItem value={option.produtoCategoriaId} key={option.nome}>
+                                                    {option.nome}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
                                     </Grid>
                                     <Grid item xs={6}>
                                         <FormControlLabel
                                             style={{ marginTop: 25, marginLeft: 10 }}
-                                            control={<Switch name="estoque" />}
+                                            control={<Switch name="estoque" checked={produto.estoque} />}
                                             label="Em estoque"
                                         />
                                     </Grid>
