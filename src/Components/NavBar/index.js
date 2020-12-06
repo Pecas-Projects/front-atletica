@@ -322,7 +322,7 @@ export default function MiniDrawer() {
                     <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()}>
                       <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
                     </Link>
-                    <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + atleticaUsername()}>
+                    <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil"}>
                       <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
                     </Link>
                     <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
@@ -687,7 +687,7 @@ export default function MiniDrawer() {
 
             <div className="absoluteMobile">
               {getUserType() === "A" && (
-                <Link to={`/EditarPerfil/${getUsername()}`}>
+                <Link to="/EditarPerfil">
                   <ListItem button>
                     <ListItemIcon>
                       <PermIdentityIcon style={{ color: "white" }} />

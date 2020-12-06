@@ -54,7 +54,7 @@ const Routes = () => (
     <PrivateRoute exact path="/Notificacoes" component={Notificacoes} />
     <PrivateRoute
       exact
-      path="/EditarPerfil/:username"
+      path="/EditarPerfil"
       component={EditarPerfil}
     />
     <PrivateRoute exact path="/Ranking" component={Ranking} />
