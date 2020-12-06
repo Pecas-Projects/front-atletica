@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
+import { Grid, Typography, Paper, Button, Switch, FormControlLabel, IconButton } from "@material-ui/core";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
 import ApiService from "../../../variables/ApiService";
 import { getAtleticaId } from "../../../utils/storage";
@@ -52,14 +52,14 @@ export default function FormularioProdutoMobile(props) {
             })
     }
 
-    async function buscarTodasCategorias(){
+    async function buscarTodasCategorias() {
         await ApiService.BuscarTodasCategorias()
-          .then((response) => {
-            setCategorias(response.data)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+            .then((response) => {
+                setCategorias(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     function showAdicionarImagem() {
@@ -114,10 +114,17 @@ export default function FormularioProdutoMobile(props) {
                                     <Grid item xs={12}>
                                         <AvField name="preço" label="Preço" type="number" />
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={6}>
                                         <AvField name="categoria" label="Categoria" type="select">
                                             <option>Roupa</option>
                                         </AvField>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <FormControlLabel
+                                            style={{ marginTop: 25, marginLeft: 10 }}
+                                            control={<Switch name="estoque" />}
+                                            label="Em estoque"
+                                        />
                                     </Grid>
                                     <Grid container justify="center" style={{ marginTop: 10 }}>
                                         <Grid item>
