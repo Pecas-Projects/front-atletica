@@ -381,7 +381,7 @@ export default function EditarPerfil(props) {
     let capa = { tipo: "C", imagemId: 0 };
     let perfil = { tipo: "P", imagemId: 0 };
 
-    let imgs = null;
+    let imgs = [];
 
     if (imagemPerfil !== null && imagemCapa !== null) {
 
