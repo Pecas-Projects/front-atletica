@@ -34,7 +34,7 @@ export default function FormularioProduto(props) {
         produtoCategoriaId: undefined,
         estoque: false,
         atleticaId: getAtleticaId(),
-        imagemId: null,
+        imagemId: undefined,
         imagem: {}
     });
 
@@ -61,7 +61,7 @@ export default function FormularioProduto(props) {
     async function buscarProduto() {
         await ApiService.BuscarProdutoId(produto.produtoId)
             .then((res) => {
-                console.log(res.data)
+           //     console.log(res.data)
                 setImagem(res.data.imagem)
                 setPath(res.data.imagem.path)
                 setProduto(res.data)
