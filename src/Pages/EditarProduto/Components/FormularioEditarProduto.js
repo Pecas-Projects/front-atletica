@@ -24,11 +24,7 @@ export default function FormularioProduto(props) {
 
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
-    const [estoque, setEstoque] = useState(false)
-    const [categoria, setCategoria] = useState('')
-    const [descricao, setDescricao] = useState('')
-    const [preco, setPreco] = useState('')
-    const [nome, setNome] = useState('')
+    const [categorias, setCategorias] = useState([]);
     const [produto, setProduto] = useState({
         produtoId: props.produtoId,
         nome: "",
@@ -52,29 +48,28 @@ export default function FormularioProduto(props) {
     };
 
     const handleCategoriaChange = (e) => {
-        setCategoria(e.target.value)
+        setProduto({...produto, produtoCategoriaId: e.target.value})
     }
 
     const handleNomeChange = (e) => {
-        setNome(e.target.value)
+        setProduto({...produto, nome: e.target.value})
     }
 
     const handleDescricaoChange = (e) => {
-        setDescricao(e.target.value)
+        setProduto({...produto, descricao: e.target.value})
     }
 
     const handlePrecoChange = (e) => {
-        setPreco(e.target.value)
+        setProduto({...produto, preco: e.target.value})
     }
 
-    const handleEstoqueChange = () => {
-        setEstoque(estoque => !estoque)
-    }
-
-
-    const categorias = ["categoria 1", "categoria 2", "categoria 3"];
+    const handleEstoqueChange = (e) => {
+        e.preventDefault();
+        setProduto({...produto, estoque: !produto.estoque})
+      };
 
     useEffect(() => {
+        buscarTodasCategorias();
         buscarProduto();
     }, []);
 
@@ -90,6 +85,16 @@ export default function FormularioProduto(props) {
                 console.log(err)
             })
     }
+
+    async function buscarTodasCategorias(){
+        await ApiService.BuscarTodasCategorias()
+          .then((response) => {
+            setCategorias(response.data)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+      }
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -159,8 +164,7 @@ export default function FormularioProduto(props) {
                                                     select
                                                     label="Categoria"
                                                     style={{ marginTop: 5, marginLeft: 5 }}
-                                                    value={produto.ProdutoCategoriaId}
-                                                    onChange={handleCategoriaChange}
+                                                    value={produto.produtoCategoriaId}
                                                     disabled
                                                 >
                                                     {categorias.map((option) => (
@@ -176,9 +180,9 @@ export default function FormularioProduto(props) {
 
                                                 <FormControlLabel
                                                     style={{ marginTop: 25, marginLeft: 10 }}
-                                                    control={<Switch checked={produto.Estoque} name="estoque" />}
+                                                    control={<Switch checked={produto.estoque} name="estoque" onChange={handleEstoqueChange} />}
                                                     label="Em estoque"
-                                                    onChange={handleEstoqueChange}
+                                                    
                                                 />
 
                                             </Grid>
