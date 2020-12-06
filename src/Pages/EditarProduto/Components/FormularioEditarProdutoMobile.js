@@ -51,62 +51,69 @@ export default function FormularioProdutoMobile(props) {
         <>
 
             <Grid container style={{ marginBottom: 15 }}>
-                <h4 className="MyTitle">Editar Produto</h4>
-                <Typography
-                    variant="h8"
-                    style={{ color: "#454256"  }}
-                >
-                    Edite um produto da aba produtos da sua atlética
-                </Typography>
+                {
+                    produto.ProdutoCategoriaId === undefined ?
+                        <h4 className="MyTitle">Carregando...</h4>
+                        :
+                        <>
+                            <h4 className="MyTitle">Editar Produto</h4>
+                            <Typography
+                                variant="h8"
+                                style={{ color: "#454256" }}
+                            >
+                                Edite um produto da aba produtos da sua atlética
+                            </Typography>
 
-                <AvForm>
-                    <Grid container style={{ paddingTop: 50 }}>
-                        <Grid item xs={12}>
-                            <AvField
-                                disabled
-                                name="nome"
-                                label="Nome do Produto"
-                                type="text"
-                                style={{ color: "E2E2E2" }}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <AvField
-                                disabled
-                                name="descrição"
-                                label="Descrição"
-                                type="textarea"
+                            <AvForm>
+                                <Grid container style={{ paddingTop: 50 }}>
+                                    <Grid item xs={12}>
+                                        <AvField
+                                            disabled
+                                            name="nome"
+                                            label="Nome do Produto"
+                                            type="text"
+                                            style={{ color: "E2E2E2" }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <AvField
+                                            disabled
+                                            name="descrição"
+                                            label="Descrição"
+                                            type="textarea"
 
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <AvField name="preço" label="Preço" type="number" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <AvField name="categoria" label="Categoria" type="select">
-                                <option>Roupa</option>
-                            </AvField>
-                        </Grid>
-                        <Grid container justify="center" style={{marginTop: 10}}>
-                            <Grid item>
-                                <Typography>
-                                    Para que seja possivel o upload de imagem, acesse
-                                    nosso sistema pelo computador
-                          </Typography>
-                            </Grid>
-                        
-                        <Button
-                            style={{
-                                marginTop: 30,
-                                background: "#DB4922",
-                            }}
-                            fullWidth={true}
-                        >
-                            Postar
-                        </Button>
-                        </Grid>
-                    </Grid>
-                </AvForm>
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <AvField name="preço" label="Preço" type="number" />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <AvField name="categoria" label="Categoria" type="select">
+                                            <option>Roupa</option>
+                                        </AvField>
+                                    </Grid>
+                                    <Grid container justify="center" style={{ marginTop: 10 }}>
+                                        <Grid item>
+                                            <Typography>
+                                                Para que seja possivel o upload de imagem, acesse
+                                                nosso sistema pelo computador
+                                            </Typography>
+                                        </Grid>
+
+                                        <Button
+                                            style={{
+                                                marginTop: 30,
+                                                background: "#DB4922",
+                                            }}
+                                            fullWidth={true}
+                                        >
+                                            Postar
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </AvForm>
+                        </>
+                }
             </Grid>
         </>
     );
