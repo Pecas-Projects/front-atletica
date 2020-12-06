@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
+import { Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem, Snackbar } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem"
 import ApiService from "../../../variables/ApiService";
-import { getAtleticaId } from "../../../utils/storage";
+import { getAtleticaId, getUsername, atleticaUsername } from "../../../utils/storage";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -22,6 +28,9 @@ export default function FormularioProduto() {
 
   const classes = useStyles();
 
+  const [openCadastrado, setOpenCadastrado] = useState(false)
+  const [openErro, setOpenErro] = useState(false)
+
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
   const [categorias, setCategorias] = useState([]);
@@ -36,67 +45,86 @@ export default function FormularioProduto() {
   });
 
   const handleCategoriaChange = (e) => {
-    setProduto({...produto, ProdutoCategoriaId: e.target.value})
+    setProduto({ ...produto, ProdutoCategoriaId: e.target.value })
   }
 
   const handleNomeChange = (e) => {
     e.preventDefault();
-    setProduto({...produto, Nome: e.target.value})
+    setProduto({ ...produto, Nome: e.target.value })
   }
 
   const handleDescricaoChange = (e) => {
     e.preventDefault();
-    setProduto({...produto, Descricao: e.target.value})
+    setProduto({ ...produto, Descricao: e.target.value })
   }
 
   const handlePrecoChange = (e) => {
     e.preventDefault();
-    setProduto({...produto, Preco: e.target.value})
+    setProduto({ ...produto, Preco: e.target.value })
   }
 
   const handleEstoqueChange = (e) => {
     e.preventDefault();
-    setProduto({...produto, Estoque: !produto.Estoque})
+    setProduto({ ...produto, Estoque: !produto.Estoque })
   };
+
+  const handleCloseCadastrado = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenCadastrado(false);
+  };
+
+  const handleCloseErro = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenErro(false);
+  };
+
 
   useEffect(() => {
     buscarTodasCategorias();
-    if(produto.ImagemId !== null && produto.ImagemId !== undefined)
+    if (produto.ImagemId !== null && produto.ImagemId !== undefined)
       criarProduto();
-  },[produto.ImagemId]);
+  }, [produto.ImagemId]);
 
-  async function envioImagem(){
+  async function envioImagem() {
     let file = new FormData();
     file.append('value', imagem);
 
     await ApiService.UploadImagem(file)
       .then((res) => {
         console.log(res)
-        setProduto({...produto, ImagemId: res.data.imagemId})
+        setProduto({ ...produto, ImagemId: res.data.imagemId })
       })
       .catch((error) => {
         console.log(error)
       });
   }
 
-  async function buscarTodasCategorias(){
+  async function buscarTodasCategorias() {
     await ApiService.BuscarTodasCategorias()
       .then((response) => {
         setCategorias(response.data)
+
       })
       .catch((error) => {
         console.log(error)
       })
   }
 
-  async function criarProduto(){
+  async function criarProduto() {
     await ApiService.CriarProduto(produto)
       .then((response) => {
-        console.log(response)
+        setTimeout(function () { window.location.href = '/produtos/' + atleticaUsername() }, 3000)
+        setOpenCadastrado(true)
       })
       .catch((error) => {
-        console.log(error)
-      })  
+        setOpenErro(true)
+      })
   }
 
   function showAdicionarImagem() {
@@ -105,18 +133,38 @@ export default function FormularioProduto() {
     } else return <div><br /><br /></div>;
   }
 
-  function submit(){
+  function submit() {
     envioImagem();
   }
 
   return (
     <>
+      <Snackbar
+        open={openCadastrado}
+        autoHideDuration={4000}
+        onClose={handleCloseCadastrado}
+      >
+        <Alert onClose={handleCloseCadastrado} severity="success">
+          Produto cadastrado com sucesso!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openErro}
+        autoHideDuration={4000}
+        onClose={handleCloseErro}
+      >
+        <Alert onClose={handleCloseErro} severity="error">
+          Ocorreu um erro ao cadastrar o produto, revise os dados e tente novamente
+        </Alert>
+      </Snackbar>
+
       <Grid container justify="center" style={{ marginBottom: 25 }}>
 
 
         <Paper className={classes.paperA}>
 
-          <h4 className="MyTitle">Adicionar Produto</h4>
+          <h4 className="MyTitleProduto">Adicionar Produto</h4>
 
           <Typography variant="h8" style={{ color: "#454256" }}>
             Adicione um produto a aba produtos da sua atlética
@@ -174,7 +222,7 @@ export default function FormularioProduto() {
                 <Grid container spacing={2}>
 
                   <Grid item xs={4}>
-                    <AvField name="preço" label="Preço" type="number" onChange={handlePrecoChange}/>
+                    <AvField name="preço" label="Preço" type="number" onChange={handlePrecoChange} />
                   </Grid>
 
                   <Grid item xs={4}>
