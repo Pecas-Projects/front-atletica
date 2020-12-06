@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EditarProduto() {
+export default function EditarProduto(props) {
     const classes = useStyles();
 
     return (
@@ -70,21 +70,11 @@ export default function EditarProduto() {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
 
-                {/*
-        
-        
-        
-        DESKTOP
-        
-        
-        
-        */}
-
                 <div className={classes.sectionDesktop}>
 
                     <Grid container justify="center">
                         <Grid item xs={12} >
-                            <FormularioEditarProduto />
+                            <FormularioEditarProduto produtoId={props.match.params.produtoId}/>
                         </Grid>
                     </Grid>
                 </div>
@@ -92,7 +82,7 @@ export default function EditarProduto() {
                 <div className={classes.sectionMobile}>
                     <Grid container justify="center">
                         <Grid container spacing={1} style={{ marginTop: 20 }}>
-                            <FormularioEditarProdutoMobile />
+                            <FormularioEditarProdutoMobile produtoId={props.match.params.produtoId}/>
                         </Grid>
                     </Grid>
                 </div>
