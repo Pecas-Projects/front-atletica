@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
@@ -25,15 +25,31 @@ export default function FormularioProdutoMobile(props) {
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
     const [produto, setProduto] = useState({
-        ProdutoId: props.produtoId,
-        Nome: "",
-        Descricao: "",
-        Preco: "",
-        ProdutoCategoriaId: undefined,
-        Estoque: false,
-        AtleticaId: getAtleticaId(),
-        ImagemId: null
+        produtoId: props.produtoId,
+        nome: "",
+        descricao: "",
+        preco: "",
+        produtoCategoriaId: undefined,
+        estoque: false,
+        atleticaId: getAtleticaId(),
+        imagemId: undefined
     });
+
+    useEffect(() => {
+        buscarProduto();
+    }, []);
+
+    async function buscarProduto() {
+        await ApiService.BuscarProdutoId(produto.produtoId)
+            .then((res) => {
+                console.log(res.data)
+                setProduto(res.data)
+                console.log(produto)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -52,7 +68,7 @@ export default function FormularioProdutoMobile(props) {
 
             <Grid container style={{ marginBottom: 15 }}>
                 {
-                    produto.ProdutoCategoriaId === undefined ?
+                    produto.produtoCategoriaId === undefined ?
                         <h4 className="MyTitle">Carregando...</h4>
                         :
                         <>
