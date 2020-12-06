@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
+import ApiService from "../../../variables/ApiService";
+import { getAtleticaId } from "../../../utils/storage";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -16,12 +18,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function FormularioProdutoMobile() {
+export default function FormularioProdutoMobile(props) {
 
     const classes = useStyles();
 
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
+    const [produto, setProduto] = useState({
+        ProdutoId: props.produtoId,
+        Nome: "",
+        Descricao: "",
+        Preco: "",
+        ProdutoCategoriaId: undefined,
+        Estoque: false,
+        AtleticaId: getAtleticaId(),
+        ImagemId: null
+      });
 
     function showAdicionarImagem() {
         if (imagem === null) {

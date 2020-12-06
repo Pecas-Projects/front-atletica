@@ -395,6 +395,17 @@ const ApiService = {
       })
   },
 
+  DeletarProdutoAtletica: (produtoId) => {
+    return api
+      .delete(`/api/Produto/${produtoId}`)
+      .then((response) => {
+        return Promise.resolve(response)
+      })
+      .catch((error) => {
+        return Promise.reject(error)
+      })
+  },
+
   AdicionarAtletasTime: (timeId, atletas) => {
     return api
       .post(`/api/AtletaTime/${timeId}`, atletas)
@@ -403,6 +414,17 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error)
+      })
+  },
+
+  BuscarProdutoId: (produtoId) => {
+    return api
+      .get(`api/Produto/${produtoId}`)
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
       })
   },
 
@@ -552,7 +574,6 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
-
 
 };
 
