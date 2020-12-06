@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper, CircularProgress } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto"
 import "./styles.css"
 import ApiService from "../../variables/ApiService";
@@ -65,6 +65,7 @@ export default function Produtos(props) {
   const username = props.match.params.username;
   const [atleticaId, setAtleticaId] = useState();
   const [produtos, setProdutos] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     buscaAtletica();
@@ -86,6 +87,7 @@ export default function Produtos(props) {
     await ApiService.BuscarProdutosAtletica(atleticaId)
       .then((res) => {
         setProdutos(res.data)
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error)
@@ -93,47 +95,62 @@ export default function Produtos(props) {
   }
 
   return (
-    <div className={classes.root}>
-      <NavBar />
+    <>
+      {loading ? (
+        <>
+          <div style={{ marginTop: 250 }}>
+            <Grid container justify="center">
+              <CircularProgress size={100} color="primary" />
+            </Grid>
+          </div>
+        </>
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      ) : (
 
-        <div className={classes.sectionDesktop}>
-          <Grid container justify="center">
-            <Paper className={classes.paperA}>
-              {
-                produtos !== undefined && produtos !== null && produtos.length !== 0 ?
-                  <h4 className="MyTitle">Nossos Produtos</h4>
-                  :
-                  <h4 className="MyTitle">Essa atlética não possui produtos cadastrados!</h4>
-              }
-              <Grid container spacing={1} style={{ marginTop: 20 }}>
-                {produtos.map((item) => (
-                  <CardProduto item={item} />
-                ))}
-              </Grid>
-            </Paper>
-          </Grid>
-        </div>
+          <div className={classes.root}>
+            <NavBar />
 
-        <div className={classes.sectionMobile}>
-          <Grid item xs={1}></Grid>
-          <Grid container spacing={1} style={{ marginTop: 20 }}>
-            {
-              produtos !== undefined && produtos !== null && produtos.length !== 0 ?
-                <h4 className="MyTitle" style={{ color: 'black' }}>Nossos Produtos</h4>
-                :
-                <h4 className="MyTitle" style={{ color: 'black' }}>Essa atlética não possui produtos cadastrados!</h4>
-            }
-            {produtos.map((item) => (
-              <CardProduto item={item} />
-            ))}
-          </Grid>
-          <Grid item xs={1}></Grid>
-        </div>
+            <main className={classes.content}>
+              <div className={classes.toolbar} />
 
-      </main>
-    </div>
+              <div className={classes.sectionDesktop}>
+                <Grid container justify="center">
+                  <Paper className={classes.paperA}>
+                    {
+                      produtos !== undefined && produtos !== null && produtos.length !== 0 ?
+                        <h4 className="MyTitleProduto">Nossos Produtos</h4>
+                        :
+                        <h4 className="MyTitleProduto">Essa atlética não possui produtos cadastrados!</h4>
+                    }
+                    <Grid container spacing={1} style={{ marginTop: 20 }}>
+                      {produtos.map((item) => (
+                        <CardProduto item={item} />
+                      ))}
+                    </Grid>
+                  </Paper>
+                </Grid>
+              </div>
+
+              <div className={classes.sectionMobile}>
+                <Grid item xs={1}></Grid>
+                <Grid container spacing={1} style={{ marginTop: 20 }}>
+                  {
+                    produtos !== undefined && produtos !== null && produtos.length !== 0 ?
+                      <h4 className="MyTitleProduto" style={{ color: 'black' }}>Nossos Produtos</h4>
+                      :
+                      <h4 className="MyTitleProduto" style={{ color: 'black' }}>Essa atlética não possui produtos cadastrados!</h4>
+                  }
+                  {produtos.map((item) => (
+                    <CardProduto item={item} />
+                  ))}
+                </Grid>
+                <Grid item xs={1}></Grid>
+              </div>
+
+            </main>
+          </div>
+
+        )}
+    </>
   );
 }
