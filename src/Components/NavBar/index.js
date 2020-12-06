@@ -432,7 +432,7 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
 
-                <Link to="/Produtos">
+                <Link to={"/Produtos/" + atleticaUsername()} >
                   <ListItem button>
                     <ListItemIcon>
                       <img src={Bag} alt="produtos" />
