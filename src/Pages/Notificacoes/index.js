@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../variables/ApiService";
 import NavBar from "../../Components/NavBar";
-import {getUserId} from "../../utils/storage"
+import { getAtleticaId } from "../../utils/storage"
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -73,7 +73,7 @@ function Notificacoes() {
   const [solicitacoesAtleta, setSolicitacoesAtleta] = useState([]);
   const [solicitacoesJogo, setSolicitacoesJogo] = useState([]);
   const [loding, setLoding] = useState(true);
-  const atleticaId = getUserId();
+  const atleticaId = getAtleticaId();
 
   function notificacaoAtletas() {
     if (solicitacoesAtleta.length !== 0) {

@@ -159,6 +159,7 @@ export default function Perfil(props) {
   const [opcao, setOpcao] = useState('Atleta')
   const [cursos, setCursos] = useState([])
   const [modalidades, setModalidades] = useState([])
+  const [achouAtletica, setAchouAtletica] = useState(true)
 
 
   useEffect(() => {
@@ -292,9 +293,11 @@ export default function Perfil(props) {
             else if (img.tipo === "P")
               setPerfil(img.imagem.path)
           });
-      }).catch((err) =>
+        setAchouAtletica(true)
+      }).catch((err) => {
         console.log(err)
-      )
+        setAchouAtletica(false)
+      })
   }
 
   useEffect(() => {
@@ -311,573 +314,587 @@ export default function Perfil(props) {
       <Navbar />
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
-        {/*
-        
-        
-        
-        DESKTOP
-        
-        
-        
-        */}
-
-        <div className={classes.sectionDesktop}>
-
-          {/* <Grid container xs={12} justify="center">
-
-          <img className="capa" src={fotoCapa} alt="foto capa" />
-
-        </Grid> */}
-
-          <Grid container  >
+        {
+          !achouAtletica ?
+            <Grid container justify="center">
+              <Paper className={classes.paperA}>
+                <p className="MySubtitle">
+                  Você precisa fazer login ou pesquisar alguma atlética para acessar seu perfil.
+                </p>
+              </Paper>
+            </Grid>
+            :
+            <>
 
 
-            <Grid container justify='center'>
+              {/*
 
-              <Grid item xs={12} >
 
-                <div className='relativeCard'>
 
-                  <div className="containerCapa">
+                DESKTOP
 
-                    <img className="imageCapa" src={capa} alt="fotoCapa" />
 
-                  </div>
 
-                  <div className="circle">
+                */}
 
-                    <Grid style={{ marginTop: 10 }} container justify='center'>
+              <div className={classes.sectionDesktop}>
 
-                      <img className='imagePerfil' src={perfil} alt="fotoPerfil" />
+                {/* <Grid container xs={12} justify="center">
 
-                    </Grid>
+  <img className="capa" src={fotoCapa} alt="foto capa" />
 
-                  </div>
+</Grid> */}
+
+                <Grid container  >
 
 
                   <Grid container justify='center'>
 
-                    <Paper className={classes.paperBackgroud}>
+                    <Grid item xs={12} >
 
-                      <h3 className="MyTitle">{atletica.nome}</h3>
-                      <br />
-                      <p className='subtitleW' >SOBRE NÒS</p>
+                      <div className='relativeCard'>
+
+                        <div className="containerCapa">
+
+                          <img className="imageCapa" src={capa} alt="fotoCapa" />
+
+                        </div>
+
+                        <div className="circle">
+
+                          <Grid style={{ marginTop: 10 }} container justify='center'>
+
+                            <img className='imagePerfil' src={perfil} alt="fotoPerfil" />
+
+                          </Grid>
+
+                        </div>
+
+
+                        <Grid container justify='center'>
+
+                          <Paper className={classes.paperBackgroud}>
+
+                            <h3 className="MyTitle">{atletica.nome}</h3>
+                            <br />
+                            <p className='subtitleW' >SOBRE NÒS</p>
+                            <p className="subtitle2W">{atletica.descricao}</p>
+
+                          </Paper>
+
+                        </Grid>
+
+                      </div>
+                    </Grid>
+
+                    <Paper className={classes.paperA}>
+
+                      <h4 className="subtitle">NOSSOS MEMBROS</h4>
+
+                      <Grid container spacing={3}>
+
+                        {
+                          atletica.membros !== null ?
+                            atletica.membros.map((item) =>
+                              <CardMembro item={item} />
+                            ) : null
+                        }
+
+
+                      </Grid>
+
+                    </Paper>
+
+                  </Grid>
+
+
+
+                  <Grid item xs={12}  >
+
+                    <Grid container justify='center'>
+
+                      <Paper className={classes.paperB}>
+
+                        <h4 className="subtitle">FAÇA PARTE</h4>
+
+                        <FormControl component="fieldset">
+                          <RadioGroup row aria-label="gender" name="gender1" value={opcao}  >
+                            <FormControlLabel value="Atleta" control={<Radio />} onClick={() => setOpcao('Atleta')} label="Como Atleta" />
+                            <FormControlLabel value="Membro" control={<Radio />} onClick={() => setOpcao('Membro')} label="Como Membro" />
+
+                          </RadioGroup>
+                        </FormControl>
+
+                        {opcao === 'Atleta' ? (
+
+
+                          <AvForm>
+
+                            <Grid container spacing={1}>
+
+
+                              <Grid item xs={4}>
+
+
+                                <AvField style={{ width: "90%" }} name="nome" label="Nome" type="text" onChange={handleNome} validate={{
+                                  required: { value: true, errorMessage: "Campo obrigatório" },
+                                  pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                                  minLength: { value: 2, errorMessage: 'Nome inválido' },
+                                  maxLength: { value: 45, errorMessage: 'Nome inválido' }
+                                }} />
+
+
+                                <AvField style={{ width: "90%" }} name="sobrenome" label="Sobrenome" onChange={handleSobrenome} type="text" validate={{
+                                  required: { value: true, errorMessage: "Campo obrigatório" },
+                                  pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                                  minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
+                                  maxLength: { value: 45, errorMessage: 'Sobrenome inválido' }
+                                }} />
+
+
+
+                                <AvField style={{ width: "90%" }} name="email" label="E-mail" type="text" onChange={handleEmail} validate={{
+                                  required: { value: true, errorMessage: "Campo obrigatório" },
+                                  minLength: { value: 10, errorMessage: 'E-mail inválido' },
+                                  maxLength: { value: 254, errorMessage: 'E-mail inválido' }
+                                }} />
+
+
+
+                              </Grid>
+
+                              <Grid item xs={4}>
+
+                                <AvField style={{ width: "90%" }} name="whatsapp" label="WhatsApp" type="text" tag={[Input, InputMask]}
+                                  onChange={handleWhatsApp} mask="(99) 99999-9999" validate={{
+                                    required: { value: true, errorMessage: "Campo obrigatório" },
+                                    pattern: { value: "[0-9]", errorMessage: "Utilize apenas números" }
+                                  }} />
+
+
+
+                                <AvField style={{ width: "90%" }} name="dataIngresso" label="Ano de ingresso na faculdade" type="text" onChange={handleDate} validate={{
+                                  required: { value: true, errorMessage: "Campo obrigatório" },
+                                  pattern: { value: '[0-9]', errorMessage: "Utilize apenas números" },
+                                  minLength: { value: 4, errorMessage: 'Ano inválido' },
+                                  maxLength: { value: 4, errorMessage: 'Ano inválido' }
+                                }} />
+
+
+                                <TextField
+                                  id="standard-select-currency"
+                                  select
+
+                                  label="Curso"
+                                  value={atleta.CursoId}
+                                  onChange={handleCurso}
+                                  style={{ width: "90%", marginTop: 15 }}
+
+
+                                >
+                                  {cursos.map((option) => (
+                                    <MenuItem key={option.cursoId} value={option.cursoId}>
+                                      {option.nome}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+
+                                <TextField
+                                  id="standard-select-genero"
+                                  select
+
+                                  label="Gênero"
+                                  value={atleta.Genero}
+                                  onChange={handleGenero}
+                                  style={{ width: "90%", marginTop: 15 }}
+
+                                >
+                                  {generos.map((option) => (
+                                    <MenuItem key={option.Valor} value={option.Valor}>
+                                      {option.Nome}
+                                    </MenuItem>
+                                  ))}
+                                </TextField>
+
+
+                              </Grid>
+                              {
+                                modalidades.length == 0 ? null :
+                                  <Grid item xs={4}>
+
+                                    <div className='scroll'>
+
+
+
+                                      <FormControl component="fieldset" className={classes.formControl}>
+                                        <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
+                                        <FormGroup>
+                                          {modalidades.map((option) => (
+                                            <FormControlLabel
+                                              control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
+                                              label={option.modalidade}
+                                            />
+
+                                          ))}
+
+                                        </FormGroup>
+                                      </FormControl>
+
+
+                                    </div>
+
+                                  </Grid>
+                              }
+
+
+                              <Grid item xs={12}  >
+
+                                <Grid container justify="flex-end">
+
+                                  <Button
+                                    style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }}
+                                    variant="contained"
+                                    onClick={enviarSolicitacao}
+                                  >
+                                    Enviar
+                    </Button>
+
+                                </Grid>
+
+                              </Grid>
+
+                            </Grid>
+
+
+
+                          </AvForm>
+
+
+                        ) : (
+
+                            <Grid item xs={12} >
+
+
+                              <p className="subtitle2">PROCESSO SELETIVO</p>
+
+                              <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
+
+                              <Button color="primary" style={{ width: 300, marginTop: 10 }} variant="outlined"> Participar</Button>
+
+
+                            </Grid>
+
+                          )}
+
+
+
+                      </Paper>
+                    </Grid>
+
+                  </Grid>
+
+                  <Grid item xs={12}>
+
+                    <Grid container justify="center">
+
+                      <Paper className={classes.paperA}>
+
+                        <Grid container spacing={1}>
+
+                          <Grid item xs={8} style={{ marginTop: 20 }}>
+
+                            <h4 className="subtitle">ENTRE EM CONTATO</h4>
+
+                            <p className="subtitle2">EMAIL - {atletica.email}</p>
+                            <p className="subtitle2">TELEFONE - {atletica.telefone}</p>
+                            <p className="subtitle2">{concatenaEndereco()}</p>
+
+                          </Grid>
+
+                          <Grid item xs={4}>
+
+                            <img className="image" src={contactImage} alt="contactUs"></img>
+
+                          </Grid>
+
+                        </Grid>
+
+                      </Paper>
+
+                    </Grid>
+
+                  </Grid>
+
+
+                </Grid>
+
+              </div>
+
+
+
+              {/*
+
+
+
+MOBILE
+
+
+
+*/}
+
+              <div className={classes.sectionMobile}>
+
+                {/* <Grid container xs={12} justify="center">
+
+  <img className="capa" src={fotoCapa} alt="foto capa" />
+
+</Grid> */}
+
+                <Grid container spacing={1}>
+
+                  <Grid item xs={12}>
+
+                    <Paper className={classes.paperBackgroudMobile}>
+
+                      <Grid style={{ marginTop: 10, }} container justify='center'>
+
+                        <img className='imagePerfilMobile' src={perfil} alt="fotoPerfil" />
+
+                      </Grid>
+
+                      <h3 className="MyTitleMobile">{atletica.nome}</h3>
+
+                    </Paper>
+
+                    <Paper className={classes.paperBMobile}>
+
+                      <p className='subtitleWMobile' >SOBRE NÒS</p>
+
                       <p className="subtitle2W">{atletica.descricao}</p>
 
                     </Paper>
 
                   </Grid>
 
-                </div>
-              </Grid>
 
-              <Paper className={classes.paperA}>
+                  <Grid item xs={12}>
 
-                <h4 className="subtitle">NOSSOS MEMBROS</h4>
+                    <Paper className={classes.paperAMobile}>
 
-                <Grid container spacing={3}>
+                      <h4 className="subtitle">NOSSOS MEMBROS</h4>
 
-                  {
-                    atletica.membros !== null ?
-                      atletica.membros.map((item) =>
-                        <CardMembro item={item} />
-                      ) : null
-                  }
+                      <Grid container spacing={3}>
 
-
-                </Grid>
-
-              </Paper>
-
-            </Grid>
-
-
-
-            <Grid item xs={12}  >
-
-              <Grid container justify='center'>
-
-                <Paper className={classes.paperB}>
-
-                  <h4 className="subtitle">FAÇA PARTE</h4>
-
-                  <FormControl component="fieldset">
-                    <RadioGroup row aria-label="gender" name="gender1" value={opcao}  >
-                      <FormControlLabel value="Atleta" control={<Radio />} onClick={() => setOpcao('Atleta')} label="Como Atleta" />
-                      <FormControlLabel value="Membro" control={<Radio />} onClick={() => setOpcao('Membro')} label="Como Membro" />
-
-                    </RadioGroup>
-                  </FormControl>
-
-                  {opcao === 'Atleta' ? (
-
-
-                    <AvForm>
-
-                      <Grid container spacing={1}>
-
-
-                        <Grid item xs={4}>
-
-
-                          <AvField style={{ width: "90%" }} name="nome" label="Nome" type="text" onChange={handleNome} validate={{
-                            required: { value: true, errorMessage: "Campo obrigatório" },
-                            pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
-                            minLength: { value: 2, errorMessage: 'Nome inválido' },
-                            maxLength: { value: 45, errorMessage: 'Nome inválido' }
-                          }} />
-
-
-                          <AvField style={{ width: "90%" }} name="sobrenome" label="Sobrenome" onChange={handleSobrenome} type="text" validate={{
-                            required: { value: true, errorMessage: "Campo obrigatório" },
-                            pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
-                            minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
-                            maxLength: { value: 45, errorMessage: 'Sobrenome inválido' }
-                          }} />
-
-
-
-                          <AvField style={{ width: "90%" }} name="email" label="E-mail" type="text" onChange={handleEmail} validate={{
-                            required: { value: true, errorMessage: "Campo obrigatório" },
-                            minLength: { value: 10, errorMessage: 'E-mail inválido' },
-                            maxLength: { value: 254, errorMessage: 'E-mail inválido' }
-                          }} />
-
-
-
-                        </Grid>
-
-                        <Grid item xs={4}>
-
-                          <AvField style={{ width: "90%" }} name="whatsapp" label="WhatsApp" type="text" tag={[Input, InputMask]}
-                            onChange={handleWhatsApp} mask="(99) 99999-9999" validate={{
-                              required: { value: true, errorMessage: "Campo obrigatório" },
-                              pattern: { value: "[0-9]", errorMessage: "Utilize apenas números" }
-                            }} />
-
-
-
-                          <AvField style={{ width: "90%" }} name="dataIngresso" label="Ano de ingresso na faculdade" type="text" onChange={handleDate} validate={{
-                            required: { value: true, errorMessage: "Campo obrigatório" },
-                            pattern: { value: '[0-9]', errorMessage: "Utilize apenas números" },
-                            minLength: { value: 4, errorMessage: 'Ano inválido' },
-                            maxLength: { value: 4, errorMessage: 'Ano inválido' }
-                          }} />
-
-
-                          <TextField
-                            id="standard-select-currency"
-                            select
-
-                            label="Curso"
-                            value={atleta.CursoId}
-                            onChange={handleCurso}
-                            style={{ width: "90%", marginTop: 15 }}
-
-
-                          >
-                            {cursos.map((option) => (
-                              <MenuItem key={option.cursoId} value={option.cursoId}>
-                                {option.nome}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-
-                          <TextField
-                            id="standard-select-genero"
-                            select
-
-                            label="Gênero"
-                            value={atleta.Genero}
-                            onChange={handleGenero}
-                            style={{ width: "90%", marginTop: 15 }}
-
-                          >
-                            {generos.map((option) => (
-                              <MenuItem key={option.Valor} value={option.Valor}>
-                                {option.Nome}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-
-
-                        </Grid>
                         {
-                          modalidades.length == 0 ? null :
-                            <Grid item xs={4}>
-
-                              <div className='scroll'>
-
-
-
-                                <FormControl component="fieldset" className={classes.formControl}>
-                                  <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
-                                  <FormGroup>
-                                    {modalidades.map((option) => (
-                                      <FormControlLabel
-                                        control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
-                                        label={option.modalidade}
-                                      />
-
-                                    ))}
-
-                                  </FormGroup>
-                                </FormControl>
-
-
-                              </div>
-
-                            </Grid>
+                          atletica.membros !== null ?
+                            atletica.membros.map((item) =>
+                              <CardMembro item={item} />
+                            ) : null
                         }
 
 
-                        <Grid item xs={12}  >
+                      </Grid>
 
-                          <Grid container justify="flex-end">
+                    </Paper>
+                  </Grid>
 
-                            <Button
-                              style={{ backgroundColor: "#DB4922", width: 300, marginTop: 20 }}
-                              variant="contained"
-                              onClick={enviarSolicitacao}
-                            >
-                              Enviar
-                            </Button>
+
+                  <Grid item xs={12}>
+
+                    <Paper className={classes.paperBMobile}>
+
+                      <h4 className="subtitle">FAÇA PARTE</h4>
+
+                      <FormControl component="fieldset">
+                        <RadioGroup row aria-label="gender" name="gender1" value={opcao}  >
+                          <FormControlLabel value="Atleta" control={<Radio />} onClick={() => setOpcao('Atleta')} label="Como Atleta" />
+                          <FormControlLabel value="Membro" control={<Radio />} onClick={() => setOpcao('Membro')} label="Como Membro" />
+
+                        </RadioGroup>
+                      </FormControl>
+
+                      {opcao === 'Atleta' ? (
+
+
+                        <AvForm>
+
+                          <Grid container spacing={1}>
+
+                            <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                              <AvField name="nome" label="Nome" type="text" onChange={handleNome} validate={{
+                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                                minLength: { value: 2, errorMessage: 'Nome inválido' },
+                                maxLength: { value: 45, errorMessage: 'Nome inválido' }
+                              }} />
+
+                            </Grid>
+
+                            <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                              <AvField name="sobrenome" label="Sobrenome" type="text" onChange={handleSobrenome} validate={{
+                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
+                                minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
+                                maxLength: { value: 45, errorMessage: 'Sobrenome inválido' }
+                              }} />
+
+
+                            </Grid>
+
+                            <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                              <AvField name="email" label="E-mail" type="text" onChange={handleEmail} validate={{
+                                required: { value: true, errorMessage: "Campo obrigatório" },
+                                minLength: { value: 10, errorMessage: 'E-mail inválido' },
+                                maxLength: { value: 254, errorMessage: 'E-mail inválido' }
+                              }} />
+
+
+                            </Grid>
+
+
+                            <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
+
+                              <AvField name="whatsapp" label="WhatsApp" type="text" onChange={handleWhatsApp}
+                                tag={[Input, InputMask]} mask="(99) 99999-9999" validate={{
+                                  required: { value: true, errorMessage: "Campo obrigatório" },
+                                  pattern: { value: "\d*", errorMessage: "Utilize apenas números" }
+                                }} />
+
+
+                            </Grid>
+
+                            <Grid container justify='center'>
+
+                              <TextField
+                                id="standard-select-currency"
+                                select
+
+                                label="Curso"
+                                value={atleta.CursoId}
+                                onChange={handleCurso}
+                                style={{ width: "90%" }}
+
+
+                              >
+                                {cursos.map((option) => (
+                                  <MenuItem key={option.cursoId} value={option.cursoId}>
+                                    {option.nome}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+
+                            </Grid>
+
+                            <Grid container justify='center'>
+
+                              <TextField
+                                id="standard-select-genero"
+                                select
+
+                                label="Gênero"
+                                value={atleta.Genero}
+                                onChange={handleGenero}
+                                style={{ width: "90%", marginTop: 15 }}
+
+                              >
+                                {generos.map((option) => (
+                                  <MenuItem key={option.Valor} value={option.Valor}>
+                                    {option.Nome}
+                                  </MenuItem>
+                                ))}
+                              </TextField>
+
+                            </Grid>
+                            {
+                              modalidades.length == 0 ? null :
+                                <Grid container justify='center'>
+
+
+                                  <FormControl component="fieldset" className={classes.formControl}>
+                                    <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
+                                    <FormGroup>
+                                      {modalidades.map((option) => (
+                                        <FormControlLabel
+                                          control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
+                                          label={option.modalidade}
+                                        />
+
+                                      ))}
+
+                                    </FormGroup>
+                                  </FormControl>
+
+                                </Grid>
+                            }
+
+
+                            <Grid item xs={12}  >
+
+
+                              <Button
+                                style={{ backgroundColor: "#DB4922", width: "100%", marginTop: 10 }}
+                                variant="contained"
+                                onClick={enviarSolicitacao}>
+                                Enviar
+                </Button>
+
+
+                            </Grid>
 
                           </Grid>
+
+                        </AvForm>
+
+                      ) : (
+
+
+                          <Grid container xs={12} style={{ marginTop: 20 }}>
+
+                            <p className="subtitle2">PROCESSO SELETIVO</p>
+
+                            <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
+
+                            <Button color="primary" style={{ width: "100%", marginTop: 10 }} variant='outlined'> Participar</Button>
+
+                          </Grid>
+
+                        )}
+
+
+                    </Paper>
+
+                  </Grid>
+
+                  <Grid item xs={12}>
+
+                    <Grid container justify="center">
+
+                      <Paper className={classes.paperAMobile}>
+
+                        <Grid container xs={12} style={{ marginTop: 20 }}>
+
+                          <h4 className="subtitle">ENTRE EM CONTATO</h4>
+
+                          <p className="subtitle2">EMAIL - {atletica.email}</p>
+                          <p className="subtitle2">TELEFONE - {atletica.telefone}</p>
+                          <p className="subtitle2">{concatenaEndereco()}</p>
 
                         </Grid>
 
-                      </Grid>
-
-
-
-                    </AvForm>
-
-
-                  ) : (
-
-                      <Grid item xs={12} >
-
-
-                        <p className="subtitle2">PROCESSO SELETIVO</p>
-
-                        <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
-
-                        <Button color="primary" style={{ width: 300, marginTop: 10 }} variant="outlined"> Participar</Button>
-
-
-                      </Grid>
-
-                    )}
-
-
-
-                </Paper>
-              </Grid>
-
-            </Grid>
-
-            <Grid item xs={12}>
-
-              <Grid container justify="center">
-
-                <Paper className={classes.paperA}>
-
-                  <Grid container spacing={1}>
-
-                    <Grid item xs={8} style={{ marginTop: 20 }}>
-
-                      <h4 className="subtitle">ENTRE EM CONTATO</h4>
-
-                      <p className="subtitle2">EMAIL - {atletica.email}</p>
-                      <p className="subtitle2">TELEFONE - {atletica.telefone}</p>
-                      <p className="subtitle2">{concatenaEndereco()}</p>
-
-                    </Grid>
-
-                    <Grid item xs={4}>
-
-                      <img className="image" src={contactImage} alt="contactUs"></img>
+                      </Paper>
 
                     </Grid>
 
                   </Grid>
 
-                </Paper>
-
-              </Grid>
-
-            </Grid>
-
-
-          </Grid>
-
-        </div>
-
-
-
-        {/*
-        
-        
-        
-        MOBILE
-        
-        
-        
-        */}
-
-        <div className={classes.sectionMobile}>
-
-          {/* <Grid container xs={12} justify="center">
-
-          <img className="capa" src={fotoCapa} alt="foto capa" />
-
-        </Grid> */}
-
-          <Grid container spacing={1}>
-
-            <Grid item xs={12}>
-
-              <Paper className={classes.paperBackgroudMobile}>
-
-                <Grid style={{ marginTop: 10, }} container justify='center'>
-
-                  <img className='imagePerfilMobile' src={perfil} alt="fotoPerfil" />
-
                 </Grid>
 
-                <h3 className="MyTitleMobile">{atletica.nome}</h3>
-
-              </Paper>
-
-              <Paper className={classes.paperBMobile}>
-
-                <p className='subtitleWMobile' >SOBRE NÒS</p>
-
-                <p className="subtitle2W">{atletica.descricao}</p>
-
-              </Paper>
-
-            </Grid>
-
-
-            <Grid item xs={12}>
-
-              <Paper className={classes.paperAMobile}>
-
-                <h4 className="subtitle">NOSSOS MEMBROS</h4>
-
-                <Grid container spacing={3}>
-
-                  {
-                    atletica.membros !== null ?
-                      atletica.membros.map((item) =>
-                        <CardMembro item={item} />
-                      ) : null
-                  }
-
-
-                </Grid>
-
-              </Paper>
-            </Grid>
-
-
-            <Grid item xs={12}>
-
-              <Paper className={classes.paperBMobile}>
-
-                <h4 className="subtitle">FAÇA PARTE</h4>
-
-                <FormControl component="fieldset">
-                  <RadioGroup row aria-label="gender" name="gender1" value={opcao}  >
-                    <FormControlLabel value="Atleta" control={<Radio />} onClick={() => setOpcao('Atleta')} label="Como Atleta" />
-                    <FormControlLabel value="Membro" control={<Radio />} onClick={() => setOpcao('Membro')} label="Como Membro" />
-
-                  </RadioGroup>
-                </FormControl>
-
-                {opcao === 'Atleta' ? (
-
-
-                  <AvForm>
-
-                    <Grid container spacing={1}>
-
-                      <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
-
-                        <AvField name="nome" label="Nome" type="text" onChange={handleNome} validate={{
-                          required: { value: true, errorMessage: "Campo obrigatório" },
-                          pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
-                          minLength: { value: 2, errorMessage: 'Nome inválido' },
-                          maxLength: { value: 45, errorMessage: 'Nome inválido' }
-                        }} />
-
-                      </Grid>
-
-                      <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
-
-                        <AvField name="sobrenome" label="Sobrenome" type="text" onChange={handleSobrenome} validate={{
-                          required: { value: true, errorMessage: "Campo obrigatório" },
-                          pattern: { value: '[a - zA - Z]', errorMessage: "Utilize apenas letras" },
-                          minLength: { value: 2, errorMessage: 'Sobrenome inválido' },
-                          maxLength: { value: 45, errorMessage: 'Sobrenome inválido' }
-                        }} />
-
-
-                      </Grid>
-
-                      <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
-
-                        <AvField name="email" label="E-mail" type="text" onChange={handleEmail} validate={{
-                          required: { value: true, errorMessage: "Campo obrigatório" },
-                          minLength: { value: 10, errorMessage: 'E-mail inválido' },
-                          maxLength: { value: 254, errorMessage: 'E-mail inválido' }
-                        }} />
-
-
-                      </Grid>
-
-
-                      <Grid item xs={12} style={{ width: "100%", marginTop: 10 }}>
-
-                        <AvField name="whatsapp" label="WhatsApp" type="text" onChange={handleWhatsApp}
-                          tag={[Input, InputMask]} mask="(99) 99999-9999" validate={{
-                            required: { value: true, errorMessage: "Campo obrigatório" },
-                            pattern: { value: "\d*", errorMessage: "Utilize apenas números" }
-                          }} />
-
-
-                      </Grid>
-
-                      <Grid container justify='center'>
-
-                        <TextField
-                          id="standard-select-currency"
-                          select
-
-                          label="Curso"
-                          value={atleta.CursoId}
-                          onChange={handleCurso}
-                          style={{ width: "90%" }}
-
-
-                        >
-                          {cursos.map((option) => (
-                            <MenuItem key={option.cursoId} value={option.cursoId}>
-                              {option.nome}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-
-                      </Grid>
-
-                      <Grid container justify='center'>
-
-                        <TextField
-                          id="standard-select-genero"
-                          select
-
-                          label="Gênero"
-                          value={atleta.Genero}
-                          onChange={handleGenero}
-                          style={{ width: "90%", marginTop: 15 }}
-
-                        >
-                          {generos.map((option) => (
-                            <MenuItem key={option.Valor} value={option.Valor}>
-                              {option.Nome}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-
-                      </Grid>
-                      {
-                        modalidades.length == 0 ? null :
-                          <Grid container justify='center'>
-
-
-                            <FormControl component="fieldset" className={classes.formControl}>
-                              <FormLabel component="legend">Modalidades que deseja participar</FormLabel>
-                              <FormGroup>
-                                {modalidades.map((option) => (
-                                  <FormControlLabel
-                                    control={<Checkbox onChange={handleModalidades} name={option.modalidadeId} />}
-                                    label={option.modalidade}
-                                  />
-
-                                ))}
-
-                              </FormGroup>
-                            </FormControl>
-
-                          </Grid>
-                      }
-
-
-                      <Grid item xs={12}  >
-
-
-                        <Button
-                          style={{ backgroundColor: "#DB4922", width: "100%", marginTop: 10 }}
-                          variant="contained"
-                          onClick={enviarSolicitacao}>
-                          Enviar
-                        </Button>
-
-
-                      </Grid>
-
-                    </Grid>
-
-                  </AvForm>
-
-                ) : (
-
-
-                    <Grid container xs={12} style={{ marginTop: 20 }}>
-
-                      <p className="subtitle2">PROCESSO SELETIVO</p>
-
-                      <p className="subtitle2">Para participar do procecesso seletivo clique no botão abaixo</p>
-
-                      <Button color="primary" style={{ width: "100%", marginTop: 10 }} variant='outlined'> Participar</Button>
-
-                    </Grid>
-
-                  )}
-
-
-              </Paper>
-
-            </Grid>
-
-            <Grid item xs={12}>
-
-              <Grid container justify="center">
-
-                <Paper className={classes.paperAMobile}>
-
-                  <Grid container xs={12} style={{ marginTop: 20 }}>
-
-                    <h4 className="subtitle">ENTRE EM CONTATO</h4>
-
-                    <p className="subtitle2">EMAIL - {atletica.email}</p>
-                    <p className="subtitle2">TELEFONE - {atletica.telefone}</p>
-                    <p className="subtitle2">{concatenaEndereco()}</p>
-
-                  </Grid>
-
-                </Paper>
-
-              </Grid>
-
-            </Grid>
-
-          </Grid>
-
-        </div >
+              </div >
+            </>
+        }
       </main >
     </div >
 
