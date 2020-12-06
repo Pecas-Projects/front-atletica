@@ -91,7 +91,6 @@ export default function Produtos(props) {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
         setAtleticaId(res.data.atleticaId);
-        
       })
       .catch((err) => {
         console.log(err);
@@ -102,7 +101,7 @@ export default function Produtos(props) {
     await ApiService.BuscarProdutosAtletica(atleticaId)
       .then((res) => {
         console.log(res.data);
-        console.log(atleticaId)
+        console.log(atleticaId);
         setProdutos(res.data);
       })
       .catch((error) => {
@@ -154,20 +153,26 @@ export default function Produtos(props) {
                 {produtos !== undefined &&
                 produtos !== null &&
                 produtos.length !== 0 ? (
-                  <h4 className="MyTitle" style={{ color: "black" }}>
-                    Nossos Produtos
-                  </h4>
-                ) : (
                   <Grid container justify="center">
-                  <Paper className={classes.paperA}>
                     <Typography
                       variant="h6"
                       align="center"
                       style={{ color: "white" }}
                     >
-                      Essa atlética não possui produtos cadastrados!
+                      Nossos Produtos
                     </Typography>
-                  </Paper>
+                  </Grid>
+                ) : (
+                  <Grid container justify="center">
+                    <Paper className={classes.paperA}>
+                      <Typography
+                        variant="h6"
+                        align="center"
+                        style={{ color: "white" }}
+                      >
+                        Essa atlética não possui produtos cadastrados!
+                      </Typography>
+                    </Paper>
                   </Grid>
                 )}
                 {produtos.map((item, index) => (
