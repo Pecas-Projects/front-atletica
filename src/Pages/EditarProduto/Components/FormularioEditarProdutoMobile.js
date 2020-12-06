@@ -42,6 +42,15 @@ export default function FormularioProdutoMobile(props) {
         preco: produto.preco,
     };
 
+    const handlePrecoChange = (e) => {
+        setProduto({...produto, preco: e.target.value})
+    }
+
+    const handleEstoqueChange = (e) => {
+        e.preventDefault();
+        setProduto({...produto, estoque: !produto.estoque})
+      };
+
     useEffect(() => {
         buscarTodasCategorias();
         buscarProduto();
@@ -119,7 +128,7 @@ export default function FormularioProdutoMobile(props) {
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AvField name="preco" label="Preço" type="number" />
+                                        <AvField name="preco" label="Preço" type="number" onChange={handlePrecoChange} />
                                     </Grid>
                                     <Grid item xs={6}>
                                         <TextField
@@ -143,6 +152,7 @@ export default function FormularioProdutoMobile(props) {
                                             style={{ marginTop: 25, marginLeft: 10 }}
                                             control={<Switch name="estoque" checked={produto.estoque} />}
                                             label="Em estoque"
+                                            onChange={handleEstoqueChange}
                                         />
                                     </Grid>
                                     <Grid container justify="center" style={{ marginTop: 10 }}>
