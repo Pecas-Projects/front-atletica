@@ -169,11 +169,10 @@ function NotificacaoMobile(props) {
 
   return (
     <>
-      <Grid item style={{ marginBottom: 20 }} xs={12}>
+      {/* <Grid item style={{ marginBottom: 20 }} xs={12}> */}
         <Paper className={classes.paper}>
           <Grid
             container
-            xs={12}
             spacing={2}
             style={{ paddingLeft: 10, paddingTop: 10 }}
           >
@@ -220,7 +219,7 @@ function NotificacaoMobile(props) {
             </Grid>
           </Grid>
         </Paper>
-      </Grid>
+      {/* </Grid> */}
     </>
   );
 }
