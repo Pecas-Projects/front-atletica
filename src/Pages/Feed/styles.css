@@ -2,3 +2,14 @@
   font-size: 24px;
   font-family: "Roboto Condensed";
 }
+
+.content-wrap-post {
+  min-height: 70vh;
+  flex: 1;
+}
+
+.page-container-post{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

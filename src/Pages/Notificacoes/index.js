@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../variables/ApiService";
 import NavBar from "../../Components/NavBar";
-import { getAtleticaId } from "../../utils/storage"
+import { getAtleticaId } from "../../utils/storage";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -9,6 +9,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  Typography,
 } from "@material-ui/core";
 import PaperNotificacao from "./Components/PaperNotificacao";
 import NotificacaoMobile from "./Components/NotificacaoMobile";
@@ -85,7 +86,13 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Typography variant="h6" align="center" style={{ color: "white" }}>
+            Essa atlética não possui solicitações de atletas!
+          </Typography>
+        </Grid>
+      );
     }
   }
 
@@ -99,7 +106,13 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Typography variant="h6" align="center" style={{ color: "white" }}>
+            Essa atlética não possui solicitações para jogos!
+          </Typography>
+        </Grid>
+      );
     }
   }
 
@@ -113,7 +126,15 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Paper className={classes.paperA}>
+            <Typography variant="h6" align="center" style={{ color: "white" }}>
+              Essa atlética não possui solicitações de atletas!
+            </Typography>
+          </Paper>
+        </Grid>
+      );
     }
   }
 
@@ -127,7 +148,15 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Paper className={classes.paperA}>
+            <Typography variant="h6" align="center" style={{ color: "white" }}>
+              Essa atlética não possui solicitações para jogos!
+            </Typography>
+          </Paper>
+        </Grid>
+      );
     }
   }
 
@@ -211,11 +240,11 @@ function Notificacoes() {
           </div>
 
           <div className={classes.sectionMobile}>
-            <Grid container justify="center" spacing={2} xs={12}>
+            <Grid container justify="center" spacing={2}>
               <Grid item>
-                <h4 className="MyTitle">Suas Notificações</h4>
+                <Typography variant="h6">Suas Notificações</Typography>
               </Grid>
-              <Grid item>
+              
                 <RadioGroup
                   row
                   aria-label="tipo"
@@ -234,7 +263,7 @@ function Notificacoes() {
                     label="Jogos"
                   />
                 </RadioGroup>
-              </Grid>
+              
 
               <Grid item>
                 {tipo === "atletas"

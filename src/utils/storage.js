@@ -4,6 +4,7 @@ export const loginMembro = (token, userType, userId, atleticaId, username) => {
   localStorage.setItem("USER_ID", userId);
   localStorage.setItem("ATLETICA_ID", atleticaId);
   localStorage.setItem("ATLETICA_USERNAME", username);
+  localStorage.setItem("ATLETICA_USERNAME_PESQUISADA", username);
 };
 
 export const loginAtletica = (token, userType, atleticaId, username) => {
@@ -11,6 +12,7 @@ export const loginAtletica = (token, userType, atleticaId, username) => {
   localStorage.setItem("USER_TYPE", userType);
   localStorage.setItem("ATLETICA_ID", atleticaId);
   localStorage.setItem("ATLETICA_USERNAME", username);
+  localStorage.setItem("ATLETICA_USERNAME_PESQUISADA", username);
 };
 
 export const logout = () => {
@@ -18,6 +20,7 @@ export const logout = () => {
   localStorage.removeItem("USER_TYPE");
   localStorage.removeItem("USER_ID");
   localStorage.removeItem("ATLETICA_ID");
+  localStorage.removeItem("ATLETICA_USERNAME");
 };
 
 export const isLogin = () => {
@@ -27,8 +30,15 @@ export const isLogin = () => {
   return false;
 };
 
+export const atleticaUsernamePesquisada = (username) => {
+  if (username) localStorage.setItem("ATLETICA_USERNAME_PESQUISADA", username);
+  return localStorage.getItem("ATLETICA_USERNAME_PESQUISADA");
+};
+
 export const atleticaUsername = (username) => {
   if (username) localStorage.setItem("ATLETICA_USERNAME", username);
+  // if (username) localStorage.setItem("ATLETICA_USERNAME_PESQUISADA", username);
+  // alterar tbm a pesquisada para ser a mesma logada
   return localStorage.getItem("ATLETICA_USERNAME");
 };
 
@@ -42,15 +52,6 @@ export const getUserType = () => {
 
 export const getUserId = () => {
   return localStorage.getItem("USER_ID");
-};
-
-export const getUsername = () => {
-  return localStorage.getItem("USERNAME");
-};
-
-export const resetUsername = (username) => {
-  localStorage.removeItem("USERNAME");
-  localStorage.setItem("USERNAME", username);
 };
 
 export const getAtleticaId = () => {
