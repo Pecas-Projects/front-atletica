@@ -13,8 +13,9 @@ function Alert(props) {
 
 export default function FormularioProdutoMobile(props) {
 
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    const [notify, setNotify] = useState(false)
+    const [type, setType] = useState("success")
+    const [msg, setMsg] = useState();
     const [categorias, setCategorias] = useState([]);
     const [produto, setProduto] = useState({
         produtoId: props.produtoId,
@@ -42,20 +43,12 @@ export default function FormularioProdutoMobile(props) {
         setProduto({ ...produto, estoque: !produto.estoque })
     };
 
-    const handleCloseSuccess = (event, reason) => {
+    const handleClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
         }
 
-        setSuccess(false);
-    };
-
-    const handleCloseError = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-
-        setError(false);
+        setNotify(false);
     };
 
     useEffect(() => {
@@ -69,6 +62,9 @@ export default function FormularioProdutoMobile(props) {
                 setProduto(res.data)
             })
             .catch((err) => {
+                setMsg("Ocorreu algum erro!")
+                setNotify(true);
+                setType("error");
                 console.log(err)
             })
     }
@@ -79,6 +75,9 @@ export default function FormularioProdutoMobile(props) {
                 setCategorias(response.data)
             })
             .catch((error) => {
+                setMsg("Ocorreu algum erro!")
+                setNotify(true);
+                setType("error");
                 console.log(error)
             })
     }
@@ -98,12 +97,16 @@ export default function FormularioProdutoMobile(props) {
         await ApiService.AtualizarProduto(produto.produtoId, produtoDados)
             .then((res) => {
                 console.log(res);
-                setSuccess(true);
+                setMsg("Produto editado com sucesso!")
+                setType("success")
+                setNotify(true);
                 setTimeout(function () { window.location.href = '/produtos/' + atleticaUsername() }, 3000)
             })
             .catch((err) => {
                 console.log(err);
-                setError(true)
+                setType("error");
+                setMsg("Não foi possível editar esse produto. Tente novamente.")
+                setNotify(true);
             })
     }
 
@@ -114,24 +117,14 @@ export default function FormularioProdutoMobile(props) {
     return (
         <>
             <Snackbar
-                open={success}
+                open={notify}
                 autoHideDuration={4000}
-                onClose={handleCloseSuccess}
+                onClose={handleClose}
             >
-                <Alert onClose={handleCloseSuccess} severity="success">
-                    Produto editado com sucesso!
+                <Alert onClose={handleClose} severity={type}>
+                    {msg}
                 </Alert>
             </Snackbar>
-            <Snackbar
-                open={error}
-                autoHideDuration={4000}
-                onClose={handleCloseError}
-            >
-                <Alert onClose={handleCloseSuccess} severity="error">
-                    Erro ao editar o produto!
-                </Alert>
-            </Snackbar>
-
             <Grid container style={{ marginBottom: 15 }}>
                 {
                     produto.produtoCategoriaId === undefined ?
@@ -175,7 +168,12 @@ export default function FormularioProdutoMobile(props) {
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <AvField name="preco" label="Preço" type="number" onChange={handlePrecoChange} />
+                                        <AvField name="preco"
+                                            label="Preço"
+                                            type="number"
+                                            value={produto.Preco}
+                                            onChange={handlePrecoChange}
+                                            required errorMessage="Campo obrigatório." />
                                     </Grid>
                                     <Grid item xs={6}>
                                         <TextField

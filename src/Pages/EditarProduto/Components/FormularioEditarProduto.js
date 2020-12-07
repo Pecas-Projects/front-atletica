@@ -28,8 +28,9 @@ export default function FormularioProduto(props) {
 
     const classes = useStyles();
 
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    const [notify, setNotify] = useState(false)
+    const [type, setType] = useState("success")
+    const [msg, setMsg] = useState();
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
     const [imgId, setImgId] = useState(null);
@@ -61,21 +62,14 @@ export default function FormularioProduto(props) {
         setProduto({ ...produto, estoque: !produto.estoque })
     };
 
-    const handleCloseSuccess = (event, reason) => {
+    const handleClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
         }
 
-        setSuccess(false);
+        setNotify(false);
     };
 
-    const handleCloseError = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-
-        setError(false);
-    };
 
     useEffect(() => {
         buscarTodasCategorias();
@@ -85,12 +79,14 @@ export default function FormularioProduto(props) {
     async function buscarProduto() {
         await ApiService.BuscarProdutoId(produto.produtoId)
             .then((res) => {
-                //     console.log(res.data)
                 setImagem(res.data.imagem)
                 setPath(res.data.imagem.path)
                 setProduto(res.data)
             })
             .catch((err) => {
+                setMsg("Ocorreu algum erro!")
+                setNotify(true);
+                setType("error");
                 console.log(err)
             })
     }
@@ -101,6 +97,9 @@ export default function FormularioProduto(props) {
                 setCategorias(response.data)
             })
             .catch((error) => {
+                setMsg("Ocorreu algum erro!")
+                setNotify(true);
+                setType("error");
                 console.log(error)
             })
     }
@@ -116,7 +115,9 @@ export default function FormularioProduto(props) {
             })
             .catch((error) => {
                 console.log(error)
-                setError(true);
+                setType("error");
+                setMsg("Não foi possível atualizar a imagem do produto! Tente novamente.")
+                setNotify(true);
             });
     }
 
@@ -135,12 +136,16 @@ export default function FormularioProduto(props) {
         await ApiService.AtualizarProduto(produto.produtoId, produtoDados)
             .then((res) => {
                 console.log(res);
-                setSuccess(true);
+                setMsg("Produto editado com sucesso!")
+                setType("success")
+                setNotify(true);
                 setTimeout(function () { window.location.href = '/produtos/' + atleticaUsername() }, 3000)
             })
             .catch((err) => {
                 console.log(err);
-                setError(true);
+                setType("error");
+                setMsg("Não foi possível editar esse produto. Tente novamente.")
+                setNotify(true);
             })
     }
 
@@ -168,21 +173,12 @@ export default function FormularioProduto(props) {
     return (
         <>
             <Snackbar
-                open={success}
+                open={notify}
                 autoHideDuration={4000}
-                onClose={handleCloseSuccess}
+                onClose={handleClose}
             >
-                <Alert onClose={handleCloseSuccess} severity="success">
-                    Produto editado com sucesso!
-                </Alert>
-            </Snackbar>
-            <Snackbar
-                open={error}
-                autoHideDuration={4000}
-                onClose={handleCloseError}
-            >
-                <Alert onClose={handleCloseSuccess} severity="error">
-                    Erro ao editar o produto!
+                <Alert onClose={handleClose} severity={type}>
+                    {msg}
                 </Alert>
             </Snackbar>
             <Grid container justify="center" style={{ marginBottom: 25 }}>
@@ -240,7 +236,12 @@ export default function FormularioProduto(props) {
                                         <Grid container spacing={2}>
 
                                             <Grid item xs={4}>
-                                                <AvField name="preco" label="Preço" type="number" value={produto.Preco} onChange={handlePrecoChange} />
+                                                <AvField name="preco" 
+                                                label="Preço" 
+                                                type="number" 
+                                                value={produto.Preco} 
+                                                onChange={handlePrecoChange} 
+                                                required errorMessage="Campo obrigatório."/>
                                             </Grid>
 
                                             <Grid item xs={4}>
