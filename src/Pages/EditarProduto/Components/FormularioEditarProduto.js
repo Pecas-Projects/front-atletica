@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
+import { CircularProgress, Grid, Typography, Paper, Button, Switch, FormControlLabel, TextField, MenuItem } from "@material-ui/core";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem"
 import ApiService from "../../../variables/ApiService";
-import { getAtleticaId } from "../../../utils/storage";
+import { getAtleticaId, atleticaUsername } from "../../../utils/storage";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -17,11 +19,17 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 export default function FormularioProduto(props) {
 
     const classes = useStyles();
 
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
     const [imagem, setImagem] = useState(null);
     const [path, setPath] = useState();
     const [imgId, setImgId] = useState(null);
@@ -45,13 +53,29 @@ export default function FormularioProduto(props) {
     };
 
     const handlePrecoChange = (e) => {
-        setProduto({...produto, preco: e.target.value})
+        setProduto({ ...produto, preco: e.target.value })
     }
 
     const handleEstoqueChange = (e) => {
         e.preventDefault();
-        setProduto({...produto, estoque: !produto.estoque})
-      };
+        setProduto({ ...produto, estoque: !produto.estoque })
+    };
+
+    const handleCloseSuccess = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setSuccess(false);
+    };
+
+    const handleCloseError = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setError(false);
+    };
 
     useEffect(() => {
         buscarTodasCategorias();
@@ -61,7 +85,7 @@ export default function FormularioProduto(props) {
     async function buscarProduto() {
         await ApiService.BuscarProdutoId(produto.produtoId)
             .then((res) => {
-           //     console.log(res.data)
+                //     console.log(res.data)
                 setImagem(res.data.imagem)
                 setPath(res.data.imagem.path)
                 setProduto(res.data)
@@ -71,32 +95,33 @@ export default function FormularioProduto(props) {
             })
     }
 
-    async function buscarTodasCategorias(){
+    async function buscarTodasCategorias() {
         await ApiService.BuscarTodasCategorias()
-          .then((response) => {
-            setCategorias(response.data)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
+            .then((response) => {
+                setCategorias(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
-    async function envioImagem(){
+    async function envioImagem() {
         let file = new FormData();
         file.append('value', imagem);
-    
+
         await ApiService.UploadImagem(file)
-          .then((res) => {
-            setProduto({...produto, imagemId: res.data.imagemId})
-            setImgId(res.data.imagemId)
-          })
-          .catch((error) => {
-            console.log(error)
-          });
+            .then((res) => {
+                setProduto({ ...produto, imagemId: res.data.imagemId })
+                setImgId(res.data.imagemId)
+            })
+            .catch((error) => {
+                console.log(error)
+                setError(true);
+            });
     }
 
-    async function atualizarProduto(){
-        
+    async function atualizarProduto() {
+
         let produtoDados = {
             Nome: produto.nome,
             Descricao: produto.descricao,
@@ -110,9 +135,12 @@ export default function FormularioProduto(props) {
         await ApiService.AtualizarProduto(produto.produtoId, produtoDados)
             .then((res) => {
                 console.log(res);
+                setSuccess(true);
+                setTimeout(function () { window.location.href = '/produtos/' + atleticaUsername() }, 3000)
             })
             .catch((err) => {
                 console.log(err);
+                setError(true);
             })
     }
 
@@ -122,37 +150,61 @@ export default function FormularioProduto(props) {
         } else return <div><br /><br /></div>;
     }
 
-    function submit(){
-        if(produto.imagem.path !== path && path !== null && path !== undefined){
+    function submit() {
+        if (produto.imagem.path !== path && path !== null && path !== undefined) {
             envioImagem();
-        }   
-        else{
+        }
+        else {
             setImgId(produto.imagemId)
         }
     }
 
     useEffect(() => {
-        if(produto.imagemId === imgId){
+        if (produto.imagemId === imgId) {
             atualizarProduto();
         }
     }, [imgId]);
 
     return (
         <>
+            <Snackbar
+                open={success}
+                autoHideDuration={4000}
+                onClose={handleCloseSuccess}
+            >
+                <Alert onClose={handleCloseSuccess} severity="success">
+                    Produto editado com sucesso!
+                </Alert>
+            </Snackbar>
+            <Snackbar
+                open={error}
+                autoHideDuration={4000}
+                onClose={handleCloseError}
+            >
+                <Alert onClose={handleCloseSuccess} severity="error">
+                    Erro ao editar o produto!
+                </Alert>
+            </Snackbar>
             <Grid container justify="center" style={{ marginBottom: 25 }}>
                 {
                     produto.produtoCategoriaId === undefined ?
-                        <h4>Loading...</h4>
+                        <>
+                            <div style={{ marginTop: 250 }}>
+                                <Grid container justify="center">
+                                    <CircularProgress size={100} color="primary" />
+                                </Grid>
+                            </div>
+                        </>
                         :
                         <Paper className={classes.paperA}>
 
-                            <h4 className="MyTitle">Editar Produto</h4>
+                            <h4 className="MyTitleProduto">Editar Produto</h4>
 
                             <Typography variant="h8" style={{ color: "#454256" }}>
                                 Edite um produto da aba produtos da sua atlética
                             </Typography>
 
-                            <AvForm model={defaultValues}>
+                            <AvForm model={defaultValues} onSubmit={submit}>
                                 <Grid container spacing={1} style={{ paddingTop: 20 }}>
                                     <Grid item xs={4}>
 
@@ -217,7 +269,7 @@ export default function FormularioProduto(props) {
                                                     style={{ marginTop: 25, marginLeft: 10 }}
                                                     control={<Switch checked={produto.estoque} name="estoque" onChange={handleEstoqueChange} />}
                                                     label="Em estoque"
-                                                    
+
                                                 />
 
                                             </Grid>
@@ -234,10 +286,10 @@ export default function FormularioProduto(props) {
                                         // style={{ paddingRight: 20 }}
                                         >
                                             <Button
+                                                type="submit"
                                                 color='secondary'
                                                 variant='contained'
                                                 style={{ width: 300 }}
-                                                onClick={submit}
                                             >
                                                 Postar
                                             </Button>
