@@ -37,6 +37,8 @@ export const atleticaUsernamePesquisada = (username) => {
 
 export const atleticaUsername = (username) => {
   if (username) localStorage.setItem("ATLETICA_USERNAME", username);
+  // if (username) localStorage.setItem("ATLETICA_USERNAME_PESQUISADA", username);
+  // alterar tbm a pesquisada para ser a mesma logada
   return localStorage.getItem("ATLETICA_USERNAME");
 };
 
