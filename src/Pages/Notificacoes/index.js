@@ -9,9 +9,12 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  CircularProgress,
+  Typography
 } from "@material-ui/core";
 import PaperNotificacao from "./Components/PaperNotificacao";
 import NotificacaoMobile from "./Components/NotificacaoMobile";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,8 +75,10 @@ function Notificacoes() {
   const [tipo, setTipo] = useState("atletas");
   const [solicitacoesAtleta, setSolicitacoesAtleta] = useState([]);
   const [solicitacoesJogo, setSolicitacoesJogo] = useState([]);
-  const [loding, setLoding] = useState(true);
+  const [loading, setLoading] = useState(true);
   const atleticaId = getAtleticaId();
+
+
 
   function notificacaoAtletas() {
     if (solicitacoesAtleta.length !== 0) {
@@ -142,13 +147,13 @@ function Notificacoes() {
       setSolicitacoesJogo(res.data);
     });
 
-    setLoding(false);
+    setLoading(false);
   }
 
   useEffect(() => {
     getSolicitacoes();
 
-    if (loding === true) {
+    if (loading === true) {
       getSolicitacoes();
     }
   }, []);
@@ -159,13 +164,24 @@ function Notificacoes() {
 
   return (
     <>
-      <div className={classes.root}>
-        <NavBar />
+      {loading ? (
+        <>
+          <div style={{ marginTop: 250 }}>
+            <Grid container justify="center">
+              <CircularProgress size={100} color="primary" />
+            </Grid>
+          </div>
+        </>
 
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
+      ) : (
+          <>
+            <div className={classes.root}>
+              <NavBar />
 
-          {/*
+              <main className={classes.content}>
+                <div className={classes.toolbar} />
+
+                {/*
         
         
         
@@ -175,77 +191,100 @@ function Notificacoes() {
         
                  */}
 
-          <div className={classes.sectionDesktop}>
-            <Grid container justify="center">
-              <Paper className={classes.paperA}>
-                <h4 className="MyTitle">Suas Notificações</h4>
-                <Grid container spacing={2} style={{ marginTop: 20 }}>
-                  <Grid item xs={12}>
-                    <RadioGroup
-                      row
-                      aria-label="tipo"
-                      name="notificacoes"
-                      value={tipo}
-                      onChange={handleChange}
-                    >
-                      <FormControlLabel
-                        value="atletas"
-                        control={<Radio />}
-                        label="Atletas"
-                      />
-                      <FormControlLabel
-                        value="jogos"
-                        control={<Radio />}
-                        label="Jogos"
-                      />
-                    </RadioGroup>
-                  </Grid>
-                  <Grid item xs>
-                    {tipo === "atletas"
-                      ? notificacaoAtletas()
-                      : notificacaoJogos()}
-                  </Grid>
-                </Grid>
-              </Paper>
-            </Grid>
-          </div>
+                <div className={classes.sectionDesktop}>
+                  {solicitacoesAtleta.length !== 0 && solicitacoesAtleta.length !== 0 ? (
+                    <Grid container justify="center">
+                      <Paper className={classes.paperA}>
+                        <h4 className="MyTitleEP">Suas Notificações</h4>
+                        <Grid container spacing={2} style={{ marginTop: 20 }}>
+                          <Grid item xs={12}>
+                            <RadioGroup
+                              row
+                              aria-label="tipo"
+                              name="notificacoes"
+                              value={tipo}
+                              onChange={handleChange}
+                            >
+                              <FormControlLabel
+                                value="atletas"
+                                control={<Radio />}
+                                label="Atletas"
+                              />
+                              <FormControlLabel
+                                value="jogos"
+                                control={<Radio />}
+                                label="Jogos"
+                              />
+                            </RadioGroup>
+                          </Grid>
+                          <Grid item xs>
+                            {tipo === "atletas"
+                              ? notificacaoAtletas()
+                              : notificacaoJogos()}
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    </Grid>
+                  ) : (
+                      <Grid container justify='center'>
+                        <Paper className={classes.paperA}>
+                          <Typography>Essa atlética ainda não possui novas notificações</Typography>
+                        </Paper>
+                      </Grid>
+                    )}
 
-          <div className={classes.sectionMobile}>
-            <Grid container justify="center" spacing={2} xs={12}>
-              <Grid item>
-                <h4 className="MyTitle">Suas Notificações</h4>
-              </Grid>
-              <Grid item>
-                <RadioGroup
-                  row
-                  aria-label="tipo"
-                  name="notificacoes"
-                  value={tipo}
-                  onChange={handleChange}
-                >
-                  <FormControlLabel
-                    value="atletas"
-                    control={<Radio />}
-                    label="Atletas"
-                  />
-                  <FormControlLabel
-                    value="jogos"
-                    control={<Radio />}
-                    label="Jogos"
-                  />
-                </RadioGroup>
-              </Grid>
+                </div>
 
-              <Grid item>
-                {tipo === "atletas"
-                  ? notificacaoAtletasMobile()
-                  : notificacaoJogosMobile()}
-              </Grid>
-            </Grid>
-          </div>
-        </main>
-      </div>
+                <div className={classes.sectionMobile}>
+                  {solicitacoesAtleta.length !== 0 && solicitacoesAtleta.length !== 0 ? (
+                    <Grid container justify="center" spacing={2} xs={12}>
+                      <Grid item>
+                        <h4 className="MyTitleEP">Suas Notificações</h4>
+                      </Grid>
+                      <Grid item>
+                        <RadioGroup
+                          row
+                          aria-label="tipo"
+                          name="notificacoes"
+                          value={tipo}
+                          onChange={handleChange}
+                        >
+                          <FormControlLabel
+                            value="atletas"
+                            control={<Radio />}
+                            label="Atletas"
+                          />
+                          <FormControlLabel
+                            value="jogos"
+                            control={<Radio />}
+                            label="Jogos"
+                          />
+                        </RadioGroup>
+                      </Grid>
+
+                      <Grid item>
+                        {tipo === "atletas"
+                          ? notificacaoAtletasMobile()
+                          : notificacaoJogosMobile()}
+                      </Grid>
+                    </Grid>
+
+                  ) : (
+                      <Grid container justify='center'>
+                        <Paper className={classes.paperAMobile}>
+                          <Typography>Essa atlética ainda não possui novas notificações</Typography>
+                        </Paper>
+                      </Grid>
+
+                    )}
+
+                </div>
+              </main>
+            </div>
+          </>
+        )}
     </>
+
   );
 }
 
