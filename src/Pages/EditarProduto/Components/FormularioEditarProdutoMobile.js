@@ -186,7 +186,7 @@ export default function FormularioProdutoMobile(props) {
                                             disabled
                                         >
                                             {categorias.map((option) => (
-                                                <MenuItem value={option.produtoCategoriaId} key={option.nome}>
+                                                <MenuItem value={option.produtoCategoriaId} >
                                                     {option.nome}
                                                 </MenuItem>
                                             ))}
