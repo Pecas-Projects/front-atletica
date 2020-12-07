@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Typography, Paper, Button, IconButton } from "@material-ui/core";
-import AddFile from "../../../assets/imagem/file-add.svg";
+import { Grid, Typography, Paper, Button, Snackbar } from "@material-ui/core";
 import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile";
 import ApiService from "../../../variables/ApiService";
 import { getAtleticaId } from "../../../utils/storage";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 export default function FormularioPostMobile() {
   const [imagem, setImagem] = useState(null);
@@ -17,14 +20,33 @@ export default function FormularioPostMobile() {
     ImagemId: null
   });
 
+  const [openAceito, setOpenAceito] = useState(false)
+  const [openRecusado, setOpenRecusado] = useState(false)
+
+  const handleCloseAceito = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAceito(false);
+  };
+
+  const handleCloseRecusado = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenRecusado(false);
+  };
+
   const handleTitleChange = (event) => {
     event.preventDefault();
-    setPost({...post, Titulo: event.target.value})
+    setPost({ ...post, Titulo: event.target.value })
   };
 
   const handleTextoChange = (event) => {
     event.preventDefault();
-    setPost({...post, Descricao: event.target.value})
+    setPost({ ...post, Descricao: event.target.value })
   };
 
   function showAdicionarImagem() {
@@ -39,32 +61,32 @@ export default function FormularioPostMobile() {
       );
   }
 
-  async function envioImagem(){
+  async function envioImagem() {
     let file = new FormData();
     file.append('value', imagem);
 
     await ApiService.UploadImagem(file)
       .then((res) => {
         console.log(res)
-        setPost({...post, ImagemId: res.data.imagemId})
+        setPost({ ...post, ImagemId: res.data.imagemId })
       })
       .catch((error) => {
         console.log(error)
       });
   }
 
-  async function criarPost(){
+  async function criarPost() {
     await ApiService.EnviarPost(post)
       .then((res) => {
-        console.log(res)
+        setOpenAceito(true)
       })
       .catch((err) => {
-        console.log(err)
+        setOpenRecusado(true)
       });
   }
 
   useEffect(() => {
-    if(post.ImagemId !== null)
+    if (post.ImagemId !== null)
       criarPost();
   }, [post]);
 
@@ -74,29 +96,49 @@ export default function FormularioPostMobile() {
 
   return (
     <>
+      <Snackbar
+        open={openAceito}
+        autoHideDuration={4000}
+        onClose={handleCloseAceito}
+      >
+        <Alert onClose={handleCloseAceito} severity="success">
+          Post criado com sucesso!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openRecusado}
+        autoHideDuration={4000}
+        onClose={handleCloseRecusado}
+      >
+        <Alert onClose={handleCloseRecusado} severity="error">
+          Ocorreu um erro ao criar o post, revise os dados e tente novamente
+        </Alert>
+      </Snackbar>
+
       <Grid container style={{ marginBottom: 25 }}>
-        <h4 className="MyTitle">Novo Post</h4>
-        <Typography variant="h8" style={{ color: "#454256", paddingBottom:50 }}>
+        <h4 className="MyTitleEP">Novo Post</h4>
+        <Typography variant="h8" style={{ color: "#454256", paddingBottom: 50 }}>
           Adicione uma postagem ao blog da sua atlética
         </Typography>
         <AvForm>
           <Grid container justify="center" >
-          {showAdicionarImagem()}
-          <Paper style={{ backgroundColor: "#636363"}}>
-            <Grid
-              container
-              justify="center"
-              alignContent="center"
-              style={{ height: 250, width: 250  }}
-            >
-              <BotaoUploadImagemMobile
-                setPath={setPath}
-                setImagem={setImagem}
-                imagem={imagem}
-                path={path}
-              />
-            </Grid>
-          </Paper>
+            {showAdicionarImagem()}
+            <Paper style={{ backgroundColor: "#636363" }}>
+              <Grid
+                container
+                justify="center"
+                alignContent="center"
+                style={{ height: 250, width: 250 }}
+              >
+                <BotaoUploadImagemMobile
+                  setPath={setPath}
+                  setImagem={setImagem}
+                  imagem={imagem}
+                  path={path}
+                />
+              </Grid>
+            </Paper>
           </Grid>
           <Grid container style={{ paddingTop: 50 }}>
             <Grid item xs={12}>
