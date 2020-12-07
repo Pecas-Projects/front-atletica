@@ -536,6 +536,7 @@ export default function EditarPerfil(props) {
 
                         <p className="MySubtitleEP">Nome da sua atletica</p>
                         <AvField
+                          style={{ marginBottom: 20 }}
                           name="Nome da Atletica"
                           type="text"
                           errorMessage="Nome muito grande"
@@ -549,22 +550,38 @@ export default function EditarPerfil(props) {
                         <p className="MySubtitleEP">Username</p>
                         <p className="MySubtitle2EP">
                           Identificador da sua atletica dentro do nosso sistema,
-                          para mudar este campo é aconcelhado chegar sua
+                          para mudar este campo é aconselhado chegar sua
                           disponibilidade
                       </p>
-                        <AvField
-                          name="username"
-                          type="text"
-                          onChange={handleChangeAtleticaUsername}
-                          value={atleticaUsername}
-                        />
-                        <Button
-                          type="submit"
-                          color="secondary"
-                          onClick={changeUsername}
-                        >
-                          Validar
+                        <Grid container>
+                          <Grid item xs={8}>
+                            <AvField
+                              name="username"
+                              type="text"
+                              onChange={handleChangeAtleticaUsername}
+                              value={atleticaUsername}
+                            />
+
+                          </Grid>
+
+                          <Grid item xs={4}>
+                            <Grid container justify='flex-end'>
+                              <Button
+                                style={{ width: 300 }}
+                                variant="contained"
+                                type="submit"
+                                color="secondary"
+                                onClick={changeUsername}
+                              >
+                                Validar username
                       </Button>
+                            </Grid>
+
+                          </Grid>
+
+                        </Grid>
+
+
                         {mostrarVerificacao && (
                           <AlertComponents
                             status={statusVerificacao}
@@ -577,6 +594,7 @@ export default function EditarPerfil(props) {
                               Email
                           </p>
                             <AvField
+                              style={{ width: "90%" }}
                               name="email"
                               type="text"
                               onChange={handleChangeEmail}
@@ -763,9 +781,9 @@ export default function EditarPerfil(props) {
                             />
                           </Grid>
 
-                          <Grid item xs={12} style={{ marginBottom: 20 }}>
+                          <Grid item xs={6} style={{ marginBottom: 20 }}>
                             <AvField
-                              style={{ width: "95%" }}
+                              style={{ width: "90%" }}
                               value={complemento}
                               label="Complemento"
                               name="complemento"
