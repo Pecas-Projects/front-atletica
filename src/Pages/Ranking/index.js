@@ -5,9 +5,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Paper,
-  FormControl,
-  InputLabel,
-  Select,
+  CircularProgress,
+  MenuItem,
+  TextField
 } from "@material-ui/core";
 import CardAtletica from "./Components/CardAtletica";
 import AtleticaMobile from "./Components/AtleticaMobile";
@@ -80,10 +80,13 @@ function Ranking() {
   const [modalidades, setModalidades] = useState([]);
   const [atleticasRanking, setAtleticasRanking] = useState([]);
   const [modalidadeId, setModalidadeId] = useState(1);
+  const [loading, setLoading] = useState(true)
 
   async function getModalidades() {
     await ApiService.BuscarModalidades().then((res) => {
       setModalidades(res.data);
+      console.log(res.data)
+      setLoading(false)
     });
   }
 
@@ -92,14 +95,22 @@ function Ranking() {
   }, []);
 
   async function getRankingModalidade(modalidadeId) {
-    await ApiService.BuscarRankingModalidade(modalidadeId).then((res) => {
-      console.log(res);
-      setAtleticasRanking(res.data);
-    });
+    console.log(modalidadeId)
+    await ApiService.BuscarRankingModalidade(modalidadeId)
+      .then((res) => {
+
+        console.log(res);
+        setAtleticasRanking(res.data);
+
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   useEffect(() => {
     getRankingModalidade(modalidadeId);
+
   }, [modalidadeId]);
 
   const modalidadeSelecionada = (event) => {
@@ -123,13 +134,24 @@ function Ranking() {
   }
 
   return (
-    <div className={classes.root}>
-      <NavBar />
+    <>
+      {loading ? (
+        <>
+          <div style={{ marginTop: 250 }}>
+            <Grid container justify="center">
+              <CircularProgress size={100} color="primary" />
+            </Grid>
+          </div>
+        </>
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      ) : (
+          <div className={classes.root}>
+            <NavBar />
 
-        {/*
+            <main className={classes.content}>
+              <div className={classes.toolbar} />
+
+              {/*
         
         
         
@@ -139,84 +161,75 @@ function Ranking() {
         
         */}
 
-        <div className={classes.sectionDesktop}>
-          <Grid container justify="center">
-            <Paper className={classes.paperA}>
-              <h4 className="MyTitle">Ranking das Atléticas</h4>
-              <Grid container spacing={3} xs={12} style={{ marginTop: 20 }}>
-                <Grid item xs={3}>
-                  <FormControl variant="filled" className={classes.formControl}>
-                    <InputLabel htmlFor="filled-age-native-simple">
-                      Modalidade
-                    </InputLabel>
-                    <Select
-                      native
-                      value={modalidadeId}
-                      onChange={modalidadeSelecionada}
-                      inputProps={{
-                        name: "modalidade",
-                      }}
-                    >
-                      {modalidades.map((modalidade) => (
-                        <option value={modalidade.modalidadeId}>
-                          {modalidade.nome}
-                        </option>
-                      ))}
-                    </Select>
-                  </FormControl>
+              <div className={classes.sectionDesktop}>
+                <Grid container justify="center">
+                  <Paper className={classes.paperA}>
+                    <h4 className="MyTitleEP">Ranking das Atléticas</h4>
+                    <Grid container spacing={3} xs={12} style={{ marginTop: 20 }}>
+                      <Grid item xs={3}>
+
+                        <TextField
+                          select
+                          value={modalidadeId}
+                          onChange={modalidadeSelecionada}
+                          label="Modalidades"
+
+                        >
+                          {modalidades.map((modalidade) => (
+                            <MenuItem value={modalidade.modalidadeId}>
+                              {modalidade.nome}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+
+                      </Grid>
+                      <Grid item xs={1} />
+
+                      <Grid item xs={8}>
+                        <Grid container justify="center">
+                          {exibeRanking()}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Paper>
                 </Grid>
-                <Grid item xs={1} />
+              </div>
 
-                <Grid item xs={8}>
-                  <Grid container justify="center">
-                    {exibeRanking()}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-        </div>
-
-        <div className={classes.sectionMobile}>
-          <Grid
-            container
-            justify="center"
-            spacing={1}
-            style={{ marginTop: 20 }}
-          >
-            <h4 className="MyTitle">Ranking das Atléticas</h4>
-
-            <Grid item xs={12}>
-              <Grid container justify="center">
-                <FormControl
-                  variant="filled"
-                  className={classes.formControlMobile}
+              <div className={classes.sectionMobile}>
+                <Grid
+                  container
+                  justify="center"
+                  spacing={1}
+                  style={{ marginTop: 20 }}
                 >
-                  <InputLabel htmlFor="filled-age-native-simple">
-                    Modalidade
-                  </InputLabel>
-                  <Select
-                    native
-                    value={modalidadeId}
-                    onChange={modalidadeSelecionada}
-                    inputProps={{
-                      name: "modalidade",
-                    }}
-                  >
-                    {modalidades.map((modalidade) => (
-                      <option value={modalidade.modalidadeId}>
-                        {modalidade.nome}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-            <Grid item>{exibeRankingMobile()}</Grid>
-          </Grid>
-        </div>
-      </main>
-    </div>
+                  <h4 className="MyTitleEP">Ranking das Atléticas</h4>
+
+                  <Grid item xs={12}>
+                    <Grid container justify="center">
+
+                      <TextField
+                        select
+                        value={modalidadeId}
+                        onChange={modalidadeSelecionada}
+                        label="Modalidades"
+
+                      >
+                        {modalidades.map((modalidade) => (
+                          <MenuItem value={modalidade.modalidadeId}>
+                            {modalidade.nome}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+
+                    </Grid>
+                  </Grid>
+                  <Grid item>{exibeRankingMobile()}</Grid>
+                </Grid>
+              </div>
+            </main>
+          </div>
+        )}
+    </>
   );
 }
 
