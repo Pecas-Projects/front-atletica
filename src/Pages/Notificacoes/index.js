@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ApiService from "../../variables/ApiService";
 import NavBar from "../../Components/NavBar";
-import { getAtleticaId } from "../../utils/storage"
+import { getAtleticaId } from "../../utils/storage";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Grid,
@@ -90,7 +90,13 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Typography variant="h6" align="center" style={{ color: "white" }}>
+            Essa atlética não possui solicitações de atletas!
+          </Typography>
+        </Grid>
+      );
     }
   }
 
@@ -104,7 +110,13 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Typography variant="h6" align="center" style={{ color: "white" }}>
+            Essa atlética não possui solicitações para jogos!
+          </Typography>
+        </Grid>
+      );
     }
   }
 
@@ -118,7 +130,15 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Paper className={classes.paperA}>
+            <Typography variant="h6" align="center" style={{ color: "white" }}>
+              Essa atlética não possui solicitações de atletas!
+            </Typography>
+          </Paper>
+        </Grid>
+      );
     }
   }
 
@@ -132,7 +152,15 @@ function Notificacoes() {
         />
       ));
     } else {
-      return <div></div>;
+      return (
+        <Grid container justify="center">
+          <Paper className={classes.paperA}>
+            <Typography variant="h6" align="center" style={{ color: "white" }}>
+              Essa atlética não possui solicitações para jogos!
+            </Typography>
+          </Paper>
+        </Grid>
+      );
     }
   }
 

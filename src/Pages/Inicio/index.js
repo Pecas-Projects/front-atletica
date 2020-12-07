@@ -25,6 +25,7 @@ import Sacola2 from "../../assets/icons/shopping-bag2.svg";
 
 import Basquete from "../../assets/imagem/undraw_basketball_agx4 1.svg";
 import Controle from "../../assets/imagem/undraw_gaming_6oy3 1.svg";
+import { isLogin, atleticaUsername } from '../../utils/storage'
 
 export default function PaginaInicial() {
   return (
@@ -49,21 +50,35 @@ export default function PaginaInicial() {
                   </b>
                 </Typography>
                 <div style={{ paddingTop: 80 }}>
-                  <Link to="/cadastro">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      disableElevation
-                    >
-                      <span>Fazer cadastro</span>
-                    </Button>
-                  </Link>
+                  {isLogin() ?
+                    <Link to={"/Perfil/" + atleticaUsername()}>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        disableElevation
+                      >
+                        <span>Meu Perfil</span>
+                      </Button>
+                    </Link>
+                    :
+                    <>
+                      <Link to="/cadastro">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          disableElevation
+                        >
+                          <span>Fazer cadastro</span>
+                        </Button>
+                      </Link>
 
-                  <Link to="/login">
-                    <Button variant="outlined" style={{ marginLeft: 20 }}>
-                      Fazer Login
+                      <Link to="/login">
+                        <Button variant="outlined" style={{ marginLeft: 20 }}>
+                          Fazer Login
                     </Button>
-                  </Link>
+                      </Link>
+                    </>
+                  }
                 </div>
               </Grid>
             </Grid>

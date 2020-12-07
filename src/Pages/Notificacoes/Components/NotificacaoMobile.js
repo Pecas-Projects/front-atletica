@@ -218,58 +218,58 @@ function NotificacaoMobile(props) {
           Solicitação recusada com sucesso!
         </Alert>
       </Snackbar>
-      <Grid item style={{ marginBottom: 20 }} xs={12}>
-        <Paper className={classes.paper}>
-          <Grid
-            container
-            xs={12}
-            spacing={2}
-            style={{ paddingLeft: 10, paddingTop: 10 }}
-          >
-            <Grid item xs={4}>
-              <Avatar
-                alt="Remy Sharp"
-                src={
-                  item.solicitacaoAtletaId !== undefined
-                    ? atleta_icon
-                    : jogo_icon
-                }
-                className={classes.large}
-              />
-            </Grid>
 
-            <Grid item xs={8}>
-              {corpo()}
-            </Grid>
-
-            <Grid item xs={6} justify="flex-start" style={{ marginBottom: 10 }}>
-              <Button
-                style={{
-                  background: "#F3BF3A",
-                  color: "black",
-                }}
-                fullWidth={true}
-                onClick={handleAceitarSolicitacao}
-              >
-                Aceitar
-              </Button>
-            </Grid>
-            <Grid item xs={6} justify="flex-end" style={{ marginBottom: 10 }}>
-              <Button
-                style={{
-                  color: "black",
-                  border: "2px solid #F3BF3A",
-                  height: 35,
-                }}
-                fullWidth={true}
-                onClick={handleRecusarSolicitacao}
-              >
-                Recusar
-              </Button>
-            </Grid>
+      {/* <Grid item style={{ marginBottom: 20 }} xs={12}> */}
+      <Paper className={classes.paper}>
+        <Grid
+          container
+          spacing={2}
+          style={{ paddingLeft: 10, paddingTop: 10 }}
+        >
+          <Grid item xs={4}>
+            <Avatar
+              alt="Remy Sharp"
+              src={
+                item.solicitacaoAtletaId !== undefined
+                  ? atleta_icon
+                  : jogo_icon
+              }
+              className={classes.large}
+            />
           </Grid>
-        </Paper>
-      </Grid>
+
+          <Grid item xs={8}>
+            {corpo()}
+          </Grid>
+
+          <Grid item xs={6} justify="flex-start" style={{ marginBottom: 10 }}>
+            <Button
+              style={{
+                background: "#F3BF3A",
+                color: "black",
+              }}
+              fullWidth={true}
+              onClick={handleAceitarSolicitacao}
+            >
+              Aceitar
+              </Button>
+          </Grid>
+          <Grid item xs={6} justify="flex-end" style={{ marginBottom: 10 }}>
+            <Button
+              style={{
+                color: "black",
+                border: "2px solid #F3BF3A",
+                height: 35,
+              }}
+              fullWidth={true}
+              onClick={handleRecusarSolicitacao}
+            >
+              Recusar
+              </Button>
+          </Grid>
+        </Grid>
+      </Paper>
+      {/* </Grid> */}
     </>
   );
 }
