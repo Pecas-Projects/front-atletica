@@ -8,8 +8,14 @@
   flex: 1;
 }
 
-.page-container-post{
+.page-container-post {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }

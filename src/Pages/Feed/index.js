@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography, Fab } from "@material-ui/core";
+import { Grid, Paper, Typography, CircularProgress, Fab } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import AddIcon from "@material-ui/icons/Add";
-import "./styles.css";
-// import fotoPublicacao from "../../assets/imagem/image 6.svg"
-import Post from "./Components/Post";
+import "./styles.css"
+import Post from "./Components/Post"
 import ApiService from "../../variables/ApiService";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,96 +46,119 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Feed(props) {
+
   const classes = useStyles();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([])
   const [userId, setUserId] = useState();
+  const [loading, setLoading] = useState(true)
   const username = props.match.params.username;
 
   useEffect(() => {
     buscaAtletica();
-    if (userId !== undefined && userId !== null) getAllPosts();
+    if (userId !== undefined && userId !== null)
+      getAllPosts();
   }, [userId]);
 
   async function buscaAtletica() {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
-        setUserId(res.data.atleticaId);
+        setUserId(res.data.atleticaId)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
 
   async function getAllPosts() {
     await ApiService.BuscarTodosPosts(userId)
       .then((res) => {
-        setPosts(res.data);
+        setPosts(res.data)
+        setLoading(false)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
 
   function apresentaPosts() {
     if (posts !== undefined && posts !== null && posts.length !== 0)
-      return posts.map((item) => (
-        <Grid item xs={6}>
+      return (
+        posts.map((item) => (
           <Post post={item} />
-        </Grid>
-      ));
+        ))
+
+      );
+
     else
       return (
         <Paper className={classes.paperA}>
-          <Typography variant="h6" align="center" style={{ color: "white" }}>
-            Essa atlética não possui publicações!
-          </Typography>
+          <Grid container  >
+            <Grid item>
+              <Typography variant="h6" >Essa atlética não possui publicações!</Typography>
+            </Grid>
+          </Grid>
         </Paper>
       );
   }
 
   return (
-    <div className={classes.root}>
-      <NavBar />
+    <>
+      {loading ? (
+        <>
+          <div style={{ marginTop: 250 }}>
+            <Grid container justify="center">
+              <CircularProgress size={100} color="primary" />
+            </Grid>
+          </div>
+        </>
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      ) : (
 
-        <div className={classes.sectionDesktop}>
-          <div className="page-container-post">
-            <div className="content-wrap-post">
-              <Grid container>
-                <Grid item xs={12}>
-                  <Grid container justify="center">
-                    {apresentaPosts()}
+          <div className={classes.root}>
+            <NavBar />
+
+            <main className={classes.content}>
+              <div className={classes.toolbar} />
+
+              <div className={classes.sectionDesktop}>
+
+                <Grid container justify='center'>
+                  <Grid item xs={8}>
+                    <Grid container justify="center">
+                      {apresentaPosts()}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </div>
-          </div>
-        </div>
 
-        <div className={classes.sectionMobile}>
-          <div className="page-container-post">
-            <div className="content-wrap-post">
-              <Grid container justify="center">
-                <Grid item xs={12}>
-                  <Grid container justify="center">
-                    {apresentaPosts()}
+              </div>
+
+              <div className={classes.sectionMobile}>
+
+                <Grid container justify="center">
+                  <Grid item xs={12}>
+                    <Grid container justify="center">
+                      {apresentaPosts()}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </div>
-          </div>
-        </div>
 
-        <Grid container justify="flex-end">
-          <Link to="/AdicionarPost">
-            <Fab color="secondary" aria-label="add">
-              <AddIcon />
-            </Fab>
-          </Link>
-        </Grid>
-      </main>
-    </div>
-  );
+              </div>
+
+              <div className='fixed'>
+                <Grid container justify="flex-end">
+                  <Link to="/AdicionarPost">
+                    <Fab color="secondary" aria-label="add">
+                      <AddIcon />
+                    </Fab>
+                  </Link>
+                </Grid>
+              </div>
+
+
+            </main >
+          </div>
+        )}
+    </>
+
+  )
 }
