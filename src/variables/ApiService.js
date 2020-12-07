@@ -536,6 +536,7 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
   CadastrarModalidade: (modalidade) => {
     return api
       .post('/api/Modalidade', modalidade)
@@ -547,6 +548,7 @@ const ApiService = {
         return Promise.reject(error);
       });
   },
+
   UploadImagem: (data) => {
     return api
       .post(`/api/Imagem/Upload`, data)
@@ -558,7 +560,6 @@ const ApiService = {
         return error;
       })
   },
-
 
   ReseteSenha: (value) => {
     return api
@@ -584,6 +585,17 @@ const ApiService = {
       .catch((error) => {
         return Promise.reject(error);
       });
+  },
+
+  AtualizarProduto: (produtoId, produto) => {
+    return api
+      .put(`/api/Produto/${produtoId}`, produto)
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      })
   },
 
 };
