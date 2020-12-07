@@ -26,7 +26,7 @@ import Modalidade from "../../assets/icons/modalidadeIcon.svg";
 import LogOut from "../../assets/imagem/log-out.svg";
 import SearchIcon from "@material-ui/icons/Search";
 import "./NavBar.css";
-import { Grid, TextField, InputAdornment } from "@material-ui/core";
+import { Grid, TextField, InputAdornment, Button } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import LogoutModel from "../../Components/ModalLogout";
@@ -113,8 +113,8 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: 170,
-      width: "50%",
+      marginLeft: theme.spacing(3),
+      width: "30%",
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
@@ -304,40 +304,67 @@ export default function MiniDrawer() {
                     )}
                   />
                 </div>
-                <div className="userButtom">
-                  <IconButton
-                    style={{ outline: 'none' }}
-                    edge="end"
-                    aria-label="account of current user"
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                    onClick={handleProfileMenuOpen}
-                    color="inherit"
-                  >
-                    <img src={AvatarIcon} style={{ width: 30 }} />
-                  </IconButton>
-                  <Menu
-                    anchorEl={anchorEl}
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                    id="primary-search-account-menu"
-                    keepMounted
-                    transformOrigin={{ vertical: "top", horizontal: "right" }}
-                    open={isMenuOpen}
-                    onClose={handleMenuClose}
-                  >
-                    <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()} onClick={acessarPerfil}>
-                      <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
-                    </Link>
-                    {
-                      getUserType() === "A" ?
-                        <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil"} onClick={acessarPerfil}>
-                          <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
+                {
+                  isLogin() ?
+                    <div className="userButtom">
+                      <IconButton
+                        style={{ outline: 'none' }}
+                        edge="end"
+                        aria-label="account of current user"
+                        aria-controls={menuId}
+                        aria-haspopup="true"
+                        onClick={handleProfileMenuOpen}
+                        color="inherit"
+                      >
+                        <img src={AvatarIcon} style={{ width: 30 }} />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                        id="primary-search-account-menu"
+                        keepMounted
+                        transformOrigin={{ vertical: "top", horizontal: "right" }}
+                        open={isMenuOpen}
+                        onClose={handleMenuClose}
+                      >
+                        <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()} onClick={acessarPerfil}>
+                          <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
                         </Link>
-                        : null
-                    }
-                    <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
-                  </Menu>
-                </div>
+                        {
+                          getUserType() === "A" ?
+                            <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil"} onClick={acessarPerfil}>
+                              <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
+                            </Link>
+                            : null
+                        }
+                        <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
+                      </Menu>
+                    </div>
+                    :
+                    <div className="userButtom">
+                      <div className={classes.grow} />
+                      <div className={classes.sectionDesktop}>
+                        <Grid container direction="row" spacing={3}>
+                          <Grid item>
+                            <Link to="/login">
+                              <Button style={{ color: "white" }}>Login</Button>
+                            </Link>
+                          </Grid>
+                          <Grid item>
+                            <Link to="/cadastro">
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                disableElevation
+                              >
+                                <span>Cadastre-se</span>
+                              </Button>
+                            </Link>
+                          </Grid>
+                        </Grid>
+                      </div>
+                    </div>
+                }
               </Toolbar>
             </AppBar>
           </div>
@@ -694,28 +721,31 @@ export default function MiniDrawer() {
                 )}
               </List>
             </Grid>
+            {
+              isLogin() ?
+                <div className="absoluteMobile">
+                  {getUserType() === "A" && (
+                    <Link to="/EditarPerfil" onClick={acessarPerfil}>
+                      <ListItem button>
+                        <ListItemIcon>
+                          <PermIdentityIcon style={{ color: "white" }} />
+                        </ListItemIcon>
+                        <ListItemText className="item" primary="Meu Perfil" />
+                      </ListItem>
+                    </Link>
+                  )}
 
-            <div className="absoluteMobile">
-              {getUserType() === "A" && (
-                <Link to="/EditarPerfil" onClick={acessarPerfil}>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <PermIdentityIcon style={{ color: "white" }} />
-                    </ListItemIcon>
-                    <ListItemText className="item" primary="Meu Perfil" />
-                  </ListItem>
-                </Link>
-              )}
-
-              <List>
-                <ListItem button onClick={handleClickOpenLogout}>
-                  <ListItemIcon>
-                    <img src={LogOut} alt="logout" />
-                  </ListItemIcon>
-                  <ListItemText className="item" primary="Logout" />
-                </ListItem>
-              </List>
-            </div>
+                  <List>
+                    <ListItem button onClick={handleClickOpenLogout}>
+                      <ListItemIcon>
+                        <img src={LogOut} alt="logout" />
+                      </ListItemIcon>
+                      <ListItemText className="item" primary="Logout" />
+                    </ListItem>
+                  </List>
+                </div>
+                : null
+            }
           </Drawer>
         </div>
       </  div>
