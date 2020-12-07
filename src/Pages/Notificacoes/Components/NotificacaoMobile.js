@@ -7,11 +7,17 @@ import {
   Paper,
   Typography,
   makeStyles,
+  Snackbar
 } from "@material-ui/core";
 import "../styles.css";
 
 import atleta_icon from "../../../assets/imagem/atleta_icon.svg";
 import jogo_icon from "../../../assets/imagem/jogo_icon.svg";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,76 +42,100 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AcertarData(data) {
-    var ano = "",
-      mes = "",
-      dia = "",
-      hora = "",
-      minuto = "";
-    for (var i = 0; i < 4; i++) {
-      ano = ano + data[i];
-    }
-    for (var j = 5; j < 7; j++) {
-      mes = mes + data[j];
-    }
-    for (var t = 8; t < 10; t++) {
-      dia = dia + data[t];
-    }
-    for (var k = 11; k < 13; k++) {
-      hora = hora + data[k];
-    }
-    for (var l = 14; l < 16; l++) {
-      minuto = minuto + data[l];
-    }
-  
-    return dia + "/" + mes + "/" + ano + ", " + hora + ":" + minuto;
+  var ano = "",
+    mes = "",
+    dia = "",
+    hora = "",
+    minuto = "";
+  for (var i = 0; i < 4; i++) {
+    ano = ano + data[i];
   }
+  for (var j = 5; j < 7; j++) {
+    mes = mes + data[j];
+  }
+  for (var t = 8; t < 10; t++) {
+    dia = dia + data[t];
+  }
+  for (var k = 11; k < 13; k++) {
+    hora = hora + data[k];
+  }
+  for (var l = 14; l < 16; l++) {
+    minuto = minuto + data[l];
+  }
+
+  return dia + "/" + mes + "/" + ano + ", " + hora + ":" + minuto;
+}
 
 function NotificacaoMobile(props) {
   const classes = useStyles();
   const { item } = props;
 
+  const [openAceito, setOpenAceito] = useState(false)
+  const [openRecusado, setOpenRecusado] = useState(false)
+
+  const handleCloseAceito = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAceito(false);
+  };
+
+  const handleCloseRecusado = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenRecusado(false);
+  };
+
+
   async function aprovaSolicitacaoAtleta(solicitacaoAtletaId) {
     await ApiService.AprovarSolicitacaoAtleta(solicitacaoAtletaId)
       .then((res) => {
         console.log(res);
+        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
       })
       .catch((error) => {
         console.log(error);
       });
-      props.getSolicitacoes()
+    props.getSolicitacoes()
   }
 
   async function reprovaSolicitacaoAtleta(solicitacaoAtletaId) {
     await ApiService.ReprovarSolicitacaoAtleta(solicitacaoAtletaId)
       .then((res) => {
         console.log(res);
+        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
       })
       .catch((error) => {
         console.log(error);
       });
-      props.getSolicitacoes()
+    props.getSolicitacoes()
   }
 
   async function aprovaSolicitacaoJogo(solicitacaoJogoId) {
     await ApiService.AprovarSolicitacaoJogo(solicitacaoJogoId)
       .then((res) => {
         console.log(res);
+        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
       })
       .catch((error) => {
         console.log(error);
       });
-      props.getSolicitacoes()
+    props.getSolicitacoes()
   }
 
   async function reprovaSolicitacaoJogo(solicitacaoJogoId) {
     await ApiService.ReprovarSolicitacaoJogo(solicitacaoJogoId)
       .then((res) => {
         console.log(res);
+        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
       })
       .catch((error) => {
         console.log(error);
       });
-      props.getSolicitacoes()
+    props.getSolicitacoes()
   }
 
   function handleAceitarSolicitacao() {
@@ -169,6 +199,25 @@ function NotificacaoMobile(props) {
 
   return (
     <>
+      <Snackbar
+        open={openAceito}
+        autoHideDuration={4000}
+        onClose={handleCloseAceito}
+      >
+        <Alert onClose={handleCloseAceito} severity="success">
+          Solicitação aceita com sucesso!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openRecusado}
+        autoHideDuration={4000}
+        onClose={handleCloseRecusado}
+      >
+        <Alert onClose={handleCloseRecusado} severity="success">
+          Solicitação recusada com sucesso!
+        </Alert>
+      </Snackbar>
       <Grid item style={{ marginBottom: 20 }} xs={12}>
         <Paper className={classes.paper}>
           <Grid
