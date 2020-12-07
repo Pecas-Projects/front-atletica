@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography, CircularProgress } from "@material-ui/core";
 import "./styles.css"
-// import fotoPublicacao from "../../assets/imagem/image 6.svg"
 import Post from "./Components/Post"
 import ApiService from "../../variables/ApiService";
 
@@ -50,6 +49,7 @@ export default function Feed(props) {
     const classes = useStyles();
     const [posts, setPosts] = useState([])
     const [userId, setUserId] = useState();
+    const [loading, setLoading] = useState(true)
     const username = props.match.params.username;
 
     useEffect(() => {
@@ -72,6 +72,7 @@ export default function Feed(props) {
         await ApiService.BuscarTodosPosts(userId)
             .then((res) => {
                 setPosts(res.data)
+                setLoading(false)
             })
             .catch((err) => {
                 console.log(err)
@@ -90,9 +91,9 @@ export default function Feed(props) {
         else
             return (
                 <Paper className={classes.paperA}>
-                    <Grid container justify="center" >
+                    <Grid container  >
                         <Grid item>
-                            <Typography variant="h6" align="center" style={{ color: 'white' }}>Essa atlética não possui publicações!</Typography>
+                            <Typography variant="h6" >Essa atlética não possui publicações!</Typography>
                         </Grid>
                     </Grid>
                 </Paper>
@@ -100,47 +101,59 @@ export default function Feed(props) {
     }
 
     return (
-
-        <div className={classes.root}>
-            <NavBar />
-
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-
-                <div className={classes.sectionDesktop}>
-
-                    <Grid container  >
-
-                        <Grid item xs={2} />
-
-                        <Grid item xs={8} >
-
-                            <Grid container justify='center'>
-
-                                {apresentaPosts()}
-
-                            </Grid>
-
-                            <Grid item xs={2} />
-
+        <>
+            {loading ? (
+                <>
+                    <div style={{ marginTop: 250 }}>
+                        <Grid container justify="center">
+                            <CircularProgress size={100} color="primary" />
                         </Grid>
-                    </Grid>
+                    </div>
+                </>
 
-                </div>
+            ) : (
 
-                <div className={classes.sectionMobile}>
-                    <Grid container  >
-                        <Grid item xs={12} >
-                            {apresentaPosts()}
-                        </Grid>
-                    </Grid>
+                    <div className={classes.root}>
+                        <NavBar />
 
-                </div>
+                        <main className={classes.content}>
+                            <div className={classes.toolbar} />
+
+                            <div className={classes.sectionDesktop}>
+
+                                <Grid container  >
+
+                                    <Grid item xs={2} />
+
+                                    <Grid item xs={8} >
+
+                                        <Grid container justify='center'>
+
+                                            {apresentaPosts()}
+
+                                        </Grid>
+
+                                        <Grid item xs={2} />
+
+                                    </Grid>
+                                </Grid>
+
+                            </div>
+
+                            <div className={classes.sectionMobile}>
+                                <Grid container  >
+                                    <Grid item xs={12} >
+                                        {apresentaPosts()}
+                                    </Grid>
+                                </Grid>
+
+                            </div>
 
 
-            </main >
-        </div>
-
+                        </main >
+                    </div>
+                )}
+        </>
 
     );
 }
