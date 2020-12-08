@@ -161,6 +161,7 @@ export default function Perfil(props) {
   const [opcao, setOpcao] = useState('Atleta')
   const [cursos, setCursos] = useState([])
   const [modalidades, setModalidades] = useState([])
+  const [membros, setMembros] = useState([])
   const [achouAtletica, setAchouAtletica] = useState(true)
   const [loading, setLoading] = useState(true)
 
@@ -257,6 +258,12 @@ export default function Perfil(props) {
     setOpenAdd(true)
   }
 
+  const removeMembro = (pessoa) => {
+    let index = membros.indexOf(pessoa)
+    membros.splice(index, 1)
+    setMembros([...membros])
+}
+
   const concatenaEndereco = () => {
 
     let endereco = ""
@@ -309,6 +316,10 @@ export default function Perfil(props) {
     buscarCursos();
     buscarModalidades();
   }, [props.match.params.username])
+
+  useEffect(() => {
+    setMembros(atletica.membros)
+  }, [atletica])
 
   return (
     <>
@@ -411,9 +422,9 @@ export default function Perfil(props) {
                             <Grid container spacing={3}>
 
                               {
-                                atletica.membros !== null ?
-                                  atletica.membros.map((item) =>
-                                    <CardMembro item={item} atleticaId={atletica.atleticaId}/>
+                                membros !== null ?
+                                  membros.map((item) =>
+                                    <CardMembro item={item} atleticaId={atletica.atleticaId} removeMembro={removeMembro}/>
                                   ) : null
                               }
 
@@ -703,9 +714,9 @@ MOBILE
                             <Grid container spacing={3}>
 
                               {
-                                atletica.membros !== null ?
-                                  atletica.membros.map((item) =>
-                                    <CardMembro item={item} atleticaId={atletica.atleticaId}/>
+                                membros !== null ?
+                                  membros.map((item) =>
+                                    <CardMembro item={item} atleticaId={atletica.atleticaId} removeMembro={removeMembro}/>
                                   ) : null
                               }
 
