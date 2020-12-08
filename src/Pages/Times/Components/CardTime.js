@@ -3,15 +3,11 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Grid,
   Card,
-  CardActionArea,
   CardContent,
   CardMedia,
   Typography,
 } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     height: 200,
   },
 }));
+
+function exibirHora(hora) {
+  var horaCerta = hora.slice(0, 5)
+  return horaCerta;
+}
 
 export default function CardTime(props) {
   const { time } = props;
@@ -76,7 +77,7 @@ export default function CardTime(props) {
           <Typography
             variant="body2"
             component="p"
-            style={{ paddingBottom: 10 }}
+            style={{ paddingBottom: 5 }}
           >
             Horário dos treinos:
         </Typography>
@@ -85,10 +86,9 @@ export default function CardTime(props) {
               <Typography
                 variant="body2"
                 component="p"
-                style={{ paddingBottom: 10 }}
+                style={{ paddingBottom: 10, color: "gray" }}
               >
                {acertaDia(treino.diaSemana)}  {acertaHorario(treino.horaInicio)}
-
               </Typography>
             ))
           }
@@ -130,13 +130,21 @@ export default function CardTime(props) {
                   {apresentaTreinos()}
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography
-                    variant="body2"
-                    component="p"
-                    style={{ paddingBottom: 10 }}
-                  >
-                    Coordenador: {time.coordenador}
+                  <Grid item xs={12}>
+                    <Typography
+                      variant="body2"
+                      component="p"
+                      style={{ paddingBottom: 5 }}
+                    >
+                      Coordenador:
                   </Typography>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <Typography variant="body2" style={{ color: "gray" }}>
+                      {time.coordenador}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </CardContent>

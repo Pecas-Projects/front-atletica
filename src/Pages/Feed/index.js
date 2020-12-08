@@ -72,7 +72,7 @@ export default function Feed(props) {
   async function getAllPosts() {
     await ApiService.BuscarTodosPosts(userId)
       .then((res) => {
-        setPosts(res.data)
+        setPosts(res.data.reverse())
         setLoading(false)
       })
       .catch((err) => {

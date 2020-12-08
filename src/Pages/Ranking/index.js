@@ -13,6 +13,19 @@ import CardAtletica from "./Components/CardAtletica";
 import AtleticaMobile from "./Components/AtleticaMobile";
 import "./styles.css";
 
+
+function acertaNome(nome, genero) {
+
+  var modalidade;
+
+  if (genero === 'M') modalidade = nome + " Masculino";
+  if (genero === 'F') modalidade = nome + " Feminino";
+  if (genero === 'O') modalidade = nome;
+
+  return modalidade;
+}
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -176,8 +189,8 @@ function Ranking() {
 
                         >
                           {modalidades.map((modalidade) => (
-                            <MenuItem value={modalidade.modalidadeId}>
-                              {modalidade.nome}
+                            <MenuItem key={modalidade.modalidadeId} value={modalidade.modalidadeId}>
+                              {acertaNome(modalidade.nome, modalidade.genero)}
                             </MenuItem>
                           ))}
                         </TextField>
@@ -216,7 +229,7 @@ function Ranking() {
                       >
                         {modalidades.map((modalidade) => (
                           <MenuItem value={modalidade.modalidadeId}>
-                            {modalidade.nome}
+                            {acertaNome(modalidade.nome, modalidade.genero)}
                           </MenuItem>
                         ))}
                       </TextField>

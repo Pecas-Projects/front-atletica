@@ -1,12 +1,12 @@
-.MyTitle {
-  font-size: 24px;
+.MyTitlePerfil {
+  font-size: 30px;
   font-family: "Roboto Condensed";
   color: white;
   margin-left: 290px;
   margin-top: 10px;
 }
 
-.MyTitleMobile {
+.MyTitleMobilePerfil {
   font-size: 24px;
   font-family: "Roboto Condensed";
   color: white;

@@ -8,7 +8,7 @@ import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
 import AlertComponents from "./Components/Alert";
-import { getAtleticaId } from "../../utils/storage";
+import { getAtleticaId, atleticaUsername, atleticaUsernamePesquisada } from "../../utils/storage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -111,7 +111,7 @@ export default function EditarPerfil(props) {
   const [imagemCapa, setImagemCapa] = useState(null);
   const [pathCapa, setPathCapa] = useState();
   const [nome, setNome] = useState("");
-  const [atleticaUsername, setAtleticaUsername] = useState("");
+  const [username, setUsername] = useState("");
   const [typePin, setTypePin] = useState(true);
   const [email, setEmail] = useState("");
   const [nomeCampus, setNomeCampus] = useState("");
@@ -217,7 +217,7 @@ export default function EditarPerfil(props) {
   };
   const handleChangeAtleticaUsername = (e) => {
     e.preventDefault();
-    setAtleticaUsername(e.target.value);
+    setUsername(e.target.value);
   };
 
   const handleClickPIN = async (e) => {
@@ -237,12 +237,12 @@ export default function EditarPerfil(props) {
 
   const changeUsername = async (e) => {
     e.preventDefault();
-    if (atletica.username === atleticaUsername) {
+    if (atletica.username === username) {
       setVerificacaoMsg("Esta já é seu username");
       setStatusVerificacao("info");
       setMostrarVerificacao(true);
     } else {
-      await ApiService.VerificaUsername(atleticaUsername)
+      await ApiService.VerificaUsername(username)
         .then(() => {
           setVerificacaoMsg("Username disponivel");
           setStatusVerificacao("success");
@@ -285,7 +285,7 @@ export default function EditarPerfil(props) {
       .then((res) => {
         console.log(res.data);
         setAtletica(res.data);
-        setAtleticaUsername(res.data.username);
+        setUsername(res.data.username);
         setEmail(res.data.email);
         setNome(res.data.nome);
         setDescricao(res.data.descricao);
@@ -409,7 +409,7 @@ export default function EditarPerfil(props) {
     let atleticaDados = {
       nome: nome,
       email: email,
-      username: atleticaUsername,
+      username: username,
       descricao: descricao,
       senha: "*",
       telefone: telefone,
@@ -435,12 +435,14 @@ export default function EditarPerfil(props) {
     ApiService.AtualizarAtletica(getAtleticaId(), atleticaDados)
       .then((res) => {
         // console.log(res.data);
+
         atleticaUsername(res.data.username);
+        atleticaUsernamePesquisada(res.data.username)
         setUpdateMsg("Suas informações foram atualizadas com sucesso!");
         setUpdateStatus("success");
         setNotification(true);
         setLoadingUpdate(false);
-        setTimeout(function () { window.location.href = '/EditarPerfi' }, 3000)
+
       })
       .catch((err) => {
         setUpdateMsg("Erro ao atualizar as informações");
@@ -553,13 +555,13 @@ export default function EditarPerfil(props) {
                           para mudar este campo é aconselhado chegar sua
                           disponibilidade
                       </p>
-                        <Grid container>
+                        <Grid container spacing={1}>
                           <Grid item xs={8}>
                             <AvField
                               name="username"
                               type="text"
                               onChange={handleChangeAtleticaUsername}
-                              value={atleticaUsername}
+                              value={username}
                             />
 
                           </Grid>
