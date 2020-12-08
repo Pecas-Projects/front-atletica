@@ -454,14 +454,25 @@ export default function CardModalidade(props) {
 
                             {atletas !== undefined ? (
                                 <>
-                                    {atletas.map((atleta) =>
-                                        <CardAtleta atleta={atleta} />
-                                    )}
+                                    {atletas.length !== 0 ? (
+                                        <>
+                                            {atletas.map((atleta) =>
+                                                <CardAtleta atleta={atleta} />
+                                            )}
+                                        </>
+
+                                    ) : (
+                                            <Grid style={{ padding: 20 }}>
+                                                <Typography>Essa modalidade ainda não possui jogadores adicionados</Typography>
+                                            </Grid>
+                                        )}
                                 </>
 
                             ) : (
                                     <>
                                     </>
+
+
                                 )}
 
 
