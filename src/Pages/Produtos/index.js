@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Fab, Typography } from "@material-ui/core";
+import { Grid, Paper, Fab, Typography, CircularProgress } from "@material-ui/core";
 import CardProduto from "./Components/CardProduto";
 import "./styles.css";
 import ApiService from "../../variables/ApiService";
@@ -70,6 +70,7 @@ export default function Produtos(props) {
   const atleticaLoginId = getAtleticaId();
   const [logada, setLogada] = useState(false);
   const [produtos, setProdutos] = useState([]);
+  const [loading, setLoading] = useState(true)
 
   const DeleteProduto = (index) => {
     let newArray = [...produtos];
@@ -100,9 +101,8 @@ export default function Produtos(props) {
   async function buscarProdutos() {
     await ApiService.BuscarProdutosAtletica(atleticaId)
       .then((res) => {
-        console.log(res.data);
-        console.log(atleticaId);
-        setProdutos(res.data);
+        setProdutos(res.data)
+        setLoading(false)
       })
       .catch((error) => {
         console.log(error);
@@ -110,92 +110,108 @@ export default function Produtos(props) {
   }
 
   return (
-    <div className={classes.root}>
-      <NavBar />
-
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-
-        <div className={classes.sectionDesktop}>
-          <div className="page-container-post">
-            <div className="content-wrap-post">
-              <Grid container justify="center">
-                <Paper className={classes.paperA}>
-                  {produtos !== undefined &&
-                  produtos !== null &&
-                  produtos.length !== 0 ? (
-                    <h4 className="MyTitle">Nossos Produtos</h4>
-                  ) : (
-                    <h4 className="MyTitle">
-                      Essa atlética não possui produtos cadastrados!
-                    </h4>
-                  )}
-                  <Grid container spacing={1} style={{ marginTop: 20 }}>
-                    {produtos.map((item, index) => (
-                      <CardProduto
-                        item={item}
-                        atletica={logada}
-                        index={index}
-                        DeleteProduto={DeleteProduto}
-                      />
-                    ))}
-                  </Grid>
-                </Paper>
-              </Grid>
-            </div>
+    <>
+      {loading ? (
+        <>
+          <div style={{ marginTop: 250 }}>
+            <Grid container justify="center">
+              <CircularProgress size={100} color="primary" />
+            </Grid>
           </div>
-        </div>
+        </>
 
-        <div className={classes.sectionMobile}>
-          <div className="page-container-post">
-            <div className="content-wrap-post">
-              <Grid container spacing={1} style={{ marginTop: 20 }}>
-                {produtos !== undefined &&
-                produtos !== null &&
-                produtos.length !== 0 ? (
-                  <Grid container justify="center">
-                    <Typography
-                      variant="h6"
-                      align="center"
-                      style={{ color: "black", marginBottom:20 }}
-                    >
-                      Nossos Produtos
+      ) : (
+
+          <div className={classes.root}>
+            <NavBar />
+
+            <main className={classes.content}>
+              <div className={classes.toolbar} />
+
+              <div className={classes.sectionDesktop}>
+                <div className="page-container-post">
+                  <div className="content-wrap-post">
+                    <Grid container justify="center">
+                      <Paper className={classes.paperA}>
+                        {produtos !== undefined &&
+                          produtos !== null &&
+                          produtos.length !== 0 ? (
+                            <h4 className="MyTitle">Nossos Produtos</h4>
+                          ) : (
+                            <h4 className="MyTitle">
+                              Essa atlética não possui produtos cadastrados!
+                            </h4>
+                          )}
+                        <Grid container spacing={1} style={{ marginTop: 20 }}>
+                          {produtos.map((item, index) => (
+                            <CardProduto
+                              item={item}
+                              atletica={logada}
+                              index={index}
+                              DeleteProduto={DeleteProduto}
+                            />
+                          ))}
+                        </Grid>
+                      </Paper>
+                    </Grid>
+                  </div>
+                </div>
+              </div>
+
+              <div className={classes.sectionMobile}>
+                <div className="page-container-post">
+                  <div className="content-wrap-post">
+                    <Grid container spacing={1} style={{ marginTop: 20 }}>
+                      {produtos !== undefined &&
+                        produtos !== null &&
+                        produtos.length !== 0 ? (
+                          <Grid container justify="center">
+                            <Typography
+                              variant="h6"
+                              align="center"
+                              style={{ color: "black", marginBottom: 20 }}
+                            >
+                              Nossos Produtos
                     </Typography>
-                  </Grid>
-                ) : (
-                  <Grid container justify="center">
-                    <Paper className={classes.paperA}>
-                      <Typography
-                        variant="h6"
-                        align="center"
-                        style={{ color: "white" }}
-                      >
-                        Essa atlética não possui produtos cadastrados!
+                          </Grid>
+                        ) : (
+                          <Grid container justify="center">
+                            <Paper className={classes.paperA}>
+                              <Typography
+                                variant="h6"
+                                align="center"
+                                style={{ color: "white" }}
+                              >
+                                Essa atlética não possui produtos cadastrados!
                       </Typography>
-                    </Paper>
-                  </Grid>
-                )}
-                {produtos.map((item, index) => (
-                  <CardProduto
-                    item={item}
-                    atletica={logada}
-                    index={index}
-                    DeleteProduto={DeleteProduto}
-                  />
-                ))}
-              </Grid>
-            </div>
-          </div>
-        </div>
+                            </Paper>
+                          </Grid>
+                        )}
+                      {produtos.map((item, index) => (
+                        <CardProduto
+                          item={item}
+                          atletica={logada}
+                          index={index}
+                          DeleteProduto={DeleteProduto}
+                        />
+                      ))}
+                    </Grid>
+                  </div>
+                </div>
+              </div>
 
-        <Grid container justify="flex-end">
-          <Link to="/AdicionarProduto">
-            <Fab color="secondary" aria-label="add">
-              <AddIcon />
-            </Fab>
-          </Link>
-        </Grid>
-      </main>
-    </div>
+              <Grid container justify="flex-end">
+                <Link to="/AdicionarProduto">
+                  <Fab color="secondary" aria-label="add">
+                    <AddIcon />
+                  </Fab>
+                </Link>
+              </Grid>
+
+            </main>
+          </div>
+
+        )}
+    </>
   );
 }

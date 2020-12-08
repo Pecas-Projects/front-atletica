@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { Grid, Paper, Button, CircularProgress } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Grid, Paper, CircularProgress } from "@material-ui/core";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import Radio from '@material-ui/core/Radio';

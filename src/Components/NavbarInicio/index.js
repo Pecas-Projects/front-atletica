@@ -180,10 +180,10 @@ export default function ElevateAppBar(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + acessarPerfil()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()} onClick={acessarPerfil}>
         <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
       </Link>
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + acessarPerfil()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil"} onClick={acessarPerfil}>
         <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
       </Link>
       <MenuItem onClick={handleClickOpen}>Sair</MenuItem>
@@ -201,10 +201,10 @@ export default function ElevateAppBar(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + acessarPerfil()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/Perfil/" + atleticaUsername()} onClick={acessarPerfil}>
         <MenuItem onClick={handleMenuClose}>Meu perfil</MenuItem>
       </Link>
-      <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil/" + acessarPerfil()}>
+      <Link style={{ textDecoration: "none", color: "black" }} to={"/EditarPerfil"} onClick={acessarPerfil}>
         <MenuItem onClick={handleMenuClose}>Editar perfil</MenuItem>
       </Link>
       <MenuItem onClick={handleClickOpen}>Sair</MenuItem>

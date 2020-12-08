@@ -95,6 +95,17 @@ const ApiService = {
       });
   },
 
+  PesquisaAtleticaPorId: (atleticaId) => {
+    return api
+      .get(`/api/Atletica/BuscaPorId/${atleticaId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
   PesquisaAtleticas: (nome) => {
     return api
       .get(`/api/AtleticaNome/${nome}`)
