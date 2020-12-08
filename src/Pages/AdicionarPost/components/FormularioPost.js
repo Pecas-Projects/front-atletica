@@ -3,7 +3,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { Grid, Typography, Paper, Button, Snackbar } from "@material-ui/core";
 import BotaoUploadImagem from "../../../Components/BotaoUploadImagem";
 import ApiService from "../../../variables/ApiService";
-import { getAtleticaId } from "../../../utils/storage";
+import { atleticaUsername, getAtleticaId } from "../../../utils/storage";
 import MuiAlert from "@material-ui/lab/Alert";
 
 function Alert(props) {
@@ -81,6 +81,7 @@ export default function FormularioPost() {
     await ApiService.EnviarPost(post)
       .then((res) => {
         setOpenAceito(true)
+        setTimeout(function () { window.location.href = '/feed/' + atleticaUsername() }, 3000)
       })
       .catch((err) => {
         setOpenRecusado(true)
