@@ -48,6 +48,28 @@ export default function CardTime(props) {
     }
   }
 
+  function acertaDia(dia) {
+
+    var diaCerto
+
+    if (dia === "Dom") diaCerto = "Domingo"
+    else if (dia === "Seg") diaCerto = "Segunda-feira"
+    else if (dia === "Ter") diaCerto = "Terça-feira"
+    else if (dia === "Qua") diaCerto = "Quarta-feira"
+    else if (dia === "Qui") diaCerto = "Quinta-feira"
+    else if (dia === "Sex") diaCerto = "Sexta-feira"
+    else if (dia === "Sab") diaCerto = "Sábado"
+    
+    return diaCerto;
+  }
+
+  function acertaHorario(horario){
+
+    let horarioCerto = horario.slice(0,5);
+
+    return horarioCerto;
+  }
+
   function apresentaTreinos() {
     if (time.agendaTreinos !== null && time.agendaTreinos !== undefined && time.agendaTreinos.length !== 0) {
       return (
@@ -60,7 +82,7 @@ export default function CardTime(props) {
               <Typography
                 style={{ paddingBottom: 5, color: "gray", fontSize: 14 }}
               >
-                {treino.diaSemana} {exibirHora(treino.horaInicio)}h
+                {acertaDia(treino.diaSemana)}  {acertaHorario(treino.horaInicio)}
               </Typography>
             ))
           }

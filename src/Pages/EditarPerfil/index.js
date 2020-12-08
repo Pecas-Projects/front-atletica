@@ -601,6 +601,7 @@ export default function EditarPerfil(props) {
                               type="text"
                               onChange={handleChangeEmail}
                               value={email}
+                              disabled
                             />
                           </Grid>
                           <Grid item xs={6}>
