@@ -82,7 +82,7 @@ export default function Produtos(props) {
     buscaAtletica();
     if (atleticaId !== undefined && atleticaId !== null) {
       buscarProdutos();
-      if (atleticaLoginId === atleticaId) {
+      if (atleticaLoginId == atleticaId) {
         setLogada(true);
       }
     }
