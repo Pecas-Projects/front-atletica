@@ -609,6 +609,17 @@ const ApiService = {
       })
   },
 
+  ExcluiMembro: (membroId) => {
+    return api
+      .delete(`/api/Membro/${membroId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
+
 };
 
 export default ApiService;
