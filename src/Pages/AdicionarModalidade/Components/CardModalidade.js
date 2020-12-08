@@ -81,8 +81,8 @@ export default function CardModalidade(props) {
     const [expandedAtletaDelete, setexpandedAtletaDelete] = useState(false);
     const [expandedAtletaAdd, setexpandedAtletaAdd] = useState(false);
     const [expandedModalidade, setExpandedModalidade] = useState(false);
-    const [imagem, setImagem] = useState(null);
-    const [path, setPath] = useState();
+    const [imagem, setImagem] = useState(item.imagemModalidade);
+    const [path, setPath] = useState(item.imagemModalidade.path);
     const [coordenador, setCorrdenador] = useState(item.coordenadorId)
     const [openSalvo, setOpenSalvo] = useState(false)
     const [openExcluir, setOpenExcluir] = useState(false)
