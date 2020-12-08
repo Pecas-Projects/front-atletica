@@ -97,10 +97,10 @@ export default function Categoria(props) {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        { jogos.length !== 0 && jogos !== null ?
-                        jogos.map((item) => (
-                            <Jogo jogo={item} atletas={atletas}/>
-                        )) 
+                        {jogos.length !== 0 && jogos !== null ?
+                            jogos.map((item) => (
+                                <Jogo jogo={item} atletas={atletas} />
+                            ))
                             :
                             <Grid container justify="center">
                                 <Typography>Essa modalidade não possui jogos cadastrados.</Typography>
