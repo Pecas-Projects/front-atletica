@@ -97,9 +97,15 @@ export default function Categoria(props) {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent>
-                        {jogos.map((item) => (
+                        { jogos.length !== 0 && jogos !== null ?
+                        jogos.map((item) => (
                             <Jogo jogo={item} atletas={atletas}/>
-                        ))}
+                        )) 
+                            :
+                            <Grid container justify="center">
+                                <Typography>Essa modalidade não possui jogos cadastrados.</Typography>
+                            </Grid>
+                        }
                     </CardContent>
                 </Collapse>
             </Card>
