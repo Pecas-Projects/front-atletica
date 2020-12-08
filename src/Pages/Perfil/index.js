@@ -413,7 +413,7 @@ export default function Perfil(props) {
                               {
                                 atletica.membros !== null ?
                                   atletica.membros.map((item) =>
-                                    <CardMembro item={item} />
+                                    <CardMembro item={item} atleticaId={atletica.atleticaId}/>
                                   ) : null
                               }
 
@@ -705,7 +705,7 @@ MOBILE
                               {
                                 atletica.membros !== null ?
                                   atletica.membros.map((item) =>
-                                    <CardMembro item={item} />
+                                    <CardMembro item={item} atleticaId={atletica.atleticaId}/>
                                   ) : null
                               }
 
