@@ -98,7 +98,7 @@ function Ranking() {
   async function getModalidades() {
     await ApiService.BuscarModalidades().then((res) => {
       setModalidades(res.data);
-      console.log(res.data)
+
       setLoading(false)
     });
   }
@@ -112,12 +112,12 @@ function Ranking() {
     await ApiService.BuscarRankingModalidade(modalidadeId)
       .then((res) => {
 
-        console.log(res);
+
         setAtleticasRanking(res.data);
 
       })
       .catch((error) => {
-        console.log(error)
+
       })
   }
 

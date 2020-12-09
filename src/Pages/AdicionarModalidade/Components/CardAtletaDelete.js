@@ -21,7 +21,7 @@ export default function CardAtletaDelete(props) {
 
         ApiService.DeletarAtletaModalidade(atleta.atletaAtleticaModalidadeId)
             .then(res => {
-                console.log(res)
+
                 DeleteAtleta(index)
                 setOpenExcluir(false)
                 setOpenExcluido(true)

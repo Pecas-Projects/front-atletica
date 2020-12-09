@@ -104,11 +104,11 @@ export default function CardModalidade(props) {
 
         ApiService.BuscarAtletaModalidade(item.atleticaModalidadeId)
             .then(res => {
-                console.log(res)
+
                 setAtletas(res.data)
             })
             .catch(error => {
-                console.log(error)
+
             })
 
 
@@ -117,7 +117,7 @@ export default function CardModalidade(props) {
 
     useEffect(() => {
         if (atletas !== undefined) {
-            console.log(atletas)
+
         }
     }, [atletas])
 
@@ -125,7 +125,7 @@ export default function CardModalidade(props) {
 
         ApiService.BuscarAddAtletas(JSON.parse(getAtleticaId()), item.modalidadeId)
             .then(res => {
-                console.log(res)
+
                 setAtletasAdd(res.data)
             })
 
@@ -134,7 +134,7 @@ export default function CardModalidade(props) {
 
     useEffect(() => {
         if (atletasAdd !== undefined) {
-            console.log(atletasAdd)
+
         }
     }, [atletasAdd])
 
@@ -142,11 +142,11 @@ export default function CardModalidade(props) {
 
         ApiService.BuscarMembros(getAtleticaId())
             .then(res => {
-                console.log(res)
+
                 setMembros(res.data)
             })
             .catch(error => {
-                console.log(error)
+
             })
 
     }, [])
@@ -154,10 +154,7 @@ export default function CardModalidade(props) {
     useEffect(() => {
 
         async function AtualizarAtleticaModalidade() {
-            console.log(coordenador)
-            console.log(agendaTreinos)
-            console.log(item.agendaTreinos)
-            console.log(imagemId)
+
 
             var AtleticaModalidade = {
                 modalidadeId: item.modalidadeId,
@@ -166,17 +163,17 @@ export default function CardModalidade(props) {
                 agendaTreinos: agendaTreinos
             }
 
-            console.log(AtleticaModalidade)
+
 
             await ApiService.AtualizarAtleticaModalidade(item.atleticaModalidadeId, AtleticaModalidade)
                 .then(res => {
-                    console.log(res)
+
                     setOpenSalvo(true)
                     setTimeout(function () { window.location.href = '/modalidades' }, 3000)
                 })
                 .catch(error => {
                     setOpenErro(true)
-                    console.log(error)
+
                 })
 
         }
@@ -229,12 +226,12 @@ export default function CardModalidade(props) {
 
             await ApiService.UploadImagem(file)
                 .then((res) => {
-                    console.log(res)
+
                     setImagemId(res.data.imagemId)
                     setEnviar(true)
                 })
                 .catch((error) => {
-                    console.log(error)
+
                 });
 
 
@@ -246,7 +243,7 @@ export default function CardModalidade(props) {
 
         ApiService.DeletarAtleticaModalidade(item.atleticaModalidadeId)
             .then(res => {
-                console.log(res)
+
 
                 DeleteModalidade(index);
 

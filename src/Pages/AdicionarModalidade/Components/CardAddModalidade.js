@@ -126,26 +126,21 @@ export default function CardAddModalidade() {
 
         ApiService.BuscarModalidades()
             .then(res => {
-                console.log(res)
+
                 setModalidades(res.data)
             })
 
     }, [])
 
-    useEffect(() => {
-        console.log(modalidades)
-    }, [modalidades])
 
     useEffect(() => {
 
         ApiService.BuscarMembros(getAtleticaId())
             .then(res => {
-                console.log(res)
+
                 setMembros(res.data)
             })
-            .catch(error => {
-                console.log(error)
-            })
+
 
     }, [])
 
@@ -160,11 +155,11 @@ export default function CardAddModalidade() {
                 imagemId: imagemId
 
             }
-            console.log(AtleticaModalidade)
+
 
             await ApiService.CadastrarAtleticaModalidade(getAtleticaId(), AtleticaModalidade)
                 .then(res => {
-                    console.log(res)
+
                     setOpenCriado(true)
                     setTimeout(function () { window.location.href = '/modalidades' }, 3000)
                 })
@@ -174,7 +169,7 @@ export default function CardAddModalidade() {
                     else
                         setMsgErro("Ocorreu um erro, revise os dados e tente novamente")
                     setOpenErro(true)
-                    console.log(error)
+
                 })
 
         }
@@ -192,12 +187,12 @@ export default function CardAddModalidade() {
 
         await ApiService.UploadImagem(file)
             .then((res) => {
-                console.log(res)
+
                 setImagemId(res.data.imagemId)
                 setEnviar(true)
             })
             .catch((error) => {
-                console.log(error)
+
             });
 
     }
@@ -212,14 +207,14 @@ export default function CardAddModalidade() {
 
             ApiService.CadastrarModalidade(_modalidade)
                 .then(res => {
-                    console.log(res)
+
                     setOpenNovaModalidade(true)
                     setTimeout(function () { window.location.href = '/modalidades' }, 3000)
 
                 })
                 .catch(error => {
                     setMsgErro("Ocorreu um erro, revise os dados e tente novamente")
-                    console.log(error)
+
                     setOpenErro(true)
                 })
 
@@ -255,7 +250,7 @@ export default function CardAddModalidade() {
 
     const handleMembroChange = (e) => {
         setCoordenador(e.target.value)
-        console.log(e.target.value)
+
     }
 
     const handleGeneroChange = (e) => {
@@ -264,7 +259,7 @@ export default function CardAddModalidade() {
 
     const handleModalidadeChange = (e) => {
         setModalidade(e.target.value)
-        console.log(modalidade)
+
     }
 
     const handleHorarioChange = (e) => {
@@ -280,9 +275,7 @@ export default function CardAddModalidade() {
         setNomeModaliade(e.target.value)
     }
 
-    const handleClickCriado = () => {
-        setOpenCriado(true);
-    };
+
 
     const handleCloseCriado = (event, reason) => {
         if (reason === 'clickaway') {
