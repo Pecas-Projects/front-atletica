@@ -42,7 +42,7 @@ export default function CardProduto(props) {
   };
 
   function apresentaIcones() {
-    if (atletica !== null) {
+    if (atletica) {
       return (
         <>
             <IconButton aria-label="Editar Produto" className={classes.margin} component={editarLink}>
