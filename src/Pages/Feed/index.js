@@ -130,6 +130,16 @@ export default function Feed(props) {
                   </Grid>
                 </Grid>
 
+                <div className='fixed'>
+                  <Grid container justify="flex-end">
+                    <Link to="/AdicionarPost">
+                      <Fab color="secondary" aria-label="add">
+                        <AddIcon />
+                      </Fab>
+                    </Link>
+                  </Grid>
+                </div>
+
               </div>
 
               <div className={classes.sectionMobile}>
@@ -144,15 +154,7 @@ export default function Feed(props) {
 
               </div>
 
-              <div className='fixed'>
-                <Grid container justify="flex-end">
-                  <Link to="/AdicionarPost">
-                    <Fab color="secondary" aria-label="add">
-                      <AddIcon />
-                    </Fab>
-                  </Link>
-                </Grid>
-              </div>
+
 
 
             </main >

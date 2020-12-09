@@ -199,14 +199,15 @@ export default function Produtos(props) {
                   </div>
                 </div>
               </div>
-
-              <Grid container justify="flex-end">
-                <Link to="/AdicionarProduto">
-                  <Fab color="secondary" aria-label="add">
-                    <AddIcon />
-                  </Fab>
-                </Link>
-              </Grid>
+              <div className={classes.sectionDesktop}>
+                <Grid container justify="flex-end">
+                  <Link to="/AdicionarProduto">
+                    <Fab color="secondary" aria-label="add">
+                      <AddIcon />
+                    </Fab>
+                  </Link>
+                </Grid>
+              </div>
 
             </main>
           </div>

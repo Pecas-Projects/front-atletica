@@ -374,7 +374,7 @@ export default function CardModalidade(props) {
 
                     <Grid item xs={8}>
 
-                        <h4 className="MySubtitle">{item.nome}</h4>
+                        <h5 className="MySubtitle">{item.modalidade}</h5>
                         <br />
                         <p className="MySubtitle2">Coordenador: {item.coordenador}</p>
 
