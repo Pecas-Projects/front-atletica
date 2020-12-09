@@ -5,12 +5,66 @@ import BotaoUploadImagemMobile from "../../../Components/BotaoUploadImagemMobile
 import ApiService from "../../../variables/ApiService";
 import { getAtleticaId, atleticaUsername } from "../../../utils/storage";
 import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+  paperA: {
+    width: "85%",
+    marginTop: 20,
+    padding: "2%",
+    backgroundColor: "#BBB8CC",
+  },
+  paperB: {
+    width: "85%",
+    marginTop: -10,
+    padding: "2%",
+    backgroundColor: "#807D8E",
+  },
+  paperAMobile: {
+    width: "100%",
+    marginTop: -10,
+    padding: "5%",
+    backgroundColor: "#BBB8CC",
+  },
+  paperBMobile: {
+    width: "100%",
+    marginTop: -10,
+    padding: "5%",
+    backgroundColor: "#807D8E",
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
+    },
+  },
+  sectionMobile: {
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
+  },
+}));
+
+
 
 export default function FormularioPostMobile() {
+  const classes = useStyles();
   const [imagem, setImagem] = useState(null);
   const [path, setPath] = useState();
   const [post, setPost] = useState({
@@ -97,95 +151,12 @@ export default function FormularioPostMobile() {
 
   return (
     <>
-      <Snackbar
-        open={openAceito}
-        autoHideDuration={4000}
-        onClose={handleCloseAceito}
-      >
-        <Alert onClose={handleCloseAceito} severity="success">
-          Post criado com sucesso!
-        </Alert>
-      </Snackbar>
 
-      <Snackbar
-        open={openRecusado}
-        autoHideDuration={4000}
-        onClose={handleCloseRecusado}
-      >
-        <Alert onClose={handleCloseRecusado} severity="error">
-          Ocorreu um erro ao criar o post, revise os dados e tente novamente
-        </Alert>
-      </Snackbar>
 
       <Grid container style={{ marginBottom: 25 }}>
-        <h4 className="MyTitleEP">Novo Post</h4>
-        <Typography variant="h8" style={{ color: "#454256", paddingBottom: 50 }}>
-          Adicione uma postagem ao blog da sua atlética
-        </Typography>
-        <AvForm>
-          <Grid container justify="center" >
-            {showAdicionarImagem()}
-            <Paper style={{ backgroundColor: "#636363" }}>
-              <Grid
-                container
-                justify="center"
-                alignContent="center"
-                style={{ height: 250, width: 250 }}
-              >
-                <BotaoUploadImagemMobile
-                  setPath={setPath}
-                  setImagem={setImagem}
-                  imagem={imagem}
-                  path={path}
-                />
-              </Grid>
-            </Paper>
-          </Grid>
-          <Grid container style={{ paddingTop: 50 }}>
-            <Grid item xs={12}>
-              <AvField
-                name="Título:"
-                label="Título do post"
-                type="text"
-                validate={{
-                  required: {
-                    value: true,
-                    errorMessage: "Campo obrigatório",
-                  },
-                  minLength: { value: 2, errorMessage: "Título inválido" },
-                  maxLength: { value: 45, errorMessage: "Título inválido" },
-                }}
-                style={{ color: "E2E2E2" }}
-                onChange={handleTitleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <AvField
-                name="Texto:"
-                label="Texto do post"
-                type="textarea"
-                validate={{
-                  required: {
-                    value: true,
-                    errorMessage: "Campo obrigatório",
-                  },
-                  minLength: { value: 2, errorMessage: "Texto inválido" },
-                }}
-                onChange={handleTextoChange}
-              />
-            </Grid>
-
-            <Button
-              style={{
-                background: "#DB4922",
-              }}
-              fullWidth={true}
-              onClick={submit}
-            >
-              Postar
-            </Button>
-          </Grid>
-        </AvForm>
+        <Paper className={classes.paperAMobile}>
+          <Typography>Não é possível adicionar post pelo celular</Typography>
+        </Paper>
       </Grid>
     </>
   );

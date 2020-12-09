@@ -86,7 +86,7 @@ export default function AdicionarModalidade() {
 
             await ApiService.ModalidadesAtletica(getAtleticaId())
                 .then((res) => {
-                    console.log(res)
+
                     setModalidades(res.data)
 
 
@@ -100,8 +100,7 @@ export default function AdicionarModalidade() {
 
     useEffect(() => {
 
-        console.log(modalidades)
-        console.log(getToken())
+
 
         if (modalidades !== undefined) {
             setLoading(false)

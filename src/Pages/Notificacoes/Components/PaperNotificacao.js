@@ -92,25 +92,23 @@ function PaperNotificacao(props) {
   async function aprovaSolicitacaoAtleta(solicitacaoAtletaId) {
     await ApiService.AprovarSolicitacaoAtleta(solicitacaoAtletaId)
       .then((res) => {
-        console.log(res);
+
         setOpenAceito(true)
 
       })
-      .catch((error) => {
-        console.log(error);
-      });
+
     props.getSolicitacoes()
   }
 
   async function reprovaSolicitacaoAtleta(solicitacaoAtletaId) {
     await ApiService.ReprovarSolicitacaoAtleta(solicitacaoAtletaId)
       .then((res) => {
-        console.log(res);
+
         setOpenRecusado(true)
 
       })
       .catch((error) => {
-        console.log(error);
+
       });
     props.getSolicitacoes()
   }
@@ -118,25 +116,23 @@ function PaperNotificacao(props) {
   async function aprovaSolicitacaoJogo(solicitacaoJogoId) {
     await ApiService.AprovarSolicitacaoJogo(solicitacaoJogoId)
       .then((res) => {
-        console.log(res);
+
         setOpenAceito(true)
 
       })
-      .catch((error) => {
-        console.log(error);
-      });
+
     props.getSolicitacoes()
   }
 
   async function reprovaSolicitacaoJogo(solicitacaoJogoId) {
     await ApiService.ReprovarSolicitacaoJogo(solicitacaoJogoId)
       .then((res) => {
-        console.log(res);
+
         setOpenRecusado(true)
 
       })
       .catch((error) => {
-        console.log(error);
+
       });
     props.getSolicitacoes()
   }

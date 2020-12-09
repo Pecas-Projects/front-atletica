@@ -98,7 +98,7 @@ export default function AddJogo() {
                 handleOpenAdd(true)
             })
             .catch(err => {
-                console.log(err)
+
                 setTipoAlerta('error')
 
                 if (err.response !== null && err.response.data === "A atletica convidada não tem essa modalidade cadastrada")
@@ -117,9 +117,7 @@ export default function AddJogo() {
                 if (res.data !== null && res.data.length > 0)
                     setAtleticaId(res.data[0].atleticaId)
             })
-            .catch(err =>
-                console.log(err)
-            )
+
     }
 
     const buscaModalidades = async () => {
@@ -129,9 +127,7 @@ export default function AddJogo() {
                 if (res.data !== null && res.data.length > 0)
                     setModalidadeId(res.data[0].modalidadeId)
             })
-            .catch(err =>
-                console.log(err)
-            )
+
     }
 
     const buscaCategorias = async () => {
@@ -141,9 +137,7 @@ export default function AddJogo() {
                 if (res.data !== null && res.data.length > 0)
                     setCategoriaId(res.data[0].jogoCategoriaId)
             })
-            .catch(err =>
-                console.log(err)
-            )
+
     }
 
     return (

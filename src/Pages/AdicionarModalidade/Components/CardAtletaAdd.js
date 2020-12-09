@@ -29,7 +29,7 @@ export default function CardAtletaAdd(props) {
 
         ApiService.AdicionarAtletaModalidade(atleta.atletaId, AtleticaModalidadeId)
             .then(res => {
-                console.log(res)
+
                 setOpenAdicionar(false)
                 setOpenAdd(true)
                 DeleteAtletaAdd(index)

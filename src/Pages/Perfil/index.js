@@ -170,21 +170,17 @@ export default function Perfil(props) {
       .then(res =>
         setCursos(res.data)
       )
-      .catch(err =>
-        console.log(err)
-      )
+
   }
 
   const buscarModalidades = async () => {
     await ApiService.ModalidadesAtletica(atletica.atleticaId)
       .then(res => {
         setModalidades(res.data)
-        console.log(res)
+
       }
       )
-      .catch(err =>
-        console.log(err)
-      )
+
   }
 
   const enviarSolicitacao = async () => {
@@ -198,7 +194,7 @@ export default function Perfil(props) {
         setMsgAlerta("Ocorreu um erro, verifique os dados inseridos.")
         setTipoAlerta('error')
         handleOpenAdd(true)
-        console.log(err)
+
       })
   }
 
@@ -291,7 +287,7 @@ export default function Perfil(props) {
   const buscaAtleticaPorUsername = async (username) => {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
-        console.log(res.data)
+
         setAtletica(res.data)
         if (res.data.atleticaImagens !== null)
           res.data.atleticaImagens.forEach(img => {
@@ -307,7 +303,7 @@ export default function Perfil(props) {
         setAchouAtletica(true)
         setLoading(false)
       }).catch((err) => {
-        console.log(err)
+
         setAchouAtletica(false)
       })
   }
