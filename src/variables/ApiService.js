@@ -6,7 +6,12 @@ const ApiService = {
     return api
       .post("/api/Login/Atletica", crecencial)
       .then((res) => {
-        loginAtletica(res.data.token, "A", res.data.atletica.atleticaId, res.data.atletica.username);
+        loginAtletica(
+          res.data.token,
+          "A",
+          res.data.atletica.atleticaId,
+          res.data.atletica.username
+        );
         return res;
       })
       .catch((error) => {
@@ -49,7 +54,13 @@ const ApiService = {
     return api
       .post("/api/Login/Membro", credencial)
       .then((res) => {
-        loginMembro(res.data.token, "M", res.data.atletica.membroId, res.data.atletica.pessoa.atleticaId, res.data.atletica.pessoa.atletica.username);
+        loginMembro(
+          res.data.token,
+          "M",
+          res.data.atletica.membroId,
+          res.data.atletica.pessoa.atleticaId,
+          res.data.atletica.pessoa.atletica.username
+        );
         return res;
       })
       .catch((error) => {
@@ -377,66 +388,66 @@ const ApiService = {
     return api
       .get(`/api/JogosModalidade/${atleticaId}/${modalidadeId}`)
       .then((response) => {
-        return Promise.resolve(response)
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   BuscarTodasAtleticas: () => {
     return api
       .get("/api/Atletica")
       .then((response) => {
-        return Promise.resolve(response)
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   BuscarCategoriasJogos: () => {
     return api
       .get("/api/CategoriasJogos")
       .then((response) => {
-        return Promise.resolve(response)
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   BuscarAtletasModalidade: (atleticaModalidadeId) => {
     return api
       .get(`/api/AtletaModalidade/${atleticaModalidadeId}`)
       .then((response) => {
-        return Promise.resolve(response)
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   DeletarProdutoAtletica: (produtoId) => {
     return api
       .delete(`/api/Produto/${produtoId}`)
       .then((response) => {
-        return Promise.resolve(response)
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   AdicionarAtletasTime: (timeId, atletas) => {
     return api
       .post(`/api/AtletaTime/${timeId}`, atletas)
       .then((response) => {
-        return Promise.resolve(response)
+        return Promise.resolve(response);
       })
       .catch((error) => {
-        return Promise.reject(error)
-      })
+        return Promise.reject(error);
+      });
   },
 
   BuscarProdutoId: (produtoId) => {
@@ -447,7 +458,7 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
-      })
+      });
   },
 
   BuscarAtletaModalidade: (atleticaModalidadeId) => {
@@ -550,7 +561,7 @@ const ApiService = {
 
   CadastrarModalidade: (modalidade) => {
     return api
-      .post('/api/Modalidade', modalidade)
+      .post("/api/Modalidade", modalidade)
       .then((res) => {
         return res;
       })
@@ -567,9 +578,9 @@ const ApiService = {
         return response;
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         return error;
-      })
+      });
   },
 
   ReseteSenha: (value) => {
@@ -606,7 +617,7 @@ const ApiService = {
       })
       .catch((error) => {
         return Promise.reject(error);
-      })
+      });
   },
 
   ExcluiMembro: (membroId) => {
@@ -620,6 +631,16 @@ const ApiService = {
       });
   },
 
+  ExcluirPost: (postId) => {
+    return api
+      .delete(`/api/Publicacao/${postId}`)
+      .then((res) => {
+        return Promise.resolve(res);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  },
 };
 
 export default ApiService;

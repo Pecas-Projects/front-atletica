@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Grid, Paper, Button, Typography, TextField, } from "@material-ui/core";
+import { Grid, Paper, Button, Typography, TextField } from "@material-ui/core";
 import NavBar from "../../Components/NavBar";
 import { makeStyles } from "@material-ui/core/styles";
 import cep from "cep-promise";
@@ -8,7 +8,11 @@ import BotaoUploadImagem from "../../Components/BotaoUploadImagem";
 import BotaoAuxiliar from "./Components/ButaoUploadAuxiliar";
 import ApiService from "../../variables/ApiService";
 import AlertComponents from "./Components/Alert";
-import { getAtleticaId, atleticaUsername, atleticaUsernamePesquisada } from "../../utils/storage";
+import {
+  getAtleticaId,
+  atleticaUsername,
+  atleticaUsernamePesquisada,
+} from "../../utils/storage";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -155,7 +159,7 @@ export default function EditarPerfil(props) {
       return;
     }
 
-    setOpen(false);
+    setNotification(false);
   };
 
   const handleChangeCursos = (e) => {
@@ -314,7 +318,6 @@ export default function EditarPerfil(props) {
               }
             });
           }
-
         }
 
         setLoadingPage(false);
@@ -382,7 +385,6 @@ export default function EditarPerfil(props) {
     let imgs = [];
 
     if (imagemPerfil !== null && imagemCapa !== null) {
-
       if (imgPerfil !== null) perfil.imagemId = imgPerfil.imagemId;
       else if (imagemPerfil.imagemId !== undefined)
         perfil.imagemId = imagemPerfil.imagemId;
@@ -393,14 +395,10 @@ export default function EditarPerfil(props) {
         capa.imagemId = imagemCapa.imagemId;
       else perfil = null;
 
-
       if (capa !== null && perfil !== null) imgs = [capa, perfil];
       else if (capa === null && perfil !== null) imgs = [perfil];
       else if (capa !== null && perfil === null) imgs = [capa];
-
-
     }
-
 
     let idsCursos = cursosIds.map(function (curso) {
       return curso.cursoId;
@@ -437,19 +435,18 @@ export default function EditarPerfil(props) {
         // console.log(res.data);
 
         atleticaUsername(res.data.username);
-        atleticaUsernamePesquisada(res.data.username)
+        atleticaUsernamePesquisada(res.data.username);
         setUpdateMsg("Suas informações foram atualizadas com sucesso!");
         setUpdateStatus("success");
         setNotification(true);
         setLoadingUpdate(false);
-
       })
       .catch((err) => {
         setUpdateMsg("Erro ao atualizar as informações");
         setUpdateStatus("error");
         setNotification(true);
         setLoadingUpdate(false);
-        console.log(err)
+        console.log(err);
       });
   };
 
@@ -463,15 +460,14 @@ export default function EditarPerfil(props) {
             </Grid>
           </div>
         </>
-
       ) : (
-          <div className={classes.root}>
-            <NavBar />
+        <div className={classes.root}>
+          <NavBar />
 
-            <main className={classes.content}>
-              <div className={classes.toolbar} />
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
 
-              {/*
+            {/*
         
         
         
@@ -481,336 +477,356 @@ export default function EditarPerfil(props) {
         
         */}
 
+            <>
+              <Snackbar
+                open={notification}
+                autoHideDuration={4000}
+                onClose={handleClose}
+              >
+                <Alert onClose={handleClose} severity={updateStatus}>
+                  {updateMsg}
+                </Alert>
+              </Snackbar>
+              <div className={classes.sectionDesktop}>
+                <Grid container justify="center">
+                  <Paper className={classes.paperA}>
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <h4 className="MyTitleEP">Editar Perfil</h4>
+                      </Grid>
 
-              <>
-                <Snackbar
-                  open={notification}
-                  autoHideDuration={4000}
-                  onClose={handleClose}
-                >
-                  <Alert onClose={handleClose} severity={updateStatus}>
-                    {updateMsg}
-                  </Alert>
-                </Snackbar>
-                <div className={classes.sectionDesktop}>
-                  <Grid container justify="center">
-                    <Paper className={classes.paperA}>
-                      <Grid container>
-                        <Grid item xs={6}>
-                          <h4 className="MyTitleEP">Editar Perfil</h4>
+                      <Grid item xs={6}>
+                        <Grid container justify="flex-end">
+                          <Button
+                            onClick={(e) => handleClickPIN(e)}
+                            color="secondary"
+                            variant="outlined"
+                          >
+                            Reset PIN
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    {avisoPin && (
+                      <AlertComponents status={pinStatus} mensagem={pinMsg} />
+                    )}
+                    <br />
+                    <AvForm onSubmit={onFormSubmit}>
+                      <p className="MySubtitleEP">PIN</p>
+                      <p className="MySubtitle2EP">
+                        Codigo para os membros entrarem em sua atletica, esta em
+                        constante mudança por questões de segurança
+                      </p>
+                      <Grid container direction="row">
+                        <Grid item>
+                          <AvField
+                            name="Nome da Atletica"
+                            type={typePin ? "password" : "text"}
+                            disabled
+                            value={pin}
+                          />
+                        </Grid>
+                        <Grid item>
+                          <Button onClick={changeTypePin}>Mostrar</Button>
+                        </Grid>
+                      </Grid>
+
+                      <p className="MySubtitleEP">Nome da sua atletica</p>
+                      <AvField
+                        style={{ marginBottom: 20 }}
+                        name="Nome da Atletica"
+                        type="text"
+                        errorMessage="Nome muito grande"
+                        onChange={handleChangeNome}
+                        validate={{
+                          maxLength: { value: 700 },
+                        }}
+                        value={nome}
+                      />
+
+                      <p className="MySubtitleEP">Username</p>
+                      <p className="MySubtitle2EP">
+                        Identificador da sua atletica dentro do nosso sistema,
+                        para mudar este campo é aconselhado chegar sua
+                        disponibilidade
+                      </p>
+                      <Grid container spacing={1}>
+                        <Grid item xs={8}>
+                          <AvField
+                            name="username"
+                            type="text"
+                            onChange={handleChangeAtleticaUsername}
+                            value={username}
+                          />
                         </Grid>
 
-                        <Grid item xs={6}>
+                        <Grid item xs={4}>
                           <Grid container justify="flex-end">
                             <Button
-                              onClick={(e) => handleClickPIN(e)}
+                              style={{ width: 300 }}
+                              variant="contained"
+                              type="submit"
                               color="secondary"
-                              variant="outlined"
+                              onClick={changeUsername}
                             >
-                              Reset PIN
-                          </Button>
+                              Validar username
+                            </Button>
                           </Grid>
                         </Grid>
                       </Grid>
-                      {avisoPin && (
-                        <AlertComponents status={pinStatus} mensagem={pinMsg} />
-                      )}
-                      <br />
-                      <AvForm onSubmit={onFormSubmit}>
-                        <p className="MySubtitleEP">PIN</p>
-                        <p className="MySubtitle2EP">
-                          Codigo para os membros entrarem em sua atletica, esta em
-                          constante mudança por questões de segurança
-                      </p>
-                        <Grid container direction="row">
-                          <Grid item>
-                            <AvField
-                              name="Nome da Atletica"
-                              type={typePin ? "password" : "text"}
-                              disabled
-                              value={pin}
-                            />
-                          </Grid>
-                          <Grid item>
-                            <Button onClick={changeTypePin}>Mostrar</Button>
-                          </Grid>
-                        </Grid>
 
-                        <p className="MySubtitleEP">Nome da sua atletica</p>
-                        <AvField
-                          style={{ marginBottom: 20 }}
-                          name="Nome da Atletica"
-                          type="text"
-                          errorMessage="Nome muito grande"
-                          onChange={handleChangeNome}
-                          validate={{
-                            maxLength: { value: 700 },
-                          }}
-                          value={nome}
+                      {mostrarVerificacao && (
+                        <AlertComponents
+                          status={statusVerificacao}
+                          mensagem={verificacaoMsg}
                         />
-
-                        <p className="MySubtitleEP">Username</p>
-                        <p className="MySubtitle2EP">
-                          Identificador da sua atletica dentro do nosso sistema,
-                          para mudar este campo é aconselhado chegar sua
-                          disponibilidade
-                      </p>
-                        <Grid container spacing={1}>
-                          <Grid item xs={8}>
-                            <AvField
-                              name="username"
-                              type="text"
-                              onChange={handleChangeAtleticaUsername}
-                              value={username}
-                            />
-
-                          </Grid>
-
-                          <Grid item xs={4}>
-                            <Grid container justify='flex-end'>
-                              <Button
-                                style={{ width: 300 }}
-                                variant="contained"
-                                type="submit"
-                                color="secondary"
-                                onClick={changeUsername}
-                              >
-                                Validar username
-                      </Button>
-                            </Grid>
-
-                          </Grid>
-
+                      )}
+                      <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                          <p className="MySubtitleEP" style={{ marginTop: 15 }}>
+                            Email
+                          </p>
+                          <AvField
+                            style={{ width: "90%" }}
+                            name="email"
+                            type="text"
+                            onChange={handleChangeEmail}
+                            value={email}
+                            disabled
+                          />
                         </Grid>
+                        <Grid item xs={6}>
+                          <p className="MySubtitleEP" style={{ marginTop: 15 }}>
+                            Telefone
+                          </p>
+                          <AvField
+                            name="Telefone"
+                            type="text"
+                            onChange={handleTelegoneChange}
+                            value={telefone}
+                          />
+                        </Grid>
+                      </Grid>
 
+                      <p className="MySubtitleEP">Descrição</p>
+                      <p className="MySubtitle2EP">
+                        Fale um pouco sobre sua atlética
+                      </p>
 
-                        {mostrarVerificacao && (
-                          <AlertComponents
-                            status={statusVerificacao}
-                            mensagem={verificacaoMsg}
+                      <AvField
+                        name="descricao"
+                        type="textarea"
+                        errorMessage="Descrição muito grande"
+                        onChange={handleChangeDescricao}
+                        validate={{
+                          maxLength: { value: 300 },
+                        }}
+                        value={descricao}
+                      />
+                      <br />
+                      <p className="MySubtitleEP">Link do processo seletivo</p>
+                      <p className="MySubtitle2EP">
+                        Disponibilize no perfil o link para o processo seletivo
+                        da sua atlética
+                      </p>
+                      <AvField
+                        value={link}
+                        name="link"
+                        type="text"
+                        onChange={handleChangeLink}
+                      />
+                      <br />
+
+                      <Autocomplete
+                        id="asynchronous-demo"
+                        multiple
+                        fullWidth
+                        open={open}
+                        onOpen={() => {
+                          setOpen(true);
+                        }}
+                        onClose={() => {
+                          setOpen(false);
+                        }}
+                        getOptionSelected={(option, value) =>
+                          option.cursoId == value.cursoId
+                        }
+                        getOptionLabel={(option) => option.nome}
+                        options={options}
+                        loading={loading}
+                        defaultValue={atletica.cursos}
+                        onChange={(event, values) => handleChangeCursos(values)}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Cursos"
+                            variant="outlined"
+                            InputProps={{
+                              ...params.InputProps,
+                              endAdornment: (
+                                <React.Fragment>
+                                  {loading ? (
+                                    <CircularProgress
+                                      color="inherit"
+                                      size={20}
+                                    />
+                                  ) : null}
+                                  {params.InputProps.endAdornment}
+                                </React.Fragment>
+                              ),
+                            }}
                           />
                         )}
-                        <Grid container spacing={1}>
-                          <Grid item xs={6}>
-                            <p className="MySubtitleEP" style={{ marginTop: 15 }}>
-                              Email
-                          </p>
-                            <AvField
-                              style={{ width: "90%" }}
-                              name="email"
-                              type="text"
-                              onChange={handleChangeEmail}
-                              value={email}
-                              disabled
-                            />
-                          </Grid>
-                          <Grid item xs={6}>
-                            <p className="MySubtitleEP" style={{ marginTop: 15 }}>
-                              Telefone
-                          </p>
-                            <AvField
-                              name="Telefone"
-                              type="text"
-                              onChange={handleTelegoneChange}
-                              value={telefone}
-                            />
-                          </Grid>
+                      />
+                      <br />
+                      <p className="MySubtitleEP">Endereço</p>
+                      <p className="MySubtitle2EP">
+                        O campus que sua atlética está sediada
+                      </p>
+                      <Grid container spacing={1}>
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={nomeCampus}
+                            onChange={handleChangeCampus}
+                            name="campus"
+                            label="Campus"
+                            type="text"
+                          />
                         </Grid>
 
-                        <p className="MySubtitleEP">Descrição</p>
-                        <p className="MySubtitle2EP">
-                          Fale um pouco sobre sua atlética
-                      </p>
-
-                        <AvField
-                          name="descricao"
-                          type="textarea"
-                          errorMessage="Descrição muito grande"
-                          onChange={handleChangeDescricao}
-                          validate={{
-                            maxLength: { value: 300 },
-                          }}
-                          value={descricao}
-                        />
-                        <br />
-                        <p className="MySubtitleEP">Link do processo seletivo</p>
-                        <p className="MySubtitle2EP">
-                          Disponibilize no perfil o link para o processo seletivo
-                          da sua atlética
-                      </p>
-                        <AvField
-                          value={link}
-                          name="link"
-                          type="text"
-                          onChange={handleChangeLink}
-                        />
-                        <br />
-
-                        <Autocomplete
-                          id="asynchronous-demo"
-                          multiple
-                          fullWidth
-                          open={open}
-                          onOpen={() => {
-                            setOpen(true);
-                          }}
-                          onClose={() => {
-                            setOpen(false);
-                          }}
-                          getOptionSelected={(option, value) =>
-                            option.cursoId == value.cursoId
-                          }
-                          getOptionLabel={(option) => option.nome}
-                          options={options}
-                          loading={loading}
-                          defaultValue={atletica.cursos}
-                          onChange={(event, values) => handleChangeCursos(values)}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Cursos"
-                              variant="outlined"
-                              InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                  <React.Fragment>
-                                    {loading ? (
-                                      <CircularProgress
-                                        color="inherit"
-                                        size={20}
-                                      />
-                                    ) : null}
-                                    {params.InputProps.endAdornment}
-                                  </React.Fragment>
-                                ),
-                              }}
-                            />
-                          )}
-                        />
-                        <br />
-                        <p className="MySubtitleEP">Endereço</p>
-                        <p className="MySubtitle2EP">
-                          O campus que sua atlética está sediada
-                      </p>
-                        <Grid container spacing={1}>
-                          <Grid item xs={6}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              value={nomeCampus}
-                              onChange={handleChangeCampus}
-                              name="campus"
-                              label="Campus"
-                              type="text"
-                            />
-                          </Grid>
-
-                          <Grid item xs={6}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              value={nomeFaculdade}
-                              onChange={handleChangeFaculdade}
-                              name="faculdade"
-                              label="Faculdade"
-                              type="text"
-                            />
-                          </Grid>
-                          <Grid item xs={6}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              data-cy="cep-input"
-                              value={cepcp}
-                              onChange={handleCepChange}
-                              name="cep"
-                              label="CEP"
-                              type="text"
-                              validate={{
-                                required: {
-                                  value: true,
-                                  errorMessage: "Campo obrigatório",
-                                },
-                                pattern: {
-                                  value: "[0-9]",
-                                  errorMessage: "Use apenas números",
-                                },
-                                minLength: {
-                                  value: 8,
-                                  errorMessage: "CEP inválido",
-                                },
-                                maxLength: {
-                                  value: 8,
-                                  errorMessage: "CEP inválido",
-                                },
-                              }}
-                            />
-                          </Grid>
-
-                          <Grid item xs={6}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              value={state}
-                              name="estado"
-                              label="Estado"
-                              type="text"
-                            />
-                          </Grid>
-
-                          <Grid item xs={6}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              value={city}
-                              name="cidade"
-                              label="Cidade"
-                              type="text"
-                            />
-                          </Grid>
-
-                          <Grid item xs={6}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              value={neighbourhood}
-                              name="bairro"
-                              label="Bairro"
-                              type="text"
-                            />
-                          </Grid>
-
-                          <Grid item xs={6}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              value={street}
-                              name="rua"
-                              label="Rua"
-                              type="text"
-                            />
-                          </Grid>
-
-                          <Grid item xs={6} style={{ marginBottom: 20 }}>
-                            <AvField
-                              style={{ width: "90%" }}
-                              value={complemento}
-                              label="Complemento"
-                              name="complemento"
-                              type="text"
-                              onChange={handleComplementoChange}
-                              validate={{
-                                maxLength: {
-                                  value: 255,
-                                  errorMessage: "Muito grande",
-                                },
-                              }}
-                            />
-                          </Grid>
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={nomeFaculdade}
+                            onChange={handleChangeFaculdade}
+                            name="faculdade"
+                            label="Faculdade"
+                            type="text"
+                          />
                         </Grid>
-                        <Grid>
-                          <p className="MySubtitleEP" style={{ marginTop: 20 }}>
-                            Adicionar fotos
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            data-cy="cep-input"
+                            value={cepcp}
+                            onChange={handleCepChange}
+                            name="cep"
+                            label="CEP"
+                            type="text"
+                            validate={{
+                              required: {
+                                value: true,
+                                errorMessage: "Campo obrigatório",
+                              },
+                              pattern: {
+                                value: "[0-9]",
+                                errorMessage: "Use apenas números",
+                              },
+                              minLength: {
+                                value: 8,
+                                errorMessage: "CEP inválido",
+                              },
+                              maxLength: {
+                                value: 8,
+                                errorMessage: "CEP inválido",
+                              },
+                            }}
+                          />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={state}
+                            name="estado"
+                            label="Estado"
+                            type="text"
+                          />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={city}
+                            name="cidade"
+                            label="Cidade"
+                            type="text"
+                          />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={neighbourhood}
+                            name="bairro"
+                            label="Bairro"
+                            type="text"
+                          />
+                        </Grid>
+
+                        <Grid item xs={6}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={street}
+                            name="rua"
+                            label="Rua"
+                            type="text"
+                          />
+                        </Grid>
+
+                        <Grid item xs={6} style={{ marginBottom: 20 }}>
+                          <AvField
+                            style={{ width: "90%" }}
+                            value={complemento}
+                            label="Complemento"
+                            name="complemento"
+                            type="text"
+                            onChange={handleComplementoChange}
+                            validate={{
+                              maxLength: {
+                                value: 255,
+                                errorMessage: "Muito grande",
+                              },
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                      <Grid>
+                        <p className="MySubtitleEP" style={{ marginTop: 20 }}>
+                          Adicionar fotos
                         </p>
-                          <p className="MySubtitle2EP">
-                            Adicione imagens de perfil e capa da sua atlética
+                        <p className="MySubtitle2EP">
+                          Adicione imagens de perfil e capa da sua atlética
                         </p>
 
-                          {imagemPerfil === null && imagemCapa === null ? (
-                            <Grid item xs={4} style={{ marginTop: 20 }}>
+                        {imagemPerfil === null && imagemCapa === null ? (
+                          <Grid item xs={4} style={{ marginTop: 20 }}>
+                            {showAdicionarImagemPerfil()}
+                            <Paper
+                              style={{
+                                backgroundColor: "#636363",
+                                width: 250,
+                              }}
+                            >
+                              <Grid
+                                container
+                                justify="center"
+                                alignContent="center"
+                                style={{ height: 250, marginTop: -7 }}
+                              >
+                                <BotaoUploadImagem
+                                  setPath={setPathPerfil}
+                                  setImagem={setImagemPerfil}
+                                  imagem={imagemPerfil}
+                                  path={pathPerfil}
+                                />
+                              </Grid>
+                            </Paper>
+                          </Grid>
+                        ) : (
+                          <Grid container style={{ paddingTop: 30 }}>
+                            <Grid item xs={4}>
                               {showAdicionarImagemPerfil()}
                               <Paper
                                 style={{
@@ -833,85 +849,58 @@ export default function EditarPerfil(props) {
                                 </Grid>
                               </Paper>
                             </Grid>
-                          ) : (
-                              <Grid container style={{ paddingTop: 30 }}>
-                                <Grid item xs={4}>
-                                  {showAdicionarImagemPerfil()}
-                                  <Paper
-                                    style={{
-                                      backgroundColor: "#636363",
-                                      width: 250,
-                                    }}
-                                  >
-                                    <Grid
-                                      container
-                                      justify="center"
-                                      alignContent="center"
-                                      style={{ height: 250, marginTop: -7 }}
-                                    >
-                                      <BotaoUploadImagem
-                                        setPath={setPathPerfil}
-                                        setImagem={setImagemPerfil}
-                                        imagem={imagemPerfil}
-                                        path={pathPerfil}
-                                      />
-                                    </Grid>
-                                  </Paper>
-                                </Grid>
 
-                                <Grid item xs={4}>
-                                  {showAdicionarImagemCapa()}
-                                  <Paper
-                                    style={{
-                                      backgroundColor: "#636363",
-                                      width: 450,
-                                    }}
-                                  >
-                                    <Grid
-                                      container
-                                      justify="center"
-                                      alignContent="center"
-                                      style={{ height: 250, marginTop: -7 }}
-                                    >
-                                      <Grid item>
-                                        <BotaoAuxiliar
-                                          setPath={setPathCapa}
-                                          setImagem={setImagemCapa}
-                                          imagem={imagemCapa}
-                                          path={pathCapa}
-                                        />
-                                      </Grid>
-                                    </Grid>
-                                  </Paper>
-                                </Grid>
-                              </Grid>
-                            )}
-                          <Grid container justify="center">
-                            {loadingUpdate ? (
-                              <>
-                                <CircularProgress style={{ marginTop: 60 }} />
-
-                              </>
-                            ) : (
-                                <Button
-                                  type="submit"
-                                  style={{ marginTop: 60, width: 400 }}
-                                  variant="contained"
-                                  color="secondary"
+                            <Grid item xs={4}>
+                              {showAdicionarImagemCapa()}
+                              <Paper
+                                style={{
+                                  backgroundColor: "#636363",
+                                  width: 450,
+                                }}
+                              >
+                                <Grid
+                                  container
+                                  justify="center"
+                                  alignContent="center"
+                                  style={{ height: 250, marginTop: -7 }}
                                 >
-                                  Salvar Alterações
-                                </Button>
-                              )}
+                                  <Grid item>
+                                    <BotaoAuxiliar
+                                      setPath={setPathCapa}
+                                      setImagem={setImagemCapa}
+                                      imagem={imagemCapa}
+                                      path={pathCapa}
+                                    />
+                                  </Grid>
+                                </Grid>
+                              </Paper>
+                            </Grid>
                           </Grid>
+                        )}
+                        <Grid container justify="center">
+                          {loadingUpdate ? (
+                            <>
+                              <CircularProgress style={{ marginTop: 60 }} />
+                            </>
+                          ) : (
+                            <Button
+                              type="submit"
+                              style={{ marginTop: 60, width: 400 }}
+                              variant="contained"
+                              color="secondary"
+                            >
+                              Salvar Alterações
+                            </Button>
+                          )}
                         </Grid>
-                      </AvForm>
-                    </Paper>
-                  </Grid>
-                </div>
-              </>
+                      </Grid>
+                    </AvForm>
+                  </Paper>
+                </Grid>
+              </div>
+            </>
 
-
-              {/*
+            {/*
                         
                         
                         
@@ -923,24 +912,23 @@ export default function EditarPerfil(props) {
                         
                       */}
 
-              <div className={classes.sectionMobile}>
-                <Grid container justify="center">
-                  <Grid container spacing={1} style={{ marginTop: 20 }}>
-                    <Grid container justify="center">
-                      <Paper className={classes.paperAMobile}>
-
-
-                        <p className="MySubtitle">Não é possível editar o perfil pelo celular, utilize um computador para isso</p>
-
-                      </Paper>
-                    </Grid>
+            <div className={classes.sectionMobile}>
+              <Grid container justify="center">
+                <Grid container spacing={1} style={{ marginTop: 20 }}>
+                  <Grid container justify="center">
+                    <Paper className={classes.paperAMobile}>
+                      <p className="MySubtitle">
+                        Não é possível editar o perfil pelo celular, utilize um
+                        computador para isso
+                      </p>
+                    </Paper>
                   </Grid>
                 </Grid>
-              </div>
-            </main>
-          </div>
-        )}
+              </Grid>
+            </div>
+          </main>
+        </div>
+      )}
     </>
-
   );
 }
