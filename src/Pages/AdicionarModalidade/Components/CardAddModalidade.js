@@ -108,7 +108,7 @@ export default function CardAddModalidade() {
     const [openAgenda, setopenAgenda] = useState(false)
     const [imagemId, setImagemId] = useState()
     const [enviar, setEnviar] = useState(false)
-
+    const [msgErro, setMsgErro] = useState("Ocorreu um erro, revise os dados e tente novamente")
 
     function showAdicionarImagem() {
         if (imagem === null) {
@@ -169,6 +169,10 @@ export default function CardAddModalidade() {
                     setTimeout(function () { window.location.href = '/modalidades' }, 3000)
                 })
                 .catch(error => {
+                    if (error.response && error.response.data === "Esta modalidade já foi adicionada à sua atlética")
+                        setMsgErro("Esta modalidade já foi adicionada à sua atlética")
+                    else
+                        setMsgErro("Ocorreu um erro, revise os dados e tente novamente")
                     setOpenErro(true)
                     console.log(error)
                 })
@@ -214,12 +218,14 @@ export default function CardAddModalidade() {
 
                 })
                 .catch(error => {
+                    setMsgErro("Ocorreu um erro, revise os dados e tente novamente")
                     console.log(error)
                     setOpenErro(true)
                 })
 
         }
         else {
+            setMsgErro("Ocorreu um erro, revise os dados e tente novamente")
             setOpenErro(true)
         }
 
@@ -240,6 +246,7 @@ export default function CardAddModalidade() {
             setopenAgenda(false)
         }
         else {
+            setMsgErro("Ocorreu um erro, revise os dados e tente novamente")
             setOpenErro(true)
         }
 
@@ -293,11 +300,6 @@ export default function CardAddModalidade() {
         setOpenNovaModalidade(false);
     };
 
-
-    const handleClickErro = () => {
-        setOpenErro(true);
-    };
-
     const handleCloseErro = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -339,7 +341,7 @@ export default function CardAddModalidade() {
 
             <Snackbar open={openErro} autoHideDuration={4000} onClose={handleCloseErro}>
                 <Alert onClose={handleCloseErro} severity="error">
-                    Ocorreu um erro, revise os dados e tente novamente
+                    {msgErro}
                 </Alert>
             </Snackbar>
 
