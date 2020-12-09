@@ -666,7 +666,7 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
 
-                <Link to="/Times">
+                <Link to={"/Times/" + atleticaUsernamePesquisada()}>
                   <ListItem button>
                     <ListItemIcon>
                       <img src={Trofeu} alt="times" />
@@ -675,7 +675,7 @@ export default function MiniDrawer() {
                   </ListItem>
                 </Link>
 
-                <Link to="/Produtos">
+                <Link to={"/Produtos/" + atleticaUsernamePesquisada()}>
                   <ListItem button>
                     <ListItemIcon>
                       <img src={Bag} alt="produtos" />
