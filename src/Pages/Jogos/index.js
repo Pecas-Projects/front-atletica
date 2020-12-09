@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import NavBar from "../../Components/NavBar"
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, CircularProgress } from "@material-ui/core";
+import { Card, Grid, CircularProgress, Typography } from "@material-ui/core";
 import Categoria from './Components/Categoria'
 import AddJogo from './Components/AddJogo'
 import Radio from '@material-ui/core/Radio';
@@ -40,7 +40,14 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         },
     },
-
+    card: {
+        width: "100%",
+        backgroundColor: "#D2CFE5",
+        marginBottom: 20
+    },
+    grid: {
+        padding: theme.spacing(1),
+    }
 }));
 
 export default function Jogos() {
@@ -68,6 +75,26 @@ export default function Jogos() {
             .catch(err =>
                 console.log(err)
             )
+    }
+
+    function apresentaModalidades() {
+        if (modalidades.length !== 0 && modalidades !== null && modalidades !== undefined) {
+            return (
+                modalidades.map((item) => (
+                    <Categoria categoria={item} />
+                ))
+            );
+        }
+        else {
+            return (
+
+                <Card className={classes.card}>
+                    <Grid item container justify='center' className={classes.grid}>
+                        <Typography >Essa atlética não possui modalidades.</Typography>
+                    </Grid>
+                </Card >
+            );
+        }
     }
 
     return (
@@ -103,11 +130,7 @@ export default function Jogos() {
                                     <Grid item xs={8} >
                                         {
                                             opcao == "Ver" ?
-                                                <Grid container justify='center'>
-                                                    {modalidades.map((item) => (
-                                                        <Categoria categoria={item} />
-                                                    ))}
-                                                </Grid>
+                                                apresentaModalidades()
                                                 :
                                                 <AddJogo />
                                         }
@@ -131,9 +154,7 @@ export default function Jogos() {
                                     <Grid item xs={12} >
                                         {
                                             opcao == "Ver" ?
-                                                modalidades.map((item) => (
-                                                    <Categoria categoria={item} />
-                                                ))
+                                                apresentaModalidades()
                                                 :
                                                 <AddJogo />
                                         }

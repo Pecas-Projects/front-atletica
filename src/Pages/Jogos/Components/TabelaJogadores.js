@@ -39,7 +39,7 @@ export default function TabelaJogadores(props) {
                                         style={{ outline: 'none' }}
                                         color="primary"
                                         aria-label="add"
-                                        onClick={() => removeAtleta(jogadores)}
+                                        onClick={() => removeAtleta(rowData.tableData.id)}
                                     >
                                         <Clear />
                                     </IconButton>

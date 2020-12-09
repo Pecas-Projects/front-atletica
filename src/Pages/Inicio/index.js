@@ -1,7 +1,6 @@
 import React from "react";
 
 import Navbar from "../../Components/NavbarInicio";
-import Footer from "../../Components/Footer";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -20,12 +19,11 @@ import Trofeu from "../../assets/icons/trophy.svg";
 import Bell from "../../assets/icons/bell.svg";
 import Home from "../../assets/icons/home.svg";
 import Bloquinho from "../../assets/icons/today.svg";
-import Calendario from "../../assets/icons/calendar-today.svg";
 import Sacola2 from "../../assets/icons/shopping-bag2.svg";
 
 import Basquete from "../../assets/imagem/undraw_basketball_agx4 1.svg";
 import Controle from "../../assets/imagem/undraw_gaming_6oy3 1.svg";
-import { isLogin, atleticaUsername } from '../../utils/storage'
+import { isLogin, atleticaUsername } from "../../utils/storage";
 
 export default function PaginaInicial() {
   return (
@@ -45,22 +43,22 @@ export default function PaginaInicial() {
                   style={{ fontFamily: "Roboto Condensed" }}
                 >
                   <b>
-                    Um sistema que vai levar a sua Atlética para um próximo
-                    nível
+                    Um sistema que vai levar a sua Atlética para o próximo nível
                   </b>
                 </Typography>
                 <div style={{ paddingTop: 80 }}>
-                  {isLogin() ?
+                  {isLogin() ? (
                     <Link to={"/Perfil/" + atleticaUsername()}>
                       <Button
                         variant="contained"
                         color="secondary"
                         disableElevation
+                        fullWidth
                       >
                         <span>Meu Perfil</span>
                       </Button>
                     </Link>
-                    :
+                  ) : (
                     <>
                       <Link to="/cadastro">
                         <Button
@@ -75,10 +73,10 @@ export default function PaginaInicial() {
                       <Link to="/login">
                         <Button variant="outlined" style={{ marginLeft: 20 }}>
                           Fazer Login
-                    </Button>
+                        </Button>
                       </Link>
                     </>
-                  }
+                  )}
                 </div>
               </Grid>
             </Grid>
@@ -104,21 +102,17 @@ export default function PaginaInicial() {
             >
               <Typography
                 variant="h4"
-                style={{ fontFamily: "Roboto Condensed" }}
+                style={{ fontFamily: "Roboto Condensed", color: "white" }}
               >
                 <b>Nosso Sistema</b>
               </Typography>
               <Typography
                 paragraph
-                style={{ fontFamily: "Roboto", paddingTop: 60 }}
+                style={{ fontFamily: "Roboto", color: "white" }}
               >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                O sistema Olympos é um gerenciador de atléticas completo, com
+                diversas funcionalidades que vão de divulgar a sua atlética a
+                administrar seus jogos.
               </Typography>
             </Grid>
             <Grid
@@ -133,7 +127,7 @@ export default function PaginaInicial() {
               <IconList
                 icon={Tecladinho}
                 leganda={"Divulgue sua Atlética"}
-                NumPadding={70}
+                NumPadding={50}
               />
 
               <IconList
@@ -145,12 +139,6 @@ export default function PaginaInicial() {
               <IconList
                 icon={Trofeu}
                 leganda={"Gerencie os seus jogos"}
-                NumPadding={50}
-              />
-
-              <IconList
-                icon={Bell}
-                leganda={"Anuncie seus eventos"}
                 NumPadding={50}
               />
             </Grid>
@@ -176,16 +164,16 @@ export default function PaginaInicial() {
                 variant="h4"
                 style={{ fontFamily: "Roboto Condensed" }}
               >
-                Motive os seus atletas
+                Organize seus atletas
               </Typography>
               <Typography
                 paragraph
                 style={{ fontFamily: "Roboto", paddingTop: 50 }}
               >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat
+                Na págiana de perfil é disponibilazado um formulário para quem
+                tiver interesse em se tornar atleta, sendo possível recusar ou
+                aceitar a solicitação. Ainda é possível vizualizar, adicionar e
+                remover os atletas das modalidades de sua atlética.
               </Typography>
             </Grid>
 
@@ -212,30 +200,15 @@ export default function PaginaInicial() {
               marginTop: 100,
             }}
           >
+            <AvatarList imagem={Home} legenda={"Perfil totalmente editável"} />
+            <AvatarList imagem={Bloquinho} legenda={"Feed da atlética"} />
             <AvatarList
-              imagem={Home}
+              imagem={Bell}
               legenda={
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
+                "Notificações de jogos e solicitação para se tornar atleta"
               }
             />
-            <AvatarList
-              imagem={Bloquinho}
-              legenda={
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
-              }
-            />
-            <AvatarList
-              imagem={Calendario}
-              legenda={
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
-              }
-            />
-            <AvatarList
-              imagem={Sacola2}
-              legenda={
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, seddo eiusmod tempor"
-              }
-            />
+            <AvatarList imagem={Sacola2} legenda={"Aba de produtos"} />
           </Grid>
 
           <Grid
@@ -278,10 +251,10 @@ export default function PaginaInicial() {
                 paragraph
                 style={{ fontFamily: "Roboto", paddingTop: 50 }}
               >
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat
+                Crie novos jogo, aceite jogos de outras atléticas e nosso
+                sistema guarda tudo para você. Salve os jogadores que
+                participaram do jogo, sua pontuação, posição e infrações que
+                cometeu.
               </Typography>
             </Grid>
           </Grid>

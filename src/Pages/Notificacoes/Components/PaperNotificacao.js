@@ -94,7 +94,7 @@ function PaperNotificacao(props) {
       .then((res) => {
         console.log(res);
         setOpenAceito(true)
-        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
+
       })
       .catch((error) => {
         console.log(error);
@@ -107,7 +107,7 @@ function PaperNotificacao(props) {
       .then((res) => {
         console.log(res);
         setOpenRecusado(true)
-        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
+
       })
       .catch((error) => {
         console.log(error);
@@ -120,7 +120,7 @@ function PaperNotificacao(props) {
       .then((res) => {
         console.log(res);
         setOpenAceito(true)
-        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
+
       })
       .catch((error) => {
         console.log(error);
@@ -133,7 +133,7 @@ function PaperNotificacao(props) {
       .then((res) => {
         console.log(res);
         setOpenRecusado(true)
-        setTimeout(function () { window.location.href = '/notificacoes' }, 3000)
+
       })
       .catch((error) => {
         console.log(error);

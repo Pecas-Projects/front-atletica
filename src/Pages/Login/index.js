@@ -120,7 +120,7 @@ export default function Login() {
 
       await ApiService.LoginAtletica(loginData)
         .then(() => (window.location.href = "/Perfil/" + atleticaUsername()))
-        .catch((err) => console.log(err));
+        .catch(() => setErroLogin(true));
     } else {
       let loginM = {
         senha: login.Senha,
@@ -130,8 +130,8 @@ export default function Login() {
       };
 
       await ApiService.LoginMembro(loginM)
-        .then(() => window.location.href = "/Perfil/" + atleticaUsername())
-        .catch((err) => console.log(err));
+        .then(() => (window.location.href = "/Perfil/" + atleticaUsername()))
+        .catch(() => setErroLogin(true));
     }
   };
 

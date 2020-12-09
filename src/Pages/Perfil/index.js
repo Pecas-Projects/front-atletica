@@ -161,6 +161,7 @@ export default function Perfil(props) {
   const [opcao, setOpcao] = useState('Atleta')
   const [cursos, setCursos] = useState([])
   const [modalidades, setModalidades] = useState([])
+  const [membros, setMembros] = useState([])
   const [achouAtletica, setAchouAtletica] = useState(true)
   const [loading, setLoading] = useState(true)
 
@@ -175,7 +176,7 @@ export default function Perfil(props) {
   }
 
   const buscarModalidades = async () => {
-    await ApiService.ModalidadesAtletica(getAtleticaId())
+    await ApiService.ModalidadesAtletica(atletica.atleticaId)
       .then(res => {
         setModalidades(res.data)
         console.log(res)
@@ -257,6 +258,12 @@ export default function Perfil(props) {
     setOpenAdd(true)
   }
 
+  const removeMembro = (pessoa) => {
+    let index = membros.indexOf(pessoa)
+    membros.splice(index, 1)
+    setMembros([...membros])
+  }
+
   const concatenaEndereco = () => {
 
     let endereco = ""
@@ -284,6 +291,7 @@ export default function Perfil(props) {
   const buscaAtleticaPorUsername = async (username) => {
     await ApiService.PesquisaAtleticaPorUsername(username)
       .then((res) => {
+        console.log(res.data)
         setAtletica(res.data)
         if (res.data.atleticaImagens !== null)
           res.data.atleticaImagens.forEach(img => {
@@ -307,8 +315,16 @@ export default function Perfil(props) {
   useEffect(() => {
     buscaAtleticaPorUsername(props.match.params.username)
     buscarCursos();
-    buscarModalidades();
+
   }, [props.match.params.username])
+
+  useEffect(() => {
+
+    if (atletica !== undefined) {
+      buscarModalidades();
+      setMembros(atletica.membros)
+    }
+  }, [atletica])
 
   return (
     <>
@@ -411,9 +427,9 @@ export default function Perfil(props) {
                             <Grid container spacing={3}>
 
                               {
-                                atletica.membros !== null ?
-                                  atletica.membros.map((item) =>
-                                    <CardMembro item={item} />
+                                membros !== null ?
+                                  membros.map((item) =>
+                                    <CardMembro item={item} atleticaId={atletica.atleticaId} removeMembro={removeMembro} />
                                   ) : null
                               }
 
@@ -703,9 +719,9 @@ MOBILE
                             <Grid container spacing={3}>
 
                               {
-                                atletica.membros !== null ?
-                                  atletica.membros.map((item) =>
-                                    <CardMembro item={item} />
+                                membros !== null ?
+                                  membros.map((item) =>
+                                    <CardMembro item={item} atleticaId={atletica.atleticaId} removeMembro={removeMembro} />
                                   ) : null
                               }
 

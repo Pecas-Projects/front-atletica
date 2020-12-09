@@ -81,8 +81,8 @@ export default function CardModalidade(props) {
     const [expandedAtletaDelete, setexpandedAtletaDelete] = useState(false);
     const [expandedAtletaAdd, setexpandedAtletaAdd] = useState(false);
     const [expandedModalidade, setExpandedModalidade] = useState(false);
-    const [imagem, setImagem] = useState(null);
-    const [path, setPath] = useState();
+    const [imagem, setImagem] = useState(item.imagemModalidade);
+    const [path, setPath] = useState(item.imagemModalidade.path);
     const [coordenador, setCorrdenador] = useState(item.coordenadorId)
     const [openSalvo, setOpenSalvo] = useState(false)
     const [openExcluir, setOpenExcluir] = useState(false)
@@ -454,14 +454,25 @@ export default function CardModalidade(props) {
 
                             {atletas !== undefined ? (
                                 <>
-                                    {atletas.map((atleta) =>
-                                        <CardAtleta atleta={atleta} />
-                                    )}
+                                    {atletas.length !== 0 ? (
+                                        <>
+                                            {atletas.map((atleta) =>
+                                                <CardAtleta atleta={atleta} />
+                                            )}
+                                        </>
+
+                                    ) : (
+                                            <Grid style={{ padding: 20 }}>
+                                                <Typography>Essa modalidade ainda não possui jogadores adicionados</Typography>
+                                            </Grid>
+                                        )}
                                 </>
 
                             ) : (
                                     <>
                                     </>
+
+
                                 )}
 
 
