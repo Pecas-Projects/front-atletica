@@ -92,7 +92,7 @@ function Ranking() {
   const classes = useStyles();
   const [modalidades, setModalidades] = useState([]);
   const [atleticasRanking, setAtleticasRanking] = useState([]);
-  const [modalidadeId, setModalidadeId] = useState(1);
+  const [modalidadeId, setModalidadeId] = useState(7);
   const [loading, setLoading] = useState(true)
 
   async function getModalidades() {
